@@ -1,4 +1,113 @@
-0 px-6 py-6"
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { STICKERS, BUNDLES, REGIONS, BASE_PRICE, getAllStickers } from '@/data/stickers';
+import { useCart } from '@/context/CartContext';
+
+export default function Home() {
+  const [activeTab, setActiveTab] = useState(REGIONS[0]);
+  const [animatingItems, setAnimatingItems] = useState(new Set());
+  
+  const {
+    cartItems,
+    totalItems,
+    pricePerItem,
+    totalPrice,
+    canCheckout,
+    pricingTier,
+    savings,
+    toggleItem,
+    updateQuantity,
+    addBundle,
+    openDrawer,
+  } = useCart();
+
+  const activeStickers = STICKERS[activeTab] || [];
+
+  const cartStickers = Object.keys(cartItems)
+    .map(id => ({
+      ...getAllStickers().find(s => s.id === id),
+      quantity: cartItems[id]
+    }))
+    .filter(s => s.id);
+
+  const handleToggleSticker = (stickerId) => {
+    setAnimatingItems(prev => new Set(prev).add(stickerId));
+    setTimeout(() => {
+      setAnimatingItems(prev => {
+        const next = new Set(prev);
+        next.delete(stickerId);
+        return next;
+      });
+    }, 300);
+    toggleItem(stickerId);
+  };
+
+  const handleCheckout = () => {
+    const items = Object.entries(cartItems).map(([id, qty]) => {
+      const sticker = getAllStickers().find(s => s.id === id);
+      return { variantId: sticker?.shopifyVariantId || id, quantity: qty };
+    });
+    
+    const cartString = items.map(item => `${item.variantId}:${item.quantity}`).join(',');
+    const baseUrl = 'https://yourstore.myshopify.com/cart/';
+    
+    let discountParam = '';
+    if (totalItems >= 21) discountParam = '?discount=BULK21';
+    else if (totalItems >= 11) discountParam = '?discount=BULK11';
+    
+    const checkoutUrl = `${baseUrl}${cartString}${discountParam}`;
+    
+    console.log('Checkout URL:', checkoutUrl);
+    alert(`Checkout URL logged to console!\n\nTotal: ${totalItems} stickers\nPrice: £${totalPrice.toFixed(2)}`);
+  };
+
+  return (
+    <div className="h-screen w-full overflow-hidden flex flex-col" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+      {/* Header */}
+      <header 
+        className="flex-shrink-0 h-16 flex items-center justify-between px-6 z-50"
+        style={{ 
+          background: 'linear-gradient(135deg, #0A2540 0%, #0d3252 50%, #0A2540 100%)',
+          boxShadow: '0 4px 20px rgba(10, 37, 64, 0.3)'
+        }}
+      >
+        <Link href="/" className="flex items-center gap-3">
+          <img src="/logo.png" alt="Otterseas" className="w-9 h-9 rounded-xl object-contain" />
+          <span className="text-xl font-light tracking-tight text-white">Otterseas</span>
+        </Link>
+        
+        <div className="hidden md:flex items-center text-sm" style={{ color: '#D99E30' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          Free shipping on orders of 10+ stickers
+        </div>
+        
+        <button
+          onClick={openDrawer}
+          className="flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-full transition-all hover:scale-105"
+          style={{ backgroundColor: '#D99E30', color: 'white' }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          {totalItems > 0 && <span>{totalItems}</span>}
+        </button>
+      </header>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
+        
+        {/* Left Column - Marketplace */}
+        <div className="flex-1 md:w-[70%] flex flex-col overflow-hidden bg-white">
+          
+          {/* Intro Section */}
+          <div 
+            className="flex-shrink-0 px-6 py-6"
             style={{ 
               background: 'linear-gradient(135deg, #0A2540 0%, #133659 50%, #0A2540 100%)',
               borderBottom: '4px solid #D99E30'
@@ -246,7 +355,7 @@
             )}
 
             <button onClick={handleCheckout} disabled={!canCheckout} className="w-full py-4 rounded-xl text-sm font-semibold transition-all hover:scale-[1.02]" style={{ background: canCheckout ? 'linear-gradient(135deg, #D99E30 0%, #c48a20 100%)' : 'rgba(255, 255, 255, 0.1)', color: canCheckout ? 'white' : 'rgba(255, 255, 255, 0.3)', cursor: canCheckout ? 'pointer' : 'not-allowed', boxShadow: canCheckout ? '0 4px 20px rgba(217, 158, 48, 0.5)' : 'none' }}>
-              {canCheckout ? 'Proceed to Checkout →' : `Minimum 5 stickers required`}
+              {canCheckout ? 'Proceed to Checkout →' : 'Minimum 5 stickers required'}
             </button>
           </div>
         </div>
