@@ -42,9 +42,7 @@ export default function CartDrawer() {
     
     const checkoutUrl = `${baseUrl}${cartString}${discountParam}`;
     
-    console.log('Checkout URL:', checkoutUrl);
-    // In production: window.location.href = checkoutUrl;
-    alert(`Checkout URL logged to console!\n\nTotal: ${totalItems} stickers\nPrice: £${totalPrice.toFixed(2)}`);
+    window.location.href = checkoutUrl;
   };
 
   return (
