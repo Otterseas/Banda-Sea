@@ -51,7 +51,7 @@ export default function Home() {
     });
     
     const cartString = items.map(item => `${item.variantId}:${item.quantity}`).join(',');
-    const baseUrl = 'https://yourstore.myshopify.com/cart/';
+    const baseUrl = 'https://38a44d-4c.myshopify.com/cart/';
     
     let discountParam = '';
     if (totalItems >= 21) discountParam = '?discount=BULK21';
