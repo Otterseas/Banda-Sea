@@ -570,7 +570,7 @@ export const STICKERS = {
       name: 'Banda Sea', 
       region: 'Indo-Pacific', 
       country: 'Indonesia',
-      shopifyVariantId: '10373416812810',
+      shopifyVariantId: '52447312511242',
       image: 'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/BandaSea-sticker.png?v=1769229387',
       story: {
         headline: 'The Ring of Fire',
