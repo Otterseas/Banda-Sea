@@ -571,7 +571,7 @@ export const STICKERS = {
       region: 'Indo-Pacific', 
       country: 'Indonesia',
       shopifyVariantId: '10373416812810',
-      image: 'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/BandaSea-sticker_40x40@3x.png?v=1769229387',
+      image: 'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/BandaSea-sticker.png?v=1769229387',
       story: {
         headline: 'The Ring of Fire',
         content: 'The Banda Sea is the ultimate frontier for the adventurous diver. Located in the deep heart of Indonesia, this region is famous for its "Ring of Fire"—a chain of volcanic islands that drop into the abyss. But let\'s be real, you come here for one specific season: Hammerhead Season. Twice a year, when the water temps drop, these deep waters attract massive schools of Scalloped Hammerheads.',
