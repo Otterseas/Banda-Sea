@@ -185,11 +185,12 @@ export default function Home() {
                         className="w-full text-left"
                       >
                         <div 
-                          className="aspect-square rounded-xl mb-3 flex items-center justify-center relative overflow-hidden"
-                          style={{ background: isSelected ? 'linear-gradient(135deg, #D99E30 0%, #c48a20 100%)' : 'linear-gradient(135deg, #0A2540 0%, #133659 100%)' }}
-                        >
+                          <div 
+                            className="aspect-square rounded-xl mb-3 flex items-center justify-center relative overflow-hidden"
+                            style={{ background: isSelected ? 'linear-gradient(135deg, #D99E30 0%, #c48a20 100%)' : '#f8fafc' }}
+                          >
                           {sticker.image ? (
-                            <img src={sticker.image} alt={sticker.name} className="w-full h-full object-cover" />
+                            <img src={sticker.image} alt={sticker.name} className="w-full h-full object-contain" />
                           ) : (
                             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" opacity={isSelected ? 0.9 : 0.4}>
                               <circle cx="12" cy="12" r="10"/>
