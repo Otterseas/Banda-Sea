@@ -186,21 +186,16 @@ export default function Home() {
       <header className="sticky top-0 z-50 px-6 py-4" style={{ backgroundColor: `${LUNA.abyss}80`, backdropFilter: 'blur(12px)' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo - Left */}
-          <Link href="/" className="flex items-center gap-3">
-            <div 
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: LUNA.highlight }}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={LUNA.abyss} strokeWidth="2.5">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                <path d="M2 17l10 5 10-5"/>
-                <path d="M2 12l10 5 10-5"/>
-              </svg>
-            </div>
-            <span className="text-xl font-bold text-white tracking-tight">
-              Otterseas
-            </span>
-          </Link>
+       <Link href="/" className="flex items-center gap-3">
+         <img 
+           src="/logo.png" 
+           alt="Otterseas" 
+          className="h-10 w-auto"
+        />
+        <span className="text-xl font-bold text-white tracking-tight">
+          Otterseas
+        </span>
+      </Link>
 
           {/* Nav - Right */}
           <nav className="flex items-center gap-4">
