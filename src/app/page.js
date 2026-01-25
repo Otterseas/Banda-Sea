@@ -186,16 +186,21 @@ export default function Home() {
       <header className="sticky top-0 z-50 px-6 py-4" style={{ backgroundColor: `${LUNA.abyss}80`, backdropFilter: 'blur(12px)' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo - Left */}
-       <Link href="/" className="flex items-center gap-3">
-         <img 
-           src="/logo.png" 
-           alt="Otterseas" 
-          className="h-10 w-auto"
-        />
-        <span className="text-xl font-bold text-white tracking-tight">
-          Otterseas
-        </span>
-      </Link>
+          <Link href="/" className="flex items-center gap-3">
+            <div 
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ backgroundColor: LUNA.highlight }}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={LUNA.abyss} strokeWidth="2.5">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <span className="text-xl font-bold text-white tracking-tight">
+              Otterseas
+            </span>
+          </Link>
 
           {/* Nav - Right */}
           <nav className="flex items-center gap-4">
@@ -340,9 +345,9 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right: Featured Product (Water Bottle) - Compact */}
+            {/* Right: Featured Product (Water Bottle) - Square */}
             <div 
-              className="w-full lg:w-64 rounded-2xl p-1 floating relative"
+              className="w-full lg:w-64 rounded-2xl p-3 floating relative"
               style={{ 
                 background: `rgba(2, 56, 89, 0.3)`,
                 backdropFilter: 'blur(12px)',
@@ -361,29 +366,35 @@ export default function Home() {
                 Memories That Stick
               </div>
               
-              {/* Inner White Box - Compact horizontal layout */}
-              <div className="bg-white rounded-xl p-3 flex items-center gap-3">
-                {/* Placeholder Image - Small square */}
-                <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span className="text-gray-400 text-xs font-medium text-center">SURFACE<br/>TANK</span>
+              {/* Inner Box - Semi-transparent glass effect */}
+              <div 
+                className="rounded-xl p-2 mb-3"
+                style={{ 
+                  backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                  backdropFilter: 'blur(8px)'
+                }}
+              >
+                {/* Square Image */}
+                <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-400 text-sm font-medium text-center">SURFACE<br/>TANK</span>
                 </div>
-                
-                {/* Product Info - Stacked */}
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-bold text-gray-900 mb-0.5">Surface Tank</h3>
-                  <p className="text-gray-500 text-xs mb-2">750ml Insulated</p>
-                  <div className="flex items-center justify-between">
-                    <span style={{ color: LUNA.surfaceTeal }} className="text-base font-bold">£24.99</span>
-                    <button 
-                      className="px-2 py-1 rounded text-xs font-semibold transition-all hover:scale-105"
-                      style={{ 
-                        backgroundColor: LUNA.surfaceTeal,
-                        color: 'white'
-                      }}
-                    >
-                      View →
-                    </button>
-                  </div>
+              </div>
+              
+              {/* Product Info */}
+              <div className="px-1">
+                <h3 className="text-sm font-bold text-white mb-0.5">Surface Tank</h3>
+                <p className="text-white/60 text-xs mb-2">750ml Insulated Water Bottle</p>
+                <div className="flex items-center justify-between">
+                  <span style={{ color: LUNA.highlight }} className="text-lg font-bold">£24.99</span>
+                  <button 
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105"
+                    style={{ 
+                      backgroundColor: LUNA.highlight,
+                      color: LUNA.abyss
+                    }}
+                  >
+                    View →
+                  </button>
                 </div>
               </div>
             </div>
@@ -472,15 +483,18 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* Inner White Box - Reduced padding for more glass space */}
+                  {/* Inner Box - Semi-transparent glass effect */}
                   <div 
-                    className="bg-white rounded-2xl p-2"
+                    className="rounded-2xl p-2"
                     style={{
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.08)'
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.3), 0 4px 15px rgba(0,0,0,0.1)'
                     }}
                   >
                     {/* Sticker Image */}
-                    <div className="aspect-square bg-gray-50/50 rounded-xl overflow-hidden flex items-center justify-center">
+                    <div className="aspect-square rounded-xl overflow-hidden flex items-center justify-center">
                       {sticker.image && sticker.image !== '/stickers/placeholder.png' ? (
                         <img 
                           src={sticker.image} 
@@ -488,7 +502,7 @@ export default function Home() {
                           className="w-full h-full object-contain"
                         />
                       ) : (
-                        <div className="text-gray-300 text-xs text-center p-2">
+                        <div className="text-white/50 text-xs text-center p-2">
                           {sticker.name}
                         </div>
                       )}
