@@ -449,18 +449,17 @@ export default function Home() {
               return (
                 <div
                   key={sticker.id}
-                  className={`glass-card relative rounded-3xl p-3 cursor-pointer ${inCart ? 'selected' : ''}`}
+                  className={`glass-card relative rounded-3xl p-4 cursor-pointer overflow-hidden ${inCart ? 'selected' : ''}`}
                   style={{
-                    background: `linear-gradient(145deg, rgba(38, 101, 140, 0.4) 0%, rgba(2, 56, 89, 0.6) 100%)`,
-                    backdropFilter: 'blur(16px)',
-                    border: `3px solid`,
-                    borderImage: inCart 
-                      ? `linear-gradient(145deg, ${LUNA.highlight}, rgba(167, 235, 242, 0.6)) 1`
-                      : `linear-gradient(145deg, rgba(167, 235, 242, 0.4), rgba(167, 235, 242, 0.15)) 1`,
-                    borderRadius: '24px',
+                    background: `linear-gradient(145deg, rgba(38, 101, 140, 0.5) 0%, rgba(2, 56, 89, 0.7) 100%)`,
+                    backdropFilter: 'blur(24px)',
+                    WebkitBackdropFilter: 'blur(24px)',
+                    border: inCart 
+                      ? `3px solid ${LUNA.highlight}`
+                      : `3px solid rgba(167, 235, 242, 0.35)`,
                     boxShadow: inCart
-                      ? `0 0 30px rgba(167, 235, 242, 0.4), inset 0 1px 1px rgba(255,255,255,0.1)`
-                      : `0 8px 32px rgba(1, 28, 64, 0.4), inset 0 1px 1px rgba(255,255,255,0.1)`,
+                      ? `0 0 30px rgba(167, 235, 242, 0.4), inset 0 1px 2px rgba(255,255,255,0.15)`
+                      : `0 8px 32px rgba(1, 28, 64, 0.5), inset 0 1px 2px rgba(255,255,255,0.1)`,
                   }}
                   onClick={() => handleToggleSticker(sticker)}
                 >
@@ -478,20 +477,20 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* Inner White Box - More padding, softer corners */}
+                  {/* Inner White Box - Reduced padding for more glass space */}
                   <div 
-                    className="bg-white rounded-2xl p-4"
+                    className="bg-white rounded-2xl p-2"
                     style={{
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.08)'
                     }}
                   >
                     {/* Sticker Image */}
-                    <div className="aspect-square bg-gray-50 rounded-xl overflow-hidden flex items-center justify-center">
+                    <div className="aspect-square bg-gray-50/50 rounded-xl overflow-hidden flex items-center justify-center">
                       {sticker.image && sticker.image !== '/stickers/placeholder.png' ? (
                         <img 
                           src={sticker.image} 
                           alt={sticker.name}
-                          className="w-full h-full object-contain p-2"
+                          className="w-full h-full object-contain"
                         />
                       ) : (
                         <div className="text-gray-300 text-xs text-center p-2">
