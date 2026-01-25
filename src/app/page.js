@@ -5,9 +5,25 @@ import Link from 'next/link';
 import { STICKERS, BUNDLES, REGIONS, BASE_PRICE, getAllStickers } from '@/data/stickers';
 import { useCart } from '@/context/CartContext';
 
+// ===========================================
+// LUNA COLOR PALETTE
+// ===========================================
+const LUNA = {
+  highlight: '#A7EBF2',      // Glows, Active Borders, Active Text
+  surfaceTeal: '#54ACBF',    // Hero Section, Accents
+  midDepth: '#26658C',       // Gradient Middle
+  deepWater: '#023859',      // Gradient Transition
+  abyss: '#011C40',          // Page Bottom, Footer, Darkest
+  text: '#FFFFFF',           // Pure White
+};
+
+// ===========================================
+// MAIN COMPONENT
+// ===========================================
 export default function Home() {
   const [activeTab, setActiveTab] = useState(REGIONS[0]);
   const [animatingItems, setAnimatingItems] = useState(new Set());
+  const [isCartExpanded, setIsCartExpanded] = useState(false);
   
   const {
     cartItems,
@@ -17,364 +33,704 @@ export default function Home() {
     canCheckout,
     pricingTier,
     savings,
-    toggleItem,
+    addItem,
+    removeItem,
     updateQuantity,
-    addBundle,
-    openDrawer,
+    isInCart,
+    getItemQuantity
   } = useCart();
 
+  // Get stickers for current tab
   const activeStickers = STICKERS[activeTab] || [];
 
-  const cartStickers = Object.keys(cartItems)
-    .map(id => ({
-      ...getAllStickers().find(s => s.id === id),
-      quantity: cartItems[id]
-    }))
-    .filter(s => s.id);
-
-  const handleToggleSticker = (stickerId) => {
-    setAnimatingItems(prev => new Set(prev).add(stickerId));
+  // Toggle sticker in cart
+  const toggleSticker = (sticker) => {
+    setAnimatingItems(prev => new Set(prev).add(sticker.id));
     setTimeout(() => {
       setAnimatingItems(prev => {
         const next = new Set(prev);
-        next.delete(stickerId);
+        next.delete(sticker.id);
         return next;
       });
     }, 300);
-    toggleItem(stickerId);
+
+    if (isInCart(sticker.id)) {
+      removeItem(sticker.id);
+    } else {
+      addItem(sticker);
+    }
   };
 
+  // Checkout handler
   const handleCheckout = () => {
-    const items = Object.entries(cartItems).map(([id, qty]) => {
-      const sticker = getAllStickers().find(s => s.id === id);
-      return { variantId: sticker?.shopifyVariantId || id, quantity: qty };
-    });
-    
-    const cartString = items.map(item => `${item.variantId}:${item.quantity}`).join(',');
+    const cartItemsArray = Object.entries(cartItems).map(([id, item]) => ({
+      variantId: item.shopifyVariantId,
+      quantity: item.quantity
+    }));
+
+    const cartString = cartItemsArray
+      .map(item => `${item.variantId}:${item.quantity}`)
+      .join(',');
+
     const baseUrl = 'https://38a44d-4c.myshopify.com/cart/';
     
     let discountParam = '';
-    if (totalItems >= 21) discountParam = '?discount=BULK21';
-    else if (totalItems >= 11) discountParam = '?discount=BULK11';
-    
+    if (totalItems >= 21) {
+      discountParam = '?discount=BULK21';
+    } else if (totalItems >= 11) {
+      discountParam = '?discount=BULK11';
+    }
+
     const checkoutUrl = `${baseUrl}${cartString}${discountParam}`;
-    
     window.location.href = checkoutUrl;
   };
 
+  // Add bundle
+  const addBundle = (bundle) => {
+    bundle.stickerIds.forEach(id => {
+      const sticker = getAllStickers().find(s => s.id === id);
+      if (sticker) {
+        addItem(sticker);
+      }
+    });
+  };
+
   return (
-    <div className="h-screen w-full overflow-hidden flex flex-col" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-      {/* Header */}
-      <header 
-        className="flex-shrink-0 h-16 flex items-center justify-between px-6 z-50"
+    <div className="min-h-screen w-full" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+      {/* ===========================================
+          GLOBAL STYLES
+          =========================================== */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+        
+        /* Hide scrollbar */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Glass card hover effect */
+        .glass-card {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 0 30px rgba(167, 235, 242, 0.3);
+          border-color: ${LUNA.highlight};
+        }
+        .glass-card.selected {
+          box-shadow: 0 0 30px rgba(167, 235, 242, 0.4);
+          border-color: ${LUNA.highlight};
+        }
+        
+        /* Tab slider animation */
+        .tab-slider {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Floating animation */
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-5px); }
+        }
+        .floating {
+          animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Glow pulse */
+        @keyframes glowPulse {
+          0%, 100% { box-shadow: 0 0 20px rgba(167, 235, 242, 0.3); }
+          50% { box-shadow: 0 0 40px rgba(167, 235, 242, 0.5); }
+        }
+        .glow-pulse {
+          animation: glowPulse 2s ease-in-out infinite;
+        }
+      `}</style>
+
+      {/* ===========================================
+          FIXED BACKGROUND GRADIENT
+          =========================================== */}
+      <div 
+        className="fixed inset-0 -z-10"
+        style={{
+          background: `linear-gradient(to bottom, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 30%, ${LUNA.deepWater} 60%, ${LUNA.abyss} 100%)`
+        }}
+      />
+
+      {/* ===========================================
+          ANNOUNCEMENT BANNER
+          =========================================== */}
+      <div 
+        className="w-full py-2 text-center text-sm font-medium"
         style={{ 
-          background: 'linear-gradient(135deg, #0A2540 0%, #0d3252 50%, #0A2540 100%)',
-          boxShadow: '0 4px 20px rgba(10, 37, 64, 0.3)'
+          backgroundColor: LUNA.highlight,
+          color: LUNA.abyss
         }}
       >
-        <Link href="/" className="flex items-center gap-3">
-          <img src="/logo.png" alt="Otterseas" className="w-9 h-9 rounded-xl object-contain" />
-          <span className="text-xl font-light tracking-tight text-white">Otterseas</span>
-        </Link>
-        
-        <div className="hidden md:flex items-center text-sm" style={{ color: '#D99E30' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-          Free shipping on orders of 10+ stickers
+        🌊 Free shipping on orders of 10+ stickers • Use code DIVE10 at checkout
+      </div>
+
+      {/* ===========================================
+          HEADER
+          =========================================== */}
+      <header className="sticky top-0 z-50 px-6 py-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          {/* Logo - Left */}
+          <Link href="/" className="flex items-center gap-3">
+            <div 
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ backgroundColor: LUNA.highlight }}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={LUNA.abyss} strokeWidth="2.5">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <span className="text-xl font-bold text-white tracking-tight">
+              Otterseas
+            </span>
+          </Link>
+
+          {/* Nav - Right */}
+          <nav className="flex items-center gap-4">
+            <Link 
+              href="#bundles" 
+              className="text-white/70 hover:text-white text-sm font-medium transition-colors"
+            >
+              Bundles
+            </Link>
+            <Link 
+              href="#surface-tank" 
+              className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105"
+              style={{ 
+                backgroundColor: LUNA.highlight,
+                color: LUNA.abyss
+              }}
+            >
+              Surface Tank
+            </Link>
+          </nav>
         </div>
-        
-        <button
-          onClick={openDrawer}
-          className="flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-full transition-all hover:scale-105"
-          style={{ backgroundColor: '#D99E30', color: 'white' }}
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <path d="M16 10a4 4 0 0 1-8 0"/>
-          </svg>
-          {totalItems > 0 && <span>{totalItems}</span>}
-        </button>
       </header>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-        
-        {/* Left Column - Marketplace */}
-        <div className="flex-1 md:w-[70%] flex flex-col overflow-hidden bg-white">
-          
-          {/* Intro Section */}
-          <div 
-            className="flex-shrink-0 px-6 py-6"
-            style={{ 
-              background: 'linear-gradient(135deg, #0A2540 0%, #133659 50%, #0A2540 100%)',
-              borderBottom: '4px solid #D99E30'
-            }}
-          >
-            <div className="max-w-2xl">
-              <h1 className="text-2xl md:text-3xl font-light text-white mb-3">
+      {/* ===========================================
+          HERO SECTION
+          =========================================== */}
+      <section className="px-6 py-12">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
+            
+            {/* Left: Hero Text */}
+            <div className="flex-1">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
                 Build Your Dive Story
               </h1>
-              <p className="text-white/70 text-sm md:text-base leading-relaxed font-light">
+              <p className="text-white/70 text-lg leading-relaxed max-w-xl mb-8">
                 Every sticker marks a memory. Collect the dive sites you've conquered, 
                 the wrecks you've explored, and the reefs that took your breath away.
               </p>
-              
-              {/* Pricing Tiers */}
-              <div className="flex flex-wrap gap-3 mt-5">
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium" style={{ backgroundColor: 'rgba(148, 163, 184, 0.2)', color: '#cbd5e1', border: '1px solid rgba(148, 163, 184, 0.3)' }}>
-                  <span className="w-2 h-2 rounded-full bg-slate-400"></span>
-                  1-10: £2.50 each
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium" style={{ backgroundColor: 'rgba(217, 158, 48, 0.2)', color: '#D99E30', border: '1px solid rgba(217, 158, 48, 0.3)' }}>
-                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#D99E30' }}></span>
-                  11-20: £1.75 each
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium" style={{ backgroundColor: 'rgba(74, 222, 128, 0.2)', color: '#4ade80', border: '1px solid rgba(74, 222, 128, 0.3)' }}>
-                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#4ade80' }}></span>
-                  21+: £1.50 each
-                </div>
-              </div>
-            </div>
-          </div>
 
-          {/* Region Tabs */}
-          <div className="flex-shrink-0 px-6 py-4 bg-white" style={{ boxShadow: '0 4px 12px rgba(10, 37, 64, 0.08)' }}>
-            <div className="flex gap-2 overflow-x-auto hide-scrollbar">
-              {REGIONS.map((region) => (
-                <button
-                  key={region}
-                  onClick={() => setActiveTab(region)}
-                  className={`tab-button relative px-5 py-2.5 text-sm font-medium rounded-xl whitespace-nowrap ${activeTab === region ? 'text-white shadow-lg' : 'text-gray-600 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 border border-gray-200'}`}
-                  style={activeTab === region ? { background: 'linear-gradient(135deg, #D99E30 0%, #c48a20 100%)', boxShadow: '0 4px 12px rgba(217, 158, 48, 0.4)' } : {}}
-                >
-                  {region}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Sticker Grid */}
-          <div className="flex-1 overflow-y-auto hide-scrollbar p-6" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)' }}>
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-5">
-                <h2 className="text-xl font-medium flex items-center gap-3" style={{ color: '#0A2540' }}>
-                  <span className="w-1.5 h-7 rounded-full" style={{ backgroundColor: '#D99E30' }}></span>
-                  {activeTab}
-                  <span className="text-sm font-medium px-3 py-1 rounded-full" style={{ backgroundColor: 'rgba(217, 158, 48, 0.15)', color: '#D99E30' }}>
-                    {activeStickers.length} stickers
-                  </span>
-                </h2>
-              </div>
-              
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {activeStickers.map((sticker, index) => {
-                  const isSelected = cartItems[sticker.id];
-                  const isAnimating = animatingItems.has(sticker.id);
+              {/* Depth Gauge Pricing */}
+              <div className="max-w-md">
+                <p className="text-white/50 text-xs font-medium mb-3 uppercase tracking-wider">
+                  Dive Deeper, Save More
+                </p>
+                
+                {/* Glass Track */}
+                <div className="relative">
+                  <div 
+                    className="h-2 rounded-full"
+                    style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+                  />
                   
-                  return (
-                    <div
-                      key={sticker.id}
-                      className={`sticker-card sticker-fade-in relative bg-white rounded-2xl p-4 text-left border-2 ${isSelected ? 'selected border-transparent' : 'border-gray-100 hover:border-gray-200'} ${isAnimating ? 'animating' : ''}`}
-                      style={{ animationDelay: `${index * 30}ms` }}
-                    >
-                      <button
-                        onClick={() => handleToggleSticker(sticker.id)}
-                        className="w-full text-left"
-                      >
-                          <div 
-                          className="aspect-square rounded-xl mb-3 flex items-center justify-center relative overflow-hidden"
-                          style={{ background: isSelected ? 'linear-gradient(135deg, #D99E30 0%, #c48a20 100%)' : '#f8fafc' }}
-                        >
-                          {sticker.image ? (
-                            <img src={sticker.image} alt={sticker.name} className="w-full h-full object-contain p-2" />
-                          ) : (
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" opacity={isSelected ? 0.9 : 0.4}>
-                              <circle cx="12" cy="12" r="10"/>
-                              <path d="M12 2a10 10 0 0 0 0 20"/>
-                              <path d="M2 12h20"/>
-                            </svg>
-                          )}
-                          
-                          {isSelected && (
-                            <div className="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center bg-white shadow-lg">
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D99E30" strokeWidth="3">
-                                <path d="M20 6L9 17l-5-5"/>
-                              </svg>
-                            </div>
-                          )}
-                        </div>
-                        
-                        <p className="text-sm font-medium text-gray-900 truncate">{sticker.name}</p>
-                        <p className="text-sm font-semibold mt-1" style={{ color: '#D99E30' }}>£{BASE_PRICE.toFixed(2)}</p>
-                      </button>
-                      
-                      {/* View Page Link */}
-                      <Link
-                        href={`/stickers/${sticker.slug}`}
-                        className="absolute bottom-3 right-3 w-6 h-6 rounded-md flex items-center justify-center transition-all hover:scale-110"
-                        style={{ backgroundColor: 'rgba(10, 37, 64, 0.1)' }}
-                        title="View sticker page"
-                      >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0A2540" strokeWidth="2">
-                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                          <polyline points="15 3 21 3 21 9"/>
-                          <line x1="10" y1="14" x2="21" y2="3"/>
-                        </svg>
-                      </Link>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Bundles */}
-            <div className="mt-8 rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #0A2540 0%, #0d3252 50%, #0A2540 100%)', boxShadow: '0 8px 32px rgba(10, 37, 64, 0.3)' }}>
-              <h2 className="text-xl font-medium mb-1 text-white flex items-center gap-3">
-                <span className="w-1.5 h-7 rounded-full" style={{ backgroundColor: '#D99E30' }}></span>
-                Quick Add Packs
-              </h2>
-              <p className="text-white/50 text-sm mb-6 ml-5 font-light">Jump-start your collection</p>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {BUNDLES.map((bundle) => (
-                  <div key={bundle.id} className="bundle-card rounded-xl p-5 flex flex-col" style={{ backgroundColor: 'rgba(217, 158, 48, 0.1)', border: '2px solid rgba(217, 158, 48, 0.3)' }}>
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <h3 className="font-semibold text-white">{bundle.name}</h3>
-                        <p className="text-sm text-white/50 mt-0.5 font-light">{bundle.description}</p>
-                      </div>
-                      <span className="text-xs font-bold px-2.5 py-1.5 rounded-lg" style={{ backgroundColor: '#D99E30', color: 'white' }}>5 stickers</span>
+                  {/* Progress Fill */}
+                  <div 
+                    className="absolute top-0 left-0 h-2 rounded-full transition-all duration-500"
+                    style={{ 
+                      width: `${Math.min(100, (totalItems / 21) * 100)}%`,
+                      backgroundColor: LUNA.highlight,
+                      boxShadow: `0 0 10px ${LUNA.highlight}`
+                    }}
+                  />
+                  
+                  {/* Nodes */}
+                  <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full flex justify-between px-0">
+                    {/* Node 1: Starter */}
+                    <div className="relative flex flex-col items-center">
+                      <div 
+                        className="w-4 h-4 rounded-full border-2 transition-all"
+                        style={{ 
+                          backgroundColor: totalItems >= 1 ? LUNA.highlight : 'transparent',
+                          borderColor: LUNA.highlight,
+                          boxShadow: totalItems >= 1 ? `0 0 10px ${LUNA.highlight}` : 'none'
+                        }}
+                      />
+                      <span className="absolute top-6 text-xs font-semibold whitespace-nowrap" style={{ color: LUNA.highlight }}>
+                        £2.50
+                      </span>
+                      <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
+                        Starter
+                      </span>
                     </div>
                     
-                    <div className="flex gap-2 mb-4">
-                      {[0,1,2,3,4].map(i => (
-                        <div key={i} className="w-10 h-10 rounded-lg" style={{ background: 'linear-gradient(135deg, #D99E30 0%, #c48a20 100%)', opacity: 0.5 + (i * 0.12) }} />
-                      ))}
+                    {/* Node 2: Explorer */}
+                    <div className="relative flex flex-col items-center">
+                      <div 
+                        className="w-4 h-4 rounded-full border-2 transition-all"
+                        style={{ 
+                          backgroundColor: totalItems >= 11 ? LUNA.highlight : 'transparent',
+                          borderColor: totalItems >= 11 ? LUNA.highlight : 'rgba(255,255,255,0.3)',
+                          boxShadow: totalItems >= 11 ? `0 0 10px ${LUNA.highlight}` : 'none'
+                        }}
+                      />
+                      <span 
+                        className="absolute top-6 text-xs font-semibold whitespace-nowrap"
+                        style={{ color: totalItems >= 11 ? LUNA.highlight : 'rgba(255,255,255,0.4)' }}
+                      >
+                        £1.75
+                      </span>
+                      <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
+                        Explorer
+                      </span>
                     </div>
                     
-                    <button onClick={() => addBundle(bundle)} className="mt-auto w-full py-3 rounded-xl text-sm font-semibold transition-all hover:scale-[1.02]" style={{ backgroundColor: '#D99E30', color: 'white' }}>
-                      Add Pack · £{(BASE_PRICE * 5).toFixed(2)}
-                    </button>
+                    {/* Node 3: Pro */}
+                    <div className="relative flex flex-col items-center">
+                      <div 
+                        className="w-4 h-4 rounded-full border-2 transition-all"
+                        style={{ 
+                          backgroundColor: totalItems >= 21 ? LUNA.highlight : 'transparent',
+                          borderColor: totalItems >= 21 ? LUNA.highlight : 'rgba(255,255,255,0.3)',
+                          boxShadow: totalItems >= 21 ? `0 0 10px ${LUNA.highlight}` : 'none'
+                        }}
+                      />
+                      <span 
+                        className="absolute top-6 text-xs font-semibold whitespace-nowrap"
+                        style={{ color: totalItems >= 21 ? LUNA.highlight : 'rgba(255,255,255,0.4)' }}
+                      >
+                        £1.50
+                      </span>
+                      <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
+                        Pro
+                      </span>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="h-48 md:h-8" />
-          </div>
-        </div>
-
-        {/* Right Column - Cart (Desktop) */}
-        <div className="hidden md:flex md:w-[30%] flex-col" style={{ background: 'linear-gradient(180deg, #0A2540 0%, #071a2e 100%)' }}>
-          
-          {/* Visualizer */}
-          <div className="flex-shrink-0 p-6" style={{ background: 'linear-gradient(180deg, rgba(217, 158, 48, 0.15) 0%, transparent 100%)', borderBottom: '1px solid rgba(217, 158, 48, 0.2)' }}>
-            <div className="relative flex items-center justify-center py-6">
-              <div className="relative">
-                <div className="w-24 h-36 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #1a4a7a 0%, #0A2540 100%)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#D99E30" strokeWidth="1.5" opacity="0.7">
-                    <path d="M6 2h12v6l-2 2v10a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V10L6 8V2z"/>
-                    <path d="M6 2h12v2H6z"/>
-                  </svg>
                 </div>
                 
-                {totalItems > 0 && (
-                  <div className="absolute -top-3 -right-3 w-12 h-12 rounded-full flex items-center justify-center text-base font-bold" style={{ backgroundColor: '#D99E30', color: 'white' }}>
-                    {totalItems}
-                  </div>
-                )}
+                {/* Current tier indicator */}
+                <div className="mt-16 flex items-center gap-2">
+                  <span className="text-white/50 text-sm">Your tier:</span>
+                  <span 
+                    className="px-3 py-1 rounded-full text-sm font-semibold"
+                    style={{ 
+                      backgroundColor: `${LUNA.highlight}20`,
+                      color: LUNA.highlight,
+                      border: `1px solid ${LUNA.highlight}40`
+                    }}
+                  >
+                    {pricingTier.tier} (£{pricePerItem.toFixed(2)}/each)
+                  </span>
+                </div>
               </div>
             </div>
-            
-            <div className="text-center">
-              <p className="text-white/80 text-sm font-light">
-                {totalItems === 0 ? 'Select stickers to build your pack' : `${totalItems} sticker${totalItems !== 1 ? 's' : ''} selected`}
-              </p>
+
+            {/* Right: Featured Product (Water Bottle) */}
+            <div 
+              className="w-full lg:w-80 rounded-2xl p-1 floating"
+              style={{ 
+                background: `rgba(${parseInt(LUNA.deepWater.slice(1,3),16)}, ${parseInt(LUNA.deepWater.slice(3,5),16)}, ${parseInt(LUNA.deepWater.slice(5,7),16)}, 0.3)`,
+                backdropFilter: 'blur(12px)',
+                border: `3px solid ${LUNA.highlight}`,
+                boxShadow: `0 0 30px ${LUNA.highlight}40`
+              }}
+            >
+              {/* Badge */}
+              <div 
+                className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-semibold z-10"
+                style={{ 
+                  backgroundColor: LUNA.highlight,
+                  color: LUNA.abyss
+                }}
+              >
+                Memories That Stick
+              </div>
               
-              {totalItems > 0 && (
-                <div className="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: `${pricingTier.color}25`, color: pricingTier.color, border: `2px solid ${pricingTier.color}50` }}>
-                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: pricingTier.color }}></span>
-                  {pricingTier.tier} · £{pricePerItem.toFixed(2)}/sticker
+              {/* Inner White Box */}
+              <div className="bg-white rounded-xl p-6 relative">
+                {/* Placeholder Image */}
+                <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-gray-400 text-sm font-medium">SURFACE TANK</span>
                 </div>
-              )}
+                
+                {/* Product Info */}
+                <h3 className="text-lg font-bold text-gray-900 mb-1">Surface Tank</h3>
+                <p className="text-gray-500 text-sm mb-3">750ml Insulated Water Bottle</p>
+                <div className="flex items-center justify-between">
+                  <span style={{ color: LUNA.surfaceTeal }} className="text-xl font-bold">£24.99</span>
+                  <button 
+                    className="px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105"
+                    style={{ 
+                      backgroundColor: LUNA.surfaceTeal,
+                      color: 'white'
+                    }}
+                  >
+                    View →
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Cart List */}
-          <div className="flex-1 overflow-y-auto hide-scrollbar p-4">
-            {cartStickers.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full text-center px-4">
-                <div className="w-20 h-20 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'linear-gradient(135deg, rgba(217, 158, 48, 0.2) 0%, rgba(217, 158, 48, 0.1) 100%)', border: '2px dashed rgba(217, 158, 48, 0.3)' }}>
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D99E30" strokeWidth="1.5" opacity="0.7">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M8 12h8M12 8v8"/>
-                  </svg>
+      {/* ===========================================
+          FLOATING GLASS NAVIGATION
+          =========================================== */}
+      <div className="sticky top-20 z-40 flex justify-center px-6 py-4">
+        <nav 
+          className="inline-flex items-center gap-1 p-1.5 rounded-full"
+          style={{ 
+            backgroundColor: `${LUNA.abyss}30`,
+            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255,255,255,0.1)'
+          }}
+        >
+          {REGIONS.map((region) => (
+            <button
+              key={region}
+              onClick={() => setActiveTab(region)}
+              className="relative px-4 py-2 text-sm font-medium rounded-full transition-all whitespace-nowrap"
+              style={{
+                backgroundColor: activeTab === region ? LUNA.highlight : 'transparent',
+                color: activeTab === region ? LUNA.abyss : 'rgba(255,255,255,0.7)',
+              }}
+            >
+              {region}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      {/* ===========================================
+          STICKER GRID
+          =========================================== */}
+      <section className="px-6 py-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Section Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-white">
+              {activeTab}
+            </h2>
+            <span className="text-white/50 text-sm">
+              {activeStickers.length} stickers
+            </span>
+          </div>
+
+          {/* Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {activeStickers.map((sticker, index) => {
+              const inCart = isInCart(sticker.id);
+              const quantity = getItemQuantity(sticker.id);
+              const isAnimating = animatingItems.has(sticker.id);
+
+              return (
+                <div
+                  key={sticker.id}
+                  className={`glass-card relative rounded-2xl p-1 cursor-pointer ${inCart ? 'selected' : ''}`}
+                  style={{
+                    backgroundColor: `${LUNA.deepWater}30`,
+                    backdropFilter: 'blur(8px)',
+                    border: `2px solid ${inCart ? LUNA.highlight : 'rgba(167, 235, 242, 0.2)'}`,
+                    animationDelay: `${index * 50}ms`
+                  }}
+                  onClick={() => toggleSticker(sticker)}
+                >
+                  {/* Quantity Badge */}
+                  {quantity > 0 && (
+                    <div 
+                      className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold z-10"
+                      style={{ 
+                        backgroundColor: LUNA.highlight,
+                        color: LUNA.abyss
+                      }}
+                    >
+                      {quantity}
+                    </div>
+                  )}
+
+                  {/* Inner White Box */}
+                  <div className="bg-white rounded-xl p-3">
+                    {/* Sticker Image */}
+                    <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
+                      {sticker.image && sticker.image !== '/stickers/placeholder.png' ? (
+                        <img 
+                          src={sticker.image} 
+                          alt={sticker.name}
+                          className="w-full h-full object-contain p-2"
+                        />
+                      ) : (
+                        <div className="text-gray-300 text-xs text-center p-2">
+                          {sticker.name}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Card Footer - Outside white box */}
+                  <div className="px-3 py-2">
+                    <h3 className="text-white text-sm font-semibold truncate">
+                      {sticker.name}
+                    </h3>
+                    <div className="flex items-center justify-between mt-1">
+                      <span className="text-white/60 text-xs">
+                        {sticker.country}
+                      </span>
+                      <span style={{ color: LUNA.highlight }} className="text-sm font-bold">
+                        £{pricePerItem.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-white/50 text-sm font-medium">Your pack is empty</p>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {cartStickers.map((sticker, index) => (
-                  <div key={sticker.id} className="cart-item-enter flex items-center gap-3 rounded-xl p-3" style={{ backgroundColor: 'rgba(217, 158, 48, 0.1)', border: '1px solid rgba(217, 158, 48, 0.2)', animationDelay: `${index * 50}ms` }}>
-                    <div className="w-10 h-10 rounded-lg flex-shrink-0" style={{ background: 'linear-gradient(135deg, #D99E30 0%, #c48a20 100%)' }} />
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ===========================================
+          BUNDLES SECTION
+          =========================================== */}
+      <section id="bundles" className="px-6 py-16">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-white mb-2">Curated Bundles</h2>
+          <p className="text-white/60 mb-8">Pre-selected collections for every type of diver</p>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {BUNDLES.map((bundle) => {
+              const bundleStickers = bundle.stickerIds
+                .map(id => getAllStickers().find(s => s.id === id))
+                .filter(Boolean);
+
+              return (
+                <div
+                  key={bundle.id}
+                  className="rounded-2xl p-6 transition-all hover:scale-[1.02]"
+                  style={{ 
+                    backgroundColor: LUNA.deepWater,
+                    border: `1px solid ${LUNA.midDepth}`
+                  }}
+                >
+                  {/* Fanned Sticker Preview */}
+                  <div className="flex -space-x-4 mb-4">
+                    {bundleStickers.slice(0, 5).map((sticker, i) => (
+                      <div
+                        key={sticker.id}
+                        className="w-12 h-12 rounded-lg bg-white flex items-center justify-center border-2 border-white shadow-lg"
+                        style={{ 
+                          transform: `rotate(${(i - 2) * 5}deg)`,
+                          zIndex: 5 - i
+                        }}
+                      >
+                        {sticker.image && sticker.image !== '/stickers/placeholder.png' ? (
+                          <img 
+                            src={sticker.image} 
+                            alt={sticker.name}
+                            className="w-full h-full object-contain rounded-md"
+                          />
+                        ) : (
+                          <span className="text-xs text-gray-400">📍</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  <h3 className="text-xl font-bold text-white mb-1">{bundle.name}</h3>
+                  <p className="text-white/60 text-sm mb-4">{bundle.description}</p>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/40 text-sm">
+                      {bundle.stickerIds.length} stickers
+                    </span>
+                    <button
+                      onClick={() => addBundle(bundle)}
+                      className="px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105"
+                      style={{ 
+                        backgroundColor: LUNA.highlight,
+                        color: LUNA.abyss
+                      }}
+                    >
+                      Add Bundle
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ===========================================
+          FLOATING CART PILL
+          =========================================== */}
+      {totalItems > 0 && (
+        <div 
+          className="fixed bottom-6 right-6 z-50"
+        >
+          <button
+            onClick={() => setIsCartExpanded(!isCartExpanded)}
+            className="flex items-center gap-3 px-5 py-3 rounded-full transition-all hover:scale-105"
+            style={{ 
+              backgroundColor: `${LUNA.abyss}90`,
+              backdropFilter: 'blur(20px)',
+              border: `2px solid ${LUNA.highlight}`,
+              boxShadow: `0 0 30px ${LUNA.highlight}40`
+            }}
+          >
+            {/* Cart Icon */}
+            <div 
+              className="w-8 h-8 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: LUNA.highlight }}
+            >
+              <span className="text-sm font-bold" style={{ color: LUNA.abyss }}>
+                {totalItems}
+              </span>
+            </div>
+            
+            {/* Total */}
+            <div className="text-left">
+              <p className="text-white text-sm font-semibold">
+                £{totalPrice.toFixed(2)}
+              </p>
+              {savings > 0 && (
+                <p className="text-xs" style={{ color: LUNA.highlight }}>
+                  Save £{savings.toFixed(2)}
+                </p>
+              )}
+            </div>
+
+            {/* Arrow */}
+            <svg 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke={LUNA.highlight}
+              strokeWidth="2"
+              className={`transition-transform ${isCartExpanded ? 'rotate-180' : ''}`}
+            >
+              <path d="M18 15l-6-6-6 6"/>
+            </svg>
+          </button>
+
+          {/* Expanded Cart Panel */}
+          {isCartExpanded && (
+            <div 
+              className="absolute bottom-16 right-0 w-80 rounded-2xl p-4 max-h-96 overflow-y-auto hide-scrollbar"
+              style={{ 
+                backgroundColor: `${LUNA.abyss}95`,
+                backdropFilter: 'blur(20px)',
+                border: `1px solid ${LUNA.highlight}40`
+              }}
+            >
+              <h3 className="text-white font-bold mb-4">Your Pack</h3>
+              
+              {/* Cart Items */}
+              <div className="space-y-3 mb-4">
+                {Object.entries(cartItems).map(([id, item]) => (
+                  <div key={id} className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center overflow-hidden">
+                      {item.image && item.image !== '/stickers/placeholder.png' ? (
+                        <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
+                      ) : (
+                        <span className="text-xs">📍</span>
+                      )}
+                    </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-white text-sm font-medium truncate">{sticker.name}</p>
-                      <p className="text-white/40 text-xs">{sticker.region}</p>
+                      <p className="text-white text-sm font-medium truncate">{item.name}</p>
+                      <p className="text-white/50 text-xs">×{item.quantity}</p>
                     </div>
                     <div className="flex items-center gap-1">
-                      <button onClick={() => updateQuantity(sticker.id, -1)} className="w-8 h-8 rounded-lg flex items-center justify-center transition-all hover:scale-110" style={{ backgroundColor: '#D99E30', color: 'white' }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M5 12h14"/></svg>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); updateQuantity(id, -1); }}
+                        className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20"
+                      >
+                        -
                       </button>
-                      <span className="w-8 text-center text-white text-sm font-bold">{sticker.quantity}</span>
-                      <button onClick={() => updateQuantity(sticker.id, 1)} className="w-8 h-8 rounded-lg flex items-center justify-center transition-all hover:scale-110" style={{ backgroundColor: '#D99E30', color: 'white' }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M12 5v14M5 12h14"/></svg>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); updateQuantity(id, 1); }}
+                        className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20"
+                      >
+                        +
                       </button>
                     </div>
                   </div>
                 ))}
               </div>
-            )}
-          </div>
 
-          {/* Footer */}
-          <div className="flex-shrink-0 p-4" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(217, 158, 48, 0.1) 100%)', borderTop: '1px solid rgba(217, 158, 48, 0.2)' }}>
-            <div className="flex justify-between items-baseline mb-2">
-              <span className="text-white/60 text-sm font-medium">Total</span>
-              <span className="text-3xl font-light" style={{ color: '#D99E30' }}>£{totalPrice.toFixed(2)}</span>
+              {/* Checkout Button */}
+              <button
+                onClick={handleCheckout}
+                disabled={!canCheckout}
+                className="w-full py-3 rounded-xl text-sm font-bold transition-all"
+                style={{ 
+                  backgroundColor: canCheckout ? LUNA.highlight : 'rgba(255,255,255,0.1)',
+                  color: canCheckout ? LUNA.abyss : 'rgba(255,255,255,0.3)',
+                  cursor: canCheckout ? 'pointer' : 'not-allowed'
+                }}
+              >
+                {canCheckout ? 'Checkout →' : `Min 5 stickers required`}
+              </button>
+
+              {!canCheckout && totalItems > 0 && (
+                <p className="text-center text-white/50 text-xs mt-2">
+                  Add {5 - totalItems} more to checkout
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ===========================================
+          FOOTER
+          =========================================== */}
+      <footer 
+        className="px-6 py-12 mt-16"
+        style={{ backgroundColor: LUNA.abyss }}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <div 
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: LUNA.highlight }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={LUNA.abyss} strokeWidth="2.5">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                  <path d="M2 17l10 5 10-5"/>
+                  <path d="M2 12l10 5 10-5"/>
+                </svg>
+              </div>
+              <span className="text-xl font-bold text-white">Otterseas</span>
             </div>
             
-            {savings > 0 && (
-              <div className="text-right mb-4">
-                <span className="text-sm font-bold px-3 py-1 rounded-lg" style={{ backgroundColor: 'rgba(74, 222, 128, 0.2)', color: '#4ade80' }}>
-                  You save £{savings.toFixed(2)}!
-                </span>
-              </div>
-            )}
+            <p className="text-white/40 text-sm">
+              © 2025 Otterseas. Dive deeper, collect memories.
+            </p>
 
-            <button onClick={handleCheckout} disabled={!canCheckout} className="w-full py-4 rounded-xl text-sm font-semibold transition-all hover:scale-[1.02]" style={{ background: canCheckout ? 'linear-gradient(135deg, #D99E30 0%, #c48a20 100%)' : 'rgba(255, 255, 255, 0.1)', color: canCheckout ? 'white' : 'rgba(255, 255, 255, 0.3)', cursor: canCheckout ? 'pointer' : 'not-allowed', boxShadow: canCheckout ? '0 4px 20px rgba(217, 158, 48, 0.5)' : 'none' }}>
-              {canCheckout ? 'Proceed to Checkout →' : 'Minimum 5 stickers required'}
-            </button>
+            <div className="flex gap-4">
+              <a href="#" className="text-white/40 hover:text-white text-sm transition-colors">
+                Privacy
+              </a>
+              <a href="#" className="text-white/40 hover:text-white text-sm transition-colors">
+                Terms
+              </a>
+              <a href="#" className="text-white/40 hover:text-white text-sm transition-colors">
+                Contact
+              </a>
+            </div>
           </div>
         </div>
-
-        {/* Mobile Cart Drawer */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50" style={{ background: 'linear-gradient(180deg, #0A2540 0%, #071a2e 100%)', boxShadow: '0 -4px 20px rgba(10, 37, 64, 0.4)' }}>
-          <button onClick={openDrawer} className="w-full px-4 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-base" style={{ backgroundColor: '#D99E30', color: 'white' }}>
-                {totalItems}
-              </div>
-              <div className="text-left">
-                <p className="text-white text-sm font-semibold">{totalItems === 0 ? 'Your pack is empty' : `${totalItems} sticker${totalItems !== 1 ? 's' : ''}`}</p>
-                <span className="text-sm font-bold" style={{ color: '#D99E30' }}>£{totalPrice.toFixed(2)}</span>
-              </div>
-            </div>
-            <span className="text-white/50 text-sm">Tap to view →</span>
-          </button>
-        </div>
-      </div>
+      </footer>
     </div>
   );
 }
