@@ -125,13 +125,17 @@ export default function Home() {
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 0 30px rgba(167, 235, 242, 0.3);
-          border-color: #A7EBF2;
+          transform: translateY(-8px) scale(1.02);
+          box-shadow: 0 0 40px rgba(167, 235, 242, 0.4), 
+                      0 20px 40px rgba(1, 28, 64, 0.5),
+                      inset 0 1px 2px rgba(255,255,255,0.2) !important;
+          border-color: #A7EBF2 !important;
         }
         .glass-card.selected {
-          box-shadow: 0 0 30px rgba(167, 235, 242, 0.4);
-          border-color: #A7EBF2;
+          box-shadow: 0 0 40px rgba(167, 235, 242, 0.5), 
+                      0 20px 40px rgba(1, 28, 64, 0.4),
+                      inset 0 1px 2px rgba(255,255,255,0.2) !important;
+          border-color: #A7EBF2 !important;
         }
         
         /* Floating animation */
@@ -223,9 +227,9 @@ export default function Home() {
       {/* ===========================================
           HERO SECTION
           =========================================== */}
-      <section className="px-6 py-12">
+      <section className="px-6 py-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-8 items-start">
+          <div className="flex flex-col lg:flex-row gap-6 items-start">
             
             {/* Left: Hero Text */}
             <div className="flex-1">
@@ -341,9 +345,9 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right: Featured Product (Water Bottle) */}
+            {/* Right: Featured Product (Water Bottle) - Compact */}
             <div 
-              className="w-full lg:w-80 rounded-2xl p-1 floating relative"
+              className="w-full lg:w-64 rounded-2xl p-1 floating relative"
               style={{ 
                 background: `rgba(2, 56, 89, 0.3)`,
                 backdropFilter: 'blur(12px)',
@@ -353,7 +357,7 @@ export default function Home() {
             >
               {/* Badge */}
               <div 
-                className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-semibold z-10"
+                className="absolute -top-3 left-3 px-2 py-0.5 rounded-full text-xs font-semibold z-10"
                 style={{ 
                   backgroundColor: LUNA.highlight,
                   color: LUNA.abyss
@@ -362,27 +366,29 @@ export default function Home() {
                 Memories That Stick
               </div>
               
-              {/* Inner White Box */}
-              <div className="bg-white rounded-xl p-6 relative">
-                {/* Placeholder Image */}
-                <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-gray-400 text-sm font-medium">SURFACE TANK</span>
+              {/* Inner White Box - Compact horizontal layout */}
+              <div className="bg-white rounded-xl p-3 flex items-center gap-3">
+                {/* Placeholder Image - Small square */}
+                <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span className="text-gray-400 text-xs font-medium text-center">SURFACE<br/>TANK</span>
                 </div>
                 
-                {/* Product Info */}
-                <h3 className="text-lg font-bold text-gray-900 mb-1">Surface Tank</h3>
-                <p className="text-gray-500 text-sm mb-3">750ml Insulated Water Bottle</p>
-                <div className="flex items-center justify-between">
-                  <span style={{ color: LUNA.surfaceTeal }} className="text-xl font-bold">£24.99</span>
-                  <button 
-                    className="px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105"
-                    style={{ 
-                      backgroundColor: LUNA.surfaceTeal,
-                      color: 'white'
-                    }}
-                  >
-                    View →
-                  </button>
+                {/* Product Info - Stacked */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm font-bold text-gray-900 mb-0.5">Surface Tank</h3>
+                  <p className="text-gray-500 text-xs mb-2">750ml Insulated</p>
+                  <div className="flex items-center justify-between">
+                    <span style={{ color: LUNA.surfaceTeal }} className="text-base font-bold">£24.99</span>
+                    <button 
+                      className="px-2 py-1 rounded text-xs font-semibold transition-all hover:scale-105"
+                      style={{ 
+                        backgroundColor: LUNA.surfaceTeal,
+                        color: 'white'
+                      }}
+                    >
+                      View →
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -443,31 +449,44 @@ export default function Home() {
               return (
                 <div
                   key={sticker.id}
-                  className={`glass-card relative rounded-2xl p-1 cursor-pointer ${inCart ? 'selected' : ''}`}
+                  className={`glass-card relative rounded-3xl p-3 cursor-pointer ${inCart ? 'selected' : ''}`}
                   style={{
-                    backgroundColor: `rgba(2, 56, 89, 0.3)`,
-                    backdropFilter: 'blur(8px)',
-                    border: `2px solid ${inCart ? LUNA.highlight : 'rgba(167, 235, 242, 0.2)'}`,
+                    background: `linear-gradient(145deg, rgba(38, 101, 140, 0.4) 0%, rgba(2, 56, 89, 0.6) 100%)`,
+                    backdropFilter: 'blur(16px)',
+                    border: `3px solid`,
+                    borderImage: inCart 
+                      ? `linear-gradient(145deg, ${LUNA.highlight}, rgba(167, 235, 242, 0.6)) 1`
+                      : `linear-gradient(145deg, rgba(167, 235, 242, 0.4), rgba(167, 235, 242, 0.15)) 1`,
+                    borderRadius: '24px',
+                    boxShadow: inCart
+                      ? `0 0 30px rgba(167, 235, 242, 0.4), inset 0 1px 1px rgba(255,255,255,0.1)`
+                      : `0 8px 32px rgba(1, 28, 64, 0.4), inset 0 1px 1px rgba(255,255,255,0.1)`,
                   }}
                   onClick={() => handleToggleSticker(sticker)}
                 >
                   {/* Quantity Badge */}
                   {quantity > 0 && (
                     <div 
-                      className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold z-10"
+                      className="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold z-10"
                       style={{ 
                         backgroundColor: LUNA.highlight,
-                        color: LUNA.abyss
+                        color: LUNA.abyss,
+                        boxShadow: `0 0 15px ${LUNA.highlight}`
                       }}
                     >
                       {quantity}
                     </div>
                   )}
 
-                  {/* Inner White Box */}
-                  <div className="bg-white rounded-xl p-3">
+                  {/* Inner White Box - More padding, softer corners */}
+                  <div 
+                    className="bg-white rounded-2xl p-4"
+                    style={{
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                    }}
+                  >
                     {/* Sticker Image */}
-                    <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
+                    <div className="aspect-square bg-gray-50 rounded-xl overflow-hidden flex items-center justify-center">
                       {sticker.image && sticker.image !== '/stickers/placeholder.png' ? (
                         <img 
                           src={sticker.image} 
@@ -483,8 +502,8 @@ export default function Home() {
                   </div>
 
                   {/* Card Footer - Outside white box */}
-                  <div className="px-3 py-2">
-                    <h3 className="text-white text-sm font-semibold truncate">
+                  <div className="px-2 py-3">
+                    <h3 className="text-white text-sm font-bold truncate">
                       {sticker.name}
                     </h3>
                     <div className="flex items-center justify-between mt-1">
