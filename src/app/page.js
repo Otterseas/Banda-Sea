@@ -33,18 +33,27 @@ export default function Home() {
     canCheckout,
     pricingTier,
     savings,
-    addItem,
-    removeItem,
+    addToCart,
+    removeFromCart,
     updateQuantity,
-    isInCart,
-    getItemQuantity
+    toggleItem,
+    addBundle,
   } = useCart();
 
   // Get stickers for current tab
   const activeStickers = STICKERS[activeTab] || [];
 
-  // Toggle sticker in cart
-  const toggleSticker = (sticker) => {
+  // Get all stickers flat
+  const allStickers = getAllStickers();
+
+  // Check if sticker is in cart
+  const isInCart = (stickerId) => cartItems[stickerId] > 0;
+  
+  // Get quantity for a sticker
+  const getItemQuantity = (stickerId) => cartItems[stickerId] || 0;
+
+  // Toggle sticker in cart with animation
+  const handleToggleSticker = (sticker) => {
     setAnimatingItems(prev => new Set(prev).add(sticker.id));
     setTimeout(() => {
       setAnimatingItems(prev => {
@@ -54,19 +63,18 @@ export default function Home() {
       });
     }, 300);
 
-    if (isInCart(sticker.id)) {
-      removeItem(sticker.id);
-    } else {
-      addItem(sticker);
-    }
+    toggleItem(sticker.id);
   };
 
   // Checkout handler
   const handleCheckout = () => {
-    const cartItemsArray = Object.entries(cartItems).map(([id, item]) => ({
-      variantId: item.shopifyVariantId,
-      quantity: item.quantity
-    }));
+    const cartItemsArray = Object.entries(cartItems).map(([id, qty]) => {
+      const sticker = allStickers.find(s => s.id === id);
+      return { 
+        variantId: sticker?.shopifyVariantId || id, 
+        quantity: qty 
+      };
+    });
 
     const cartString = cartItemsArray
       .map(item => `${item.variantId}:${item.quantity}`)
@@ -85,15 +93,20 @@ export default function Home() {
     window.location.href = checkoutUrl;
   };
 
-  // Add bundle
-  const addBundle = (bundle) => {
-    bundle.stickerIds.forEach(id => {
-      const sticker = getAllStickers().find(s => s.id === id);
-      if (sticker) {
-        addItem(sticker);
-      }
-    });
+  // Handle bundle add
+  const handleAddBundle = (bundle) => {
+    addBundle(bundle);
   };
+
+  // Get cart items with full sticker data for display
+  const getCartItemsWithData = () => {
+    return Object.entries(cartItems).map(([id, quantity]) => {
+      const sticker = allStickers.find(s => s.id === id);
+      return sticker ? { ...sticker, quantity } : null;
+    }).filter(Boolean);
+  };
+
+  const cartItemsWithData = getCartItemsWithData();
 
   return (
     <div className="min-h-screen w-full" style={{ fontFamily: "'Montserrat', sans-serif" }}>
@@ -114,16 +127,11 @@ export default function Home() {
         .glass-card:hover {
           transform: translateY(-8px);
           box-shadow: 0 0 30px rgba(167, 235, 242, 0.3);
-          border-color: ${LUNA.highlight};
+          border-color: #A7EBF2;
         }
         .glass-card.selected {
           box-shadow: 0 0 30px rgba(167, 235, 242, 0.4);
-          border-color: ${LUNA.highlight};
-        }
-        
-        /* Tab slider animation */
-        .tab-slider {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border-color: #A7EBF2;
         }
         
         /* Floating animation */
@@ -171,7 +179,7 @@ export default function Home() {
       {/* ===========================================
           HEADER
           =========================================== */}
-      <header className="sticky top-0 z-50 px-6 py-4">
+      <header className="sticky top-0 z-50 px-6 py-4" style={{ backgroundColor: `${LUNA.abyss}80`, backdropFilter: 'blur(12px)' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo - Left */}
           <Link href="/" className="flex items-center gap-3">
@@ -194,7 +202,7 @@ export default function Home() {
           <nav className="flex items-center gap-4">
             <Link 
               href="#bundles" 
-              className="text-white/70 hover:text-white text-sm font-medium transition-colors"
+              className="text-white/70 hover:text-white text-sm font-medium transition-colors hidden md:block"
             >
               Bundles
             </Link>
@@ -253,7 +261,7 @@ export default function Home() {
                   />
                   
                   {/* Nodes */}
-                  <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full flex justify-between px-0">
+                  <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full flex justify-between">
                     {/* Node 1: Starter */}
                     <div className="relative flex flex-col items-center">
                       <div 
@@ -335,9 +343,9 @@ export default function Home() {
 
             {/* Right: Featured Product (Water Bottle) */}
             <div 
-              className="w-full lg:w-80 rounded-2xl p-1 floating"
+              className="w-full lg:w-80 rounded-2xl p-1 floating relative"
               style={{ 
-                background: `rgba(${parseInt(LUNA.deepWater.slice(1,3),16)}, ${parseInt(LUNA.deepWater.slice(3,5),16)}, ${parseInt(LUNA.deepWater.slice(5,7),16)}, 0.3)`,
+                background: `rgba(2, 56, 89, 0.3)`,
                 backdropFilter: 'blur(12px)',
                 border: `3px solid ${LUNA.highlight}`,
                 boxShadow: `0 0 30px ${LUNA.highlight}40`
@@ -387,7 +395,7 @@ export default function Home() {
           =========================================== */}
       <div className="sticky top-20 z-40 flex justify-center px-6 py-4">
         <nav 
-          className="inline-flex items-center gap-1 p-1.5 rounded-full"
+          className="inline-flex items-center gap-1 p-1.5 rounded-full overflow-x-auto hide-scrollbar max-w-full"
           style={{ 
             backgroundColor: `${LUNA.abyss}30`,
             backdropFilter: 'blur(12px)',
@@ -437,12 +445,11 @@ export default function Home() {
                   key={sticker.id}
                   className={`glass-card relative rounded-2xl p-1 cursor-pointer ${inCart ? 'selected' : ''}`}
                   style={{
-                    backgroundColor: `${LUNA.deepWater}30`,
+                    backgroundColor: `rgba(2, 56, 89, 0.3)`,
                     backdropFilter: 'blur(8px)',
                     border: `2px solid ${inCart ? LUNA.highlight : 'rgba(167, 235, 242, 0.2)'}`,
-                    animationDelay: `${index * 50}ms`
                   }}
-                  onClick={() => toggleSticker(sticker)}
+                  onClick={() => handleToggleSticker(sticker)}
                 >
                   {/* Quantity Badge */}
                   {quantity > 0 && (
@@ -460,7 +467,7 @@ export default function Home() {
                   {/* Inner White Box */}
                   <div className="bg-white rounded-xl p-3">
                     {/* Sticker Image */}
-                    <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
+                    <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
                       {sticker.image && sticker.image !== '/stickers/placeholder.png' ? (
                         <img 
                           src={sticker.image} 
@@ -481,10 +488,10 @@ export default function Home() {
                       {sticker.name}
                     </h3>
                     <div className="flex items-center justify-between mt-1">
-                      <span className="text-white/60 text-xs">
+                      <span className="text-white/60 text-xs truncate flex-1">
                         {sticker.country}
                       </span>
-                      <span style={{ color: LUNA.highlight }} className="text-sm font-bold">
+                      <span style={{ color: LUNA.highlight }} className="text-sm font-bold ml-2">
                         £{pricePerItem.toFixed(2)}
                       </span>
                     </div>
@@ -507,7 +514,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6">
             {BUNDLES.map((bundle) => {
               const bundleStickers = bundle.stickerIds
-                .map(id => getAllStickers().find(s => s.id === id))
+                .map(id => allStickers.find(s => s.id === id))
                 .filter(Boolean);
 
               return (
@@ -551,7 +558,7 @@ export default function Home() {
                       {bundle.stickerIds.length} stickers
                     </span>
                     <button
-                      onClick={() => addBundle(bundle)}
+                      onClick={() => handleAddBundle(bundle)}
                       className="px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105"
                       style={{ 
                         backgroundColor: LUNA.highlight,
@@ -572,9 +579,7 @@ export default function Home() {
           FLOATING CART PILL
           =========================================== */}
       {totalItems > 0 && (
-        <div 
-          className="fixed bottom-6 right-6 z-50"
-        >
+        <div className="fixed bottom-6 right-6 z-50">
           <button
             onClick={() => setIsCartExpanded(!isCartExpanded)}
             className="flex items-center gap-3 px-5 py-3 rounded-full transition-all hover:scale-105"
@@ -635,9 +640,9 @@ export default function Home() {
               
               {/* Cart Items */}
               <div className="space-y-3 mb-4">
-                {Object.entries(cartItems).map(([id, item]) => (
-                  <div key={id} className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center overflow-hidden">
+                {cartItemsWithData.map((item) => (
+                  <div key={item.id} className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
                       {item.image && item.image !== '/stickers/placeholder.png' ? (
                         <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
                       ) : (
@@ -650,14 +655,14 @@ export default function Home() {
                     </div>
                     <div className="flex items-center gap-1">
                       <button
-                        onClick={(e) => { e.stopPropagation(); updateQuantity(id, -1); }}
-                        className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20"
+                        onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, -1); }}
+                        className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20 flex items-center justify-center"
                       >
                         -
                       </button>
                       <button
-                        onClick={(e) => { e.stopPropagation(); updateQuantity(id, 1); }}
-                        className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20"
+                        onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, 1); }}
+                        className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20 flex items-center justify-center"
                       >
                         +
                       </button>
