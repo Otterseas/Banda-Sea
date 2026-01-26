@@ -255,8 +255,8 @@ export default function ProductPage() {
                 </p>
               </div>
 
-              {/* Second Description */}
-              <div className="mt-3">
+              {/* Second Description - closer to first */}
+              <div className="mt-1">
                 <p className="text-white/80 text-xs leading-relaxed italic">
                   {product.description.stickers}
                 </p>
@@ -439,29 +439,24 @@ export default function ProductPage() {
             </div>
           </section>
 
-          {/* Sticker Fan Visual - MASK SHAPES */}
+          {/* Sticker Fan Visual - TRUE MASK SHAPES */}
           <section className="mb-8">
             <div className="relative h-28 flex items-center justify-center mb-2">
-              {/* Sticker fan - Mask shaped stickers */}
-              <div className="flex -space-x-4">
+              {/* Sticker fan - True mask shaped stickers with transparent backgrounds */}
+              <div className="flex -space-x-6">
                 {STICKER_FAN_IMAGES.map((sticker, i) => (
-                  <motion.div
+                  <motion.img
                     key={i}
-                    className="w-20 h-14 overflow-hidden flex-shrink-0 shadow-lg"
+                    src={sticker.image}
+                    alt={sticker.name}
+                    className="w-24 h-auto object-contain drop-shadow-lg"
                     style={{
                       zIndex: i === 2 ? 10 : 5 - Math.abs(i - 2),
-                      transform: `rotate(${(i - 2) * 5}deg) scale(${i === 2 ? 1.15 : 1})`,
-                      borderRadius: '45% 45% 45% 45% / 50% 50% 40% 40%',
+                      transform: `rotate(${(i - 2) * 6}deg) scale(${i === 2 ? 1.1 : 0.95})`,
                     }}
-                    whileHover={{ scale: 1.3, zIndex: 15, rotate: 0 }}
+                    whileHover={{ scale: 1.25, zIndex: 15, rotate: 0 }}
                     transition={{ type: 'spring', stiffness: 300 }}
-                  >
-                    <img 
-                      src={sticker.image} 
-                      alt={sticker.name}
-                      className="w-full h-full object-cover object-center"
-                    />
-                  </motion.div>
+                  />
                 ))}
               </div>
               {/* Arrow pointing down */}
