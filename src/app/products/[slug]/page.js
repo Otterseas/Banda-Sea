@@ -40,65 +40,31 @@ const STICKER_FAN_IMAGES = [
   }
 ];
 
-// Inline SVG Icons
-const VacuumIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 52 53" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="26" cy="26" rx="20" ry="20" stroke="white" strokeWidth="2" fill="none"/>
-    <line x1="10" y1="42" x2="42" y2="10" stroke="white" strokeWidth="2"/>
-    <path d="M30 35C30 35 28 42 26 42C24 42 22 35 22 35" stroke="white" strokeWidth="1.5" fill="none"/>
-    <path d="M28 38C28 38 27 41 26 41C25 41 24 38 24 38" stroke="white" strokeWidth="1.5" fill="none"/>
-    <path d="M26.5 40C26.5 40 26.2 41.5 26 41.5C25.8 41.5 25.5 40 25.5 40" stroke="white" strokeWidth="1.5" fill="none"/>
-  </svg>
-);
+// Feature icons data with external SVG paths
+const FEATURE_ICONS = [
+  { icon: '/icons/Vaccum_Insulation.svg', title: 'Double Wall', subtitle: 'Vacuum Sealed' },
+  { icon: '/icons/Water_Capacity.svg', title: '40 oz / 1.2 L', subtitle: 'Capacity' },
+  { icon: '/icons/Stainless_Steel.svg', title: 'Pro-Grade', subtitle: 'Stainless Steel' },
+  { icon: '/icons/BPA_Free.svg', title: 'BPA Free', subtitle: 'Materials' },
+  { icon: '/icons/No_Condensation.svg', title: 'No External', subtitle: 'Condensation' },
+];
 
-const CapacityIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 34 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M17 4C17 4 6 18 6 28C6 38 11 46 17 46C23 46 28 38 28 28C28 18 17 4 17 4Z" fill="#A1D7E3" stroke="white" strokeWidth="2"/>
-    <path d="M17 6C17 6 8 18 8 27C8 36 12 43 17 43" fill="#6BC7DF" stroke="none"/>
-  </svg>
-);
-
-const SteelIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="8" y="8" width="32" height="32" rx="4" stroke="white" strokeWidth="2" fill="none"/>
-    <text x="24" y="22" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">18/8</text>
-    <text x="24" y="34" textAnchor="middle" fill="white" fontSize="8">STEEL</text>
-  </svg>
-);
-
-const BPAFreeIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M24 6C24 6 12 12 12 24C12 32 16 40 24 44C32 40 36 32 36 24C36 12 24 6 24 6Z" fill="#B2CD47" stroke="#0C2844" strokeWidth="2"/>
-    <path d="M20 20C20 20 22 28 24 32C26 28 30 18 30 18" stroke="#0C2844" strokeWidth="2" fill="none" strokeLinecap="round"/>
-  </svg>
-);
-
-const NoCondensationIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 52 53" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="26" cy="26" rx="20" ry="20" stroke="white" strokeWidth="2" fill="none"/>
-    <line x1="10" y1="42" x2="42" y2="10" stroke="white" strokeWidth="2"/>
-    <path d="M26 16C26 16 20 24 20 30C20 34 22.5 38 26 38C29.5 38 32 34 32 30C32 24 26 16 26 16Z" stroke="white" strokeWidth="2" fill="none"/>
-  </svg>
-);
-
-// Feature Icon Component with inline SVGs
-function FeatureIcon({ type, title, subtitle }) {
-  const iconMap = {
-    vacuum: VacuumIcon,
-    capacity: CapacityIcon,
-    steel: SteelIcon,
-    bpa: BPAFreeIcon,
-    condensation: NoCondensationIcon,
-  };
-  
-  const IconComponent = iconMap[type] || VacuumIcon;
-  
+// Feature Icon Component
+function FeatureIcon({ icon, title, subtitle }) {
   return (
     <div className="flex flex-col items-center text-center">
-      <div className="w-12 h-12 mb-1 flex items-center justify-center">
-        <IconComponent />
+      <div className="w-14 h-14 mb-1 flex items-center justify-center">
+        <img 
+          src={icon} 
+          alt={title} 
+          className="w-full h-full object-contain"
+          onError={(e) => {
+            // Fallback if SVG doesn't load
+            e.target.style.display = 'none';
+          }}
+        />
       </div>
-      <p className="text-white text-[10px] font-medium leading-tight">{title}</p>
+      <p className="text-white text-[11px] font-medium leading-tight">{title}</p>
       <p className="text-white/60 text-[10px]">{subtitle}</p>
     </div>
   );
@@ -197,7 +163,7 @@ export default function ProductPage() {
       <div className="h-screen flex items-center justify-center" style={{ background: COLORS.abyss }}>
         <div className="text-center">
           <h1 className="text-2xl font-light text-white mb-4">Product not found</h1>
-          <Link href="/stickers" className="text-white/60 hover:text-white hover:underline">
+          <Link href="/" className="text-white/60 hover:text-white hover:underline">
             ← Back to shop
           </Link>
         </div>
@@ -221,9 +187,6 @@ export default function ProductPage() {
     openDrawer();
   };
 
-  // Feature icon types mapped to product features
-  const featureTypes = ['vacuum', 'capacity', 'steel', 'bpa', 'condensation'];
-
   return (
     <div 
       className="min-h-screen w-full flex flex-col md:flex-row"
@@ -231,14 +194,14 @@ export default function ProductPage() {
     >
       {/* ==================== LEFT PANEL - FIXED (60%) ==================== */}
       <div 
-        className="w-full md:w-[60%] md:h-screen md:sticky md:top-0 flex flex-col relative overflow-hidden"
+        className="w-full md:w-[60%] md:h-screen md:sticky md:top-0 flex flex-col relative"
         style={{
           background: `linear-gradient(160deg, ${COLORS.midDepth} 0%, ${COLORS.deepWater} 40%, ${COLORS.abyss} 100%)`
         }}
       >
         {/* Header */}
-        <header className="flex-shrink-0 h-16 flex items-center justify-between px-6 relative z-10">
-          <Link href="/stickers" className="flex items-center gap-3">
+        <header className="flex-shrink-0 h-14 flex items-center px-6 relative z-10">
+          <Link href="/" className="flex items-center gap-2">
             <img
               src="/logo.png"
               alt="Otterseas"
@@ -250,123 +213,121 @@ export default function ProductPage() {
           </Link>
         </header>
 
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col px-6 pb-6 relative overflow-y-auto">
-          {/* Title */}
-          <div className="mb-3">
-            <h1
-              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-1"
-              style={{
-                background: `linear-gradient(135deg, ${COLORS.highlight} 0%, #FF6B9D 50%, ${COLORS.highlight} 100%)`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              {product.name}
-            </h1>
-            <p 
-              className="text-xs tracking-[0.2em] font-medium"
-              style={{ color: COLORS.highlight }}
-            >
-              {product.tagline}
-            </p>
-          </div>
+        {/* Main Content - Grid Layout */}
+        <div className="flex-1 grid grid-cols-12 gap-4 px-6 pb-6 overflow-hidden">
+          
+          {/* Left Column - Text & CTA */}
+          <div className="col-span-4 flex flex-col justify-between py-2">
+            {/* Top Section - Title & First Description */}
+            <div>
+              {/* Title */}
+              <h1
+                className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 leading-tight"
+                style={{
+                  background: `linear-gradient(135deg, ${COLORS.highlight} 0%, #FF6B9D 50%, ${COLORS.highlight} 100%)`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                {product.name}
+              </h1>
+              
+              {/* First Description */}
+              <p className="text-white/80 text-xs leading-relaxed mt-3 italic">
+                {product.description.intro}
+              </p>
+            </div>
 
-          {/* Description */}
-          <div className="max-w-sm mb-4">
-            <p className="text-white/80 text-xs leading-relaxed mb-2">
-              {product.description.intro}
-            </p>
-            <p className="text-white/80 text-xs leading-relaxed">
-              {product.description.stickers}
-            </p>
-          </div>
+            {/* Middle Section - Second Description */}
+            <div className="my-4">
+              <p className="text-white/80 text-xs leading-relaxed italic">
+                {product.description.stickers}
+              </p>
+            </div>
 
-          {/* Product Image & Features Row */}
-          <div className="flex-1 flex items-center justify-center gap-4 min-h-0">
-            {/* Single Large Product Image */}
-            <div className="flex-1 flex items-center justify-center">
-              <div className="w-full max-w-xs md:max-w-sm">
-                <img 
-                  src={product.variants[0].image}
-                  alt={product.name}
-                  className="w-full h-auto object-contain drop-shadow-2xl"
-                  style={{
-                    filter: `drop-shadow(0 0 30px ${COLORS.highlight}30)`
-                  }}
-                />
+            {/* Bottom Section - Variant, Price, CTA */}
+            <div>
+              {/* Variant Selector */}
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-white/60 text-xs">Color:</span>
+                <div className="flex gap-2">
+                  {product.variants.map((variant, index) => (
+                    <button
+                      key={variant.id}
+                      onClick={() => setSelectedVariant(index)}
+                      className={`w-6 h-6 rounded-full border-2 transition-all ${
+                        selectedVariant === index ? 'scale-110' : 'opacity-60'
+                      }`}
+                      style={{
+                        backgroundColor: variant.color,
+                        borderColor: selectedVariant === index ? COLORS.highlight : 'transparent'
+                      }}
+                      title={variant.name}
+                    />
+                  ))}
+                </div>
+                <span className="text-white/60 text-xs">{currentVariant.name}</span>
+                {!currentVariant.inStock && (
+                  <span className="text-red-400 text-xs font-medium">Out of Stock</span>
+                )}
               </div>
-            </div>
 
-            {/* Feature Icons - Right side */}
-            <div className="flex flex-col gap-3 flex-shrink-0">
-              {product.features.map((feature, index) => (
-                <FeatureIcon
-                  key={index}
-                  type={featureTypes[index]}
-                  title={feature.title}
-                  subtitle={feature.subtitle}
-                />
-              ))}
+              {/* Price */}
+              <p 
+                className="text-2xl font-bold mb-3"
+                style={{ color: COLORS.highlight }}
+              >
+                £{product.price.toFixed(2)}
+              </p>
+
+              {/* Add to Collection Button */}
+              <motion.button
+                onClick={handleAddToCart}
+                disabled={!currentVariant.inStock}
+                className="px-5 py-2.5 rounded-lg text-sm font-semibold transition-all"
+                style={{
+                  background: currentVariant.inStock 
+                    ? 'rgba(255, 255, 255, 0.1)'
+                    : 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(10px)',
+                  border: `2px solid ${currentVariant.inStock ? COLORS.highlight : 'rgba(255,255,255,0.2)'}`,
+                  color: currentVariant.inStock ? 'white' : 'rgba(255,255,255,0.4)',
+                  cursor: currentVariant.inStock ? 'pointer' : 'not-allowed',
+                  boxShadow: currentVariant.inStock ? `0 0 15px ${COLORS.highlight}30` : 'none'
+                }}
+                whileHover={currentVariant.inStock ? { scale: 1.02, boxShadow: `0 0 25px ${COLORS.highlight}50` } : {}}
+                whileTap={currentVariant.inStock ? { scale: 0.98 } : {}}
+              >
+                {currentVariant.inStock ? 'Add to Collection' : 'Out of Stock'}
+              </motion.button>
             </div>
           </div>
 
-          {/* Variant Selector, Price & Add to Cart */}
-          <div className="flex-shrink-0 mt-4 pt-4 border-t border-white/10">
-            {/* Variant Selector */}
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-white/60 text-xs">Color:</span>
-              <div className="flex gap-2">
-                {product.variants.map((variant, index) => (
-                  <button
-                    key={variant.id}
-                    onClick={() => setSelectedVariant(index)}
-                    className={`w-7 h-7 rounded-full border-2 transition-all ${
-                      selectedVariant === index ? 'scale-110' : 'opacity-60'
-                    }`}
-                    style={{
-                      backgroundColor: variant.color,
-                      borderColor: selectedVariant === index ? COLORS.highlight : 'transparent'
-                    }}
-                    title={variant.name}
-                  />
-                ))}
-              </div>
-              <span className="text-white/60 text-xs ml-2">{currentVariant.name}</span>
-              {!currentVariant.inStock && (
-                <span className="text-red-400 text-xs font-medium ml-2">Out of Stock</span>
-              )}
+          {/* Center Column - Product Image */}
+          <div className="col-span-5 flex items-center justify-center">
+            <div className="w-full max-w-[280px]">
+              <img 
+                src={product.variants[0].image}
+                alt={product.name}
+                className="w-full h-auto object-contain"
+                style={{
+                  filter: `drop-shadow(0 20px 40px rgba(0,0,0,0.4))`
+                }}
+              />
             </div>
+          </div>
 
-            {/* Price */}
-            <p 
-              className="text-2xl font-bold mb-3"
-              style={{ color: COLORS.highlight }}
-            >
-              £{product.price.toFixed(2)}
-            </p>
-
-            {/* Add to Cart Button - Glassmorphism */}
-            <motion.button
-              onClick={handleAddToCart}
-              disabled={!currentVariant.inStock}
-              className="px-6 py-3 rounded-xl text-sm font-semibold transition-all"
-              style={{
-                background: currentVariant.inStock 
-                  ? 'rgba(255, 255, 255, 0.1)'
-                  : 'rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(10px)',
-                border: `2px solid ${currentVariant.inStock ? COLORS.highlight : 'rgba(255,255,255,0.2)'}`,
-                color: currentVariant.inStock ? 'white' : 'rgba(255,255,255,0.4)',
-                cursor: currentVariant.inStock ? 'pointer' : 'not-allowed',
-                boxShadow: currentVariant.inStock ? `0 0 20px ${COLORS.highlight}30` : 'none'
-              }}
-              whileHover={currentVariant.inStock ? { scale: 1.02, boxShadow: `0 0 30px ${COLORS.highlight}50` } : {}}
-              whileTap={currentVariant.inStock ? { scale: 0.98 } : {}}
-            >
-              {currentVariant.inStock ? 'Add to Cart' : 'Out of Stock'}
-            </motion.button>
+          {/* Right Column - Feature Icons */}
+          <div className="col-span-3 flex flex-col justify-center items-center gap-4">
+            {FEATURE_ICONS.map((feature, index) => (
+              <FeatureIcon
+                key={index}
+                icon={feature.icon}
+                title={feature.title}
+                subtitle={feature.subtitle}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -394,14 +355,14 @@ export default function ProductPage() {
                 className="absolute top-12 right-0 w-48 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden"
               >
                 <Link 
-                  href="/stickers" 
+                  href="/" 
                   className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
                   style={{ color: COLORS.deepWater }}
                 >
                   Home
                 </Link>
                 <Link 
-                  href="/stickers" 
+                  href="/" 
                   className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
                   style={{ color: COLORS.deepWater }}
                 >
@@ -420,9 +381,9 @@ export default function ProductPage() {
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-10">
+        <div className="flex-1 overflow-y-auto px-6 py-8">
           {/* Story Section */}
-          <section className="mb-10">
+          <section className="mb-8">
             <h2 
               className="text-xl md:text-2xl font-light mb-3"
               style={{ color: COLORS.deepWater, fontFamily: 'Montserrat, sans-serif' }}
@@ -434,26 +395,26 @@ export default function ProductPage() {
             </p>
 
             {/* 3-Step Journey with Circles */}
-            <div className="space-y-5">
+            <div className="space-y-4">
               {product.story.steps.map((step, index) => (
                 <div key={index} className="flex gap-4 items-start">
                   <div 
-                    className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 border-2"
+                    className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border-2"
                     style={{ 
                       borderColor: COLORS.midDepth,
                       color: COLORS.midDepth
                     }}
                   >
-                    <span className="text-lg font-light">{step.number}</span>
+                    <span className="text-sm font-light">{step.number}</span>
                   </div>
-                  <div className="pt-1">
+                  <div className="pt-0.5">
                     <h4 
-                      className="font-semibold text-base"
+                      className="font-semibold text-sm"
                       style={{ color: COLORS.deepWater }}
                     >
                       {step.title}
                     </h4>
-                    <p className="text-gray-500 text-sm">{step.description}</p>
+                    <p className="text-gray-500 text-xs">{step.description}</p>
                   </div>
                 </div>
               ))}
@@ -461,19 +422,19 @@ export default function ProductPage() {
           </section>
 
           {/* Sticker Fan Visual */}
-          <section className="mb-10">
-            <div className="relative h-20 flex items-center justify-center mb-3">
+          <section className="mb-8">
+            <div className="relative h-16 flex items-center justify-center mb-2">
               {/* Sticker fan - overlapping circles with real sticker images */}
-              <div className="flex -space-x-3">
+              <div className="flex -space-x-2">
                 {STICKER_FAN_IMAGES.map((sticker, i) => (
                   <motion.div
                     key={i}
-                    className="w-14 h-14 rounded-full border-2 border-white shadow-lg overflow-hidden"
+                    className="w-12 h-12 rounded-full border-2 border-white shadow-lg overflow-hidden"
                     style={{
                       zIndex: i === 2 ? 10 : 5 - Math.abs(i - 2),
-                      transform: `rotate(${(i - 2) * 6}deg) scale(${i === 2 ? 1.1 : 0.95})`
+                      transform: `rotate(${(i - 2) * 5}deg) scale(${i === 2 ? 1.1 : 0.95})`
                     }}
-                    whileHover={{ scale: 1.15, zIndex: 15 }}
+                    whileHover={{ scale: 1.2, zIndex: 15 }}
                   >
                     <img 
                       src={sticker.image} 
@@ -488,15 +449,15 @@ export default function ProductPage() {
                 className="absolute -bottom-1 left-1/2 -translate-x-1/2"
                 style={{ color: '#FF6B9D' }}
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 16l-6-6h12z" />
                 </svg>
               </div>
             </div>
 
             <Link
-              href="/stickers"
-              className="block text-center text-lg md:text-xl font-semibold transition-colors hover:opacity-80"
+              href="/"
+              className="block text-center text-base md:text-lg font-semibold transition-colors hover:opacity-80"
               style={{ color: COLORS.surfaceTeal }}
             >
               Explore The Collection
@@ -504,7 +465,7 @@ export default function ProductPage() {
           </section>
 
           {/* Product Description */}
-          <section className="mb-6">
+          <section className="mb-5">
             <p className="text-gray-600 text-sm leading-relaxed">
               {product.story.description}
             </p>
@@ -527,7 +488,7 @@ export default function ProductPage() {
               </p>
               
               {/* Temperature Icons */}
-              <div className="flex items-center justify-between gap-3 mt-4 p-3 bg-gray-50 rounded-xl">
+              <div className="flex items-center justify-between gap-2 mt-4 p-3 bg-gray-50 rounded-xl">
                 {/* Hot */}
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
