@@ -248,16 +248,12 @@ export default function ProductPage() {
             
             {/* Left Column - Text & CTA */}
             <div className="col-span-4 flex flex-col justify-between py-1">
-              {/* First Description */}
+              {/* Descriptions - stacked closer together */}
               <div>
                 <p className="text-white/80 text-xs leading-relaxed italic">
                   {product.description.intro}
                 </p>
-              </div>
-
-              {/* Second Description - closer to first */}
-              <div className="mt-1">
-                <p className="text-white/80 text-xs leading-relaxed italic">
+                <p className="text-white/80 text-xs leading-relaxed italic mt-4">
                   {product.description.stickers}
                 </p>
               </div>
