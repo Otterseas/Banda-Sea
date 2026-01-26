@@ -1079,7 +1079,7 @@ export const STICKERS = {
       region: 'UK/Europe',
       country: 'Scotland',
       shopifyVariantId: '52435654344970',
-      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/BandaSea-sticker.png?v=1769229387&width=990',
+      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/ScapaFlow-sticker.png?v=1769087644&width=823',
       story: {
         headline: 'The Wreck Diver’s Holy Grail',
         content: 'Scapa Flow is where history goes to rest, and where wreck divers go to find nirvana. Tucked away in the chilly waters of Scotland’s Orkney Islands, this isn\'t your typical tropical holiday—it\'s a cold-water pilgrimage. This legendary natural harbor is the underwater graveyard of the German High Seas Fleet, scuttled in 1919. It offers a hauntingly beautiful playground of massive battleships and cruisers that dwarf divers and demand respect. It’s moody, it’s metallic, and it is absolutely essential diving for anyone who loves \"rust.\"',
