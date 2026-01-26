@@ -227,120 +227,141 @@ export default function Home() {
       {/* ===========================================
           HERO SECTION
           =========================================== */}
-      <section className="px-6 py-8">
+      <section className="px-6 pt-6 pb-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-6 items-start">
+          
+          {/* Glass Title Header */}
+          <div 
+            className="text-center mb-8 py-6 px-8 rounded-2xl"
+            style={{
+              background: 'linear-gradient(145deg, rgba(38, 101, 140, 0.3) 0%, rgba(2, 56, 89, 0.4) 100%)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              border: '2px solid rgba(167, 235, 242, 0.2)',
+              boxShadow: '0 8px 32px rgba(1, 28, 64, 0.3), inset 0 1px 2px rgba(255,255,255,0.1)'
+            }}
+          >
+            <h1 
+              className="text-4xl md:text-6xl font-black text-white mb-2 tracking-tight uppercase"
+              style={{ 
+                textShadow: `0 0 40px rgba(167, 235, 242, 0.5), 0 0 80px rgba(167, 235, 242, 0.3)`,
+                letterSpacing: '0.05em'
+              }}
+            >
+              Build Your Dive Story
+            </h1>
+          </div>
+
+          {/* Content Row: Text Left, Gauge Center, Water Bottle Right */}
+          <div className="flex flex-col lg:flex-row gap-6 items-center">
             
-            {/* Left: Hero Text */}
-            <div className="flex-1">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
-                Build Your Dive Story
-              </h1>
-              <p className="text-white/70 text-lg leading-relaxed max-w-xl mb-8">
+            {/* Left: Description Text */}
+            <div className="flex-1 lg:max-w-xs">
+              <p className="text-white/70 text-base leading-relaxed">
                 Every sticker marks a memory. Collect the dive sites you've conquered, 
                 the wrecks you've explored, and the reefs that took your breath away.
               </p>
+              
+              {/* Current tier indicator */}
+              <div className="mt-4 flex items-center gap-2">
+                <span className="text-white/50 text-sm">Your tier:</span>
+                <span 
+                  className="px-3 py-1 rounded-full text-sm font-semibold"
+                  style={{ 
+                    backgroundColor: `${LUNA.highlight}20`,
+                    color: LUNA.highlight,
+                    border: `1px solid ${LUNA.highlight}40`
+                  }}
+                >
+                  {pricingTier.tier} (£{pricePerItem.toFixed(2)}/each)
+                </span>
+              </div>
+            </div>
 
-              {/* Depth Gauge Pricing */}
-              <div className="max-w-md">
-                <p className="text-white/50 text-xs font-medium mb-3 uppercase tracking-wider">
-                  Dive Deeper, Save More
-                </p>
+            {/* Center: Depth Gauge Pricing */}
+            <div className="flex-1 w-full max-w-md">
+              <p className="text-white/50 text-xs font-medium mb-3 uppercase tracking-wider text-center">
+                Dive Deeper, Save More
+              </p>
+              
+              {/* Glass Track */}
+              <div className="relative">
+                <div 
+                  className="h-2 rounded-full"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+                />
                 
-                {/* Glass Track */}
-                <div className="relative">
-                  <div 
-                    className="h-2 rounded-full"
-                    style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
-                  />
-                  
-                  {/* Progress Fill */}
-                  <div 
-                    className="absolute top-0 left-0 h-2 rounded-full transition-all duration-500"
-                    style={{ 
-                      width: `${Math.min(100, (totalItems / 21) * 100)}%`,
-                      backgroundColor: LUNA.highlight,
-                      boxShadow: `0 0 10px ${LUNA.highlight}`
-                    }}
-                  />
-                  
-                  {/* Nodes */}
-                  <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full flex justify-between">
-                    {/* Node 1: Starter */}
-                    <div className="relative flex flex-col items-center">
-                      <div 
-                        className="w-4 h-4 rounded-full border-2 transition-all"
-                        style={{ 
-                          backgroundColor: totalItems >= 1 ? LUNA.highlight : 'transparent',
-                          borderColor: LUNA.highlight,
-                          boxShadow: totalItems >= 1 ? `0 0 10px ${LUNA.highlight}` : 'none'
-                        }}
-                      />
-                      <span className="absolute top-6 text-xs font-semibold whitespace-nowrap" style={{ color: LUNA.highlight }}>
-                        £2.50
-                      </span>
-                      <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
-                        Starter
-                      </span>
-                    </div>
-                    
-                    {/* Node 2: Explorer */}
-                    <div className="relative flex flex-col items-center">
-                      <div 
-                        className="w-4 h-4 rounded-full border-2 transition-all"
-                        style={{ 
-                          backgroundColor: totalItems >= 11 ? LUNA.highlight : 'transparent',
-                          borderColor: totalItems >= 11 ? LUNA.highlight : 'rgba(255,255,255,0.3)',
-                          boxShadow: totalItems >= 11 ? `0 0 10px ${LUNA.highlight}` : 'none'
-                        }}
-                      />
-                      <span 
-                        className="absolute top-6 text-xs font-semibold whitespace-nowrap"
-                        style={{ color: totalItems >= 11 ? LUNA.highlight : 'rgba(255,255,255,0.4)' }}
-                      >
-                        £1.75
-                      </span>
-                      <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
-                        Explorer
-                      </span>
-                    </div>
-                    
-                    {/* Node 3: Pro */}
-                    <div className="relative flex flex-col items-center">
-                      <div 
-                        className="w-4 h-4 rounded-full border-2 transition-all"
-                        style={{ 
-                          backgroundColor: totalItems >= 21 ? LUNA.highlight : 'transparent',
-                          borderColor: totalItems >= 21 ? LUNA.highlight : 'rgba(255,255,255,0.3)',
-                          boxShadow: totalItems >= 21 ? `0 0 10px ${LUNA.highlight}` : 'none'
-                        }}
-                      />
-                      <span 
-                        className="absolute top-6 text-xs font-semibold whitespace-nowrap"
-                        style={{ color: totalItems >= 21 ? LUNA.highlight : 'rgba(255,255,255,0.4)' }}
-                      >
-                        £1.50
-                      </span>
-                      <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
-                        Pro
-                      </span>
-                    </div>
+                {/* Progress Fill */}
+                <div 
+                  className="absolute top-0 left-0 h-2 rounded-full transition-all duration-500"
+                  style={{ 
+                    width: `${Math.min(100, (totalItems / 21) * 100)}%`,
+                    backgroundColor: LUNA.highlight,
+                    boxShadow: `0 0 10px ${LUNA.highlight}`
+                  }}
+                />
+                
+                {/* Nodes */}
+                <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full flex justify-between">
+                  {/* Node 1: Starter */}
+                  <div className="relative flex flex-col items-center">
+                    <div 
+                      className="w-4 h-4 rounded-full border-2 transition-all"
+                      style={{ 
+                        backgroundColor: totalItems >= 1 ? LUNA.highlight : 'transparent',
+                        borderColor: LUNA.highlight,
+                        boxShadow: totalItems >= 1 ? `0 0 10px ${LUNA.highlight}` : 'none'
+                      }}
+                    />
+                    <span className="absolute top-6 text-xs font-semibold whitespace-nowrap" style={{ color: LUNA.highlight }}>
+                      £2.50
+                    </span>
+                    <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
+                      Starter
+                    </span>
                   </div>
-                </div>
-                
-                {/* Current tier indicator */}
-                <div className="mt-16 flex items-center gap-2">
-                  <span className="text-white/50 text-sm">Your tier:</span>
-                  <span 
-                    className="px-3 py-1 rounded-full text-sm font-semibold"
-                    style={{ 
-                      backgroundColor: `${LUNA.highlight}20`,
-                      color: LUNA.highlight,
-                      border: `1px solid ${LUNA.highlight}40`
-                    }}
-                  >
-                    {pricingTier.tier} (£{pricePerItem.toFixed(2)}/each)
-                  </span>
+                  
+                  {/* Node 2: Explorer */}
+                  <div className="relative flex flex-col items-center">
+                    <div 
+                      className="w-4 h-4 rounded-full border-2 transition-all"
+                      style={{ 
+                        backgroundColor: totalItems >= 11 ? LUNA.highlight : 'transparent',
+                        borderColor: totalItems >= 11 ? LUNA.highlight : 'rgba(255,255,255,0.3)',
+                        boxShadow: totalItems >= 11 ? `0 0 10px ${LUNA.highlight}` : 'none'
+                      }}
+                    />
+                    <span 
+                      className="absolute top-6 text-xs font-semibold whitespace-nowrap"
+                      style={{ color: totalItems >= 11 ? LUNA.highlight : 'rgba(255,255,255,0.4)' }}
+                    >
+                      £1.75
+                    </span>
+                    <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
+                      Explorer
+                    </span>
+                  </div>
+                  
+                  {/* Node 3: Pro */}
+                  <div className="relative flex flex-col items-center">
+                    <div 
+                      className="w-4 h-4 rounded-full border-2 transition-all"
+                      style={{ 
+                        backgroundColor: totalItems >= 21 ? LUNA.highlight : 'transparent',
+                        borderColor: totalItems >= 21 ? LUNA.highlight : 'rgba(255,255,255,0.3)',
+                        boxShadow: totalItems >= 21 ? `0 0 10px ${LUNA.highlight}` : 'none'
+                      }}
+                    />
+                    <span 
+                      className="absolute top-6 text-xs font-semibold whitespace-nowrap"
+                      style={{ color: totalItems >= 21 ? LUNA.highlight : 'rgba(255,255,255,0.4)' }}
+                    >
+                      £1.50
+                    </span>
+                    <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
+                      Pro
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -445,8 +466,8 @@ export default function Home() {
             </span>
           </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {/* Grid - extra padding for badge overflow */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pt-3 px-1">
             {activeStickers.map((sticker, index) => {
               const inCart = isInCart(sticker.id);
               const quantity = getItemQuantity(sticker.id);
@@ -455,7 +476,7 @@ export default function Home() {
               return (
                 <div
                   key={sticker.id}
-                  className={`glass-card relative rounded-3xl p-4 cursor-pointer overflow-hidden ${inCart ? 'selected' : ''}`}
+                  className={`glass-card relative rounded-3xl p-4 cursor-pointer ${inCart ? 'selected' : ''}`}
                   style={{
                     background: `linear-gradient(145deg, rgba(38, 101, 140, 0.5) 0%, rgba(2, 56, 89, 0.7) 100%)`,
                     backdropFilter: 'blur(24px)',
@@ -469,11 +490,13 @@ export default function Home() {
                   }}
                   onClick={() => handleToggleSticker(sticker)}
                 >
-                  {/* Quantity Badge */}
+                  {/* Quantity Badge - positioned outside card bounds */}
                   {quantity > 0 && (
                     <div 
-                      className="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold z-10"
+                      className="absolute w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold z-20"
                       style={{ 
+                        top: '-10px',
+                        right: '-10px',
                         backgroundColor: LUNA.highlight,
                         color: LUNA.abyss,
                         boxShadow: `0 0 15px ${LUNA.highlight}`
@@ -509,7 +532,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Card Footer - Outside white box */}
+                  {/* Card Footer */}
                   <div className="px-2 py-3">
                     <h3 className="text-white text-sm font-bold truncate">
                       {sticker.name}
@@ -518,7 +541,17 @@ export default function Home() {
                       <span className="text-white/60 text-xs truncate flex-1">
                         {sticker.country}
                       </span>
-                      <span style={{ color: LUNA.highlight }} className="text-sm font-bold ml-2">
+                      <Link 
+                        href={`/sticker/${sticker.slug}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-xs font-semibold transition-all hover:scale-105"
+                        style={{ color: LUNA.highlight }}
+                      >
+                        View →
+                      </Link>
+                    </div>
+                    <div className="flex items-center justify-end mt-1">
+                      <span style={{ color: LUNA.highlight }} className="text-sm font-bold">
                         £{pricePerItem.toFixed(2)}
                       </span>
                     </div>
@@ -663,39 +696,51 @@ export default function Home() {
                 border: `1px solid ${LUNA.highlight}40`
               }}
             >
-              <h3 className="text-white font-bold mb-4">Your Pack</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-white font-bold">Your Pack</h3>
+                <button
+                  onClick={(e) => { e.stopPropagation(); clearCart(); setIsCartExpanded(false); }}
+                  className="text-white/50 text-xs hover:text-white transition-colors"
+                >
+                  Clear all
+                </button>
+              </div>
               
               {/* Cart Items */}
               <div className="space-y-3 mb-4">
-                {cartItemsWithData.map((item) => (
-                  <div key={item.id} className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
-                      {item.image && item.image !== '/stickers/placeholder.png' ? (
-                        <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
-                      ) : (
-                        <span className="text-xs">📍</span>
-                      )}
+                {cartItemsWithData.length > 0 ? (
+                  cartItemsWithData.map((item) => (
+                    <div key={item.id} className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
+                        {item.image && item.image !== '/stickers/placeholder.png' ? (
+                          <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
+                        ) : (
+                          <span className="text-xs">📍</span>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white text-sm font-medium truncate">{item.name}</p>
+                        <p className="text-white/50 text-xs">×{item.quantity}</p>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, -1); }}
+                          className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20 flex items-center justify-center"
+                        >
+                          -
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, 1); }}
+                          className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20 flex items-center justify-center"
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-white text-sm font-medium truncate">{item.name}</p>
-                      <p className="text-white/50 text-xs">×{item.quantity}</p>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <button
-                        onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, -1); }}
-                        className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20 flex items-center justify-center"
-                      >
-                        -
-                      </button>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, 1); }}
-                        className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20 flex items-center justify-center"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p className="text-white/50 text-sm text-center py-4">Your pack is empty</p>
+                )}
               </div>
 
               {/* Checkout Button */}
