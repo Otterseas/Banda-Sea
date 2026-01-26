@@ -390,14 +390,13 @@ export default function Home() {
                 {/* ====== WATER BOTTLE IMAGE ====== */}
                 {/* Replace the src URL below with your Shopify image URL */}
                 <div className="aspect-square rounded-lg flex items-center justify-center overflow-hidden bg-white/10">
-                  {/* 
-                    TODO: Replace src with your water bottle image URL, e.g.:
-                    src="https://38a44d-4c.myshopify.com/cdn/shop/files/your-water-bottle.png"
-                  */}
-                  <span className="text-white/40 text-sm font-medium text-center">SURFACE<br/>TANK<br/><span className="text-xs">(Add image URL)</span></span>
+                  <img 
+                    src="https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=823"
+                    alt="Surface Tank Water Bottle"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
-              </div>
-              
+                            
               {/* Product Info */}
               <div className="px-1">
                 <h3 className="text-sm font-bold text-white mb-0.5">Surface Tank</h3>
