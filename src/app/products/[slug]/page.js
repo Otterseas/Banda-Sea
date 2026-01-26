@@ -42,20 +42,20 @@ const STICKER_FAN_IMAGES = [
 
 // Feature icons data with external SVG paths
 const FEATURE_ICONS = [
-  { icon: '/icons/Vacuum_Insulation.svg', title: 'Double Wall', subtitle: 'Vacuum Sealed' },
-  { icon: '/icons/Water_Capacity.svg', title: '40 oz / 1.2 L', subtitle: 'Capacity' },
-  { icon: '/icons/Stainless_Steel.svg', title: 'Pro-Grade', subtitle: 'Stainless Steel' },
-  { icon: '/icons/BPA_Free.svg', title: 'BPA Free', subtitle: 'Materials' },
-  { icon: '/icons/No_Condensation.svg', title: 'No External', subtitle: 'Condensation' },
+  { icon: '/icons/Vacuum_Insulation.svg', title: 'Double Wall', subtitle: 'Vacuum Sealed', size: 'w-16 h-16' },
+  { icon: '/icons/Water_Capacity.svg', title: '40 oz / 1.2 L', subtitle: 'Capacity', size: 'w-14 h-14' },
+  { icon: '/icons/Stainless_Steel.svg', title: 'Pro-Grade', subtitle: 'Stainless Steel', size: 'w-14 h-14' },
+  { icon: '/icons/BPA_Free.svg', title: 'BPA Free', subtitle: 'Materials', size: 'w-14 h-14' },
+  { icon: '/icons/No_Condensation.svg', title: 'No External', subtitle: 'Condensation', size: 'w-14 h-14' },
 ];
 
 // Feature Icon Component
-function FeatureIcon({ icon, title, subtitle }) {
+function FeatureIcon({ icon, title, subtitle, size = 'w-14 h-14' }) {
   const [imgError, setImgError] = useState(false);
   
   return (
     <div className="flex flex-col items-center text-center">
-      <div className="w-14 h-14 mb-1 flex items-center justify-center">
+      <div className={`${size} mb-1 flex items-center justify-center`}>
         {!imgError ? (
           <img 
             src={icon} 
@@ -236,7 +236,7 @@ export default function ProductPage() {
               The Surface Tank
             </h1>
             <p 
-              className="text-xs tracking-[0.25em] font-medium mt-1"
+              className="text-xl md:text-2xl tracking-wide font-light mt-1"
               style={{ color: COLORS.highlight }}
             >
               MEMORIES THAT STICK
@@ -256,7 +256,7 @@ export default function ProductPage() {
               </div>
 
               {/* Second Description */}
-              <div className="my-2">
+              <div className="mt-3">
                 <p className="text-white/80 text-xs leading-relaxed italic">
                   {product.description.stickers}
                 </p>
@@ -342,6 +342,7 @@ export default function ProductPage() {
                   icon={feature.icon}
                   title={feature.title}
                   subtitle={feature.subtitle}
+                  size={feature.size}
                 />
               ))}
             </div>
@@ -438,30 +439,27 @@ export default function ProductPage() {
             </div>
           </section>
 
-          {/* Sticker Fan Visual - LARGER CIRCLES */}
+          {/* Sticker Fan Visual - MASK SHAPES */}
           <section className="mb-8">
-            <div className="relative h-24 flex items-center justify-center mb-2">
-              {/* Sticker fan - LARGER overlapping circles with proper image centering */}
-              <div className="flex -space-x-3">
+            <div className="relative h-28 flex items-center justify-center mb-2">
+              {/* Sticker fan - Mask shaped stickers */}
+              <div className="flex -space-x-4">
                 {STICKER_FAN_IMAGES.map((sticker, i) => (
                   <motion.div
                     key={i}
-                    className="w-16 h-16 rounded-full border-2 border-white shadow-lg overflow-hidden flex-shrink-0"
+                    className="w-20 h-14 overflow-hidden flex-shrink-0 shadow-lg"
                     style={{
                       zIndex: i === 2 ? 10 : 5 - Math.abs(i - 2),
-                      transform: `rotate(${(i - 2) * 5}deg) scale(${i === 2 ? 1.15 : 1})`
+                      transform: `rotate(${(i - 2) * 5}deg) scale(${i === 2 ? 1.15 : 1})`,
+                      borderRadius: '45% 45% 45% 45% / 50% 50% 40% 40%',
                     }}
-                    whileHover={{ scale: 1.25, zIndex: 15, rotate: 0 }}
+                    whileHover={{ scale: 1.3, zIndex: 15, rotate: 0 }}
                     transition={{ type: 'spring', stiffness: 300 }}
                   >
                     <img 
                       src={sticker.image} 
                       alt={sticker.name}
                       className="w-full h-full object-cover object-center"
-                      style={{ 
-                        transform: 'scale(1.1)',
-                        objectPosition: 'center center'
-                      }}
                     />
                   </motion.div>
                 ))}
