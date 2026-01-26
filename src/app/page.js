@@ -230,40 +230,32 @@ export default function Home() {
       <section className="px-6 pt-6 pb-4">
         <div className="max-w-7xl mx-auto">
           
-          {/* Glass Title Header */}
-          <div 
-            className="text-center mb-8 py-6 px-8 rounded-2xl"
-            style={{
-              background: 'linear-gradient(145deg, rgba(38, 101, 140, 0.3) 0%, rgba(2, 56, 89, 0.4) 100%)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: '2px solid rgba(167, 235, 242, 0.2)',
-              boxShadow: '0 8px 32px rgba(1, 28, 64, 0.3), inset 0 1px 2px rgba(255,255,255,0.1)'
+          {/* Large Title - Left aligned with gradient overlay effect */}
+          <h1 
+            className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight"
+            style={{ 
+              background: `linear-gradient(135deg, ${LUNA.highlight} 0%, ${LUNA.surfaceTeal} 50%, ${LUNA.midDepth} 100%)`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: 'none'
             }}
           >
-            <h1 
-              className="text-4xl md:text-6xl font-black text-white mb-2 tracking-tight uppercase"
-              style={{ 
-                textShadow: `0 0 40px rgba(167, 235, 242, 0.5), 0 0 80px rgba(167, 235, 242, 0.3)`,
-                letterSpacing: '0.05em'
-              }}
-            >
-              Build Your Dive Story
-            </h1>
-          </div>
+            Build Your Story
+          </h1>
 
           {/* Content Row: Text Left, Gauge Center, Water Bottle Right */}
-          <div className="flex flex-col lg:flex-row gap-6 items-center">
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
             
             {/* Left: Description Text */}
-            <div className="flex-1 lg:max-w-xs">
-              <p className="text-white/70 text-base leading-relaxed">
+            <div className="flex-1 lg:max-w-sm">
+              <p className="text-white/70 text-base leading-relaxed mb-4">
                 Every sticker marks a memory. Collect the dive sites you've conquered, 
                 the wrecks you've explored, and the reefs that took your breath away.
               </p>
               
               {/* Current tier indicator */}
-              <div className="mt-4 flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <span className="text-white/50 text-sm">Your tier:</span>
                 <span 
                   className="px-3 py-1 rounded-full text-sm font-semibold"
@@ -279,7 +271,7 @@ export default function Home() {
             </div>
 
             {/* Center: Depth Gauge Pricing */}
-            <div className="flex-1 w-full max-w-md">
+            <div className="flex-1 w-full max-w-sm">
               <p className="text-white/50 text-xs font-medium mb-3 uppercase tracking-wider text-center">
                 Dive Deeper, Save More
               </p>
@@ -368,7 +360,7 @@ export default function Home() {
 
             {/* Right: Featured Product (Water Bottle) - Square */}
             <div 
-              className="w-full lg:w-64 rounded-2xl p-3 floating relative"
+              className="w-full lg:w-56 rounded-2xl p-3 floating relative flex-shrink-0"
               style={{ 
                 background: `rgba(2, 56, 89, 0.3)`,
                 backdropFilter: 'blur(12px)',
@@ -395,19 +387,29 @@ export default function Home() {
                   backdropFilter: 'blur(8px)'
                 }}
               >
-                {/* Square Image */}
-                <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-400 text-sm font-medium text-center">SURFACE<br/>TANK</span>
+                {/* ====== WATER BOTTLE IMAGE ====== */}
+                {/* Replace the src URL below with your Shopify image URL */}
+                <div className="aspect-square rounded-lg flex items-center justify-center overflow-hidden bg-white/10">
+                  {/* 
+                    TODO: Replace src with your water bottle image URL, e.g.:
+                    src="https://38a44d-4c.myshopify.com/cdn/shop/files/your-water-bottle.png"
+                  */}
+                  <span className="text-white/40 text-sm font-medium text-center">SURFACE<br/>TANK<br/><span className="text-xs">(Add image URL)</span></span>
                 </div>
               </div>
               
               {/* Product Info */}
               <div className="px-1">
                 <h3 className="text-sm font-bold text-white mb-0.5">Surface Tank</h3>
-                <p className="text-white/60 text-xs mb-2">750ml Insulated Water Bottle</p>
+                <p className="text-white/60 text-xs mb-2">750ml Insulated</p>
                 <div className="flex items-center justify-between">
                   <span style={{ color: LUNA.highlight }} className="text-lg font-bold">£24.99</span>
-                  <button 
+                  {/* 
+                    TODO: Replace href with your water bottle product page URL, e.g.:
+                    href="/products/surface-tank" or external Shopify URL
+                  */}
+                  <Link 
+                    href="#surface-tank"
                     className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105"
                     style={{ 
                       backgroundColor: LUNA.highlight,
@@ -415,7 +417,7 @@ export default function Home() {
                     }}
                   >
                     View →
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -542,7 +544,7 @@ export default function Home() {
                         {sticker.country}
                       </span>
                       <Link 
-                        href={`/sticker/${sticker.slug}`}
+                        href={`/stickers/${sticker.slug}`}
                         onClick={(e) => e.stopPropagation()}
                         className="text-xs font-semibold transition-all hover:scale-105"
                         style={{ color: LUNA.highlight }}
