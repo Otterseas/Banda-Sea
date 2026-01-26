@@ -42,7 +42,7 @@ const STICKER_FAN_IMAGES = [
 
 // Feature icons data with external SVG paths
 const FEATURE_ICONS = [
-  { icon: '/icons/Vaccum_Insulation.svg', title: 'Double Wall', subtitle: 'Vacuum Sealed' },
+  { icon: '/icons/Vacuum_Insulation.svg', title: 'Double Wall', subtitle: 'Vacuum Sealed' },
   { icon: '/icons/Water_Capacity.svg', title: '40 oz / 1.2 L', subtitle: 'Capacity' },
   { icon: '/icons/Stainless_Steel.svg', title: 'Pro-Grade', subtitle: 'Stainless Steel' },
   { icon: '/icons/BPA_Free.svg', title: 'BPA Free', subtitle: 'Materials' },
@@ -51,18 +51,24 @@ const FEATURE_ICONS = [
 
 // Feature Icon Component
 function FeatureIcon({ icon, title, subtitle }) {
+  const [imgError, setImgError] = useState(false);
+  
   return (
     <div className="flex flex-col items-center text-center">
       <div className="w-14 h-14 mb-1 flex items-center justify-center">
-        <img 
-          src={icon} 
-          alt={title} 
-          className="w-full h-full object-contain"
-          onError={(e) => {
-            // Fallback if SVG doesn't load
-            e.target.style.display = 'none';
-          }}
-        />
+        {!imgError ? (
+          <img 
+            src={icon} 
+            alt={title} 
+            className="w-full h-full object-contain"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          // Fallback icon if SVG doesn't load
+          <div className="w-10 h-10 rounded-full border-2 border-white/50 flex items-center justify-center">
+            <span className="text-white/50 text-xs">?</span>
+          </div>
+        )}
       </div>
       <p className="text-white text-[11px] font-medium leading-tight">{title}</p>
       <p className="text-white/60 text-[10px]">{subtitle}</p>
@@ -118,14 +124,14 @@ function CollapsibleSection({ title, children, defaultOpen = false }) {
   );
 }
 
-// Floating Cart Button Component
+// Floating Cart Button Component - NOW ON RIGHT SIDE
 function FloatingCartButton() {
   const { totalItems, openDrawer } = useCart();
 
   return (
     <motion.button
       onClick={openDrawer}
-      className="fixed bottom-6 left-6 z-30 w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
+      className="fixed bottom-6 right-6 z-30 w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
       style={{
         background: `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, ${COLORS.midDepth} 100%)`,
         boxShadow: `0 4px 20px ${COLORS.midDepth}80`,
@@ -200,7 +206,7 @@ export default function ProductPage() {
         }}
       >
         {/* Header */}
-        <header className="flex-shrink-0 h-14 flex items-center px-6 relative z-10">
+        <header className="flex-shrink-0 h-12 flex items-center px-6 relative z-10">
           <Link href="/" className="flex items-center gap-2">
             <img
               src="/logo.png"
@@ -213,121 +219,132 @@ export default function ProductPage() {
           </Link>
         </header>
 
-        {/* Main Content - Grid Layout */}
-        <div className="flex-1 grid grid-cols-12 gap-4 px-6 pb-6 overflow-hidden">
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col px-6 pb-4 overflow-hidden">
           
-          {/* Left Column - Text & CTA */}
-          <div className="col-span-4 flex flex-col justify-between py-2">
-            {/* Top Section - Title & First Description */}
-            <div>
-              {/* Title */}
-              <h1
-                className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 leading-tight"
-                style={{
-                  background: `linear-gradient(135deg, ${COLORS.highlight} 0%, #FF6B9D 50%, ${COLORS.highlight} 100%)`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                {product.name}
-              </h1>
-              
+          {/* TITLE - Full Width, Large, Single Line */}
+          <div className="mb-2">
+            <h1
+              className="text-4xl md:text-5xl lg:text-6xl font-bold whitespace-nowrap"
+              style={{
+                background: `linear-gradient(135deg, ${COLORS.highlight} 0%, #FF6B9D 50%, ${COLORS.highlight} 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              The Surface Tank
+            </h1>
+            <p 
+              className="text-xs tracking-[0.25em] font-medium mt-1"
+              style={{ color: COLORS.highlight }}
+            >
+              MEMORIES THAT STICK
+            </p>
+          </div>
+
+          {/* Content Grid - 3 Columns */}
+          <div className="flex-1 grid grid-cols-12 gap-2 min-h-0">
+            
+            {/* Left Column - Text & CTA */}
+            <div className="col-span-4 flex flex-col justify-between py-1">
               {/* First Description */}
-              <p className="text-white/80 text-xs leading-relaxed mt-3 italic">
-                {product.description.intro}
-              </p>
-            </div>
-
-            {/* Middle Section - Second Description */}
-            <div className="my-4">
-              <p className="text-white/80 text-xs leading-relaxed italic">
-                {product.description.stickers}
-              </p>
-            </div>
-
-            {/* Bottom Section - Variant, Price, CTA */}
-            <div>
-              {/* Variant Selector */}
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-white/60 text-xs">Color:</span>
-                <div className="flex gap-2">
-                  {product.variants.map((variant, index) => (
-                    <button
-                      key={variant.id}
-                      onClick={() => setSelectedVariant(index)}
-                      className={`w-6 h-6 rounded-full border-2 transition-all ${
-                        selectedVariant === index ? 'scale-110' : 'opacity-60'
-                      }`}
-                      style={{
-                        backgroundColor: variant.color,
-                        borderColor: selectedVariant === index ? COLORS.highlight : 'transparent'
-                      }}
-                      title={variant.name}
-                    />
-                  ))}
-                </div>
-                <span className="text-white/60 text-xs">{currentVariant.name}</span>
-                {!currentVariant.inStock && (
-                  <span className="text-red-400 text-xs font-medium">Out of Stock</span>
-                )}
+              <div>
+                <p className="text-white/80 text-xs leading-relaxed italic">
+                  {product.description.intro}
+                </p>
               </div>
 
-              {/* Price */}
-              <p 
-                className="text-2xl font-bold mb-3"
-                style={{ color: COLORS.highlight }}
-              >
-                £{product.price.toFixed(2)}
-              </p>
+              {/* Second Description */}
+              <div className="my-2">
+                <p className="text-white/80 text-xs leading-relaxed italic">
+                  {product.description.stickers}
+                </p>
+              </div>
 
-              {/* Add to Collection Button */}
-              <motion.button
-                onClick={handleAddToCart}
-                disabled={!currentVariant.inStock}
-                className="px-5 py-2.5 rounded-lg text-sm font-semibold transition-all"
-                style={{
-                  background: currentVariant.inStock 
-                    ? 'rgba(255, 255, 255, 0.1)'
-                    : 'rgba(255, 255, 255, 0.05)',
-                  backdropFilter: 'blur(10px)',
-                  border: `2px solid ${currentVariant.inStock ? COLORS.highlight : 'rgba(255,255,255,0.2)'}`,
-                  color: currentVariant.inStock ? 'white' : 'rgba(255,255,255,0.4)',
-                  cursor: currentVariant.inStock ? 'pointer' : 'not-allowed',
-                  boxShadow: currentVariant.inStock ? `0 0 15px ${COLORS.highlight}30` : 'none'
-                }}
-                whileHover={currentVariant.inStock ? { scale: 1.02, boxShadow: `0 0 25px ${COLORS.highlight}50` } : {}}
-                whileTap={currentVariant.inStock ? { scale: 0.98 } : {}}
-              >
-                {currentVariant.inStock ? 'Add to Collection' : 'Out of Stock'}
-              </motion.button>
+              {/* Bottom Section - Variant, Price, CTA */}
+              <div>
+                {/* Variant Selector */}
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-white/60 text-xs">Color:</span>
+                  <div className="flex gap-2">
+                    {product.variants.map((variant, index) => (
+                      <button
+                        key={variant.id}
+                        onClick={() => setSelectedVariant(index)}
+                        className={`w-6 h-6 rounded-full border-2 transition-all ${
+                          selectedVariant === index ? 'scale-110' : 'opacity-60'
+                        }`}
+                        style={{
+                          backgroundColor: variant.color,
+                          borderColor: selectedVariant === index ? COLORS.highlight : 'transparent'
+                        }}
+                        title={variant.name}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-white/60 text-xs">{currentVariant.name}</span>
+                  {!currentVariant.inStock && (
+                    <span className="text-red-400 text-xs font-medium">Out of Stock</span>
+                  )}
+                </div>
+
+                {/* Price */}
+                <p 
+                  className="text-2xl font-bold mb-2"
+                  style={{ color: COLORS.highlight }}
+                >
+                  £{product.price.toFixed(2)}
+                </p>
+
+                {/* Add to Collection Button */}
+                <motion.button
+                  onClick={handleAddToCart}
+                  disabled={!currentVariant.inStock}
+                  className="px-5 py-2.5 rounded-lg text-sm font-semibold transition-all"
+                  style={{
+                    background: currentVariant.inStock 
+                      ? 'rgba(255, 255, 255, 0.1)'
+                      : 'rgba(255, 255, 255, 0.05)',
+                    backdropFilter: 'blur(10px)',
+                    border: `2px solid ${currentVariant.inStock ? COLORS.highlight : 'rgba(255,255,255,0.2)'}`,
+                    color: currentVariant.inStock ? 'white' : 'rgba(255,255,255,0.4)',
+                    cursor: currentVariant.inStock ? 'pointer' : 'not-allowed',
+                    boxShadow: currentVariant.inStock ? `0 0 15px ${COLORS.highlight}30` : 'none'
+                  }}
+                  whileHover={currentVariant.inStock ? { scale: 1.02, boxShadow: `0 0 25px ${COLORS.highlight}50` } : {}}
+                  whileTap={currentVariant.inStock ? { scale: 0.98 } : {}}
+                >
+                  {currentVariant.inStock ? 'Add to Collection' : 'Out of Stock'}
+                </motion.button>
+              </div>
             </div>
-          </div>
 
-          {/* Center Column - Product Image */}
-          <div className="col-span-5 flex items-center justify-center">
-            <div className="w-full max-w-[280px]">
-              <img 
-                src={product.variants[0].image}
-                alt={product.name}
-                className="w-full h-auto object-contain"
-                style={{
-                  filter: `drop-shadow(0 20px 40px rgba(0,0,0,0.4))`
-                }}
-              />
+            {/* Center Column - Product Image (shifted right) */}
+            <div className="col-span-5 flex items-center justify-end pr-2">
+              <div className="w-full max-w-[240px]">
+                <img 
+                  src={product.variants[0].image}
+                  alt={product.name}
+                  className="w-full h-auto object-contain"
+                  style={{
+                    filter: `drop-shadow(0 20px 40px rgba(0,0,0,0.4))`
+                  }}
+                />
+              </div>
             </div>
-          </div>
 
-          {/* Right Column - Feature Icons */}
-          <div className="col-span-3 flex flex-col justify-center items-center gap-4">
-            {FEATURE_ICONS.map((feature, index) => (
-              <FeatureIcon
-                key={index}
-                icon={feature.icon}
-                title={feature.title}
-                subtitle={feature.subtitle}
-              />
-            ))}
+            {/* Right Column - Feature Icons */}
+            <div className="col-span-3 flex flex-col justify-center items-center gap-3">
+              {FEATURE_ICONS.map((feature, index) => (
+                <FeatureIcon
+                  key={index}
+                  icon={feature.icon}
+                  title={feature.title}
+                  subtitle={feature.subtitle}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -380,8 +397,8 @@ export default function ProductPage() {
           </AnimatePresence>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-8">
+        {/* Scrollable Content - Added top padding to align with title */}
+        <div className="flex-1 overflow-y-auto px-6 pt-14 pb-8">
           {/* Story Section */}
           <section className="mb-8">
             <h2 
@@ -421,25 +438,30 @@ export default function ProductPage() {
             </div>
           </section>
 
-          {/* Sticker Fan Visual */}
+          {/* Sticker Fan Visual - LARGER CIRCLES */}
           <section className="mb-8">
-            <div className="relative h-16 flex items-center justify-center mb-2">
-              {/* Sticker fan - overlapping circles with real sticker images */}
-              <div className="flex -space-x-2">
+            <div className="relative h-24 flex items-center justify-center mb-2">
+              {/* Sticker fan - LARGER overlapping circles with proper image centering */}
+              <div className="flex -space-x-3">
                 {STICKER_FAN_IMAGES.map((sticker, i) => (
                   <motion.div
                     key={i}
-                    className="w-12 h-12 rounded-full border-2 border-white shadow-lg overflow-hidden"
+                    className="w-16 h-16 rounded-full border-2 border-white shadow-lg overflow-hidden flex-shrink-0"
                     style={{
                       zIndex: i === 2 ? 10 : 5 - Math.abs(i - 2),
-                      transform: `rotate(${(i - 2) * 5}deg) scale(${i === 2 ? 1.1 : 0.95})`
+                      transform: `rotate(${(i - 2) * 5}deg) scale(${i === 2 ? 1.15 : 1})`
                     }}
-                    whileHover={{ scale: 1.2, zIndex: 15 }}
+                    whileHover={{ scale: 1.25, zIndex: 15, rotate: 0 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
                   >
                     <img 
                       src={sticker.image} 
                       alt={sticker.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-center"
+                      style={{ 
+                        transform: 'scale(1.1)',
+                        objectPosition: 'center center'
+                      }}
                     />
                   </motion.div>
                 ))}
@@ -573,7 +595,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* Floating Cart Button */}
+      {/* Floating Cart Button - NOW ON RIGHT SIDE */}
       <FloatingCartButton />
     </div>
   );
