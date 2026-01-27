@@ -1,214 +1,288 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { STICKERS, BUNDLES, REGIONS, BASE_PRICE, getAllStickers } from '@/data/stickers';
-import { useCart } from '@/context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // ===========================================
 // LUNA COLOR PALETTE
 // ===========================================
 const LUNA = {
-  highlight: '#A7EBF2',      // Glows, Active Borders, Active Text
-  surfaceTeal: '#54ACBF',    // Hero Section, Accents
-  midDepth: '#26658C',       // Gradient Middle
-  deepWater: '#023859',      // Gradient Transition
-  abyss: '#011C40',          // Page Bottom, Footer, Darkest
-  text: '#FFFFFF',           // Pure White
+  highlight: '#A7EBF2',
+  surfaceTeal: '#54ACBF',
+  midDepth: '#26658C',
+  deepWater: '#023859',
+  abyss: '#011C40',
 };
 
 // ===========================================
-// MAIN COMPONENT
+// PRODUCT DATA
 // ===========================================
-export default function Home() {
-  const [activeTab, setActiveTab] = useState(REGIONS[0]);
-  const [animatingItems, setAnimatingItems] = useState(new Set());
-  const [isCartExpanded, setIsCartExpanded] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  const {
-    cartItems,
-    totalItems,
-    pricePerItem,
-    totalPrice,
-    canCheckout,
-    pricingTier,
-    savings,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    toggleItem,
-    addBundle,
-    clearCart,
-  } = useCart();
+const PRODUCTS = [
+  {
+    id: '01',
+    name: 'The Surface Tank',
+    shortName: 'The\nSurface\nTank',
+    tagline: 'MEMORIES THAT STICK',
+    description: 'Our premium water bottle that\'s more than just a vessel for hydration - it\'s your reliable companion above the waves.',
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=823',
+    link: '/products/surface-tank',
+    linkText: 'Read More...',
+  },
+  {
+    id: '02',
+    name: 'The Dive Journal',
+    shortName: 'The\nDive\nJournal',
+    tagline: 'MORE THAN JUST STATS',
+    description: 'Document your underwater adventures with our beautifully designed dive journal.',
+    image: '/images/dive-journal-placeholder.png', // Placeholder - update when image available
+    link: '/products/dive-journal',
+    linkText: 'Read More...',
+  },
+  {
+    id: '03',
+    name: 'Location Stickers',
+    shortName: 'Location\nStickers',
+    tagline: 'COLLECT YOUR ADVENTURES',
+    description: 'Waterproof vinyl stickers designed through a diver\'s mask-eyed view.',
+    image: '/images/stickers-collection.png', // Placeholder - update when image available
+    link: '/stickers',
+    linkText: 'Read More...',
+  },
+];
 
-  // Get stickers for current tab
-  const activeStickers = STICKERS[activeTab] || [];
+// ===========================================
+// LOADING SCREEN COMPONENT
+// ===========================================
+function LoadingScreen({ onComplete }) {
+  const [progress, setProgress] = useState(0);
 
-  // Get all stickers flat
-  const allStickers = getAllStickers();
-
-  // Check if sticker is in cart
-  const isInCart = (stickerId) => cartItems[stickerId] > 0;
-  
-  // Get quantity for a sticker
-  const getItemQuantity = (stickerId) => cartItems[stickerId] || 0;
-
-  // Toggle sticker in cart with animation
-  const handleToggleSticker = (sticker) => {
-    setAnimatingItems(prev => new Set(prev).add(sticker.id));
-    setTimeout(() => {
-      setAnimatingItems(prev => {
-        const next = new Set(prev);
-        next.delete(sticker.id);
-        return next;
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(timer);
+          setTimeout(onComplete, 500);
+          return 100;
+        }
+        return prev + 2;
       });
-    }, 300);
+    }, 30);
 
-    toggleItem(sticker.id);
-  };
-
-  // Checkout handler
-  const handleCheckout = () => {
-    const cartItemsArray = Object.entries(cartItems).map(([id, qty]) => {
-      const sticker = allStickers.find(s => s.id === id);
-      return { 
-        variantId: sticker?.shopifyVariantId || id, 
-        quantity: qty 
-      };
-    });
-
-    const cartString = cartItemsArray
-      .map(item => `${item.variantId}:${item.quantity}`)
-      .join(',');
-
-    const baseUrl = 'https://38a44d-4c.myshopify.com/cart/';
-    
-    let discountParam = '';
-    if (totalItems >= 21) {
-      discountParam = '?discount=BULK21';
-    } else if (totalItems >= 11) {
-      discountParam = '?discount=BULK11';
-    }
-
-    const checkoutUrl = `${baseUrl}${cartString}${discountParam}`;
-    window.location.href = checkoutUrl;
-  };
-
-  // Handle bundle add
-  const handleAddBundle = (bundle) => {
-    addBundle(bundle);
-  };
-
-  // Get cart items with full sticker data for display
-  const getCartItemsWithData = () => {
-    return Object.entries(cartItems).map(([id, quantity]) => {
-      const sticker = allStickers.find(s => s.id === id);
-      return sticker ? { ...sticker, quantity } : null;
-    }).filter(Boolean);
-  };
-
-  const cartItemsWithData = getCartItemsWithData();
+    return () => clearInterval(timer);
+  }, [onComplete]);
 
   return (
-    <div className="min-h-screen w-full" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-      {/* ===========================================
-          GLOBAL STYLES
-          =========================================== */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
-        
-        /* Hide scrollbar */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Glass card hover effect */
-        .glass-card {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .glass-card:hover {
-          transform: translateY(-8px) scale(1.02);
-          box-shadow: 0 0 40px rgba(167, 235, 242, 0.4), 
-                      0 20px 40px rgba(1, 28, 64, 0.5),
-                      inset 0 1px 2px rgba(255,255,255,0.2) !important;
-          border-color: #A7EBF2 !important;
-        }
-        .glass-card.selected {
-          box-shadow: 0 0 40px rgba(167, 235, 242, 0.5), 
-                      0 20px 40px rgba(1, 28, 64, 0.4),
-                      inset 0 1px 2px rgba(255,255,255,0.2) !important;
-          border-color: #A7EBF2 !important;
-        }
-        
-        /* Floating animation */
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-5px); }
-        }
-        .floating {
-          animation: float 3s ease-in-out infinite;
-        }
-        
-        /* Glow pulse */
-        @keyframes glowPulse {
-          0%, 100% { box-shadow: 0 0 20px rgba(167, 235, 242, 0.3); }
-          50% { box-shadow: 0 0 40px rgba(167, 235, 242, 0.5); }
-        }
-        .glow-pulse {
-          animation: glowPulse 2s ease-in-out infinite;
-        }
-      `}</style>
-
-      {/* ===========================================
-          FIXED BACKGROUND GRADIENT
-          =========================================== */}
-      <div 
-        className="fixed inset-0 -z-10"
-        style={{
-          background: `linear-gradient(to bottom, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 30%, ${LUNA.deepWater} 60%, ${LUNA.abyss} 100%)`
-        }}
-      />
-
-      {/* ===========================================
-          ANNOUNCEMENT BANNER
-          =========================================== */}
-      <div 
-        className="w-full py-2 text-center text-sm font-medium"
-        style={{ 
-          backgroundColor: LUNA.highlight,
-          color: LUNA.abyss
-        }}
-      >
-        🌊 Free shipping on orders of 10+ stickers • Use code DIVE10 at checkout
+    <motion.div
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center"
+      style={{
+        background: `linear-gradient(180deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 50%, ${LUNA.abyss} 100%)`
+      }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.8 }}
+    >
+      {/* Ocean waves animation */}
+      <div className="absolute inset-0 overflow-hidden">
+        <svg 
+          className="absolute bottom-0 w-full"
+          viewBox="0 0 1440 320" 
+          preserveAspectRatio="none"
+          style={{ height: `${progress}%`, transition: 'height 0.3s ease-out' }}
+        >
+          <defs>
+            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor={LUNA.highlight} stopOpacity="0.3" />
+              <stop offset="100%" stopColor={LUNA.surfaceTeal} stopOpacity="0.1" />
+            </linearGradient>
+          </defs>
+          <motion.path
+            fill="url(#waveGradient)"
+            animate={{
+              d: [
+                "M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,208C960,213,1056,171,1152,149.3C1248,128,1344,128,1392,128L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+                "M0,192L48,181.3C96,171,192,149,288,160C384,171,480,213,576,218.7C672,224,768,192,864,176C960,160,1056,160,1152,176C1248,192,1344,224,1392,240L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+              ]
+            }}
+            transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+          />
+        </svg>
       </div>
 
-      {/* ===========================================
-          HEADER - MATCHING SURFACE TANK STYLE
-          =========================================== */}
-      <header className="sticky top-0 z-50 px-6 py-3" style={{ backgroundColor: `${LUNA.abyss}80`, backdropFilter: 'blur(12px)' }}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo - Left (matching Surface Tank) */}
-          <Link href="/" className="flex items-center gap-2">
-            <img
-              src="/logo.png"
-              alt="Otterseas"
-              className="w-8 h-8 rounded-lg object-contain"
-            />
-            <span className="text-lg font-normal tracking-tight text-white">
-              Otterseas
-            </span>
-          </Link>
+      {/* Logo and text */}
+      <motion.div
+        className="relative z-10 flex flex-col items-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <img
+          src="/logo.png"
+          alt="Otterseas"
+          className="w-20 h-20 rounded-2xl mb-4"
+        />
+        <h1 className="text-3xl font-bold text-white mb-2">Otterseas</h1>
+        <p className="text-white/60 text-sm mb-8">Dive deeper, collect memories</p>
+        
+        {/* Progress bar */}
+        <div className="w-48 h-1 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+          <motion.div
+            className="h-full rounded-full"
+            style={{ backgroundColor: LUNA.highlight, width: `${progress}%` }}
+          />
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
-          {/* Hamburger Menu - Right (matching Surface Tank) */}
-          <div className="relative">
+// ===========================================
+// MAIN HOMEPAGE COMPONENT
+// ===========================================
+export default function HomePage() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeProduct, setActiveProduct] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const currentProduct = PRODUCTS[activeProduct];
+
+  // Skip loading on subsequent visits (session storage)
+  useEffect(() => {
+    const hasVisited = sessionStorage.getItem('otterseas-visited');
+    if (hasVisited) {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const handleLoadingComplete = () => {
+    sessionStorage.setItem('otterseas-visited', 'true');
+    setIsLoading(false);
+  };
+
+  return (
+    <>
+      {/* Loading Screen */}
+      <AnimatePresence>
+        {isLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
+      </AnimatePresence>
+
+      {/* Main Content */}
+      <div 
+        className="min-h-screen w-full flex flex-col md:flex-row"
+        style={{ fontFamily: "'Montserrat', sans-serif" }}
+      >
+        {/* ===========================================
+            LEFT PANEL - PRODUCT SHOWCASE (60%)
+            =========================================== */}
+        <div 
+          className="w-full md:w-[60%] min-h-screen md:h-screen md:sticky md:top-0 flex flex-col relative"
+          style={{
+            background: `linear-gradient(160deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 40%, ${LUNA.abyss} 100%)`
+          }}
+        >
+          {/* Header */}
+          <header className="flex-shrink-0 h-16 flex items-center px-8 relative z-10">
+            <Link href="/" className="flex items-center gap-3">
+              <img
+                src="/logo.png"
+                alt="Otterseas"
+                className="w-10 h-10 rounded-xl object-contain"
+              />
+              <span className="text-xl font-medium tracking-tight text-white">
+                Otterseas
+              </span>
+            </Link>
+          </header>
+
+          {/* Product Content */}
+          <div className="flex-1 flex flex-col justify-center px-8 pb-8 relative">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeProduct}
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 30 }}
+                transition={{ duration: 0.5 }}
+                className="flex flex-col md:flex-row items-center gap-8"
+              >
+                {/* Product Title - Left side with vertical line */}
+                <div className="flex items-start gap-4 md:w-1/3">
+                  <div className="flex flex-col items-center">
+                    <span 
+                      className="text-lg font-light mb-2"
+                      style={{ color: LUNA.highlight }}
+                    >
+                      {currentProduct.id}
+                    </span>
+                    <div 
+                      className="w-0.5 h-32"
+                      style={{ backgroundColor: LUNA.highlight }}
+                    />
+                  </div>
+                  <h1 
+                    className="text-4xl md:text-5xl font-bold leading-tight whitespace-pre-line"
+                    style={{ color: 'white' }}
+                  >
+                    {currentProduct.shortName}
+                  </h1>
+                </div>
+
+                {/* Product Image - Center */}
+                <div className="flex-1 flex justify-center items-center">
+                  <motion.img
+                    src={currentProduct.image}
+                    alt={currentProduct.name}
+                    className="max-h-[400px] w-auto object-contain drop-shadow-2xl"
+                    style={{
+                      filter: `drop-shadow(0 20px 60px rgba(0,0,0,0.5))`
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  />
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Tagline and Link - Bottom */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`tagline-${activeProduct}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                className="mt-8 md:mt-12 text-center md:text-left md:ml-12"
+              >
+                <p 
+                  className="text-sm tracking-[0.2em] font-medium mb-2"
+                  style={{ color: 'white' }}
+                >
+                  {currentProduct.tagline}
+                </p>
+                <Link
+                  href={currentProduct.link}
+                  className="text-sm font-medium underline underline-offset-4 transition-colors hover:opacity-80"
+                  style={{ color: LUNA.highlight }}
+                >
+                  {currentProduct.linkText}
+                </Link>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* ===========================================
+            RIGHT PANEL - NAVIGATION (40%)
+            =========================================== */}
+        <div className="w-full md:w-[40%] min-h-screen bg-white flex flex-col relative">
+          {/* Hamburger Menu */}
+          <div className="absolute top-4 right-6 z-20">
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex flex-col gap-1.5 p-2 hover:bg-white/10 rounded-lg transition-colors"
+              className="flex flex-col gap-1.5 p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <span className="w-6 h-0.5 bg-white" />
-              <span className="w-6 h-0.5 bg-white" />
-              <span className="w-6 h-0.5 bg-white" />
+              <span className="w-7 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
+              <span className="w-7 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
+              <span className="w-7 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
             </button>
 
             {/* Dropdown Menu */}
@@ -218,632 +292,120 @@ export default function Home() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute top-12 right-0 w-48 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
+                  className="absolute top-14 right-0 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden"
                 >
                   <Link 
                     href="/" 
-                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
                     style={{ color: LUNA.surfaceTeal }}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Sticker Collection
-                  </Link>
-                  <Link 
-                    href="#bundles" 
-                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
-                    style={{ color: LUNA.deepWater }}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Bundles
+                    Home
                   </Link>
                   <Link 
                     href="/products/surface-tank" 
-                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
                     style={{ color: LUNA.deepWater }}
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Surface Tank
                   </Link>
+                  <Link 
+                    href="/products/dive-journal" 
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Dive Journal
+                  </Link>
+                  <Link 
+                    href="/stickers" 
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Location Stickers
+                  </Link>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
-        </div>
-      </header>
 
-      {/* ===========================================
-          HERO SECTION
-          =========================================== */}
-      <section className="px-6 pt-6 pb-4">
-        <div className="max-w-7xl mx-auto">
-          
-          {/* Large Title - With MAGENTA GRADIENT EFFECT (matching Surface Tank) */}
-          <h1 
-            className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight"
-            style={{ 
-              background: `linear-gradient(135deg, ${LUNA.highlight} 0%, #FF6B9D 50%, ${LUNA.highlight} 100%)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
-          >
-            Build Your Story
-          </h1>
-
-          {/* Content Row: Text Left, Gauge Center, Water Bottle Right */}
-          <div className="flex flex-col lg:flex-row gap-8 items-start">
-            
-            {/* Left: Description Text */}
-            <div className="flex-1 lg:max-w-sm">
-              <p className="text-white/70 text-base leading-relaxed mb-4">
-                Every sticker marks a memory. Collect the dive sites you've conquered, 
-                the wrecks you've explored, and the reefs that took your breath away.
-              </p>
-              
-              {/* Current tier indicator */}
-              <div className="flex items-center gap-2">
-                <span className="text-white/50 text-sm">Your tier:</span>
-                <span 
-                  className="px-3 py-1 rounded-full text-sm font-semibold"
-                  style={{ 
-                    backgroundColor: `${LUNA.highlight}20`,
-                    color: LUNA.highlight,
-                    border: `1px solid ${LUNA.highlight}40`
-                  }}
+          {/* Product Navigation */}
+          <div className="flex-1 flex flex-col justify-center px-8 md:px-12">
+            <nav className="space-y-8">
+              {PRODUCTS.map((product, index) => (
+                <motion.button
+                  key={product.id}
+                  onClick={() => setActiveProduct(index)}
+                  className="w-full text-left group"
+                  whileHover={{ x: 5 }}
+                  transition={{ type: 'spring', stiffness: 400 }}
                 >
-                  {pricingTier.tier} (£{pricePerItem.toFixed(2)}/each)
-                </span>
-              </div>
-            </div>
-
-            {/* Center: Depth Gauge Pricing */}
-            <div className="flex-1 w-full max-w-sm">
-              <p className="text-white/50 text-xs font-medium mb-3 uppercase tracking-wider text-center">
-                Dive Deeper, Save More
-              </p>
-              
-              {/* Glass Track */}
-              <div className="relative">
-                <div 
-                  className="h-2 rounded-full"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
-                />
-                
-                {/* Progress Fill */}
-                <div 
-                  className="absolute top-0 left-0 h-2 rounded-full transition-all duration-500"
-                  style={{ 
-                    width: `${Math.min(100, (totalItems / 21) * 100)}%`,
-                    backgroundColor: LUNA.highlight,
-                    boxShadow: `0 0 10px ${LUNA.highlight}`
-                  }}
-                />
-                
-                {/* Nodes */}
-                <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full flex justify-between">
-                  {/* Node 1: Starter */}
-                  <div className="relative flex flex-col items-center">
-                    <div 
-                      className="w-4 h-4 rounded-full border-2 transition-all"
-                      style={{ 
-                        backgroundColor: totalItems >= 1 ? LUNA.highlight : 'transparent',
-                        borderColor: LUNA.highlight,
-                        boxShadow: totalItems >= 1 ? `0 0 10px ${LUNA.highlight}` : 'none'
-                      }}
-                    />
-                    <span className="absolute top-6 text-xs font-semibold whitespace-nowrap" style={{ color: LUNA.highlight }}>
-                      £2.50
-                    </span>
-                    <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
-                      Starter
-                    </span>
-                  </div>
-                  
-                  {/* Node 2: Explorer */}
-                  <div className="relative flex flex-col items-center">
-                    <div 
-                      className="w-4 h-4 rounded-full border-2 transition-all"
-                      style={{ 
-                        backgroundColor: totalItems >= 11 ? LUNA.highlight : 'transparent',
-                        borderColor: totalItems >= 11 ? LUNA.highlight : 'rgba(255,255,255,0.3)',
-                        boxShadow: totalItems >= 11 ? `0 0 10px ${LUNA.highlight}` : 'none'
-                      }}
-                    />
+                  <div className="flex items-center gap-4 mb-2">
                     <span 
-                      className="absolute top-6 text-xs font-semibold whitespace-nowrap"
-                      style={{ color: totalItems >= 11 ? LUNA.highlight : 'rgba(255,255,255,0.4)' }}
-                    >
-                      £1.75
-                    </span>
-                    <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
-                      Explorer
-                    </span>
-                  </div>
-                  
-                  {/* Node 3: Pro */}
-                  <div className="relative flex flex-col items-center">
-                    <div 
-                      className="w-4 h-4 rounded-full border-2 transition-all"
+                      className="text-sm font-light"
                       style={{ 
-                        backgroundColor: totalItems >= 21 ? LUNA.highlight : 'transparent',
-                        borderColor: totalItems >= 21 ? LUNA.highlight : 'rgba(255,255,255,0.3)',
-                        boxShadow: totalItems >= 21 ? `0 0 10px ${LUNA.highlight}` : 'none'
+                        color: activeProduct === index ? LUNA.deepWater : LUNA.midDepth 
+                      }}
+                    >
+                      {product.id}
+                    </span>
+                    <div 
+                      className="h-px flex-1 max-w-[100px] transition-all duration-300"
+                      style={{ 
+                        backgroundColor: activeProduct === index ? LUNA.deepWater : '#E5E7EB',
+                        transform: activeProduct === index ? 'scaleX(1)' : 'scaleX(0.6)',
+                        transformOrigin: 'left'
                       }}
                     />
-                    <span 
-                      className="absolute top-6 text-xs font-semibold whitespace-nowrap"
-                      style={{ color: totalItems >= 21 ? LUNA.highlight : 'rgba(255,255,255,0.4)' }}
-                    >
-                      £1.50
-                    </span>
-                    <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
-                      Pro
-                    </span>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Featured Product (Water Bottle) - GLASS EFFECT CARD */}
-            <Link 
-              href="/products/surface-tank"
-              className="w-full lg:w-56 rounded-2xl p-3 floating relative flex-shrink-0 block transition-all hover:scale-105"
-              style={{ 
-                background: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(12px)',
-                border: `2px solid ${LUNA.highlight}`,
-                boxShadow: `0 0 20px ${LUNA.highlight}30`
-              }}
-            >
-              {/* Badge */}
-              <div 
-                className="absolute -top-3 left-3 px-2 py-0.5 rounded-full text-xs font-semibold z-10"
-                style={{ 
-                  backgroundColor: LUNA.highlight,
-                  color: LUNA.abyss
-                }}
-              >
-                Memories That Stick
-              </div>
-              
-              {/* Inner Box - Semi-transparent glass effect */}
-              <div 
-                className="rounded-xl p-2 mb-3"
-                style={{ 
-                  backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                  backdropFilter: 'blur(8px)'
-                }}
-              >
-                <div className="aspect-square rounded-lg flex items-center justify-center overflow-hidden bg-white/10">
-                  <img 
-                    src="https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=823"
-                    alt="Surface Tank Water Bottle"
-                    className="w-full h-full object-contain"
-                   />
-                 </div>
-              </div>
-              
-              {/* Product Info */}
-              <div className="px-1">
-                <h3 className="text-sm font-bold text-white mb-0.5">Surface Tank</h3>
-                <p className="text-white/60 text-xs mb-2">750ml Insulated</p>
-                <div className="flex items-center justify-between">
-                  <span style={{ color: LUNA.highlight }} className="text-lg font-bold">£40.00</span>
-                  <span
-                    className="px-3 py-1.5 rounded-lg text-xs font-semibold"
+                  <h2 
+                    className="text-2xl md:text-3xl font-semibold transition-colors duration-300"
                     style={{ 
-                      background: 'rgba(255, 255, 255, 0.1)',
-                      backdropFilter: 'blur(10px)',
-                      border: `2px solid ${LUNA.highlight}`,
-                      color: 'white',
-                      boxShadow: `0 0 15px ${LUNA.highlight}30`
+                      color: activeProduct === index ? LUNA.deepWater : LUNA.midDepth,
+                      opacity: activeProduct === index ? 1 : 0.6
                     }}
                   >
-                    View →
-                  </span>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </section>
+                    {product.name}
+                  </h2>
+                </motion.button>
+              ))}
+            </nav>
 
-      {/* ===========================================
-          FLOATING GLASS NAVIGATION
-          =========================================== */}
-      <div className="sticky top-16 z-40 flex justify-center px-6 py-4">
-        <nav 
-          className="inline-flex items-center gap-1 p-1.5 rounded-full overflow-x-auto hide-scrollbar max-w-full"
-          style={{ 
-            backgroundColor: `${LUNA.abyss}30`,
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255,255,255,0.1)'
-          }}
-        >
-          {REGIONS.map((region) => (
-            <button
-              key={region}
-              onClick={() => setActiveTab(region)}
-              className="relative px-4 py-2 text-sm font-medium rounded-full transition-all whitespace-nowrap"
-              style={{
-                backgroundColor: activeTab === region ? 'rgba(167, 235, 242, 0.25)' : 'transparent',
-                backdropFilter: activeTab === region ? 'blur(8px)' : 'none',
-                border: activeTab === region ? `1px solid ${LUNA.highlight}` : '1px solid transparent',
-                color: activeTab === region ? LUNA.highlight : 'rgba(255,255,255,0.7)',
-                boxShadow: activeTab === region ? `0 0 20px ${LUNA.highlight}40, inset 0 1px 1px rgba(255,255,255,0.1)` : 'none',
-              }}
-            >
-              {region}
-            </button>
-          ))}
-        </nav>
-      </div>
-
-      {/* ===========================================
-          STICKER GRID
-          =========================================== */}
-      <section className="px-6 py-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-white">
-              {activeTab}
-            </h2>
-            <span className="text-white/50 text-sm">
-              {activeStickers.length} stickers
-            </span>
-          </div>
-
-          {/* Grid - extra padding for badge overflow */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pt-3 px-1">
-            {activeStickers.map((sticker, index) => {
-              const inCart = isInCart(sticker.id);
-              const quantity = getItemQuantity(sticker.id);
-              const isAnimating = animatingItems.has(sticker.id);
-
-              return (
-                <div
-                  key={sticker.id}
-                  className={`glass-card relative rounded-3xl p-4 cursor-pointer ${inCart ? 'selected' : ''}`}
-                  style={{
-                    background: `linear-gradient(145deg, rgba(38, 101, 140, 0.5) 0%, rgba(2, 56, 89, 0.7) 100%)`,
-                    backdropFilter: 'blur(24px)',
-                    WebkitBackdropFilter: 'blur(24px)',
-                    border: inCart 
-                      ? `3px solid ${LUNA.highlight}`
-                      : `3px solid rgba(167, 235, 242, 0.35)`,
-                    boxShadow: inCart
-                      ? `0 0 30px rgba(167, 235, 242, 0.4), inset 0 1px 2px rgba(255,255,255,0.15)`
-                      : `0 8px 32px rgba(1, 28, 64, 0.5), inset 0 1px 2px rgba(255,255,255,0.1)`,
-                  }}
-                  onClick={() => handleToggleSticker(sticker)}
-                >
-                  {/* Quantity Badge - positioned outside card bounds */}
-                  {quantity > 0 && (
-                    <div 
-                      className="absolute w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold z-20"
-                      style={{ 
-                        top: '-10px',
-                        right: '-10px',
-                        backgroundColor: LUNA.highlight,
-                        color: LUNA.abyss,
-                        boxShadow: `0 0 15px ${LUNA.highlight}`
-                      }}
-                    >
-                      {quantity}
-                    </div>
-                  )}
-
-                  {/* Inner Box - Semi-transparent glass effect */}
-                  <div 
-                    className="rounded-2xl p-2"
-                    style={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)',
-                      boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.3), 0 4px 15px rgba(0,0,0,0.1)'
-                    }}
-                  >
-                    {/* Sticker Image */}
-                    <div className="aspect-square rounded-xl overflow-hidden flex items-center justify-center">
-                      {sticker.image && sticker.image !== '/stickers/placeholder.png' ? (
-                        <img 
-                          src={sticker.image} 
-                          alt={sticker.name}
-                          className="w-full h-full object-contain"
-                        />
-                      ) : (
-                        <div className="text-white/50 text-xs text-center p-2">
-                          {sticker.name}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Card Footer */}
-                  <div className="px-2 py-3">
-                    <h3 className="text-white text-sm font-bold truncate">
-                      {sticker.name}
-                    </h3>
-                    <div className="flex items-center justify-between mt-1">
-                      <span className="text-white/60 text-xs truncate flex-1">
-                        {sticker.country}
-                      </span>
-                      <Link 
-                        href={`/stickers/${sticker.slug}`}
-                        onClick={(e) => e.stopPropagation()}
-                        className="text-xs font-semibold transition-all hover:scale-105"
-                        style={{ color: LUNA.highlight }}
-                      >
-                        View →
-                      </Link>
-                    </div>
-                    <div className="flex items-center justify-end mt-1">
-                      <span style={{ color: LUNA.highlight }} className="text-sm font-bold">
-                        £{pricePerItem.toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ===========================================
-          BUNDLES SECTION - WITH GLASS EFFECT BUTTONS
-          =========================================== */}
-      <section id="bundles" className="px-6 py-16">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-white mb-2">Curated Bundles</h2>
-          <p className="text-white/60 mb-8">Pre-selected collections for every type of diver</p>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {BUNDLES.map((bundle) => {
-              const bundleStickers = bundle.stickerIds
-                .map(id => allStickers.find(s => s.id === id))
-                .filter(Boolean);
-
-              return (
-                <div
-                  key={bundle.id}
-                  className="rounded-2xl p-6 transition-all hover:scale-[1.02]"
-                  style={{ 
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    backdropFilter: 'blur(12px)',
-                    border: `1px solid ${LUNA.midDepth}`
-                  }}
-                >
-                  {/* Fanned Sticker Preview */}
-                  <div className="flex -space-x-4 mb-4">
-                    {bundleStickers.slice(0, 5).map((sticker, i) => (
-                      <div
-                        key={sticker.id}
-                        className="w-12 h-12 rounded-lg bg-white flex items-center justify-center border-2 border-white shadow-lg"
-                        style={{ 
-                          transform: `rotate(${(i - 2) * 5}deg)`,
-                          zIndex: 5 - i
-                        }}
-                      >
-                        {sticker.image && sticker.image !== '/stickers/placeholder.png' ? (
-                          <img 
-                            src={sticker.image} 
-                            alt={sticker.name}
-                            className="w-full h-full object-contain rounded-md"
-                          />
-                        ) : (
-                          <span className="text-xs text-gray-400">📍</span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  <h3 className="text-xl font-bold text-white mb-1">{bundle.name}</h3>
-                  <p className="text-white/60 text-sm mb-4">{bundle.description}</p>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-white/40 text-sm">
-                      {bundle.stickerIds.length} stickers
-                    </span>
-                    {/* Glass Effect Button */}
-                    <button
-                      onClick={() => handleAddBundle(bundle)}
-                      className="px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105"
-                      style={{ 
-                        background: 'rgba(255, 255, 255, 0.1)',
-                        backdropFilter: 'blur(10px)',
-                        border: `2px solid ${LUNA.highlight}`,
-                        color: 'white',
-                        boxShadow: `0 0 15px ${LUNA.highlight}30`
-                      }}
-                    >
-                      Add Bundle
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ===========================================
-          FLOATING CART PILL
-          =========================================== */}
-      {totalItems > 0 && (
-        <div className="fixed bottom-6 right-6 z-50">
-          <button
-            onClick={() => setIsCartExpanded(!isCartExpanded)}
-            className="flex items-center gap-3 px-5 py-3 rounded-full transition-all hover:scale-105"
-            style={{ 
-              backgroundColor: `${LUNA.abyss}90`,
-              backdropFilter: 'blur(20px)',
-              border: `2px solid ${LUNA.highlight}`,
-              boxShadow: `0 0 30px ${LUNA.highlight}40`
-            }}
-          >
-            {/* Cart Icon */}
-            <div 
-              className="w-8 h-8 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: LUNA.highlight }}
-            >
-              <span className="text-sm font-bold" style={{ color: LUNA.abyss }}>
-                {totalItems}
-              </span>
-            </div>
-            
-            {/* Total */}
-            <div className="text-left">
-              <p className="text-white text-sm font-semibold">
-                £{totalPrice.toFixed(2)}
-              </p>
-              {savings > 0 && (
-                <p className="text-xs" style={{ color: LUNA.highlight }}>
-                  Save £{savings.toFixed(2)}
-                </p>
-              )}
-            </div>
-
-            {/* Arrow */}
-            <svg 
-              width="16" 
-              height="16" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke={LUNA.highlight}
-              strokeWidth="2"
-              className={`transition-transform ${isCartExpanded ? 'rotate-180' : ''}`}
-            >
-              <path d="M18 15l-6-6-6 6"/>
-            </svg>
-          </button>
-
-          {/* Expanded Cart Panel */}
-          <AnimatePresence>
-            {isCartExpanded && (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="absolute bottom-16 right-0 w-80 rounded-2xl p-4 max-h-96 overflow-y-auto hide-scrollbar"
-                style={{ 
-                  backgroundColor: `${LUNA.abyss}95`,
-                  backdropFilter: 'blur(20px)',
-                  border: `1px solid ${LUNA.highlight}40`
-                }}
+            {/* See Collections Button */}
+            <div className="mt-16">
+              <Link
+                href="/stickers"
+                className="inline-flex items-center gap-2 text-sm font-medium tracking-wider transition-colors hover:opacity-70"
+                style={{ color: LUNA.deepWater }}
               >
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-white font-bold">Your Pack</h3>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); clearCart && clearCart(); setIsCartExpanded(false); }}
-                    className="text-white/50 text-xs hover:text-white transition-colors"
-                  >
-                    Clear all
-                  </button>
-                </div>
-                
-                {/* Cart Items */}
-                <div className="space-y-3 mb-4">
-                  {cartItemsWithData.length > 0 ? (
-                    cartItemsWithData.map((item) => (
-                      <div key={item.id} className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
-                          {item.image && item.image !== '/stickers/placeholder.png' ? (
-                            <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
-                          ) : (
-                            <span className="text-xs">📍</span>
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-white text-sm font-medium truncate">{item.name}</p>
-                          <p className="text-white/50 text-xs">×{item.quantity}</p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <button
-                            onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, -1); }}
-                            className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20 flex items-center justify-center"
-                          >
-                            -
-                          </button>
-                          <button
-                            onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, 1); }}
-                            className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20 flex items-center justify-center"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-white/50 text-sm text-center py-4">Your pack is empty</p>
-                  )}
-                </div>
-
-                {/* Checkout Button - Glass Effect */}
-                <button
-                  onClick={handleCheckout}
-                  disabled={!canCheckout}
-                  className="w-full py-3 rounded-xl text-sm font-bold transition-all"
-                  style={{ 
-                    background: canCheckout ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255,255,255,0.05)',
-                    backdropFilter: 'blur(10px)',
-                    border: canCheckout ? `2px solid ${LUNA.highlight}` : '2px solid rgba(255,255,255,0.1)',
-                    color: canCheckout ? 'white' : 'rgba(255,255,255,0.3)',
-                    cursor: canCheckout ? 'pointer' : 'not-allowed',
-                    boxShadow: canCheckout ? `0 0 15px ${LUNA.highlight}30` : 'none'
-                  }}
-                >
-                  {canCheckout ? 'Checkout →' : `Min 5 stickers required`}
-                </button>
-
-                {!canCheckout && totalItems > 0 && (
-                  <p className="text-center text-white/50 text-xs mt-2">
-                    Add {5 - totalItems} more to checkout
-                  </p>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      )}
-
-      {/* ===========================================
-          FOOTER
-          =========================================== */}
-      <footer 
-        className="px-6 py-12 mt-16"
-        style={{ backgroundColor: LUNA.abyss }}
-      >
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2">
-              <img
-                src="/logo.png"
-                alt="Otterseas"
-                className="w-8 h-8 rounded-lg object-contain"
-              />
-              <span className="text-lg font-normal text-white">Otterseas</span>
-            </div>
-            
-            <p className="text-white/40 text-sm">
-              © 2025 Otterseas. Dive deeper, collect memories.
-            </p>
-
-            <div className="flex gap-4">
-              <a href="#" className="text-white/40 hover:text-white text-sm transition-colors">
-                Privacy
-              </a>
-              <a href="#" className="text-white/40 hover:text-white text-sm transition-colors">
-                Terms
-              </a>
-              <a href="#" className="text-white/40 hover:text-white text-sm transition-colors">
-                Contact
-              </a>
+                SEE COLLECTIONS
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </Link>
             </div>
           </div>
+
+          {/* Footer */}
+          <footer className="px-8 md:px-12 py-6 border-t border-gray-100">
+            <div className="flex items-center justify-between">
+              <p className="text-xs" style={{ color: LUNA.midDepth }}>
+                © 2025 Otterseas
+              </p>
+              <div className="flex gap-4">
+                <a href="#" className="text-xs transition-colors hover:opacity-70" style={{ color: LUNA.midDepth }}>
+                  Privacy
+                </a>
+                <a href="#" className="text-xs transition-colors hover:opacity-70" style={{ color: LUNA.midDepth }}>
+                  Terms
+                </a>
+              </div>
+            </div>
+          </footer>
         </div>
-      </footer>
-    </div>
+      </div>
+    </>
   );
 }
