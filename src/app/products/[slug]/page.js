@@ -376,7 +376,7 @@ export default function ProductPage() {
                   Home
                 </Link>
                 <Link 
-                  href="/" 
+                  href="/stickers" 
                   className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
                   style={{ color: COLORS.deepWater }}
                 >
@@ -467,7 +467,7 @@ export default function ProductPage() {
             </div>
 
             <Link
-              href="/"
+              href="/stickers"
               className="block text-center text-base md:text-lg font-semibold transition-colors hover:opacity-80"
               style={{ color: COLORS.surfaceTeal }}
             >
