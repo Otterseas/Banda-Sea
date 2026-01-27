@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { STICKERS, BUNDLES, REGIONS, BASE_PRICE, getAllStickers } from '@/data/stickers';
 import { useCart } from '@/context/CartContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -24,6 +25,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState(REGIONS[0]);
   const [animatingItems, setAnimatingItems] = useState(new Set());
   const [isCartExpanded, setIsCartExpanded] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const {
     cartItems,
@@ -38,6 +40,7 @@ export default function Home() {
     updateQuantity,
     toggleItem,
     addBundle,
+    clearCart,
   } = useCart();
 
   // Get stickers for current tab
@@ -181,46 +184,70 @@ export default function Home() {
       </div>
 
       {/* ===========================================
-          HEADER
+          HEADER - MATCHING SURFACE TANK STYLE
           =========================================== */}
-      <header className="sticky top-0 z-50 px-6 py-4" style={{ backgroundColor: `${LUNA.abyss}80`, backdropFilter: 'blur(12px)' }}>
+      <header className="sticky top-0 z-50 px-6 py-3" style={{ backgroundColor: `${LUNA.abyss}80`, backdropFilter: 'blur(12px)' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo - Left */}
-          <Link href="/" className="flex items-center gap-3">
-            <div 
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: LUNA.highlight }}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={LUNA.abyss} strokeWidth="2.5">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                <path d="M2 17l10 5 10-5"/>
-                <path d="M2 12l10 5 10-5"/>
-              </svg>
-            </div>
-            <span className="text-xl font-bold text-white tracking-tight">
+          {/* Logo - Left (matching Surface Tank) */}
+          <Link href="/" className="flex items-center gap-2">
+            <img
+              src="/logo.png"
+              alt="Otterseas"
+              className="w-8 h-8 rounded-lg object-contain"
+            />
+            <span className="text-lg font-normal tracking-tight text-white">
               Otterseas
             </span>
           </Link>
 
-          {/* Nav - Right */}
-          <nav className="flex items-center gap-4">
-            <Link 
-              href="#bundles" 
-              className="text-white/70 hover:text-white text-sm font-medium transition-colors hidden md:block"
+          {/* Hamburger Menu - Right (matching Surface Tank) */}
+          <div className="relative">
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="flex flex-col gap-1.5 p-2 hover:bg-white/10 rounded-lg transition-colors"
             >
-              Bundles
-            </Link>
-            <Link 
-              href="#surface-tank" 
-              className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105"
-              style={{ 
-                backgroundColor: LUNA.highlight,
-                color: LUNA.abyss
-              }}
-            >
-              Surface Tank
-            </Link>
-          </nav>
+              <span className="w-6 h-0.5 bg-white" />
+              <span className="w-6 h-0.5 bg-white" />
+              <span className="w-6 h-0.5 bg-white" />
+            </button>
+
+            {/* Dropdown Menu */}
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute top-12 right-0 w-48 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
+                >
+                  <Link 
+                    href="/" 
+                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
+                    style={{ color: LUNA.surfaceTeal }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Sticker Collection
+                  </Link>
+                  <Link 
+                    href="#bundles" 
+                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Bundles
+                  </Link>
+                  <Link 
+                    href="/products/surface-tank" 
+                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Surface Tank
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </header>
 
@@ -230,15 +257,14 @@ export default function Home() {
       <section className="px-6 pt-6 pb-4">
         <div className="max-w-7xl mx-auto">
           
-          {/* Large Title - Left aligned with gradient overlay effect */}
+          {/* Large Title - With MAGENTA GRADIENT EFFECT (matching Surface Tank) */}
           <h1 
             className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight"
             style={{ 
-              background: `linear-gradient(135deg, ${LUNA.highlight} 0%, ${LUNA.surfaceTeal} 50%, ${LUNA.midDepth} 100%)`,
+              background: `linear-gradient(135deg, ${LUNA.highlight} 0%, #FF6B9D 50%, ${LUNA.highlight} 100%)`,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              textShadow: 'none'
             }}
           >
             Build Your Story
@@ -358,14 +384,15 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right: Featured Product (Water Bottle) - Square */}
-            <div 
-              className="w-full lg:w-56 rounded-2xl p-3 floating relative flex-shrink-0"
+            {/* Right: Featured Product (Water Bottle) - GLASS EFFECT CARD */}
+            <Link 
+              href="/products/surface-tank"
+              className="w-full lg:w-56 rounded-2xl p-3 floating relative flex-shrink-0 block transition-all hover:scale-105"
               style={{ 
-                background: `rgba(2, 56, 89, 0.3)`,
+                background: 'rgba(255, 255, 255, 0.1)',
                 backdropFilter: 'blur(12px)',
-                border: `3px solid ${LUNA.highlight}`,
-                boxShadow: `0 0 30px ${LUNA.highlight}40`
+                border: `2px solid ${LUNA.highlight}`,
+                boxShadow: `0 0 20px ${LUNA.highlight}30`
               }}
             >
               {/* Badge */}
@@ -387,8 +414,6 @@ export default function Home() {
                   backdropFilter: 'blur(8px)'
                 }}
               >
-                {/* ====== WATER BOTTLE IMAGE ====== */}
-                {/* Replace the src URL below with your Shopify image URL */}
                 <div className="aspect-square rounded-lg flex items-center justify-center overflow-hidden bg-white/10">
                   <img 
                     src="https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=823"
@@ -403,24 +428,22 @@ export default function Home() {
                 <h3 className="text-sm font-bold text-white mb-0.5">Surface Tank</h3>
                 <p className="text-white/60 text-xs mb-2">750ml Insulated</p>
                 <div className="flex items-center justify-between">
-                  <span style={{ color: LUNA.highlight }} className="text-lg font-bold">£24.99</span>
-                  {/* 
-                    TODO: Replace href with your water bottle product page URL, e.g.:
-                    href="/products/surface-tank" or external Shopify URL
-                  */}
-                  <Link 
-                    href="#surface-tank"
-                    className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105"
+                  <span style={{ color: LUNA.highlight }} className="text-lg font-bold">£40.00</span>
+                  <span
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold"
                     style={{ 
-                      backgroundColor: LUNA.highlight,
-                      color: LUNA.abyss
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      backdropFilter: 'blur(10px)',
+                      border: `2px solid ${LUNA.highlight}`,
+                      color: 'white',
+                      boxShadow: `0 0 15px ${LUNA.highlight}30`
                     }}
                   >
                     View →
-                  </Link>
+                  </span>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -428,7 +451,7 @@ export default function Home() {
       {/* ===========================================
           FLOATING GLASS NAVIGATION
           =========================================== */}
-      <div className="sticky top-20 z-40 flex justify-center px-6 py-4">
+      <div className="sticky top-16 z-40 flex justify-center px-6 py-4">
         <nav 
           className="inline-flex items-center gap-1 p-1.5 rounded-full overflow-x-auto hide-scrollbar max-w-full"
           style={{ 
@@ -566,7 +589,7 @@ export default function Home() {
       </section>
 
       {/* ===========================================
-          BUNDLES SECTION
+          BUNDLES SECTION - WITH GLASS EFFECT BUTTONS
           =========================================== */}
       <section id="bundles" className="px-6 py-16">
         <div className="max-w-7xl mx-auto">
@@ -584,7 +607,8 @@ export default function Home() {
                   key={bundle.id}
                   className="rounded-2xl p-6 transition-all hover:scale-[1.02]"
                   style={{ 
-                    backgroundColor: LUNA.deepWater,
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(12px)',
                     border: `1px solid ${LUNA.midDepth}`
                   }}
                 >
@@ -619,12 +643,16 @@ export default function Home() {
                     <span className="text-white/40 text-sm">
                       {bundle.stickerIds.length} stickers
                     </span>
+                    {/* Glass Effect Button */}
                     <button
                       onClick={() => handleAddBundle(bundle)}
                       className="px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105"
                       style={{ 
-                        backgroundColor: LUNA.highlight,
-                        color: LUNA.abyss
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        backdropFilter: 'blur(10px)',
+                        border: `2px solid ${LUNA.highlight}`,
+                        color: 'white',
+                        boxShadow: `0 0 15px ${LUNA.highlight}30`
                       }}
                     >
                       Add Bundle
@@ -689,83 +717,91 @@ export default function Home() {
           </button>
 
           {/* Expanded Cart Panel */}
-          {isCartExpanded && (
-            <div 
-              className="absolute bottom-16 right-0 w-80 rounded-2xl p-4 max-h-96 overflow-y-auto hide-scrollbar"
-              style={{ 
-                backgroundColor: `${LUNA.abyss}95`,
-                backdropFilter: 'blur(20px)',
-                border: `1px solid ${LUNA.highlight}40`
-              }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white font-bold">Your Pack</h3>
-                <button
-                  onClick={(e) => { e.stopPropagation(); clearCart(); setIsCartExpanded(false); }}
-                  className="text-white/50 text-xs hover:text-white transition-colors"
-                >
-                  Clear all
-                </button>
-              </div>
-              
-              {/* Cart Items */}
-              <div className="space-y-3 mb-4">
-                {cartItemsWithData.length > 0 ? (
-                  cartItemsWithData.map((item) => (
-                    <div key={item.id} className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
-                        {item.image && item.image !== '/stickers/placeholder.png' ? (
-                          <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
-                        ) : (
-                          <span className="text-xs">📍</span>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white text-sm font-medium truncate">{item.name}</p>
-                        <p className="text-white/50 text-xs">×{item.quantity}</p>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <button
-                          onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, -1); }}
-                          className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20 flex items-center justify-center"
-                        >
-                          -
-                        </button>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, 1); }}
-                          className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20 flex items-center justify-center"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-white/50 text-sm text-center py-4">Your pack is empty</p>
-                )}
-              </div>
-
-              {/* Checkout Button */}
-              <button
-                onClick={handleCheckout}
-                disabled={!canCheckout}
-                className="w-full py-3 rounded-xl text-sm font-bold transition-all"
+          <AnimatePresence>
+            {isCartExpanded && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                className="absolute bottom-16 right-0 w-80 rounded-2xl p-4 max-h-96 overflow-y-auto hide-scrollbar"
                 style={{ 
-                  backgroundColor: canCheckout ? LUNA.highlight : 'rgba(255,255,255,0.1)',
-                  color: canCheckout ? LUNA.abyss : 'rgba(255,255,255,0.3)',
-                  cursor: canCheckout ? 'pointer' : 'not-allowed'
+                  backgroundColor: `${LUNA.abyss}95`,
+                  backdropFilter: 'blur(20px)',
+                  border: `1px solid ${LUNA.highlight}40`
                 }}
               >
-                {canCheckout ? 'Checkout →' : `Min 5 stickers required`}
-              </button>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-white font-bold">Your Pack</h3>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); clearCart && clearCart(); setIsCartExpanded(false); }}
+                    className="text-white/50 text-xs hover:text-white transition-colors"
+                  >
+                    Clear all
+                  </button>
+                </div>
+                
+                {/* Cart Items */}
+                <div className="space-y-3 mb-4">
+                  {cartItemsWithData.length > 0 ? (
+                    cartItemsWithData.map((item) => (
+                      <div key={item.id} className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
+                          {item.image && item.image !== '/stickers/placeholder.png' ? (
+                            <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
+                          ) : (
+                            <span className="text-xs">📍</span>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white text-sm font-medium truncate">{item.name}</p>
+                          <p className="text-white/50 text-xs">×{item.quantity}</p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, -1); }}
+                            className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20 flex items-center justify-center"
+                          >
+                            -
+                          </button>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, 1); }}
+                            className="w-6 h-6 rounded-full bg-white/10 text-white text-sm hover:bg-white/20 flex items-center justify-center"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-white/50 text-sm text-center py-4">Your pack is empty</p>
+                  )}
+                </div>
 
-              {!canCheckout && totalItems > 0 && (
-                <p className="text-center text-white/50 text-xs mt-2">
-                  Add {5 - totalItems} more to checkout
-                </p>
-              )}
-            </div>
-          )}
+                {/* Checkout Button - Glass Effect */}
+                <button
+                  onClick={handleCheckout}
+                  disabled={!canCheckout}
+                  className="w-full py-3 rounded-xl text-sm font-bold transition-all"
+                  style={{ 
+                    background: canCheckout ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255,255,255,0.05)',
+                    backdropFilter: 'blur(10px)',
+                    border: canCheckout ? `2px solid ${LUNA.highlight}` : '2px solid rgba(255,255,255,0.1)',
+                    color: canCheckout ? 'white' : 'rgba(255,255,255,0.3)',
+                    cursor: canCheckout ? 'pointer' : 'not-allowed',
+                    boxShadow: canCheckout ? `0 0 15px ${LUNA.highlight}30` : 'none'
+                  }}
+                >
+                  {canCheckout ? 'Checkout →' : `Min 5 stickers required`}
+                </button>
+
+                {!canCheckout && totalItems > 0 && (
+                  <p className="text-center text-white/50 text-xs mt-2">
+                    Add {5 - totalItems} more to checkout
+                  </p>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       )}
 
@@ -778,18 +814,13 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <div 
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: LUNA.highlight }}
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={LUNA.abyss} strokeWidth="2.5">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                  <path d="M2 17l10 5 10-5"/>
-                  <path d="M2 12l10 5 10-5"/>
-                </svg>
-              </div>
-              <span className="text-xl font-bold text-white">Otterseas</span>
+            <div className="flex items-center gap-2">
+              <img
+                src="/logo.png"
+                alt="Otterseas"
+                className="w-8 h-8 rounded-lg object-contain"
+              />
+              <span className="text-lg font-normal text-white">Otterseas</span>
             </div>
             
             <p className="text-white/40 text-sm">
