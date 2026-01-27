@@ -466,8 +466,11 @@ export default function Home() {
               onClick={() => setActiveTab(region)}
               className="relative px-4 py-2 text-sm font-medium rounded-full transition-all whitespace-nowrap"
               style={{
-                backgroundColor: activeTab === region ? LUNA.highlight : 'transparent',
-                color: activeTab === region ? LUNA.abyss : 'rgba(255,255,255,0.7)',
+                backgroundColor: activeTab === region ? 'rgba(167, 235, 242, 0.25)' : 'transparent',
+                backdropFilter: activeTab === region ? 'blur(8px)' : 'none',
+                border: activeTab === region ? `1px solid ${LUNA.highlight}` : '1px solid transparent',
+                color: activeTab === region ? LUNA.highlight : 'rgba(255,255,255,0.7)',
+                boxShadow: activeTab === region ? `0 0 20px ${LUNA.highlight}40, inset 0 1px 1px rgba(255,255,255,0.1)` : 'none',
               }}
             >
               {region}
