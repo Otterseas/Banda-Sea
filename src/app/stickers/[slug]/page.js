@@ -6,6 +6,16 @@ import { useCart } from '@/context/CartContext';
 import ProductDetails from '@/components/ProductDetails';
 import Link from 'next/link';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Luna Color Palette
+const LUNA = {
+  highlight: '#A7EBF2',
+  surfaceTeal: '#54ACBF',
+  midDepth: '#26658C',
+  deepWater: '#023859',
+  abyss: '#011C40',
+};
 
 // Get related stickers (same region, excluding current)
 const getRelatedStickers = (sticker) => {
@@ -17,6 +27,7 @@ export default function StickerPage() {
   const params = useParams();
   const sticker = getStickerBySlug(params.slug);
   const { addToCart } = useCart();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   // MiniNav state
   const relatedStickers = getRelatedStickers(sticker);
@@ -27,10 +38,13 @@ export default function StickerPage() {
 
   if (!sticker) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div 
+        className="h-screen flex items-center justify-center"
+        style={{ background: `linear-gradient(160deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 40%, ${LUNA.abyss} 100%)` }}
+      >
         <div className="text-center">
-          <h1 className="text-2xl font-light text-navy mb-4">Sticker not found</h1>
-          <Link href="/" className="text-ochre hover:underline">
+          <h1 className="text-2xl font-light text-white mb-4">Sticker not found</h1>
+          <Link href="/stickers" className="text-white/60 hover:text-white hover:underline">
             ← Back to collection
           </Link>
         </div>
@@ -48,8 +62,8 @@ export default function StickerPage() {
       {/* ==================== LEFT COLUMN - WHITE ==================== */}
       <div className="w-full md:w-[55%] h-full bg-white flex flex-col overflow-y-auto md:overflow-hidden">
         
-        {/* Header */}
-        <header className="flex-shrink-0 h-16 flex items-center px-8 border-b border-gray-100">
+        {/* Header - Matching site navigation */}
+        <header className="flex-shrink-0 h-16 flex items-center justify-between px-8 border-b border-gray-100">
           <Link href="/" className="flex items-center gap-3">
             <img 
               src="/logo.png" 
@@ -58,11 +72,68 @@ export default function StickerPage() {
             />
             <span 
               className="text-xl font-normal tracking-tight"
-              style={{ color: '#0A2540' }}
+              style={{ color: LUNA.deepWater }}
             >
               Otterseas
             </span>
           </Link>
+
+          {/* Hamburger Menu */}
+          <div className="relative">
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="flex flex-col gap-1.5 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
+              <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
+              <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
+            </button>
+
+            {/* Dropdown Menu */}
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute top-12 right-0 w-48 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
+                >
+                  <Link 
+                    href="/" 
+                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Home
+                  </Link>
+                  <Link 
+                    href="/stickers" 
+                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
+                    style={{ color: LUNA.surfaceTeal }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Sticker Collection
+                  </Link>
+                  <Link 
+                    href="/products/surface-tank" 
+                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Surface Tank
+                  </Link>
+                  <Link 
+                    href="/products/dive-journal" 
+                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Dive Journal
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </header>
 
         {/* Content */}
@@ -72,7 +143,7 @@ export default function StickerPage() {
           <div className="mb-2">
             <h1 
               className="text-5xl md:text-6xl font-bold mb-4"
-              style={{ color: '#0A2540' }}
+              style={{ color: LUNA.deepWater }}
             >
               {sticker.name}
             </h1>
@@ -81,26 +152,29 @@ export default function StickerPage() {
               <div className="flex flex-col gap-1">
                 <p className="text-base">
                   <span className="text-gray-400">Region: </span>
-                  <span style={{ color: '#2A9D8F' }}>{sticker.region}</span>
+                  <span style={{ color: LUNA.surfaceTeal }}>{sticker.region}</span>
                 </p>
                 <p className="text-base">
                   <span className="text-gray-400">Country: </span>
-                  <span style={{ color: '#2A9D8F' }}>{sticker.country}</span>
+                  <span style={{ color: LUNA.surfaceTeal }}>{sticker.country}</span>
                 </p>
               </div>
               
-              {/* Add to Cart Button - Inline */}
-              <button
+              {/* Add to Cart Button - Glass effect style */}
+              <motion.button
                 onClick={handleAddToPack}
-                className="px-6 py-3 rounded-lg text-sm font-medium transition-all hover:scale-105"
+                className="px-6 py-3 rounded-lg text-sm font-medium transition-all"
                 style={{ 
                   backgroundColor: 'white',
-                  color: '#0A2540',
-                  border: '2px solid #0A2540'
+                  color: LUNA.deepWater,
+                  border: `2px solid ${LUNA.highlight}`,
+                  boxShadow: `0 0 15px ${LUNA.highlight}30`
                 }}
+                whileHover={{ scale: 1.05, boxShadow: `0 0 25px ${LUNA.highlight}50` }}
+                whileTap={{ scale: 0.98 }}
               >
-                Add to Cart
-              </button>
+                Add to Collection
+              </motion.button>
             </div>
           </div>
 
@@ -118,7 +192,7 @@ export default function StickerPage() {
                 <div 
                   className="w-full aspect-[4/3] rounded-3xl flex items-center justify-center relative overflow-hidden"
                   style={{ 
-                    background: 'linear-gradient(180deg, #87CEEB 0%, #1E90FF 40%, #0A2540 100%)',
+                    background: `linear-gradient(180deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 40%, ${LUNA.abyss} 100%)`,
                   }}
                 >
                   {/* Mask frame */}
@@ -144,24 +218,29 @@ export default function StickerPage() {
       <div 
         className="w-full md:w-[45%] h-full flex flex-col relative overflow-hidden"
         style={{ 
-          background: 'linear-gradient(160deg, #3B8D99 0%, #1B4D5C 25%, #0F3443 50%, #0A2540 100%)'
+          background: `linear-gradient(160deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 40%, ${LUNA.abyss} 100%)`
         }}
       >
-        {/* Hamburger Menu */}
+        {/* Back to Collection Link */}
         <div className="absolute top-6 right-8 z-10">
-          <button className="flex flex-col gap-1.5 p-2">
-            <span className="w-7 h-0.5 bg-white/70"></span>
-            <span className="w-7 h-0.5 bg-white/70"></span>
-            <span className="w-7 h-0.5 bg-white/70"></span>
-          </button>
+          <Link 
+            href="/stickers"
+            className="flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-80"
+            style={{ color: LUNA.highlight }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Collection
+          </Link>
         </div>
 
         {/* Story Content */}
-        <div className="flex-1 overflow-y-auto hide-scrollbar px-10 py-12 pb-64 md:pb-12">
+        <div className="flex-1 overflow-y-auto hide-scrollbar px-10 py-16 pb-64 md:pb-12">
           {/* Story Headline */}
           <h2 
             className="text-2xl md:text-3xl font-light mb-6 italic"
-            style={{ color: '#D99E30' }}
+            style={{ color: LUNA.highlight }}
           >
             {sticker.story?.headline || 'The Story'}
           </h2>
@@ -174,7 +253,7 @@ export default function StickerPage() {
           {/* Why We Chose This Design */}
           <h3 
             className="text-xl md:text-2xl font-light mb-4"
-            style={{ color: '#D99E30' }}
+            style={{ color: LUNA.highlight }}
           >
             Why We Chose This Design
           </h3>
@@ -203,7 +282,7 @@ export default function StickerPage() {
                   href={`/stickers/${s.slug}`}
                   className="w-16 h-16 rounded-xl overflow-hidden transition-all hover:scale-105 flex-shrink-0"
                   style={{ 
-                    background: 'linear-gradient(135deg, #3B8D99 0%, #0A2540 100%)',
+                    background: `linear-gradient(135deg, ${LUNA.midDepth} 0%, ${LUNA.abyss} 100%)`,
                     border: '2px solid #e5e7eb'
                   }}
                 >
@@ -247,6 +326,7 @@ export default function StickerPage() {
           >
             <span 
               className="vertical-text text-[10px] tracking-[0.25em] text-gray-400 font-light uppercase"
+              style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
             >
               Memories That Stick
             </span>
