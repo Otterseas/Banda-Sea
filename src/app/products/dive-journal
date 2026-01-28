@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCart } from '@/context/CartContext';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -131,6 +132,9 @@ export default function DiveJournalPage() {
   const [selectedImage, setSelectedImage] = useState('hero');
   const [selectedBundle, setSelectedBundle] = useState('journal-only');
   const [activeFeature, setActiveFeature] = useState(0);
+  
+  // Get cart context for side cart
+  const { addToCart, openCart } = useCart();
 
   // Thumbnail images for gallery
   const thumbnails = [
@@ -144,10 +148,21 @@ export default function DiveJournalPage() {
   // Get selected bundle data
   const currentBundle = BUNDLE_OPTIONS.find(b => b.id === selectedBundle);
 
-  // Handle add to cart
+  // Handle add to cart - opens side cart
   const handleAddToCart = () => {
-    const cartString = currentBundle.items.map(item => `${item.variantId}:${item.quantity}`).join(',');
-    window.location.href = `https://38a44d-4c.myshopify.com/cart/${cartString}`;
+    // Add items to cart
+    currentBundle.items.forEach(item => {
+      for (let i = 0; i < item.quantity; i++) {
+        addToCart({ 
+          id: item.variantId, 
+          shopifyVariantId: item.variantId,
+          name: item.variantId === PRODUCT.shopifyVariantId ? PRODUCT.name : BOOSTER_PACK.name,
+          price: item.variantId === PRODUCT.shopifyVariantId ? PRODUCT.price : BOOSTER_PACK.price,
+        });
+      }
+    });
+    // Open the side cart
+    if (openCart) openCart();
   };
 
   return (
@@ -453,13 +468,13 @@ export default function DiveJournalPage() {
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.02 }}
               >
-                <div className="flex flex-col md:flex-row">
-                  {/* Image */}
-                  <div className="md:w-1/2 h-48 md:h-auto overflow-hidden">
+                <div className="flex flex-col md:flex-row h-full">
+                  {/* Image - Better positioning */}
+                  <div className="md:w-1/2 h-48 md:h-64 overflow-hidden">
                     <img 
                       src={PRODUCT.images[feature.image]}
                       alt={feature.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
                     />
                   </div>
                   
@@ -586,33 +601,45 @@ export default function DiveJournalPage() {
 
           {/* Image Row */}
           <div className="grid grid-cols-3 gap-6">
-            <motion.img 
-              src={PRODUCT.images.stacked}
-              alt="Journals stacked"
-              className="rounded-2xl shadow-lg"
+            <motion.div 
+              className="aspect-square rounded-2xl shadow-lg overflow-hidden"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-            />
-            <motion.img 
-              src={PRODUCT.images.withComputer}
-              alt="In use with dive computer"
-              className="rounded-2xl shadow-lg"
+            >
+              <img 
+                src={PRODUCT.images.stacked}
+                alt="Journals stacked"
+                className="w-full h-full object-cover object-center"
+              />
+            </motion.div>
+            <motion.div 
+              className="aspect-square rounded-2xl shadow-lg overflow-hidden"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-            />
-            <motion.img 
-              src={PRODUCT.images.storage}
-              alt="Storage compartment"
-              className="rounded-2xl shadow-lg"
+            >
+              <img 
+                src={PRODUCT.images.withComputer}
+                alt="In use with dive computer"
+                className="w-full h-full object-cover object-center"
+              />
+            </motion.div>
+            <motion.div 
+              className="aspect-square rounded-2xl shadow-lg overflow-hidden"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-            />
+            >
+              <img 
+                src={PRODUCT.images.storage}
+                alt="Storage compartment"
+                className="w-full h-full object-cover object-center"
+              />
+            </motion.div>
           </div>
         </div>
       </section>
