@@ -218,31 +218,55 @@ export default function Home() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute top-12 right-0 w-48 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
+                  className="absolute top-12 right-0 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
                 >
                   <Link 
                     href="/" 
-                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Home
+                  </Link>
+                  <Link 
+                    href="/products" 
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    All Products
+                  </Link>
+                  <Link 
+                    href="/stickers" 
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
                     style={{ color: LUNA.surfaceTeal }}
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sticker Collection
                   </Link>
                   <Link 
-                    href="#bundles" 
-                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
-                    style={{ color: LUNA.deepWater }}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Bundles
-                  </Link>
-                  <Link 
                     href="/products/surface-tank" 
-                    className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
                     style={{ color: LUNA.deepWater }}
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Surface Tank
+                  </Link>
+                  <Link 
+                    href="/products/dive-journal" 
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Dive Journal
+                  </Link>
+                  <Link 
+                    href="/products/logbook-booster-pack" 
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Booster Pack
                   </Link>
                 </motion.div>
               )}
