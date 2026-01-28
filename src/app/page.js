@@ -286,7 +286,7 @@ function AboutUsSection() {
               className="text-4xl md:text-5xl font-bold mb-2"
               style={{ color: LUNA.highlight }}
             >
-              50+
+              80+
             </p>
             <p className="text-white/50 text-sm">Dive Locations</p>
           </div>
@@ -431,7 +431,7 @@ export default function HomePage() {
                 </motion.div>
               </AnimatePresence>
 
-              {/* Tagline and Link - Bottom Center */}
+              {/* Tagline and Link - Right side, under product image, left justified */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`tagline-${activeProduct}`}
@@ -439,7 +439,7 @@ export default function HomePage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.4, delay: 0.2 }}
-                  className="mt-8 md:mt-12 text-center"
+                  className="mt-8 md:mt-12 text-left md:ml-auto md:mr-16 md:w-1/2"
                 >
                   <p 
                     className="text-sm tracking-[0.2em] font-medium mb-2"
@@ -584,23 +584,6 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-
-            {/* Footer */}
-            <footer className="px-8 md:px-12 py-6 border-t border-gray-100">
-              <div className="flex items-center justify-between">
-                <p className="text-xs" style={{ color: LUNA.midDepth }}>
-                  © 2025 Otterseas
-                </p>
-                <div className="flex gap-4">
-                  <a href="#" className="text-xs transition-colors hover:opacity-70" style={{ color: LUNA.midDepth }}>
-                    Privacy
-                  </a>
-                  <a href="#" className="text-xs transition-colors hover:opacity-70" style={{ color: LUNA.midDepth }}>
-                    Terms
-                  </a>
-                </div>
-              </div>
-            </footer>
           </div>
         </div>
 
@@ -610,6 +593,103 @@ export default function HomePage() {
         <div id="about">
           <AboutUsSection />
         </div>
+
+        {/* ===========================================
+            NEWSLETTER SECTION
+            =========================================== */}
+        <section 
+          className="w-full py-20 px-8"
+          style={{
+            background: `linear-gradient(180deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 100%)`
+          }}
+        >
+          <div className="max-w-2xl mx-auto text-center">
+            <motion.span 
+              className="text-sm tracking-[0.2em] font-medium mb-4 block"
+              style={{ color: LUNA.highlight }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              STAY IN THE LOOP
+            </motion.span>
+            
+            <motion.h2 
+              className="text-3xl md:text-4xl font-bold mb-4"
+              style={{ 
+                background: `linear-gradient(135deg, ${LUNA.highlight} 0%, ${LUNA.surfaceTeal} 50%, white 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              Join Our Dive Community
+            </motion.h2>
+            
+            <motion.p 
+              className="text-white/70 text-base leading-relaxed mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              Subscribe to get updates on new dive locations, product launches, and exclusive offers for fellow ocean enthusiasts.
+            </motion.p>
+
+            {/* Newsletter Form */}
+            <motion.form
+              action="mailto:info@otterseas.com"
+              method="POST"
+              encType="text/plain"
+              className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+                className="flex-1 px-5 py-3 rounded-lg text-sm outline-none transition-all focus:ring-2"
+                style={{ 
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(10px)',
+                  border: `1px solid ${LUNA.highlight}40`,
+                  color: 'white',
+                }}
+              />
+              <button
+                type="submit"
+                className="px-6 py-3 rounded-lg text-sm font-semibold transition-all hover:scale-105"
+                style={{ 
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(10px)',
+                  border: `2px solid ${LUNA.highlight}`,
+                  color: 'white',
+                  boxShadow: `0 0 20px ${LUNA.highlight}30`
+                }}
+              >
+                Subscribe
+              </button>
+            </motion.form>
+
+            <motion.p 
+              className="text-white/40 text-xs mt-4"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+            >
+              No spam, just good vibes from the deep. Unsubscribe anytime.
+            </motion.p>
+          </div>
+        </section>
 
         {/* ===========================================
             FULL WIDTH FOOTER
