@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -26,7 +25,7 @@ const PRODUCT = {
   salePrice: 25.20,
   onSale: true,
   description: "While dive computers are great at capturing data, they can't tell the whole story. The Dive Journal is designed for divers who want to record more than just numbers.",
-  shopifyVariantId: '00000000000000', // Update with real variant ID
+  shopifyVariantId: '49658874331402',
   images: {
     hero: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Journal_-_Image_only.jpg?v=1769573325&width=823',
     stacked: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive-journals-stock_1.jpg?v=1743749687&width=823',
@@ -43,11 +42,50 @@ const PRODUCT = {
 
 const BOOSTER_PACK = {
   name: 'Logbook Booster Pack',
-  description: '30 additional log pages to keep your adventures going',
+  description: '30 additional log pages',
   price: 12.00,
-  shopifyVariantId: '00000000000000', // Update with real variant ID
+  shopifyVariantId: '49872531325194',
   link: '/products/logbook-booster-pack',
 };
+
+// Bundle pricing options
+const BUNDLE_OPTIONS = [
+  {
+    id: 'journal-only',
+    name: 'Journal Only',
+    description: 'The Dive Journal',
+    originalPrice: 28.00,
+    price: 28.00,
+    savings: 0,
+    items: [{ variantId: '49658874331402', quantity: 1 }],
+  },
+  {
+    id: 'journal-plus-1',
+    name: 'Journal + 1 Booster',
+    description: 'The Dive Journal + 1 Booster Pack',
+    originalPrice: 40.00, // 28 + 12
+    price: 35.00,
+    savings: 5.00,
+    items: [
+      { variantId: '49658874331402', quantity: 1 },
+      { variantId: '49872531325194', quantity: 1 },
+    ],
+    recommended: true,
+  },
+  {
+    id: 'journal-plus-2',
+    name: 'Journal + 2 Boosters',
+    description: 'The Dive Journal + 2 Booster Packs',
+    originalPrice: 52.00, // 28 + 12 + 12
+    price: 40.00,
+    savings: 12.00,
+    items: [
+      { variantId: '49658874331402', quantity: 1 },
+      { variantId: '49872531325194', quantity: 2 },
+    ],
+    bestValue: true,
+  },
+];
 
 // Feature cards for the journal sections
 const JOURNAL_FEATURES = [
@@ -91,7 +129,7 @@ const JOURNAL_FEATURES = [
 export default function DiveJournalPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('hero');
-  const [addBoosterPack, setAddBoosterPack] = useState(false);
+  const [selectedBundle, setSelectedBundle] = useState('journal-only');
   const [activeFeature, setActiveFeature] = useState(0);
 
   // Thumbnail images for gallery
@@ -103,20 +141,12 @@ export default function DiveJournalPage() {
     { key: 'withComputer', label: 'In Use' },
   ];
 
-  // Calculate total price
-  const basePrice = PRODUCT.onSale ? PRODUCT.salePrice : PRODUCT.price;
-  const totalPrice = addBoosterPack ? basePrice + BOOSTER_PACK.price : basePrice;
+  // Get selected bundle data
+  const currentBundle = BUNDLE_OPTIONS.find(b => b.id === selectedBundle);
 
   // Handle add to cart
   const handleAddToCart = () => {
-    const items = [
-      { variantId: PRODUCT.shopifyVariantId, quantity: 1 }
-    ];
-    if (addBoosterPack) {
-      items.push({ variantId: BOOSTER_PACK.shopifyVariantId, quantity: 1 });
-    }
-    
-    const cartString = items.map(item => `${item.variantId}:${item.quantity}`).join(',');
+    const cartString = currentBundle.items.map(item => `${item.variantId}:${item.quantity}`).join(',');
     window.location.href = `https://38a44d-4c.myshopify.com/cart/${cartString}`;
   };
 
@@ -221,76 +251,98 @@ export default function DiveJournalPage() {
               {PRODUCT.description}
             </motion.p>
 
-            {/* Price & CTA */}
+            {/* Price & Bundle Selection */}
             <motion.div
-              className="space-y-6"
+              className="space-y-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              {/* Price Display */}
-              <div className="flex items-baseline gap-3">
-                {PRODUCT.onSale && (
-                  <span className="text-white/40 text-xl line-through">£{PRODUCT.price.toFixed(2)}</span>
-                )}
-                <span className="text-4xl font-bold" style={{ color: LUNA.highlight }}>
-                  £{basePrice.toFixed(2)}
-                </span>
-                {PRODUCT.onSale && (
-                  <span className="px-2 py-1 rounded text-xs font-semibold" style={{ backgroundColor: '#FF6B9D', color: 'white' }}>
-                    SALE
-                  </span>
-                )}
-              </div>
+              {/* Bundle Options */}
+              <div className="space-y-3">
+                {BUNDLE_OPTIONS.map((bundle) => (
+                  <div
+                    key={bundle.id}
+                    className="p-4 rounded-xl cursor-pointer transition-all relative"
+                    style={{ 
+                      background: selectedBundle === bundle.id ? 'rgba(167, 235, 242, 0.15)' : 'rgba(255, 255, 255, 0.05)',
+                      border: selectedBundle === bundle.id ? `2px solid ${LUNA.highlight}` : '2px solid rgba(255,255,255,0.1)',
+                    }}
+                    onClick={() => setSelectedBundle(bundle.id)}
+                  >
+                    {/* Badges */}
+                    {bundle.recommended && (
+                      <span 
+                        className="absolute -top-2 right-4 px-2 py-0.5 rounded text-xs font-semibold"
+                        style={{ backgroundColor: LUNA.highlight, color: LUNA.abyss }}
+                      >
+                        RECOMMENDED
+                      </span>
+                    )}
+                    {bundle.bestValue && (
+                      <span 
+                        className="absolute -top-2 right-4 px-2 py-0.5 rounded text-xs font-semibold"
+                        style={{ backgroundColor: '#FF6B9D', color: 'white' }}
+                      >
+                        BEST VALUE
+                      </span>
+                    )}
 
-              {/* Booster Pack Add-on */}
-              <div 
-                className="p-4 rounded-xl cursor-pointer transition-all"
-                style={{ 
-                  background: addBoosterPack ? 'rgba(167, 235, 242, 0.15)' : 'rgba(255, 255, 255, 0.05)',
-                  border: addBoosterPack ? `2px solid ${LUNA.highlight}` : '2px solid rgba(255,255,255,0.1)',
-                }}
-                onClick={() => setAddBoosterPack(!addBoosterPack)}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div 
-                      className="w-5 h-5 rounded border-2 flex items-center justify-center transition-all"
-                      style={{ 
-                        borderColor: addBoosterPack ? LUNA.highlight : 'rgba(255,255,255,0.3)',
-                        backgroundColor: addBoosterPack ? LUNA.highlight : 'transparent'
-                      }}
-                    >
-                      {addBoosterPack && (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={LUNA.abyss} strokeWidth="3">
-                          <path d="M5 13l4 4L19 7"/>
-                        </svg>
-                      )}
-                    </div>
-                    <div>
-                      <p className="text-white text-sm font-medium">Add {BOOSTER_PACK.name}</p>
-                      <p className="text-white/50 text-xs">{BOOSTER_PACK.description}</p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        {/* Radio button */}
+                        <div 
+                          className="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
+                          style={{ 
+                            borderColor: selectedBundle === bundle.id ? LUNA.highlight : 'rgba(255,255,255,0.3)',
+                          }}
+                        >
+                          {selectedBundle === bundle.id && (
+                            <div 
+                              className="w-2.5 h-2.5 rounded-full"
+                              style={{ backgroundColor: LUNA.highlight }}
+                            />
+                          )}
+                        </div>
+                        <div>
+                          <p className="text-white text-sm font-medium">{bundle.name}</p>
+                          <p className="text-white/50 text-xs">{bundle.description}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="flex items-center gap-2">
+                          {bundle.savings > 0 && (
+                            <span className="text-white/40 text-sm line-through">£{bundle.originalPrice.toFixed(2)}</span>
+                          )}
+                          <span className="text-white font-bold text-lg">£{bundle.price.toFixed(2)}</span>
+                        </div>
+                        {bundle.savings > 0 && (
+                          <span className="text-xs" style={{ color: '#FF6B9D' }}>
+                            Save £{bundle.savings.toFixed(2)}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <span className="text-white font-semibold">+£{BOOSTER_PACK.price.toFixed(2)}</span>
-                    <Link 
-                      href={BOOSTER_PACK.link}
-                      className="block text-xs mt-1 hover:underline"
-                      style={{ color: LUNA.highlight }}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      View details →
-                    </Link>
-                  </div>
-                </div>
+                ))}
               </div>
 
-              {/* Total & Add to Cart */}
-              <div className="flex items-center justify-between">
+              {/* Booster Pack Link */}
+              <div className="text-center">
+                <Link 
+                  href={BOOSTER_PACK.link}
+                  className="text-sm hover:underline"
+                  style={{ color: LUNA.highlight }}
+                >
+                  View Booster Pack details →
+                </Link>
+              </div>
+
+              {/* Add to Cart Button */}
+              <div className="flex items-center justify-between pt-4">
                 <div>
                   <span className="text-white/50 text-sm">Total:</span>
-                  <span className="text-white text-2xl font-bold ml-2">£{totalPrice.toFixed(2)}</span>
+                  <span className="text-white text-2xl font-bold ml-2">£{currentBundle.price.toFixed(2)}</span>
                 </div>
                 <motion.button
                   onClick={handleAddToCart}
@@ -606,38 +658,65 @@ export default function DiveJournalPage() {
 
             {/* Final CTA */}
             <div 
-              className="p-8 rounded-2xl text-center"
+              className="p-8 rounded-2xl"
               style={{ 
                 background: 'rgba(255, 255, 255, 0.05)',
                 backdropFilter: 'blur(10px)',
                 border: `1px solid ${LUNA.highlight}30`
               }}
             >
-              <h3 className="text-2xl font-bold text-white mb-4">Ready to Log Your Adventures?</h3>
+              <h3 className="text-2xl font-bold text-white mb-6 text-center">Ready to Log Your Adventures?</h3>
               
-              <div className="flex items-baseline justify-center gap-3 mb-6">
-                {PRODUCT.onSale && (
-                  <span className="text-white/40 text-xl line-through">£{PRODUCT.price.toFixed(2)}</span>
-                )}
-                <span className="text-4xl font-bold" style={{ color: LUNA.highlight }}>
-                  £{PRODUCT.salePrice.toFixed(2)}
-                </span>
+              {/* Mini Bundle Selection */}
+              <div className="space-y-2 mb-6">
+                {BUNDLE_OPTIONS.map((bundle) => (
+                  <div
+                    key={bundle.id}
+                    className="flex items-center justify-between p-3 rounded-lg cursor-pointer transition-all"
+                    style={{ 
+                      background: selectedBundle === bundle.id ? 'rgba(167, 235, 242, 0.2)' : 'transparent',
+                      border: selectedBundle === bundle.id ? `1px solid ${LUNA.highlight}` : '1px solid transparent',
+                    }}
+                    onClick={() => setSelectedBundle(bundle.id)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div 
+                        className="w-4 h-4 rounded-full border-2 flex items-center justify-center"
+                        style={{ borderColor: selectedBundle === bundle.id ? LUNA.highlight : 'rgba(255,255,255,0.3)' }}
+                      >
+                        {selectedBundle === bundle.id && (
+                          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: LUNA.highlight }} />
+                        )}
+                      </div>
+                      <span className="text-white text-sm">{bundle.name}</span>
+                      {bundle.bestValue && (
+                        <span className="text-xs px-1.5 py-0.5 rounded" style={{ backgroundColor: '#FF6B9D', color: 'white' }}>
+                          BEST VALUE
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-white font-semibold">£{bundle.price.toFixed(2)}</span>
+                  </div>
+                ))}
               </div>
 
               <motion.button
                 onClick={handleAddToCart}
                 className="w-full py-4 rounded-xl text-lg font-semibold transition-all mb-4"
                 style={{ 
-                  background: `linear-gradient(135deg, ${LUNA.highlight} 0%, ${LUNA.surfaceTeal} 100%)`,
-                  color: LUNA.abyss,
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(10px)',
+                  border: `2px solid ${LUNA.highlight}`,
+                  color: 'white',
+                  boxShadow: `0 0 30px ${LUNA.highlight}30`
                 }}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, boxShadow: `0 0 40px ${LUNA.highlight}50` }}
                 whileTap={{ scale: 0.98 }}
               >
-                Add to Collection
+                Add to Collection - £{currentBundle.price.toFixed(2)}
               </motion.button>
 
-              <p className="text-white/50 text-sm">
+              <p className="text-white/50 text-sm text-center">
                 Free shipping on orders over £30
               </p>
             </div>
