@@ -415,12 +415,12 @@ export default function HomePage() {
                     </h1>
                   </div>
 
-                  {/* Product Image - Larger, shifted slightly left - CLICKABLE */}
+                  {/* Product Image - Clickable, sized to not overlap text */}
                   <Link href={currentProduct.link} className="flex-1 flex justify-center items-center">
                     <motion.img
                       src={currentProduct.image}
                       alt={currentProduct.name}
-                      className="max-h-[520px] w-auto object-contain drop-shadow-2xl cursor-pointer"
+                      className="max-h-[420px] w-auto object-contain drop-shadow-2xl cursor-pointer"
                       style={{
                         filter: `drop-shadow(0 20px 60px rgba(0,0,0,0.5))`
                       }}
