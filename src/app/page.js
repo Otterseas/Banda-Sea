@@ -415,19 +415,19 @@ export default function HomePage() {
                     </h1>
                   </div>
 
-                  {/* Product Image - Larger, shifted slightly left */}
-                  <div className="flex-1 flex justify-center items-center">
+                  {/* Product Image - Larger, shifted slightly left - CLICKABLE */}
+                  <Link href={currentProduct.link} className="flex-1 flex justify-center items-center">
                     <motion.img
                       src={currentProduct.image}
                       alt={currentProduct.name}
-                      className="max-h-[520px] w-auto object-contain drop-shadow-2xl"
+                      className="max-h-[520px] w-auto object-contain drop-shadow-2xl cursor-pointer"
                       style={{
                         filter: `drop-shadow(0 20px 60px rgba(0,0,0,0.5))`
                       }}
-                      whileHover={{ scale: 1.02 }}
+                      whileHover={{ scale: 1.05 }}
                       transition={{ type: 'spring', stiffness: 300 }}
                     />
-                  </div>
+                  </Link>
                 </motion.div>
               </AnimatePresence>
 
