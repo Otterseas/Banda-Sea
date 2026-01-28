@@ -35,7 +35,7 @@ const PRODUCTS = [
     shortName: 'The\nDive\nJournal',
     tagline: 'MORE THAN JUST STATS',
     description: 'Document your underwater adventures with our beautifully designed dive journal.',
-    image: '/images/dive-journal-placeholder.png', // Placeholder - update when image available
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Journal_and_pages-upscale_-_No_Background.png?v=1769576208&width=823',
     link: '/products/dive-journal',
     linkText: 'Read More...',
   },
