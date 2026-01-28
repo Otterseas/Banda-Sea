@@ -588,6 +588,72 @@ export default function HomePage() {
         </div>
 
         {/* ===========================================
+            MANTA PARALLAX BANNER
+            =========================================== */}
+        <section 
+          className="relative h-[70vh] overflow-hidden"
+          style={{ perspective: '1000px' }}
+        >
+          {/* Parallax Image */}
+          <motion.div
+            className="absolute inset-0"
+            initial={{ scale: 1.1 }}
+            whileInView={{ scale: 1 }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+            viewport={{ once: true }}
+          >
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-fixed"
+              style={{ 
+                backgroundImage: `url('https://38a44d-4c.myshopify.com/cdn/shop/files/DSC06170-1_b54324ec-8486-412e-9260-1178b2028915.jpg?v=1769573416&width=1920')`,
+              }}
+            />
+          </motion.div>
+
+          {/* Gradient Overlays for smooth blending */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(to bottom, ${LUNA.abyss} 0%, transparent 20%, transparent 80%, ${LUNA.abyss} 100%)`
+            }}
+          />
+
+          {/* Content Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <motion.div
+              className="text-center px-8"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <p 
+                className="text-sm tracking-[0.3em] font-medium mb-4"
+                style={{ color: LUNA.highlight }}
+              >
+                EXPLORE THE DEEP
+              </p>
+              <h2 
+                className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6"
+                style={{ 
+                  textShadow: '0 4px 30px rgba(0,0,0,0.5)'
+                }}
+              >
+                Every Dive Tells a Story
+              </h2>
+              <p 
+                className="text-white/80 text-lg max-w-xl mx-auto"
+                style={{ 
+                  textShadow: '0 2px 20px rgba(0,0,0,0.5)'
+                }}
+              >
+                From the coral gardens of the tropics to the mysterious depths of cold water wrecks — capture every moment.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ===========================================
             ABOUT US SECTION
             =========================================== */}
         <div id="about">
