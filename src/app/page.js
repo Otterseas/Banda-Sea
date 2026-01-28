@@ -420,7 +420,7 @@ export default function HomePage() {
                     <motion.img
                       src={currentProduct.image}
                       alt={currentProduct.name}
-                      className="max-h-[420px] w-auto object-contain drop-shadow-2xl cursor-pointer"
+                      className="max-h-[340px] w-auto object-contain drop-shadow-2xl cursor-pointer"
                       style={{
                         filter: `drop-shadow(0 20px 60px rgba(0,0,0,0.5))`
                       }}
