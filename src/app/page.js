@@ -492,6 +492,14 @@ export default function HomePage() {
                       Home
                     </Link>
                     <Link 
+                      href="/products" 
+                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                      style={{ color: LUNA.deepWater }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      All Products
+                    </Link>
+                    <Link 
                       href="/products/surface-tank" 
                       className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
                       style={{ color: LUNA.deepWater }}
@@ -506,6 +514,14 @@ export default function HomePage() {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Dive Journal
+                    </Link>
+                    <Link 
+                      href="/products/logbook-booster-pack" 
+                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                      style={{ color: LUNA.deepWater }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Booster Pack
                     </Link>
                     <Link 
                       href="/stickers" 
@@ -570,10 +586,10 @@ export default function HomePage() {
                 ))}
               </nav>
 
-              {/* See Collections Button - Links to stickers page */}
+              {/* See Collections Button - Links to products overview page (future) */}
               <div className="mt-16">
                 <Link
-                  href="/stickers"
+                  href="/products"
                   className="inline-flex items-center gap-2 text-sm font-medium tracking-wider transition-colors hover:opacity-70"
                   style={{ color: LUNA.deepWater }}
                 >
@@ -775,12 +791,18 @@ export default function HomePage() {
                 <span className="text-lg font-medium text-white">Otterseas</span>
               </div>
               
-              <nav className="flex gap-6">
+              <nav className="flex flex-wrap justify-center gap-6">
+                <Link href="/products" className="text-white/50 hover:text-white text-sm transition-colors">
+                  All Products
+                </Link>
                 <Link href="/products/surface-tank" className="text-white/50 hover:text-white text-sm transition-colors">
                   Surface Tank
                 </Link>
                 <Link href="/products/dive-journal" className="text-white/50 hover:text-white text-sm transition-colors">
                   Dive Journal
+                </Link>
+                <Link href="/products/logbook-booster-pack" className="text-white/50 hover:text-white text-sm transition-colors">
+                  Booster Pack
                 </Link>
                 <Link href="/stickers" className="text-white/50 hover:text-white text-sm transition-colors">
                   Stickers
