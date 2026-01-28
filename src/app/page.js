@@ -570,10 +570,10 @@ export default function HomePage() {
                 ))}
               </nav>
 
-              {/* See Collections Button - Links to products page (future) */}
+              {/* See Collections Button - Links to stickers page */}
               <div className="mt-16">
                 <Link
-                  href="/products"
+                  href="/stickers"
                   className="inline-flex items-center gap-2 text-sm font-medium tracking-wider transition-colors hover:opacity-70"
                   style={{ color: LUNA.deepWater }}
                 >
