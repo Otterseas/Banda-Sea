@@ -256,15 +256,15 @@ export default function HomePage() {
                     </h1>
                   </div>
 
-                  {/* Product Image - Right side, responsive sizing */}
-                  <div className="flex-1 flex justify-end items-center pr-4">
+                  {/* Product Image - Center, larger */}
+                  <div className="flex-1 flex justify-center items-center">
                     <motion.img
                       src={currentProduct.image}
                       alt={currentProduct.name}
                       className="object-contain drop-shadow-2xl"
                       style={{
-                        maxHeight: currentProduct.imageScale ? `${400 * currentProduct.imageScale}px` : '400px',
-                        maxWidth: '60%',
+                        maxHeight: currentProduct.imageScale ? `${500 * currentProduct.imageScale}px` : '500px',
+                        maxWidth: '80%',
                         filter: `drop-shadow(0 20px 60px rgba(0,0,0,0.5))`
                       }}
                       whileHover={{ scale: 1.02 }}
@@ -453,7 +453,7 @@ export default function HomePage() {
         <section 
           className="relative h-[50vh] md:h-[60vh] overflow-hidden"
           style={{
-            backgroundImage: 'url(https://38a44d-4c.myshopify.com/cdn/shop/files/underwater-diver.jpg?v=1769395822&width=1920)',
+            backgroundImage: 'url(https://38a44d-4c.myshopify.com/cdn/shop/files/DSC06170-1_b54324ec-8486-412e-9260-1178b2028915.jpg?v=1769573416&width=1920)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed',
