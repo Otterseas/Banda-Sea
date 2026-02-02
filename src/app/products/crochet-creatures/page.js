@@ -23,23 +23,26 @@ const NUDIBRANCHS = [
   {
     id: 'nudi-spanish-dancer',
     name: 'Spanish Dancer',
-    price: 15.00,
+    price: 17.50,
+    timeToMake: '3-4 hours',
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=400',
-    shopifyVariantId: 'nudi-spanish-dancer-001', // Placeholder
+    shopifyVariantId: 'nudi-spanish-dancer-001',
   },
   {
     id: 'nudi-chromodoris',
     name: 'Chromodoris',
-    price: 15.00,
+    price: 17.50,
+    timeToMake: '3-4 hours',
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=400',
-    shopifyVariantId: 'nudi-chromodoris-001', // Placeholder
+    shopifyVariantId: 'nudi-chromodoris-001',
   },
   {
     id: 'nudi-nembrotha',
     name: 'Nembrotha',
-    price: 15.00,
+    price: 17.50,
+    timeToMake: '3-4 hours',
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=400',
-    shopifyVariantId: 'nudi-nembrotha-001', // Placeholder
+    shopifyVariantId: 'nudi-nembrotha-001',
   },
 ];
 
@@ -47,23 +50,26 @@ const FISH_FRIENDS = [
   {
     id: 'fish-cowfish',
     name: 'Longhorn Cowfish',
-    price: 20.00,
+    price: 25.00,
+    timeToMake: '5-6 hours',
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/20260202_132328_c68439a2-7680-4fbd-9fed-a0057b12f707.jpg?v=1770010704&width=400',
-    shopifyVariantId: 'fish-cowfish-001', // Placeholder
+    shopifyVariantId: 'fish-cowfish-001',
   },
   {
     id: 'fish-frogfish',
     name: 'Hairy Frogfish',
-    price: 20.00,
+    price: 25.00,
+    timeToMake: '5-6 hours',
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/20260202_132348_b89869bc-a6a8-4b05-8d55-de1473481338.jpg?v=1770010707&width=400',
-    shopifyVariantId: 'fish-frogfish-001', // Placeholder
+    shopifyVariantId: 'fish-frogfish-001',
   },
   {
     id: 'fish-seahorse',
     name: 'Pygmy Seahorse',
-    price: 20.00,
+    price: 25.00,
+    timeToMake: '5-6 hours',
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/20260202_132328_c68439a2-7680-4fbd-9fed-a0057b12f707.jpg?v=1770010704&width=400',
-    shopifyVariantId: 'fish-seahorse-001', // Placeholder
+    shopifyVariantId: 'fish-seahorse-001',
   },
 ];
 
@@ -71,10 +77,11 @@ const BABY_MOBILES = [
   {
     id: 'mobile-ocean-dreams',
     name: 'Ocean Dreams Mobile',
-    price: 100.00,
+    price: 105.00,
+    timeToMake: '15-20 hours',
     description: 'A beautiful handcrafted mobile featuring an assortment of marine creatures, perfect for any ocean-loving family.',
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/IMG-20260109-WA0009.jpg?v=1770010474&width=600',
-    shopifyVariantId: 'mobile-ocean-dreams-001', // Placeholder
+    shopifyVariantId: 'mobile-ocean-dreams-001',
   },
 ];
 
@@ -105,7 +112,7 @@ function ProductCard({ product, size = 'normal' }) {
 
   return (
     <motion.div
-      className={`bg-white rounded-2xl overflow-hidden ${isLarge ? 'max-w-md mx-auto' : ''}`}
+      className={`bg-white rounded-2xl overflow-hidden ${isLarge ? 'max-w-sm mx-auto' : ''}`}
       style={{ 
         border: `2px solid ${LUNA.highlight}30`,
         boxShadow: `0 4px 20px ${LUNA.surfaceTeal}10`,
@@ -126,26 +133,39 @@ function ProductCard({ product, size = 'normal' }) {
       </div>
 
       {/* Content */}
-      <div className={`${isLarge ? 'p-6' : 'p-4'}`}>
-        <h3 
-          className={`font-semibold mb-1 ${isLarge ? 'text-xl' : 'text-sm'}`}
-          style={{ color: LUNA.deepWater }}
-        >
-          {product.name}
-        </h3>
-        {product.description && (
-          <p className="text-gray-500 text-sm mb-3">{product.description}</p>
+      <div className="p-4">
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 
+            className={`font-semibold ${isLarge ? 'text-lg' : 'text-sm'}`}
+            style={{ color: LUNA.deepWater }}
+          >
+            {product.name}
+          </h3>
+          <p 
+            className={`font-bold whitespace-nowrap ${isLarge ? 'text-xl' : 'text-base'}`}
+            style={{ color: LUNA.surfaceTeal }}
+          >
+            £{product.price.toFixed(2)}
+          </p>
+        </div>
+        
+        {product.timeToMake && (
+          <p className="text-xs text-gray-400 mb-2 flex items-center gap-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+            {product.timeToMake} to craft
+          </p>
         )}
-        <p 
-          className={`font-bold mb-3 ${isLarge ? 'text-2xl' : 'text-lg'}`}
-          style={{ color: LUNA.surfaceTeal }}
-        >
-          £{product.price.toFixed(2)}
-        </p>
+        
+        {product.description && (
+          <p className="text-gray-500 text-xs mb-3">{product.description}</p>
+        )}
         
         <motion.button
           onClick={handleAddToCart}
-          className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-all ${isAdding ? 'scale-95' : ''}`}
+          className={`w-full py-2 rounded-xl text-sm font-semibold transition-all ${isAdding ? 'scale-95' : ''}`}
           style={{ 
             background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
             color: 'white',
@@ -161,52 +181,55 @@ function ProductCard({ product, size = 'normal' }) {
 }
 
 // ===========================================
-// STORY SECTION COMPONENT
+// STORY SECTION COMPONENT (Compact)
 // ===========================================
 function StorySection({ number, title, image, imageAlt, children, imagePosition = 'right' }) {
   const isLeft = imagePosition === 'left';
   
   return (
-    <section className="py-16 md:py-24 px-8">
-      <div className="max-w-6xl mx-auto">
-        <div className={`flex flex-col ${isLeft ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-12`}>
+    <section className="py-10 md:py-14 px-8">
+      <div className="max-w-5xl mx-auto">
+        <div className={`flex flex-col ${isLeft ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-8`}>
           {/* Text */}
           <motion.div 
             className="flex-1"
-            initial={{ opacity: 0, x: isLeft ? 30 : -30 }}
+            initial={{ opacity: 0, x: isLeft ? 20 : -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
           >
-            <span 
-              className="text-sm font-light tracking-widest"
-              style={{ color: LUNA.surfaceTeal }}
-            >
-              {number}
-            </span>
+            <div className="flex items-center gap-3 mb-3">
+              <span 
+                className="text-xs font-medium tracking-widest"
+                style={{ color: LUNA.surfaceTeal }}
+              >
+                {number}
+              </span>
+              <div className="h-px flex-1 max-w-[60px]" style={{ backgroundColor: LUNA.highlight }} />
+            </div>
             <h2 
-              className="text-3xl md:text-4xl font-bold mt-2 mb-6"
+              className="text-2xl md:text-3xl font-bold mb-4"
               style={{ color: LUNA.deepWater }}
             >
               {title}
             </h2>
-            <div className="text-gray-600 leading-relaxed space-y-4">
+            <div className="text-gray-600 text-sm leading-relaxed space-y-3">
               {children}
             </div>
           </motion.div>
 
           {/* Image */}
           <motion.div 
-            className="flex-1"
-            initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
+            className="flex-1 max-w-sm"
+            initial={{ opacity: 0, x: isLeft ? -20 : 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
             <div 
               className="rounded-2xl overflow-hidden"
               style={{ 
-                boxShadow: `0 20px 60px ${LUNA.deepWater}20`,
+                boxShadow: `0 15px 40px ${LUNA.deepWater}15`,
               }}
             >
               <img 
@@ -223,46 +246,51 @@ function StorySection({ number, title, image, imageAlt, children, imagePosition 
 }
 
 // ===========================================
-// PRODUCTS SECTION COMPONENT  
+// PRODUCTS SECTION COMPONENT (Compact)
 // ===========================================
-function ProductsSection({ title, subtitle, products, size = 'normal' }) {
+function ProductsSection({ title, subtitle, uses, products, size = 'normal' }) {
   return (
     <section 
-      className="py-16 px-8"
+      className="py-10 px-8"
       style={{ 
-        background: `linear-gradient(180deg, white 0%, ${LUNA.highlight}08 50%, white 100%)`,
+        background: `linear-gradient(180deg, white 0%, ${LUNA.highlight}05 50%, white 100%)`,
       }}
     >
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <motion.div
-          className="text-center mb-10"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-center mb-6"
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
           <h3 
-            className="text-2xl md:text-3xl font-bold mb-2"
+            className="text-xl md:text-2xl font-bold mb-1"
             style={{ color: LUNA.deepWater }}
           >
             {title}
           </h3>
           {subtitle && (
-            <p className="text-gray-500">{subtitle}</p>
+            <p className="text-gray-500 text-sm">{subtitle}</p>
+          )}
+          {uses && (
+            <p className="text-xs mt-2" style={{ color: LUNA.surfaceTeal }}>
+              Perfect as: {uses}
+            </p>
           )}
         </motion.div>
 
-        <div className={`grid gap-6 ${
+        <div className={`grid gap-4 ${
           size === 'large' 
-            ? 'grid-cols-1 max-w-md mx-auto' 
-            : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+            ? 'grid-cols-1 max-w-xs mx-auto' 
+            : 'grid-cols-2 lg:grid-cols-3'
         }`}>
           {products.map((product, index) => (
             <motion.div
               key={product.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.05 }}
             >
               <ProductCard product={product} size={size} />
             </motion.div>
@@ -360,26 +388,26 @@ export default function CrochetCreaturesPage() {
 
       {/* ==================== HERO ==================== */}
       <section 
-        className="relative py-20 md:py-32 px-8 overflow-hidden"
+        className="relative py-12 md:py-20 px-8 overflow-hidden"
         style={{ 
           background: `linear-gradient(180deg, white 0%, ${LUNA.highlight}10 100%)`,
         }}
       >
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 30 }}
+            className="text-center mb-8"
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
           >
             <span 
-              className="text-sm font-medium tracking-widest"
+              className="text-xs font-medium tracking-widest"
               style={{ color: LUNA.surfaceTeal }}
             >
               HANDCRAFTED WITH LOVE
             </span>
             <h1 
-              className="text-4xl md:text-6xl font-bold mt-4 mb-6"
+              className="text-3xl md:text-5xl font-bold mt-3 mb-4"
               style={{ 
                 background: `linear-gradient(135deg, ${LUNA.deepWater} 0%, ${LUNA.midDepth} 50%, ${LUNA.surfaceTeal} 100%)`,
                 WebkitBackgroundClip: 'text',
@@ -389,25 +417,23 @@ export default function CrochetCreaturesPage() {
             >
               Every Creature Has a Story
             </h1>
-            <p 
-              className="text-lg text-gray-600 max-w-2xl mx-auto"
-            >
-              Unique, handmade marine animals crafted with care. From tiny nudibranchs to charming cowfish, 
-              each piece takes hours of love to create – and no two are ever exactly alike.
+            <p className="text-gray-600 max-w-xl mx-auto">
+              Unique, handmade marine animals crafted with care. Each piece takes hours of love – 
+              and no two are ever exactly alike.
             </p>
           </motion.div>
 
           {/* Hero Image */}
           <motion.div
-            className="max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 40 }}
+            className="max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
             <div 
-              className="rounded-3xl overflow-hidden"
+              className="rounded-2xl overflow-hidden"
               style={{ 
-                boxShadow: `0 30px 80px ${LUNA.deepWater}20`,
+                boxShadow: `0 20px 60px ${LUNA.deepWater}15`,
               }}
             >
               <img 
@@ -432,16 +458,13 @@ export default function CrochetCreaturesPage() {
           Every creature begins its journey on paper. We study real marine life – the way a nudibranch's 
           gills flutter, the curious expression of a cowfish, the delicate curl of a seahorse's tail.
         </p>
-        <p>
-          These aren't just toys; they're tiny portraits of the ocean's most fascinating characters, 
-          designed to capture the personality and charm that makes each species special.
-        </p>
       </StorySection>
 
       {/* ==================== PRODUCTS: NUDIBRANCHS ==================== */}
       <ProductsSection
         title="Nudibranchs"
-        subtitle="The ocean's most colourful characters • £15 each"
+        subtitle="The ocean's most colourful characters • £17.50 each"
+        uses="keychains, bag charms, desk companions, gifts for divers"
         products={NUDIBRANCHS}
       />
 
@@ -454,20 +477,17 @@ export default function CrochetCreaturesPage() {
         imagePosition="left"
       >
         <p>
-          From sketch to stitch, each creature takes between 4-8 hours of careful handwork. 
-          We select yarns that capture the vibrant colours of the reef, and every detail – 
-          from tiny eyes to delicate fins – is crafted with patience and precision.
-        </p>
-        <p>
-          Because they're handmade, each one has its own personality. A slightly different expression, 
-          a unique quirk. Just like their real-life counterparts, no two are exactly the same.
+          From sketch to stitch, each creature takes hours of careful handwork. Because they're handmade, 
+          each one has its own personality – a slightly different expression, a unique quirk. 
+          Just like their real-life counterparts, no two are exactly the same.
         </p>
       </StorySection>
 
       {/* ==================== PRODUCTS: FISH & FRIENDS ==================== */}
       <ProductsSection
         title="Fish & Friends"
-        subtitle="Charming characters from the reef • £20 each"
+        subtitle="Charming characters from the reef • £25 each"
+        uses="keychains, bag charms, rearview mirror hangers, nursery decor"
         products={FISH_FRIENDS}
       />
 
@@ -481,10 +501,6 @@ export default function CrochetCreaturesPage() {
       >
         <p>
           Our baby mobiles bring the calm of the ocean into your little one's world. 
-          Each mobile features a carefully curated collection of sea creatures, 
-          gently spinning and swaying to capture curious eyes.
-        </p>
-        <p>
           Perfect for ocean-loving families, these mobiles make a truly special gift – 
           a handmade heirloom that tells a story of craftsmanship and care.
         </p>
@@ -493,48 +509,48 @@ export default function CrochetCreaturesPage() {
       {/* ==================== PRODUCTS: BABY MOBILES ==================== */}
       <ProductsSection
         title="Baby Mobiles"
-        subtitle="Handcrafted heirlooms for little ocean lovers"
+        subtitle="Handcrafted heirlooms • £105 each"
+        uses="nursery centrepiece, baby shower gift, christening present"
         products={BABY_MOBILES}
         size="large"
       />
 
       {/* ==================== CUSTOM ORDERS CTA ==================== */}
       <section 
-        className="py-20 px-8"
+        className="py-12 px-8"
         style={{ 
-          background: `linear-gradient(180deg, ${LUNA.highlight}10 0%, ${LUNA.surfaceTeal}10 100%)`,
+          background: `linear-gradient(180deg, ${LUNA.highlight}08 0%, ${LUNA.surfaceTeal}08 100%)`,
         }}
       >
-        <div className="max-w-3xl mx-auto text-center">
+        <div className="max-w-2xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
             <h3 
-              className="text-2xl md:text-3xl font-bold mb-4"
+              className="text-xl md:text-2xl font-bold mb-3"
               style={{ color: LUNA.deepWater }}
             >
               Looking for Something Special?
             </h3>
-            <p className="text-gray-600 mb-8">
-              We love creating custom pieces. Whether it's your favourite marine creature, 
-              a specific colour scheme, or a bespoke mobile – get in touch and let's bring your vision to life.
+            <p className="text-gray-600 text-sm mb-6">
+              We love creating custom pieces – your favourite creature, specific colours, or a bespoke mobile.
             </p>
             <a
               href="mailto:info@otterseas.com"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-semibold transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:scale-105"
               style={{
                 background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
                 color: 'white',
                 boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`
               }}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                 <polyline points="22,6 12,13 2,6"/>
               </svg>
-              Request a Custom Order
+              Request Custom Order
             </a>
           </motion.div>
         </div>
