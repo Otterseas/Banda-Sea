@@ -308,10 +308,10 @@ export default function StickerPage() {
           </div>
         </div>
 
-        {/* Region Tabs - Glass Style Matching Sticker Selection Page */}
+        {/* Region Tabs - Glass Style with Sliding Indicator */}
         <div className="px-6 md:px-8 py-4 flex justify-center">
           <nav 
-            className="inline-flex items-center gap-1 p-1.5 rounded-full overflow-x-auto hide-scrollbar max-w-full"
+            className="inline-flex items-center gap-1 p-1.5 rounded-full overflow-x-auto hide-scrollbar max-w-full relative"
             style={{ 
               backgroundColor: `${LUNA.abyss}30`,
               backdropFilter: 'blur(12px)',
@@ -322,16 +322,26 @@ export default function StickerPage() {
               <button
                 key={region}
                 onClick={() => handleRegionChange(region)}
-                className="relative px-4 py-2 text-sm font-medium rounded-full transition-all whitespace-nowrap"
+                className="relative px-4 py-2 text-sm font-medium rounded-full transition-colors whitespace-nowrap z-10"
                 style={{
-                  backgroundColor: activeRegion === region ? 'rgba(167, 235, 242, 0.25)' : 'transparent',
-                  backdropFilter: activeRegion === region ? 'blur(8px)' : 'none',
-                  border: activeRegion === region ? `1px solid ${LUNA.highlight}` : '1px solid transparent',
                   color: activeRegion === region ? LUNA.highlight : 'rgba(255,255,255,0.7)',
-                  boxShadow: activeRegion === region ? `0 0 20px ${LUNA.highlight}40, inset 0 1px 1px rgba(255,255,255,0.1)` : 'none',
                 }}
               >
-                {region}
+                {/* Sliding Glass Indicator */}
+                {activeRegion === region && (
+                  <motion.div
+                    layoutId="activeRegionIndicatorDetail"
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      backgroundColor: 'rgba(167, 235, 242, 0.25)',
+                      backdropFilter: 'blur(8px)',
+                      border: `1px solid ${LUNA.highlight}`,
+                      boxShadow: `0 0 20px ${LUNA.highlight}40, inset 0 1px 1px rgba(255,255,255,0.1)`,
+                    }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{region}</span>
               </button>
             ))}
           </nav>
