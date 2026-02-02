@@ -275,7 +275,11 @@ export default function CartDrawer() {
                     <span className="text-white/60 font-medium">
                       {locationStickerCount < minOrder 
                         ? `Add ${minOrder - locationStickerCount} more stickers to checkout`
-                        : 'Location Sticker Pricing'
+                        : locationStickerCount < 10
+                          ? `Add ${10 - locationStickerCount} more for £1.75/each!`
+                          : locationStickerCount < 15
+                            ? `Add ${15 - locationStickerCount} more for £1.50/each!`
+                            : '🎉 Best price unlocked!'
                       }
                     </span>
                     <span className="font-bold" style={{ color: LUNA.highlight }}>
@@ -283,44 +287,58 @@ export default function CartDrawer() {
                     </span>
                   </div>
                   
-                  {/* Progress Bar */}
+                  {/* Progress Bar - 3 tiers: 5, 10, 15+ */}
                   <div className="flex gap-1 mb-2">
-                    {/* 5-9 tier */}
-                    <div className="flex-1 h-2 rounded-full overflow-hidden bg-white/10">
+                    {/* Tier 1: 0-5 (unlocks £2.00) */}
+                    <div className="flex-1 h-2.5 rounded-full overflow-hidden bg-white/10">
                       <div 
                         className="h-full rounded-full transition-all duration-500"
                         style={{ 
                           width: `${Math.min(100, (locationStickerCount / 5) * 100)}%`,
-                          backgroundColor: LUNA.midDepth
+                          backgroundColor: locationStickerCount >= 5 ? LUNA.midDepth : LUNA.midDepth
                         }}
                       />
                     </div>
-                    {/* 10-14 tier */}
-                    <div className="flex-1 h-2 rounded-full overflow-hidden bg-white/10">
+                    {/* Tier 2: 5-10 (unlocks £1.75) */}
+                    <div className="flex-1 h-2.5 rounded-full overflow-hidden bg-white/10">
                       <div 
                         className="h-full rounded-full transition-all duration-500"
                         style={{ 
                           width: `${Math.min(100, Math.max(0, (locationStickerCount - 5) / 5) * 100)}%`,
-                          backgroundColor: LUNA.surfaceTeal
+                          backgroundColor: locationStickerCount >= 10 ? LUNA.surfaceTeal : LUNA.surfaceTeal
                         }}
                       />
                     </div>
-                    {/* 15+ tier */}
-                    <div className="flex-1 h-2 rounded-full overflow-hidden bg-white/10">
+                    {/* Tier 3: 10-15+ (unlocks £1.50) */}
+                    <div className="flex-1 h-2.5 rounded-full overflow-hidden bg-white/10">
                       <div 
                         className="h-full rounded-full transition-all duration-500"
                         style={{ 
                           width: `${Math.min(100, Math.max(0, (locationStickerCount - 10) / 5) * 100)}%`,
-                          backgroundColor: LUNA.highlight
+                          backgroundColor: locationStickerCount >= 15 ? LUNA.highlight : LUNA.highlight
                         }}
                       />
                     </div>
                   </div>
                   
-                  <div className="flex justify-between text-xs text-white/40 font-medium">
-                    <span>5 (£2.00)</span>
-                    <span>10 (£1.75)</span>
-                    <span>15+ (£1.50)</span>
+                  {/* Tier labels */}
+                  <div className="flex justify-between text-xs font-medium">
+                    <span className={locationStickerCount >= 5 ? 'text-white/80' : 'text-white/40'}>
+                      5 {locationStickerCount >= 5 && '✓'}
+                    </span>
+                    <span className={locationStickerCount >= 10 ? 'text-white/80' : 'text-white/40'}>
+                      10 {locationStickerCount >= 10 && '✓'}
+                    </span>
+                    <span className={locationStickerCount >= 15 ? 'text-white/80' : 'text-white/40'}>
+                      15+ {locationStickerCount >= 15 && '✓'}
+                    </span>
+                  </div>
+                  
+                  {/* Price per tier */}
+                  <div className="flex justify-between text-[10px] text-white/30 mt-0.5">
+                    <span>£2.00</span>
+                    <span>£1.75</span>
+                    <span>£1.50</span>
                   </div>
                 </div>
               )}
