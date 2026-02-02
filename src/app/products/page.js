@@ -169,10 +169,6 @@ export default function ProductsPage() {
                 </motion.div>
               )}
             </AnimatePresence>
-                  </Link>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
         </div>
       </header>
