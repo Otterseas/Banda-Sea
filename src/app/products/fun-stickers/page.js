@@ -122,42 +122,44 @@ function ProductModal({ sticker, isOpen, onClose }) {
             onClick={onClose}
           />
 
-          {/* Modal - Landscape Layout */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] max-w-4xl max-h-[90vh] z-50 rounded-2xl overflow-hidden"
-            style={{ 
-              background: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(20px)',
-              border: `2px solid ${LUNA.surfaceTeal}`,
-              boxShadow: `0 25px 80px ${LUNA.deepWater}40, 0 0 40px ${LUNA.surfaceTeal}20`,
-            }}
-          >
-            {/* Close Button */}
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-gray-100 z-20 bg-white/80"
+          {/* Modal Container - Centers the modal */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="w-full max-w-4xl max-h-[85vh] rounded-2xl overflow-hidden"
+              style={{ 
+                background: 'rgba(255, 255, 255, 0.98)',
+                backdropFilter: 'blur(20px)',
+                border: `2px solid ${LUNA.surfaceTeal}`,
+                boxShadow: `0 25px 80px ${LUNA.deepWater}40, 0 0 40px ${LUNA.surfaceTeal}20`,
+              }}
+              onClick={(e) => e.stopPropagation()}
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={LUNA.deepWater} strokeWidth="2">
-                <path d="M18 6L6 18M6 6l12 12"/>
-              </svg>
-            </button>
+              {/* Close Button */}
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-gray-100 z-20 bg-white/80"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={LUNA.deepWater} strokeWidth="2">
+                  <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+              </button>
 
-            {/* Content - Landscape Grid */}
-            <div className="flex flex-col md:flex-row h-full max-h-[90vh]">
-              
-              {/* Left - Image Gallery */}
-              <div className="md:w-1/2 relative bg-gray-50 flex-shrink-0">
-                <div className="aspect-square md:h-full">
-                  <img 
-                    src={sticker.images[activeImageIndex]} 
-                    alt={sticker.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+              {/* Content - Landscape Grid */}
+              <div className="flex flex-col md:flex-row max-h-[85vh]">
+                
+                {/* Left - Image Gallery */}
+                <div className="md:w-1/2 relative bg-gray-50 flex-shrink-0">
+                  <div className="aspect-square md:aspect-auto md:h-full">
+                    <img 
+                      src={sticker.images[activeImageIndex]} 
+                      alt={sticker.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
 
                 {/* Image Tabs */}
                 {sticker.images.length > 1 && (
@@ -289,6 +291,7 @@ function ProductModal({ sticker, isOpen, onClose }) {
               </div>
             </div>
           </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
