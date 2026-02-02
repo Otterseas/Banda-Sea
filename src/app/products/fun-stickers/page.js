@@ -29,6 +29,7 @@ function ProductCard({ sticker, onClick }) {
       name: sticker.title,
       price: sticker.price,
       image: sticker.images[0],
+      type: 'product',
     });
     if (openCart) openCart();
   };
@@ -92,6 +93,7 @@ function ProductModal({ sticker, isOpen, onClose }) {
   const [productInfoOpen, setProductInfoOpen] = useState(false);
   const { addToCart, openCart } = useCart();
 
+  // Reset image index when sticker changes
   if (!sticker) return null;
 
   const handleAddToCart = () => {
@@ -101,6 +103,7 @@ function ProductModal({ sticker, isOpen, onClose }) {
       name: sticker.title,
       price: sticker.price,
       image: sticker.images[0],
+      type: 'product',
     });
     if (openCart) openCart();
     onClose();
@@ -119,163 +122,171 @@ function ProductModal({ sticker, isOpen, onClose }) {
             onClick={onClose}
           />
 
-          {/* Modal */}
+          {/* Modal - Landscape Layout */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg md:max-h-[90vh] overflow-y-auto z-50 rounded-3xl"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] max-w-4xl max-h-[90vh] z-50 rounded-2xl overflow-hidden"
             style={{ 
               background: 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(20px)',
-              border: `1px solid ${LUNA.surfaceTeal}30`,
-              boxShadow: `0 25px 80px ${LUNA.deepWater}30`,
+              border: `2px solid ${LUNA.surfaceTeal}`,
+              boxShadow: `0 25px 80px ${LUNA.deepWater}40, 0 0 40px ${LUNA.surfaceTeal}20`,
             }}
           >
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-gray-100 z-10"
+              className="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-gray-100 z-20 bg-white/80"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={LUNA.deepWater} strokeWidth="2">
                 <path d="M18 6L6 18M6 6l12 12"/>
               </svg>
             </button>
 
-            {/* Image Gallery */}
-            <div className="relative">
-              <div className="aspect-square bg-gray-50">
-                <img 
-                  src={sticker.images[activeImageIndex]} 
-                  alt={sticker.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Image Tabs */}
-              {sticker.images.length > 1 && (
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                  {sticker.images.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setActiveImageIndex(index)}
-                      className="w-2.5 h-2.5 rounded-full transition-all"
-                      style={{ 
-                        backgroundColor: activeImageIndex === index ? LUNA.surfaceTeal : 'rgba(255,255,255,0.7)',
-                        boxShadow: activeImageIndex === index ? `0 0 10px ${LUNA.surfaceTeal}` : 'none',
-                      }}
-                    />
-                  ))}
+            {/* Content - Landscape Grid */}
+            <div className="flex flex-col md:flex-row h-full max-h-[90vh]">
+              
+              {/* Left - Image Gallery */}
+              <div className="md:w-1/2 relative bg-gray-50 flex-shrink-0">
+                <div className="aspect-square md:h-full">
+                  <img 
+                    src={sticker.images[activeImageIndex]} 
+                    alt={sticker.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-              )}
-            </div>
 
-            {/* Content */}
-            <div className="p-6">
-              {/* Title & Price */}
-              <h2 
-                className="text-2xl font-bold mb-2"
-                style={{ color: LUNA.deepWater }}
-              >
-                {sticker.title}
-              </h2>
-              <p 
-                className="text-2xl font-bold mb-6"
-                style={{ color: LUNA.surfaceTeal }}
-              >
-                £{sticker.price.toFixed(2)}
-              </p>
-
-              {/* Collapsible Description */}
-              <div className="mb-3">
-                <button
-                  onClick={() => setDescriptionOpen(!descriptionOpen)}
-                  className="w-full flex items-center justify-between py-3 border-t"
-                  style={{ borderColor: `${LUNA.surfaceTeal}20` }}
-                >
-                  <span className="font-semibold" style={{ color: LUNA.deepWater }}>
-                    Description
-                  </span>
-                  <motion.svg 
-                    width="20" height="20" viewBox="0 0 24 24" fill="none" 
-                    stroke={LUNA.surfaceTeal} strokeWidth="2"
-                    animate={{ rotate: descriptionOpen ? 180 : 0 }}
-                  >
-                    <path d="M6 9l6 6 6-6"/>
-                  </motion.svg>
-                </button>
-                <AnimatePresence>
-                  {descriptionOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="overflow-hidden"
-                    >
-                      <p className="text-gray-600 text-sm leading-relaxed pb-3">
-                        {sticker.description}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Image Tabs */}
+                {sticker.images.length > 1 && (
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                    {sticker.images.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveImageIndex(index);
+                        }}
+                        className="w-3 h-3 rounded-full transition-all"
+                        style={{ 
+                          backgroundColor: activeImageIndex === index ? LUNA.surfaceTeal : 'rgba(255,255,255,0.8)',
+                          boxShadow: activeImageIndex === index ? `0 0 10px ${LUNA.surfaceTeal}` : '0 2px 4px rgba(0,0,0,0.2)',
+                          border: activeImageIndex === index ? 'none' : '1px solid rgba(0,0,0,0.1)',
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {/* Collapsible Product Info */}
-              <div className="mb-6">
-                <button
-                  onClick={() => setProductInfoOpen(!productInfoOpen)}
-                  className="w-full flex items-center justify-between py-3 border-t"
-                  style={{ borderColor: `${LUNA.surfaceTeal}20` }}
+              {/* Right - Product Info */}
+              <div className="md:w-1/2 p-6 overflow-y-auto">
+                {/* Title & Price */}
+                <h2 
+                  className="text-2xl font-bold mb-2"
+                  style={{ color: LUNA.deepWater }}
                 >
-                  <span className="font-semibold" style={{ color: LUNA.deepWater }}>
-                    Product Info
-                  </span>
-                  <motion.svg 
-                    width="20" height="20" viewBox="0 0 24 24" fill="none" 
-                    stroke={LUNA.surfaceTeal} strokeWidth="2"
-                    animate={{ rotate: productInfoOpen ? 180 : 0 }}
-                  >
-                    <path d="M6 9l6 6 6-6"/>
-                  </motion.svg>
-                </button>
-                <AnimatePresence>
-                  {productInfoOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="overflow-hidden"
-                    >
-                      <ul className="text-gray-600 text-sm space-y-2 pb-3">
-                        {sticker.productInfo.map((info, i) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <span style={{ color: LUNA.surfaceTeal }}>•</span>
-                            {info}
-                          </li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                  {sticker.title}
+                </h2>
+                <p 
+                  className="text-2xl font-bold mb-6"
+                  style={{ color: LUNA.surfaceTeal }}
+                >
+                  £{sticker.price.toFixed(2)}
+                </p>
 
-              {/* Add to Cart Button */}
-              <motion.button
-                onClick={handleAddToCart}
-                className="w-full py-4 rounded-xl text-sm font-semibold transition-all"
-                style={{ 
-                  background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                  color: 'white',
-                  boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`,
-                }}
-                whileHover={{ scale: 1.02, boxShadow: `0 6px 30px ${LUNA.surfaceTeal}60` }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Add to Cart
-              </motion.button>
+                {/* Collapsible Description */}
+                <div className="mb-3">
+                  <button
+                    onClick={() => setDescriptionOpen(!descriptionOpen)}
+                    className="w-full flex items-center justify-between py-3 border-t"
+                    style={{ borderColor: `${LUNA.surfaceTeal}20` }}
+                  >
+                    <span className="font-semibold" style={{ color: LUNA.deepWater }}>
+                      Description
+                    </span>
+                    <motion.svg 
+                      width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                      stroke={LUNA.surfaceTeal} strokeWidth="2"
+                      animate={{ rotate: descriptionOpen ? 180 : 0 }}
+                    >
+                      <path d="M6 9l6 6 6-6"/>
+                    </motion.svg>
+                  </button>
+                  <AnimatePresence>
+                    {descriptionOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="text-gray-600 text-sm leading-relaxed pb-3">
+                          {sticker.description}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Collapsible Product Info */}
+                <div className="mb-6">
+                  <button
+                    onClick={() => setProductInfoOpen(!productInfoOpen)}
+                    className="w-full flex items-center justify-between py-3 border-t"
+                    style={{ borderColor: `${LUNA.surfaceTeal}20` }}
+                  >
+                    <span className="font-semibold" style={{ color: LUNA.deepWater }}>
+                      Product Info
+                    </span>
+                    <motion.svg 
+                      width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                      stroke={LUNA.surfaceTeal} strokeWidth="2"
+                      animate={{ rotate: productInfoOpen ? 180 : 0 }}
+                    >
+                      <path d="M6 9l6 6 6-6"/>
+                    </motion.svg>
+                  </button>
+                  <AnimatePresence>
+                    {productInfoOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <ul className="text-gray-600 text-sm space-y-2 pb-3">
+                          {sticker.productInfo.map((info, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <span style={{ color: LUNA.surfaceTeal }}>•</span>
+                              {info}
+                            </li>
+                          ))}
+                        </ul>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Add to Cart Button */}
+                <motion.button
+                  onClick={handleAddToCart}
+                  className="w-full py-4 rounded-xl text-sm font-semibold transition-all"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                    color: 'white',
+                    boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`,
+                  }}
+                  whileHover={{ scale: 1.02, boxShadow: `0 6px 30px ${LUNA.surfaceTeal}60` }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Add to Cart
+                </motion.button>
+              </div>
             </div>
           </motion.div>
         </>
