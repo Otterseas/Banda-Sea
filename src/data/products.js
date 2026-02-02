@@ -15,19 +15,19 @@ export const PRODUCTS = {
     },
     variants: [
       {
-        id: 'white',
-        name: 'Arctic White',
-        color: '#F5F5F0',
-        shopifyVariantId: 'PLACEHOLDER_WHITE_VARIANT_ID',
+        id: 'blue',
+        name: 'Deep Ocean',
+        color: '#26658C',
+        shopifyVariantId: '52453682807050',
         inStock: true,
         image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=823'
       },
       {
-        id: 'blue',
-        name: 'Deep Ocean',
-        color: '#26658C',
-        shopifyVariantId: 'PLACEHOLDER_BLUE_VARIANT_ID',
-        inStock: true,
+        id: 'white',
+        name: 'Arctic White',
+        color: '#F5F5F0',
+        shopifyVariantId: '52453682839818',
+        inStock: false,
         image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=823'
       }
     ],
