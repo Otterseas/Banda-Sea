@@ -383,12 +383,63 @@ export default function CartDrawer() {
               </div>
 
               {/* Total */}
-              <div className="flex justify-between items-baseline mb-4">
+              <div className="flex justify-between items-baseline mb-2">
                 <span className="text-white/60 text-sm font-medium">Total</span>
                 <span className="text-3xl font-light" style={{ color: LUNA.highlight }}>
                   £{totalPrice.toFixed(2)}
                 </span>
               </div>
+
+              {/* Free Shipping Progress */}
+              {(() => {
+                const ukThreshold = 75;
+                const intlThreshold = 100;
+                const amountToFreeUK = ukThreshold - totalPrice;
+                const amountToFreeIntl = intlThreshold - totalPrice;
+                
+                if (totalPrice >= intlThreshold) {
+                  return (
+                    <div className="flex items-center gap-2 mb-4 p-2 rounded-lg" style={{ backgroundColor: 'rgba(74, 222, 128, 0.1)' }}>
+                      <span className="text-green-400 text-lg">🚚</span>
+                      <span className="text-green-400 text-xs font-medium">FREE worldwide shipping unlocked!</span>
+                    </div>
+                  );
+                } else if (totalPrice >= ukThreshold) {
+                  return (
+                    <div className="mb-4">
+                      <div className="flex items-center gap-2 p-2 rounded-lg mb-1" style={{ backgroundColor: 'rgba(74, 222, 128, 0.1)' }}>
+                        <span className="text-green-400 text-lg">🚚</span>
+                        <span className="text-green-400 text-xs font-medium">FREE UK shipping unlocked!</span>
+                      </div>
+                      <p className="text-white/40 text-xs text-center">
+                        Add £{amountToFreeIntl.toFixed(2)} more for free international shipping
+                      </p>
+                    </div>
+                  );
+                } else if (totalPrice > 0) {
+                  return (
+                    <div className="mb-4 p-2 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)' }}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-white/50 text-xs">🚚 Free UK shipping</span>
+                        <span className="text-white/50 text-xs">£{amountToFreeUK.toFixed(2)} away</span>
+                      </div>
+                      <div className="h-1.5 rounded-full overflow-hidden bg-white/10">
+                        <div 
+                          className="h-full rounded-full transition-all duration-500"
+                          style={{ 
+                            width: `${Math.min(100, (totalPrice / ukThreshold) * 100)}%`,
+                            backgroundColor: LUNA.surfaceTeal
+                          }}
+                        />
+                      </div>
+                      <p className="text-white/30 text-[10px] mt-1 text-center">
+                        Free international shipping over £100
+                      </p>
+                    </div>
+                  );
+                }
+                return null;
+              })()}
 
               {/* Checkout Button */}
               <button
