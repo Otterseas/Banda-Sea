@@ -49,7 +49,7 @@ const BOOSTER_PACK = {
   link: '/products/logbook-booster-pack',
 };
 
-// Bundle pricing options
+// Bundle pricing options - using bundle product Variant IDs
 const BUNDLE_OPTIONS = [
   {
     id: 'journal-only',
@@ -58,7 +58,8 @@ const BUNDLE_OPTIONS = [
     originalPrice: 28.00,
     price: 28.00,
     savings: 0,
-    items: [{ variantId: '49658874331402', quantity: 1 }],
+    shopifyVariantId: '49658874331402', // Single journal variant
+    isBundle: false,
   },
   {
     id: 'journal-plus-1',
@@ -67,23 +68,19 @@ const BUNDLE_OPTIONS = [
     originalPrice: 40.00, // 28 + 12
     price: 35.00,
     savings: 5.00,
-    items: [
-      { variantId: '49658874331402', quantity: 1 },
-      { variantId: '49872531325194', quantity: 1 },
-    ],
+    shopifyVariantId: '50232047665418', // Bundle product variant
+    isBundle: true,
     recommended: true,
   },
   {
     id: 'journal-plus-2',
     name: 'Journal + 2 Boosters',
     description: 'The Dive Journal + 2 Booster Packs',
-    originalPrice: 52.00, // 28 + 12 + 12
-    price: 40.00,
-    savings: 12.00,
-    items: [
-      { variantId: '49658874331402', quantity: 1 },
-      { variantId: '49872531325194', quantity: 2 },
-    ],
+    originalPrice: 52.00, // 28 + 24
+    price: 44.00,
+    savings: 8.00,
+    shopifyVariantId: '52493311672586', // Bundle product variant
+    isBundle: true,
     bestValue: true,
   },
 ];
@@ -150,16 +147,14 @@ export default function DiveJournalPage() {
 
   // Handle add to cart - opens side cart
   const handleAddToCart = () => {
-    // Add items to cart
-    currentBundle.items.forEach(item => {
-      for (let i = 0; i < item.quantity; i++) {
-        addToCart({ 
-          id: item.variantId, 
-          shopifyVariantId: item.variantId,
-          name: item.variantId === PRODUCT.shopifyVariantId ? PRODUCT.name : BOOSTER_PACK.name,
-          price: item.variantId === PRODUCT.shopifyVariantId ? PRODUCT.price : BOOSTER_PACK.price,
-        });
-      }
+    // Add the bundle (or single item) to cart using its Shopify variant ID
+    addToCart({ 
+      id: currentBundle.shopifyVariantId, 
+      shopifyVariantId: currentBundle.shopifyVariantId,
+      name: currentBundle.name,
+      price: currentBundle.price,
+      image: PRODUCT.images.hero,
+      type: 'product',
     });
     // Open the side cart
     if (openCart) openCart();
@@ -214,11 +209,17 @@ export default function DiveJournalPage() {
                   <Link href="/" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
                     Home
                   </Link>
+                  <Link href="/products" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
+                    All Products
+                  </Link>
                   <Link href="/products/surface-tank" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
                     Surface Tank
                   </Link>
                   <Link href="/products/dive-journal" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium" style={{ color: LUNA.surfaceTeal }} onClick={() => setIsMenuOpen(false)}>
                     Dive Journal
+                  </Link>
+                  <Link href="/products/logbook-booster-pack" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
+                    Booster Pack
                   </Link>
                   <Link href="/stickers" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
                     Location Stickers
@@ -769,12 +770,18 @@ export default function DiveJournalPage() {
               <span className="text-lg font-medium text-white">Otterseas</span>
             </div>
             
-            <nav className="flex gap-6">
+            <nav className="flex flex-wrap justify-center gap-6">
+              <Link href="/products" className="text-white/50 hover:text-white text-sm transition-colors">
+                All Products
+              </Link>
               <Link href="/products/surface-tank" className="text-white/50 hover:text-white text-sm transition-colors">
                 Surface Tank
               </Link>
               <Link href="/products/dive-journal" className="text-white/50 hover:text-white text-sm transition-colors">
                 Dive Journal
+              </Link>
+              <Link href="/products/logbook-booster-pack" className="text-white/50 hover:text-white text-sm transition-colors">
+                Booster Pack
               </Link>
               <Link href="/stickers" className="text-white/50 hover:text-white text-sm transition-colors">
                 Stickers
