@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
-import { FUN_STICKERS, BUNDLED_STICKER_PRICE } from '@/data/funStickers';
+import { FUN_STICKERS, BUNDLED_STICKER_PRICE, QUALITY_STATEMENT } from '@/data/funStickers';
 
 // Luna Color Palette
 const LUNA = {
@@ -20,6 +20,7 @@ const LUNA = {
 // ===========================================
 function ProductCard({ sticker, onClick }) {
   const { addToCart, openCart } = useCart();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
@@ -34,6 +35,16 @@ function ProductCard({ sticker, onClick }) {
     if (openCart) openCart();
   };
 
+  const nextImage = (e) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % sticker.images.length);
+  };
+
+  const prevImage = (e) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev - 1 + sticker.images.length) % sticker.images.length);
+  };
+
   return (
     <motion.div
       className="bg-white rounded-2xl overflow-hidden cursor-pointer transition-all"
@@ -45,13 +56,53 @@ function ProductCard({ sticker, onClick }) {
       }}
       onClick={onClick}
     >
-      {/* Image */}
-      <div className="aspect-square overflow-hidden bg-gray-50">
+      {/* Image with navigation */}
+      <div className="aspect-square overflow-hidden bg-gray-50 relative group">
         <img 
-          src={sticker.images[0]} 
+          src={sticker.images[currentImageIndex]} 
           alt={sticker.title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-opacity duration-300"
         />
+        
+        {/* Image navigation arrows - show on hover */}
+        {sticker.images.length > 1 && (
+          <>
+            <button
+              onClick={prevImage}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={LUNA.deepWater} strokeWidth="2">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={LUNA.deepWater} strokeWidth="2">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+            
+            {/* Image dots */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {sticker.images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentImageIndex(index);
+                  }}
+                  className="w-2 h-2 rounded-full transition-all"
+                  style={{ 
+                    backgroundColor: currentImageIndex === index ? LUNA.surfaceTeal : 'rgba(255,255,255,0.8)',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                  }}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Content */}
@@ -226,9 +277,10 @@ function ProductModal({ sticker, isOpen, onClose }) {
                         transition={{ duration: 0.2 }}
                         className="overflow-hidden"
                       >
-                        <p className="text-gray-600 text-sm leading-relaxed pb-3">
-                          {sticker.description}
-                        </p>
+                        <div className="text-gray-600 text-sm leading-relaxed pb-3">
+                          <p className="mb-3">{sticker.description}</p>
+                          <p className="text-gray-500 italic">{QUALITY_STATEMENT}</p>
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
