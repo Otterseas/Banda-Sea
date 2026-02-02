@@ -91,7 +91,7 @@ const PRODUCT_ROWS = [
         name: 'Crochet Creatures',
         tagline: 'Handcrafted With Love',
         description: 'Unique handmade marine animals - nudibranchs, seahorses, frogfish & more',
-        price: 15.00,
+        price: 17.50,
         priceNote: 'from',
         image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=600',
         link: '/products/crochet-creatures',
