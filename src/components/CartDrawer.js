@@ -20,6 +20,11 @@ const PRODUCTS = {
   '49872531325194': { name: 'Logbook Booster Pack', price: 12.00, image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Logs.jpg?v=1743749112&width=200' },
   '52453682807050': { name: 'Surface Tank - Blue', price: 40.00, image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=200' },
   '52453682839818': { name: 'Surface Tank - White', price: 40.00, image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=200' },
+  // Fun Stickers
+  '50590639194378': { name: "Post-Dive Hair. Don't Care", price: 3.50, image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/PostDiveHairDontCare-MarketingImage.jpg?v=1746535285&width=200' },
+  '51143553548554': { name: 'But First. Coffee!', price: 3.50, image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/DiveFirstCoffeeSecond-MarketingImage.jpg?v=1746534827&width=200' },
+  '51143940047114': { name: 'BCD... Bring Coffee Down', price: 3.50, image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/BCD....BringCoffeeDown-MarketingImage.jpg?v=1746535044&width=200' },
+  '50827800740106': { name: 'Yes, my fins match my mask!', price: 3.50, image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Yes_My_Fins_Match_My_Mask_-_Marketing_Image.jpg?v=1746535398&width=200' },
 };
 
 export default function CartDrawer() {
