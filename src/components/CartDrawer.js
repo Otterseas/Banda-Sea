@@ -64,7 +64,7 @@ export default function CartDrawer() {
   const funStickers = cartArray.filter(item => item.type === 'fun-sticker');
   const products = cartArray.filter(item => item.type === 'product');
 
-  // Handle checkout
+  // Handle checkout - goes directly to Shopify checkout
   const handleCheckout = () => {
     const items = [];
     
@@ -75,13 +75,22 @@ export default function CartDrawer() {
     });
     
     const cartString = items.join(',');
+    
+    // Use /cart/ URL which auto-redirects to checkout
+    // Adding ?checkout=true forces immediate checkout redirect
     const baseUrl = 'https://38a44d-4c.myshopify.com/cart/';
     
     // Get discount code based on location sticker count
     const discountCode = getDiscountCode();
-    const discountParam = discountCode ? `?discount=${discountCode}` : '';
     
-    const checkoutUrl = `${baseUrl}${cartString}${discountParam}`;
+    // Build checkout URL - discount param triggers auto-checkout
+    let checkoutUrl = `${baseUrl}${cartString}`;
+    
+    // Add discount code if applicable
+    if (discountCode) {
+      checkoutUrl += `?discount=${discountCode}`;
+    }
+    
     window.location.href = checkoutUrl;
   };
 
