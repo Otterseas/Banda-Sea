@@ -38,6 +38,7 @@ const PRODUCTS = [
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Journal_and_pages-upscale_-_No_Background.png?v=1769576208&width=823',
     link: '/products/dive-journal',
     linkText: 'Read More...',
+    imageScale: 0.85, // Reduced by 15%
   },
   {
     id: '03',
@@ -48,7 +49,7 @@ const PRODUCTS = [
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Location_sticker_overlays.png?v=1770000931&width=823',
     link: '/stickers',
     linkText: 'Read More...',
-    imageScale: 0.7, // Smaller scale for this image
+    imageScale: 0.7,
   },
 ];
 
@@ -255,14 +256,15 @@ export default function HomePage() {
                     </h1>
                   </div>
 
-                  {/* Product Image - Center/Right, Larger */}
-                  <div className="flex-1 flex justify-center items-center">
+                  {/* Product Image - Right side, responsive sizing */}
+                  <div className="flex-1 flex justify-end items-center pr-4">
                     <motion.img
                       src={currentProduct.image}
                       alt={currentProduct.name}
-                      className="w-auto object-contain drop-shadow-2xl"
+                      className="object-contain drop-shadow-2xl"
                       style={{
-                        maxHeight: currentProduct.imageScale ? `${500 * currentProduct.imageScale}px` : '500px',
+                        maxHeight: currentProduct.imageScale ? `${400 * currentProduct.imageScale}px` : '400px',
+                        maxWidth: '60%',
                         filter: `drop-shadow(0 20px 60px rgba(0,0,0,0.5))`
                       }}
                       whileHover={{ scale: 1.02 }}
@@ -441,26 +443,29 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-
-            {/* Footer */}
-            <footer className="px-8 md:px-12 py-6 border-t border-gray-100">
-              <div className="flex items-center justify-between">
-                <p className="text-xs" style={{ color: LUNA.midDepth }}>
-                  © 2025 Otterseas
-                </p>
-                <div className="flex gap-4">
-                  <a href="#" className="text-xs transition-colors hover:opacity-70" style={{ color: LUNA.midDepth }}>
-                    Privacy
-                  </a>
-                  <a href="#" className="text-xs transition-colors hover:opacity-70" style={{ color: LUNA.midDepth }}>
-                    Terms
-                  </a>
-                </div>
-              </div>
-            </footer>
           </div>
           {/* End of Hero Section - Split Panels */}
         </div>
+
+        {/* ===========================================
+            PARALLAX IMAGE SECTION
+            =========================================== */}
+        <section 
+          className="relative h-[50vh] md:h-[60vh] overflow-hidden"
+          style={{
+            backgroundImage: 'url(https://38a44d-4c.myshopify.com/cdn/shop/files/underwater-diver.jpg?v=1769395822&width=1920)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+          }}
+        >
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(180deg, ${LUNA.abyss} 0%, transparent 30%, transparent 70%, ${LUNA.abyss} 100%)`
+            }}
+          />
+        </section>
 
         {/* ===========================================
             ABOUT US SECTION - Full Width Below
@@ -559,33 +564,87 @@ export default function HomePage() {
         </section>
 
         {/* ===========================================
-            BOTTOM FOOTER - Full Width
+            NEWSLETTER SECTION
+            =========================================== */}
+        <section 
+          className="w-full py-16 px-8"
+          style={{ backgroundColor: LUNA.deepWater }}
+        >
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h3 
+                className="text-2xl md:text-3xl font-bold text-white mb-4"
+              >
+                Stay In The Loop
+              </h3>
+              <p className="text-white/60 mb-8">
+                Get updates on new dive locations, products, and exclusive offers.
+              </p>
+              <a
+                href="mailto:info@otterseas.com"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-semibold transition-all hover:scale-105"
+                style={{
+                  background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                  color: 'white',
+                  boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                info@otterseas.com
+              </a>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ===========================================
+            FULL FOOTER - With All Navigation
             =========================================== */}
         <footer 
-          className="w-full py-8 px-8"
+          className="w-full py-12 px-8"
           style={{ backgroundColor: LUNA.abyss }}
         >
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <img
-                src="/logo.png"
-                alt="Otterseas"
-                className="w-8 h-8 rounded-lg object-contain"
-              />
-              <span className="text-white font-medium">Otterseas</span>
-            </div>
-            
-            <p className="text-white/40 text-sm">
-              Dive deeper, collect memories.
-            </p>
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <Link href="/" className="flex items-center gap-3">
+                <img
+                  src="/logo.png"
+                  alt="Otterseas"
+                  className="w-10 h-10 rounded-xl object-contain"
+                />
+                <span className="text-lg font-medium text-white">Otterseas</span>
+              </Link>
+              
+              <nav className="flex flex-wrap justify-center gap-6">
+                <Link href="/products" className="text-white/50 hover:text-white text-sm transition-colors">
+                  All Products
+                </Link>
+                <Link href="/products/surface-tank" className="text-white/50 hover:text-white text-sm transition-colors">
+                  Surface Tank
+                </Link>
+                <Link href="/products/dive-journal" className="text-white/50 hover:text-white text-sm transition-colors">
+                  Dive Journal
+                </Link>
+                <Link href="/products/logbook-booster-pack" className="text-white/50 hover:text-white text-sm transition-colors">
+                  Booster Pack
+                </Link>
+                <Link href="/stickers" className="text-white/50 hover:text-white text-sm transition-colors">
+                  Location Stickers
+                </Link>
+                <Link href="/products/fun-stickers" className="text-white/50 hover:text-white text-sm transition-colors">
+                  Fun Stickers
+                </Link>
+              </nav>
 
-            <div className="flex gap-6">
-              <a href="#" className="text-white/40 hover:text-white text-sm transition-colors">
-                Instagram
-              </a>
-              <a href="#" className="text-white/40 hover:text-white text-sm transition-colors">
-                Contact
-              </a>
+              <p className="text-white/40 text-sm">
+                © 2025 Otterseas
+              </p>
             </div>
           </div>
         </footer>
