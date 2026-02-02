@@ -64,12 +64,12 @@ const COLLECTIONS = [
   },
   {
     id: 'stickers',
-    name: 'Location Stickers',
-    description: 'Collect memories from your dive sites',
+    name: 'Stickers',
+    description: 'Show off your dive adventures',
     products: [
       {
-        id: 'sticker-collection',
-        name: 'Dive Site Stickers',
+        id: 'location-stickers',
+        name: 'Location Stickers',
         tagline: 'Collect Your Adventures',
         description: 'Waterproof vinyl stickers from 80+ dive locations worldwide',
         price: 2.50,
@@ -78,6 +78,20 @@ const COLLECTIONS = [
         link: '/stickers',
         badge: '80+ Locations',
       },
+      {
+        id: 'fun-stickers',
+        name: 'Fun Stickers',
+        tagline: 'Just For Fun',
+        description: 'Lighthearted dive stickers for those who don\'t take themselves too seriously',
+        price: 3.50,
+        priceNote: 'from',
+        image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/PostDiveHairDontCare-MarketingImage.jpg?v=1746535285&width=600',
+        link: '/products/fun-stickers',
+        badge: 'New',
+      },
+    ],
+  },
+];
     ],
   },
 ];
@@ -146,8 +160,18 @@ export default function ProductsPage() {
                   <Link href="/products/dive-journal" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
                     Dive Journal
                   </Link>
+                  <Link href="/products/logbook-booster-pack" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
+                    Booster Pack
+                  </Link>
                   <Link href="/stickers" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
                     Location Stickers
+                  </Link>
+                  <Link href="/products/fun-stickers" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
+                    Fun Stickers
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
                   </Link>
                 </motion.div>
               )}
@@ -321,16 +345,19 @@ export default function ProductsPage() {
       >
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <img
                 src="/logo.png"
                 alt="Otterseas"
                 className="w-10 h-10 rounded-xl object-contain"
               />
               <span className="text-lg font-medium text-white">Otterseas</span>
-            </div>
+            </Link>
             
-            <nav className="flex gap-6">
+            <nav className="flex flex-wrap justify-center gap-6">
+              <Link href="/products" className="text-white/50 hover:text-white text-sm transition-colors">
+                All Products
+              </Link>
               <Link href="/products/surface-tank" className="text-white/50 hover:text-white text-sm transition-colors">
                 Surface Tank
               </Link>
@@ -341,7 +368,10 @@ export default function ProductsPage() {
                 Booster Pack
               </Link>
               <Link href="/stickers" className="text-white/50 hover:text-white text-sm transition-colors">
-                Stickers
+                Location Stickers
+              </Link>
+              <Link href="/products/fun-stickers" className="text-white/50 hover:text-white text-sm transition-colors">
+                Fun Stickers
               </Link>
             </nav>
 
