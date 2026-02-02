@@ -57,10 +57,11 @@ const PRODUCTS = [
     shortName: 'Crochet\nCreatures',
     tagline: 'HANDCRAFTED WITH LOVE',
     description: 'Unique handmade marine animals - nudibranchs, seahorses, frogfish & more.',
-    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Nudibranches_no_background.png?v=1770015398&width=823',
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Nudibranchs_-_no_background.jpg?v=1770014611&width=823',
     link: '/products/crochet-creatures',
     linkText: 'Read More...',
     imageScale: 0.85,
+    imageOffset: '5%', // Shift right
   },
 ];
 
@@ -276,7 +277,8 @@ export default function HomePage() {
                       style={{
                         maxHeight: currentProduct.imageScale ? `${500 * currentProduct.imageScale}px` : '500px',
                         maxWidth: '80%',
-                        filter: `drop-shadow(0 20px 60px rgba(0,0,0,0.5))`
+                        filter: `drop-shadow(0 20px 60px rgba(0,0,0,0.5))`,
+                        marginLeft: currentProduct.imageOffset || '0',
                       }}
                       whileHover={{ scale: 1.02 }}
                       transition={{ type: 'spring', stiffness: 300 }}
