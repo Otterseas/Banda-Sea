@@ -16,80 +16,66 @@ const LUNA = {
 };
 
 // ===========================================
-// PRODUCT COLLECTIONS DATA
+// ALL PRODUCTS - Flat list for grid display
 // ===========================================
-const COLLECTIONS = [
+const ALL_PRODUCTS = [
+  // Row 1: Hydration + Dive Logging
   {
-    id: 'hydration',
-    name: 'Hydration',
-    description: 'Stay hydrated on your diving adventures',
-    products: [
-      {
-        id: 'surface-tank',
-        name: 'The Surface Tank',
-        tagline: 'Memories That Stick',
-        description: 'Premium insulated water bottle designed for divers',
-        price: 40.00,
-        image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=600',
-        link: '/products/surface-tank',
-        badge: 'Best Seller',
-      },
-    ],
+    id: 'surface-tank',
+    name: 'The Surface Tank',
+    tagline: 'Memories That Stick',
+    description: 'Premium insulated water bottle designed for divers',
+    price: 40.00,
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=600',
+    link: '/products/surface-tank',
+    badge: 'Best Seller',
+    category: 'Hydration',
   },
   {
-    id: 'logging',
-    name: 'Dive Logging',
-    description: 'Document your underwater adventures',
-    products: [
-      {
-        id: 'dive-journal',
-        name: 'The Dive Journal',
-        tagline: 'More Than Just Stats',
-        description: 'The ultimate dive log for recording your experiences',
-        price: 28.00,
-        image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Journal_-_Image_only.jpg?v=1769573325&width=600',
-        link: '/products/dive-journal',
-        badge: 'New',
-      },
-      {
-        id: 'booster-pack',
-        name: 'Logbook Booster Pack',
-        tagline: 'Keep Your Adventures Going',
-        description: '30 additional full-colour dive log pages',
-        price: 12.00,
-        image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Logs.jpg?v=1743749112&width=600',
-        link: '/products/logbook-booster-pack',
-      },
-    ],
+    id: 'dive-journal',
+    name: 'The Dive Journal',
+    tagline: 'More Than Just Stats',
+    description: 'The ultimate dive log for recording your experiences',
+    price: 28.00,
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Journal_-_Image_only.jpg?v=1769573325&width=600',
+    link: '/products/dive-journal',
+    badge: 'New',
+    category: 'Dive Logging',
   },
   {
-    id: 'stickers',
-    name: 'Stickers',
-    description: 'Show off your dive adventures',
-    products: [
-      {
-        id: 'location-stickers',
-        name: 'Location Stickers',
-        tagline: 'Collect Your Adventures',
-        description: 'Waterproof vinyl stickers from 80+ dive locations worldwide',
-        price: 2.50,
-        priceNote: 'from',
-        image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Marine-Animals_1.jpg?v=1743749112&width=600',
-        link: '/stickers',
-        badge: '80+ Locations',
-      },
-      {
-        id: 'fun-stickers',
-        name: 'Fun Stickers',
-        tagline: 'Just For Fun',
-        description: 'Lighthearted dive stickers for those who don\'t take themselves too seriously',
-        price: 3.50,
-        priceNote: 'from',
-        image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/PostDiveHairDontCare-MarketingImage.jpg?v=1746535285&width=600',
-        link: '/products/fun-stickers',
-        badge: 'New',
-      },
-    ],
+    id: 'booster-pack',
+    name: 'Logbook Booster Pack',
+    tagline: 'Keep Your Adventures Going',
+    description: '30 additional full-colour dive log pages',
+    price: 12.00,
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Logs.jpg?v=1743749112&width=600',
+    link: '/products/logbook-booster-pack',
+    category: null, // Same category as previous, no header needed
+  },
+  // Row 2: Stickers
+  {
+    id: 'location-stickers',
+    name: 'Location Stickers',
+    tagline: 'Collect Your Adventures',
+    description: 'Waterproof vinyl stickers from 80+ dive locations worldwide',
+    price: 2.50,
+    priceNote: 'from',
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Location_sticker_overlays.png?v=1770000931&width=823',
+    link: '/stickers',
+    badge: '80+ Locations',
+    category: 'Stickers',
+  },
+  {
+    id: 'fun-stickers',
+    name: 'Fun Stickers',
+    tagline: 'Just For Fun',
+    description: 'Lighthearted dive stickers for those who don\'t take themselves too seriously',
+    price: 3.50,
+    priceNote: 'from',
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/PostDiveHairDontCare-MarketingImage.jpg?v=1746535285&width=600',
+    link: '/products/fun-stickers',
+    badge: 'New',
+    category: null, // Same category as previous
   },
 ];
 
@@ -209,94 +195,91 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Collections */}
+      {/* Collections Grid */}
       <section className="px-8 pb-16">
-        <div className="max-w-7xl mx-auto">
-          {COLLECTIONS.map((collection, collectionIndex) => (
-            <motion.div
-              key={collection.id}
-              className="mb-10"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: collectionIndex * 0.1 }}
-            >
-              {/* Collection Header */}
-              <div className="mb-5">
-                <h2 className="text-2xl font-bold text-white mb-1">{collection.name}</h2>
-                <p className="text-white/60 text-sm">{collection.description}</p>
-              </div>
-
-              {/* Products Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {collection.products.map((product, productIndex) => (
-                  <Link href={product.link} key={product.id}>
-                    <motion.div
-                      className="group relative rounded-xl overflow-hidden cursor-pointer h-full"
-                      style={{ 
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        backdropFilter: 'blur(10px)',
-                        border: `1px solid ${LUNA.highlight}20`,
-                      }}
-                      whileHover={{ scale: 1.02, borderColor: LUNA.highlight }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {/* Badge */}
-                      {product.badge && (
-                        <div 
-                          className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-semibold"
-                          style={{ 
-                            backgroundColor: product.badge === 'New' ? '#FF6B9D' : LUNA.highlight,
-                            color: product.badge === 'New' ? 'white' : LUNA.abyss
-                          }}
-                        >
-                          {product.badge}
-                        </div>
-                      )}
-
-                      {/* Image */}
-                      <div className="aspect-square overflow-hidden">
-                        <img 
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
+        <div className="max-w-5xl mx-auto">
+          {/* 3-Column Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {ALL_PRODUCTS.map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                {/* Category Header - only show if product has a category */}
+                {product.category && (
+                  <div className="mb-3">
+                    <h2 className="text-lg font-bold text-white">{product.category}</h2>
+                  </div>
+                )}
+                
+                {/* Product Card */}
+                <Link href={product.link}>
+                  <div
+                    className="group relative rounded-xl overflow-hidden cursor-pointer h-full transition-all hover:scale-[1.02]"
+                    style={{ 
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      backdropFilter: 'blur(10px)',
+                      border: `1px solid ${LUNA.highlight}20`,
+                    }}
+                  >
+                    {/* Badge */}
+                    {product.badge && (
+                      <div 
+                        className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-semibold"
+                        style={{ 
+                          backgroundColor: product.badge === 'New' ? '#FF6B9D' : LUNA.highlight,
+                          color: product.badge === 'New' ? 'white' : LUNA.abyss
+                        }}
+                      >
+                        {product.badge}
                       </div>
+                    )}
 
-                      {/* Content */}
-                      <div className="p-3">
-                        <p className="text-[10px] tracking-wider mb-1" style={{ color: LUNA.highlight }}>
-                          {product.tagline.toUpperCase()}
-                        </p>
-                        <h3 className="text-sm font-bold text-white mb-1 line-clamp-1">{product.name}</h3>
-                        <p className="text-white/60 text-xs mb-2 line-clamp-2">{product.description}</p>
-                        
-                        <div className="flex items-center justify-between">
-                          <div>
-                            {product.priceNote && (
-                              <span className="text-white/40 text-xs mr-1">{product.priceNote}</span>
-                            )}
-                            <span className="text-sm font-bold" style={{ color: LUNA.highlight }}>
-                              £{product.price.toFixed(2)}
-                            </span>
-                          </div>
-                          <span 
-                            className="text-xs font-medium flex items-center gap-1 group-hover:gap-2 transition-all"
-                            style={{ color: LUNA.highlight }}
-                          >
-                            View
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                              <path d="M5 12h14M12 5l7 7-7 7"/>
-                            </svg>
+                    {/* Image */}
+                    <div className="aspect-square overflow-hidden">
+                      <img 
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-4">
+                      <p className="text-[10px] tracking-wider mb-1" style={{ color: LUNA.highlight }}>
+                        {product.tagline.toUpperCase()}
+                      </p>
+                      <h3 className="text-sm font-bold text-white mb-1">{product.name}</h3>
+                      <p className="text-white/60 text-xs mb-3 line-clamp-2">{product.description}</p>
+                      
+                      <div className="flex items-center justify-between">
+                        <div>
+                          {product.priceNote && (
+                            <span className="text-white/40 text-xs mr-1">{product.priceNote}</span>
+                          )}
+                          <span className="text-sm font-bold" style={{ color: LUNA.highlight }}>
+                            £{product.price.toFixed(2)}
                           </span>
                         </div>
+                        <span 
+                          className="text-xs font-medium flex items-center gap-1 group-hover:gap-2 transition-all"
+                          style={{ color: LUNA.highlight }}
+                        >
+                          View
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                          </svg>
+                        </span>
                       </div>
-                    </motion.div>
-                  </Link>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
