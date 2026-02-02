@@ -382,6 +382,14 @@ export default function HomePage() {
                     >
                       Fun Stickers
                     </Link>
+                    <Link 
+                      href="/products/crochet-creatures" 
+                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                      style={{ color: LUNA.deepWater }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Crochet Creatures
+                    </Link>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -564,13 +572,13 @@ export default function HomePage() {
         </section>
 
         {/* ===========================================
-            NEWSLETTER SECTION
+            NEWSLETTER SUBSCRIBE SECTION
             =========================================== */}
         <section 
           className="w-full py-16 px-8"
           style={{ backgroundColor: LUNA.deepWater }}
         >
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -584,21 +592,42 @@ export default function HomePage() {
               <p className="text-white/60 mb-8">
                 Get updates on new dive locations, products, and exclusive offers.
               </p>
-              <a
-                href="mailto:info@otterseas.com"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-semibold transition-all hover:scale-105"
-                style={{
-                  background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                  color: 'white',
-                  boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`
+              
+              {/* Email Subscription Form */}
+              <form 
+                className="flex flex-col sm:flex-row gap-3"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  // Handle subscription - integrate with your email service
+                  const email = e.target.email.value;
+                  console.log('Subscribe:', email);
+                  alert('Thanks for subscribing!');
+                  e.target.reset();
                 }}
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
-                </svg>
-                info@otterseas.com
-              </a>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                  className="flex-1 px-5 py-4 rounded-xl text-sm bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all"
+                />
+                <button
+                  type="submit"
+                  className="px-8 py-4 rounded-xl text-sm font-semibold transition-all hover:scale-105 whitespace-nowrap"
+                  style={{
+                    background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                    color: 'white',
+                    boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`
+                  }}
+                >
+                  Subscribe
+                </button>
+              </form>
+              
+              <p className="text-white/40 text-xs mt-4">
+                No spam, unsubscribe anytime.
+              </p>
             </motion.div>
           </div>
         </section>
@@ -639,6 +668,9 @@ export default function HomePage() {
                 </Link>
                 <Link href="/products/fun-stickers" className="text-white/50 hover:text-white text-sm transition-colors">
                   Fun Stickers
+                </Link>
+                <Link href="/products/crochet-creatures" className="text-white/50 hover:text-white text-sm transition-colors">
+                  Crochet Creatures
                 </Link>
               </nav>
 
