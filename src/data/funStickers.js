@@ -2,12 +2,15 @@
 // FUN STICKERS DATA
 // ===========================================
 
+// Shared quality statement for all stickers
+export const QUALITY_STATEMENT = "Each sticker is printed on a thick, durable vinyl with a matte finish – giving our stickers a premium look & feel.";
+
 export const FUN_STICKERS = [
   {
     id: 'post-dive-hair',
     title: "Post-Dive Hair. Don't Care",
     price: 3.50,
-    description: "High-quality, water-resistant sticker celebrates that special moment when your perfectly styled hair meets your mask strap and decides to go rogue! Each sticker is printed on a thick, durable vinyl with a matte finish – giving our stickers a premium look & feel.",
+    description: "That moment when your perfectly styled hair meets your mask strap and decides to go rogue!",
     productInfo: [
       "Die-cut premium vinyl - 75mm x 58mm / 2.95\" x 2.28\"",
       "Water & weather resistant (unlike your hairstyle)",
@@ -24,7 +27,7 @@ export const FUN_STICKERS = [
     id: 'but-first-coffee',
     title: "But First. Coffee!",
     price: 3.50,
-    description: "For the diver who believes the best buddy is a hot cup of coffee! Each sticker is printed on a thick, durable vinyl with a matte finish – giving our stickers a premium look & feel.",
+    description: "For the diver who believes the best buddy is a hot cup of coffee!",
     productInfo: [
       "Die-cut premium vinyl - 75mm x 58mm / 2.95\" x 2.28\"",
       "Water & weather resistant",
@@ -41,7 +44,7 @@ export const FUN_STICKERS = [
     id: 'bcd-bring-coffee-down',
     title: "BCD... Bring Coffee Down",
     price: 3.50,
-    description: "What we all wish BCD really stood for. (and was possible!) Each sticker is printed on a thick, durable vinyl with a matte finish – giving our stickers a premium look & feel.",
+    description: "What we all wish BCD really stood for. (and was possible!)",
     productInfo: [
       "Die-cut premium vinyl - 75mm x 58mm / 2.95\" x 2.28\"",
       "Water & weather resistant",
@@ -58,7 +61,7 @@ export const FUN_STICKERS = [
     id: 'fins-match-mask',
     title: "Yes, my fins match my mask!",
     price: 3.50,
-    description: "Secretly, we all know what the most important feature of your fins are... does it match my mask!? Each sticker is printed on a thick, durable vinyl with a matte finish – giving our stickers a premium look & feel.",
+    description: "Secretly, we all know what the most important feature of your fins are... does it match my mask!?",
     productInfo: [
       "Die-cut premium vinyl - 75mm x 56mm / 2.95\" x 2.27\"",
       "Water & weather resistant",
