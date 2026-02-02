@@ -35,7 +35,7 @@ const PRODUCTS = [
     shortName: 'The\nDive\nJournal',
     tagline: 'MORE THAN JUST STATS',
     description: 'Document your underwater adventures with our beautifully designed dive journal.',
-    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Journal_-_Image_only.jpg?v=1769573325&width=823',
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Journal_and_pages-upscale_-_No_Background.png?v=1769576208&width=823',
     link: '/products/dive-journal',
     linkText: 'Read More...',
   },
@@ -48,6 +48,7 @@ const PRODUCTS = [
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Location_sticker_overlays.png?v=1770000931&width=823',
     link: '/stickers',
     linkText: 'Read More...',
+    imageScale: 0.7, // Smaller scale for this image
   },
 ];
 
@@ -259,8 +260,9 @@ export default function HomePage() {
                     <motion.img
                       src={currentProduct.image}
                       alt={currentProduct.name}
-                      className="max-h-[500px] w-auto object-contain drop-shadow-2xl"
+                      className="w-auto object-contain drop-shadow-2xl"
                       style={{
+                        maxHeight: currentProduct.imageScale ? `${500 * currentProduct.imageScale}px` : '500px',
                         filter: `drop-shadow(0 20px 60px rgba(0,0,0,0.5))`
                       }}
                       whileHover={{ scale: 1.02 }}
