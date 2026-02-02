@@ -1,10 +1,10 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { getStickerBySlug, BASE_PRICE, STICKERS } from '@/data/stickers';
+import { getStickerBySlug, BASE_PRICE, STICKERS, REGIONS } from '@/data/stickers';
 import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Luna Color Palette
@@ -16,32 +16,24 @@ const LUNA = {
   abyss: '#011C40',
 };
 
-// Get related stickers (same region, excluding current)
-const getRelatedStickers = (sticker) => {
-  if (!sticker) return [];
-  return STICKERS[sticker.region]?.filter(s => s.id !== sticker.id) || [];
-};
-
-// Get all stickers flat for navigation
-const getAllStickersFlat = () => {
-  return Object.values(STICKERS).flat();
-};
-
 export default function StickerPage() {
   const params = useParams();
   const sticker = getStickerBySlug(params.slug);
   const { addToCart, openCart } = useCart();
-  const [isFlipped, setIsFlipped] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  // Get all stickers for prev/next navigation
-  const allStickers = getAllStickersFlat();
-  const currentIndex = allStickers.findIndex(s => s.slug === params.slug);
-  const prevSticker = currentIndex > 0 ? allStickers[currentIndex - 1] : null;
-  const nextSticker = currentIndex < allStickers.length - 1 ? allStickers[currentIndex + 1] : null;
+  // Region tabs - default to current sticker's region
+  const [activeRegion, setActiveRegion] = useState(sticker?.region || REGIONS[0]);
   
-  // Related stickers
-  const relatedStickers = getRelatedStickers(sticker);
+  // Update active region when sticker changes
+  useEffect(() => {
+    if (sticker?.region) {
+      setActiveRegion(sticker.region);
+    }
+  }, [sticker?.region]);
+  
+  // Get stickers for the active region (excluding current sticker)
+  const regionStickers = (STICKERS[activeRegion] || []).filter(s => s.id !== sticker?.id);
 
   if (!sticker) {
     return (
@@ -67,20 +59,22 @@ export default function StickerPage() {
   return (
     <div 
       className="min-h-screen w-full flex flex-col"
-      style={{ 
-        fontFamily: 'Montserrat, sans-serif',
-        background: `linear-gradient(160deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 40%, ${LUNA.abyss} 100%)`
-      }}
+      style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* ==================== HEADER ==================== */}
-      <header className="flex-shrink-0 flex items-center justify-between px-6 py-4 relative z-20">
+      <header 
+        className="flex-shrink-0 flex items-center justify-between px-6 py-4 bg-white border-b border-gray-100"
+      >
         <Link href="/" className="flex items-center gap-3">
           <img 
             src="/logo.png" 
             alt="Otterseas" 
             className="w-10 h-10 rounded-xl object-contain"
           />
-          <span className="text-xl font-medium tracking-tight text-white">
+          <span 
+            className="text-xl font-medium tracking-tight"
+            style={{ color: LUNA.deepWater }}
+          >
             Otterseas
           </span>
         </Link>
@@ -89,11 +83,11 @@ export default function StickerPage() {
         <div className="relative">
           <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex flex-col gap-1.5 p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="flex flex-col gap-1.5 p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <span className="w-6 h-0.5 bg-white" />
-            <span className="w-6 h-0.5 bg-white" />
-            <span className="w-6 h-0.5 bg-white" />
+            <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
+            <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
+            <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
           </button>
 
           <AnimatePresence>
@@ -129,75 +123,22 @@ export default function StickerPage() {
       </header>
 
       {/* ==================== MAIN CONTENT ==================== */}
-      <main className="flex-1 flex flex-col items-center justify-center px-6 py-8 relative">
+      <main className="flex-1 flex flex-col md:flex-row">
         
-        {/* Back to Collection - Top Center */}
-        <Link 
-          href="/stickers"
-          className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-80"
-          style={{ color: LUNA.highlight }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-          Back to Collection
-        </Link>
-
-        {/* Prev/Next Navigation - Sides */}
-        {prevSticker && (
-          <Link
-            href={`/stickers/${prevSticker.slug}`}
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-110 z-10"
-            style={{ 
-              background: 'rgba(255,255,255,0.1)',
-              backdropFilter: 'blur(10px)',
-              border: `1px solid ${LUNA.highlight}30`
-            }}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-              <path d="M15 18l-6-6 6-6"/>
-            </svg>
-          </Link>
-        )}
-        
-        {nextSticker && (
-          <Link
-            href={`/stickers/${nextSticker.slug}`}
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-110 z-10"
-            style={{ 
-              background: 'rgba(255,255,255,0.1)',
-              backdropFilter: 'blur(10px)',
-              border: `1px solid ${LUNA.highlight}30`
-            }}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-              <path d="M9 18l6-6-6-6"/>
-            </svg>
-          </Link>
-        )}
-
-        {/* ==================== FLIP CARD ==================== */}
-        <div 
-          className="relative w-full max-w-md mx-auto cursor-pointer"
-          style={{ perspective: '1000px' }}
-          onClick={() => setIsFlipped(!isFlipped)}
-        >
-          <motion.div
-            className="relative w-full"
-            style={{ transformStyle: 'preserve-3d' }}
-            animate={{ rotateY: isFlipped ? 180 : 0 }}
-            transition={{ duration: 0.6, ease: 'easeInOut' }}
-          >
-            {/* ===== FRONT - Sticker Image ===== */}
-            <div 
-              className="w-full rounded-3xl overflow-hidden"
-              style={{ backfaceVisibility: 'hidden' }}
-            >
+        {/* ===== LEFT PANEL - White ===== */}
+        <div className="w-full md:w-1/2 bg-white flex flex-col p-8 md:p-12">
+          
+          {/* Sticker Image */}
+          <div className="flex-1 flex items-center justify-center mb-8">
+            <div className="w-full max-w-sm">
               {sticker.image ? (
-                <img 
+                <motion.img 
                   src={sticker.image}
                   alt={sticker.name}
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain drop-shadow-2xl"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4 }}
                 />
               ) : (
                 <div 
@@ -209,133 +150,163 @@ export default function StickerPage() {
                   <p className="text-2xl font-semibold text-white">{sticker.name}</p>
                 </div>
               )}
-              
-              {/* Tap hint */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full bg-black/30 backdrop-blur-sm">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"/>
-                </svg>
-                <span className="text-white text-xs">Tap to read story</span>
-              </div>
             </div>
+          </div>
 
-            {/* ===== BACK - Story ===== */}
-            <div 
-              className="absolute inset-0 w-full rounded-3xl overflow-hidden p-8"
-              style={{ 
-                backfaceVisibility: 'hidden',
-                transform: 'rotateY(180deg)',
-                background: 'rgba(255,255,255,0.1)',
-                backdropFilter: 'blur(20px)',
-                border: `1px solid ${LUNA.highlight}30`
-              }}
+          {/* Sticker Info */}
+          <div className="flex-shrink-0">
+            <h1 
+              className="text-3xl md:text-4xl font-bold mb-2"
+              style={{ color: LUNA.deepWater }}
             >
-              <div className="h-full overflow-y-auto hide-scrollbar">
-                {/* Story Headline */}
-                <h2 
-                  className="text-2xl font-light mb-4 italic"
-                  style={{ color: LUNA.highlight }}
-                >
-                  {sticker.story?.headline || 'The Story'}
-                </h2>
+              {sticker.name}
+            </h1>
+            <p className="text-gray-500 mb-1">{sticker.region}</p>
+            <p className="text-gray-400 text-sm mb-4">{sticker.country}</p>
+            
+            <p 
+              className="text-2xl font-bold mb-6"
+              style={{ color: LUNA.surfaceTeal }}
+            >
+              £{BASE_PRICE.toFixed(2)}
+            </p>
 
-                {/* Story Content */}
-                <p className="text-white/90 text-sm leading-relaxed mb-6">
-                  {sticker.story?.content || 'Story content coming soon...'}
-                </p>
-
-                {/* Why We Chose This Design */}
-                <h3 
-                  className="text-lg font-light mb-3"
-                  style={{ color: LUNA.highlight }}
-                >
-                  Why We Chose This Design
-                </h3>
-
-                <p className="text-white/90 text-sm leading-relaxed">
-                  {sticker.story?.designRationale || 'Design rationale coming soon...'}
-                </p>
-              </div>
-
-              {/* Tap hint */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full bg-black/30 backdrop-blur-sm">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"/>
-                </svg>
-                <span className="text-white text-xs">Tap to see sticker</span>
-              </div>
-            </div>
-          </motion.div>
+            {/* Add to Pack Button */}
+            <motion.button
+              onClick={handleAddToPack}
+              className="w-full md:w-auto px-10 py-4 rounded-xl text-sm font-semibold transition-all"
+              style={{ 
+                background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                color: 'white',
+                boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`
+              }}
+              whileHover={{ scale: 1.02, boxShadow: `0 6px 30px ${LUNA.surfaceTeal}60` }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Add to Pack
+            </motion.button>
+          </div>
         </div>
 
-        {/* ==================== STICKER INFO (Below Card) ==================== */}
-        <div className="mt-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-            {sticker.name}
-          </h1>
-          <p className="text-white/60 mb-1">
-            {sticker.region} • {sticker.country}
-          </p>
-          <p className="text-2xl font-bold mb-6" style={{ color: LUNA.highlight }}>
-            £{BASE_PRICE.toFixed(2)}
-          </p>
+        {/* ===== RIGHT PANEL - Blue Gradient ===== */}
+        <div 
+          className="w-full md:w-1/2 flex flex-col"
+          style={{ 
+            background: `linear-gradient(160deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 40%, ${LUNA.abyss} 100%)`
+          }}
+        >
+          {/* Back to Collection */}
+          <div className="flex-shrink-0 p-6 md:p-8">
+            <Link 
+              href="/stickers"
+              className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-80"
+              style={{ color: LUNA.highlight }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Back to Collection
+            </Link>
+          </div>
 
-          {/* Add to Pack Button */}
-          <motion.button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleAddToPack();
-            }}
-            className="px-10 py-4 rounded-xl text-sm font-semibold transition-all"
-            style={{ 
-              background: 'rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(10px)',
-              border: `2px solid ${LUNA.highlight}`,
-              color: 'white',
-              boxShadow: `0 0 30px ${LUNA.highlight}30`
-            }}
-            whileHover={{ scale: 1.05, boxShadow: `0 0 40px ${LUNA.highlight}50` }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Add to Pack
-          </motion.button>
+          {/* Story Content - Scrollable */}
+          <div className="flex-1 overflow-y-auto px-6 md:px-8 pb-8">
+            {/* Story Headline */}
+            <h2 
+              className="text-2xl md:text-3xl font-light mb-6 italic"
+              style={{ color: LUNA.highlight }}
+            >
+              {sticker.story?.headline || 'The Story'}
+            </h2>
+
+            {/* Story Content */}
+            <p className="text-white/85 text-sm leading-relaxed mb-10">
+              {sticker.story?.content || 'Story content coming soon...'}
+            </p>
+
+            {/* Why We Chose This Design */}
+            <h3 
+              className="text-xl md:text-2xl font-light mb-4"
+              style={{ color: LUNA.highlight }}
+            >
+              Why We Chose This Design
+            </h3>
+
+            <p className="text-white/85 text-sm leading-relaxed">
+              {sticker.story?.designRationale || 'Design rationale coming soon...'}
+            </p>
+          </div>
         </div>
       </main>
 
-      {/* ==================== RELATED STICKERS (Bottom) ==================== */}
-      {relatedStickers.length > 0 && (
-        <section className="flex-shrink-0 px-6 py-8 border-t" style={{ borderColor: `${LUNA.highlight}20` }}>
-          <p className="text-center text-white/50 text-xs uppercase tracking-wider mb-4">
-            More from {sticker.region}
+      {/* ==================== BOTTOM SECTION ==================== */}
+      <section 
+        className="flex-shrink-0"
+        style={{ backgroundColor: LUNA.abyss }}
+      >
+        {/* More From Region */}
+        <div className="px-6 md:px-8 py-6 border-b" style={{ borderColor: `${LUNA.highlight}15` }}>
+          <p className="text-white/50 text-xs uppercase tracking-wider mb-4">
+            More from {activeRegion}
           </p>
           
-          <div className="flex justify-center gap-4 overflow-x-auto hide-scrollbar pb-2">
-            {relatedStickers.slice(0, 5).map((s) => (
-              <Link
-                key={s.id}
-                href={`/stickers/${s.slug}`}
-                className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden transition-all hover:scale-110"
-                style={{ border: `2px solid ${LUNA.highlight}30` }}
-              >
-                {s.image ? (
-                  <img 
-                    src={s.image} 
-                    alt={s.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
+          <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-2">
+            {regionStickers.length > 0 ? (
+              regionStickers.map((s) => (
+                <Link
+                  key={s.id}
+                  href={`/stickers/${s.slug}`}
+                  className="flex-shrink-0 group"
+                >
                   <div 
-                    className="w-full h-full flex items-center justify-center"
-                    style={{ background: `linear-gradient(135deg, ${LUNA.midDepth} 0%, ${LUNA.abyss} 100%)` }}
+                    className="w-16 h-16 rounded-xl overflow-hidden transition-all group-hover:scale-110 mb-1"
+                    style={{ border: `2px solid ${LUNA.highlight}30` }}
                   >
-                    <span className="text-white/50 text-[8px] text-center px-1">{s.name}</span>
+                    {s.image ? (
+                      <img 
+                        src={s.image} 
+                        alt={s.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div 
+                        className="w-full h-full flex items-center justify-center"
+                        style={{ background: `linear-gradient(135deg, ${LUNA.midDepth} 0%, ${LUNA.abyss} 100%)` }}
+                      >
+                        <span className="text-white/50 text-[8px] text-center px-1">{s.name}</span>
+                      </div>
+                    )}
                   </div>
-                )}
-              </Link>
+                  <p className="text-white/40 text-[10px] text-center truncate w-16 group-hover:text-white/70 transition-colors">
+                    {s.name}
+                  </p>
+                </Link>
+              ))
+            ) : (
+              <p className="text-white/30 text-sm">No other stickers in this region</p>
+            )}
+          </div>
+        </div>
+
+        {/* Region Tabs */}
+        <div className="px-6 md:px-8 py-4">
+          <div className="flex gap-2 overflow-x-auto hide-scrollbar">
+            {REGIONS.map((region) => (
+              <button
+                key={region}
+                onClick={() => setActiveRegion(region)}
+                className="flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                style={{ 
+                  backgroundColor: activeRegion === region ? LUNA.highlight : 'rgba(255,255,255,0.05)',
+                  color: activeRegion === region ? LUNA.abyss : 'rgba(255,255,255,0.5)',
+                }}
+              >
+                {region}
+              </button>
             ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
     </div>
   );
 }
