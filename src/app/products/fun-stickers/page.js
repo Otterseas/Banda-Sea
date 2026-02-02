@@ -203,36 +203,65 @@ function ProductModal({ sticker, isOpen, onClose }) {
               <div className="flex flex-col md:flex-row max-h-[85vh]">
                 
                 {/* Left - Image Gallery */}
-                <div className="md:w-1/2 relative bg-gray-50 flex-shrink-0">
+                <div className="md:w-1/2 relative bg-gray-50 flex-shrink-0 group">
                   <div className="aspect-square md:aspect-auto md:h-full">
                     <img 
                       src={sticker.images[activeImageIndex]} 
                       alt={sticker.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-opacity duration-300"
                     />
                   </div>
 
-                {/* Image Tabs */}
-                {sticker.images.length > 1 && (
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                    {sticker.images.map((_, index) => (
+                  {/* Image navigation arrows and dots */}
+                  {sticker.images.length > 1 && (
+                    <>
+                      {/* Left Arrow */}
                       <button
-                        key={index}
                         onClick={(e) => {
                           e.stopPropagation();
-                          setActiveImageIndex(index);
+                          setActiveImageIndex((prev) => (prev - 1 + sticker.images.length) % sticker.images.length);
                         }}
-                        className="w-3 h-3 rounded-full transition-all"
-                        style={{ 
-                          backgroundColor: activeImageIndex === index ? LUNA.surfaceTeal : 'rgba(255,255,255,0.8)',
-                          boxShadow: activeImageIndex === index ? `0 0 10px ${LUNA.surfaceTeal}` : '0 2px 4px rgba(0,0,0,0.2)',
-                          border: activeImageIndex === index ? 'none' : '1px solid rgba(0,0,0,0.1)',
+                        className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white shadow-lg"
+                      >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={LUNA.deepWater} strokeWidth="2">
+                          <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                      </button>
+                      
+                      {/* Right Arrow */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveImageIndex((prev) => (prev + 1) % sticker.images.length);
                         }}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
+                        className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white shadow-lg"
+                      >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={LUNA.deepWater} strokeWidth="2">
+                          <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                      </button>
+
+                      {/* Image Dots */}
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                        {sticker.images.map((_, index) => (
+                          <button
+                            key={index}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveImageIndex(index);
+                            }}
+                            className="w-3 h-3 rounded-full transition-all"
+                            style={{ 
+                              backgroundColor: activeImageIndex === index ? LUNA.surfaceTeal : 'rgba(255,255,255,0.8)',
+                              boxShadow: activeImageIndex === index ? `0 0 10px ${LUNA.surfaceTeal}` : '0 2px 4px rgba(0,0,0,0.2)',
+                              border: activeImageIndex === index ? 'none' : '1px solid rgba(0,0,0,0.1)',
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
 
               {/* Right - Product Info */}
               <div className="md:w-1/2 p-6 overflow-y-auto">
