@@ -38,7 +38,7 @@ const PRODUCTS = [
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Journal_and_pages-upscale_-_No_Background.png?v=1769576208&width=823',
     link: '/products/dive-journal',
     linkText: 'Read More...',
-    imageScale: 0.85, // Reduced by 15%
+    imageScale: 0.85,
   },
   {
     id: '03',
@@ -50,6 +50,17 @@ const PRODUCTS = [
     link: '/stickers',
     linkText: 'Read More...',
     imageScale: 0.7,
+  },
+  {
+    id: '04',
+    name: 'Crochet Creatures',
+    shortName: 'Crochet\nCreatures',
+    tagline: 'HANDCRAFTED WITH LOVE',
+    description: 'Unique handmade marine animals - nudibranchs, seahorses, frogfish & more.',
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Nudibranchs_-_no_background.jpg?v=1770014611&width=823',
+    link: '/products/crochet-creatures',
+    linkText: 'Read More...',
+    imageScale: 0.85,
   },
 ];
 
