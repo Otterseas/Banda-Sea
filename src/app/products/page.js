@@ -174,10 +174,10 @@ export default function ProductsPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="px-8 pt-16 pb-12">
+      <section className="px-8 pt-10 pb-8">
         <div className="max-w-7xl mx-auto text-center">
           <motion.span 
-            className="text-sm tracking-[0.25em] font-medium mb-4 block"
+            className="text-xs tracking-[0.25em] font-medium mb-3 block"
             style={{ color: LUNA.highlight }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -185,7 +185,7 @@ export default function ProductsPage() {
             EXPLORE OUR RANGE
           </motion.span>
           <motion.h1 
-            className="text-5xl md:text-6xl font-bold mb-6"
+            className="text-4xl md:text-5xl font-bold mb-4"
             style={{ 
               background: `linear-gradient(135deg, ${LUNA.highlight} 0%, ${LUNA.surfaceTeal} 50%, white 100%)`,
               WebkitBackgroundClip: 'text',
@@ -199,7 +199,7 @@ export default function ProductsPage() {
             Our Collections
           </motion.h1>
           <motion.p 
-            className="text-white/70 text-lg max-w-2xl mx-auto"
+            className="text-white/70 text-base max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -210,29 +210,29 @@ export default function ProductsPage() {
       </section>
 
       {/* Collections */}
-      <section className="px-8 pb-24">
+      <section className="px-8 pb-16">
         <div className="max-w-7xl mx-auto">
           {COLLECTIONS.map((collection, collectionIndex) => (
             <motion.div
               key={collection.id}
-              className="mb-16"
+              className="mb-10"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: collectionIndex * 0.1 }}
             >
               {/* Collection Header */}
-              <div className="mb-8">
-                <h2 className="text-3xl font-bold text-white mb-2">{collection.name}</h2>
-                <p className="text-white/60">{collection.description}</p>
+              <div className="mb-5">
+                <h2 className="text-2xl font-bold text-white mb-1">{collection.name}</h2>
+                <p className="text-white/60 text-sm">{collection.description}</p>
               </div>
 
               {/* Products Grid */}
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {collection.products.map((product, productIndex) => (
                   <Link href={product.link} key={product.id}>
                     <motion.div
-                      className="group relative rounded-2xl overflow-hidden cursor-pointer h-full"
+                      className="group relative rounded-xl overflow-hidden cursor-pointer h-full"
                       style={{ 
                         background: 'rgba(255, 255, 255, 0.05)',
                         backdropFilter: 'blur(10px)',
@@ -244,7 +244,7 @@ export default function ProductsPage() {
                       {/* Badge */}
                       {product.badge && (
                         <div 
-                          className="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-semibold"
+                          className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-semibold"
                           style={{ 
                             backgroundColor: product.badge === 'New' ? '#FF6B9D' : LUNA.highlight,
                             color: product.badge === 'New' ? 'white' : LUNA.abyss
@@ -264,28 +264,28 @@ export default function ProductsPage() {
                       </div>
 
                       {/* Content */}
-                      <div className="p-6">
-                        <p className="text-xs tracking-wider mb-2" style={{ color: LUNA.highlight }}>
+                      <div className="p-3">
+                        <p className="text-[10px] tracking-wider mb-1" style={{ color: LUNA.highlight }}>
                           {product.tagline.toUpperCase()}
                         </p>
-                        <h3 className="text-xl font-bold text-white mb-2">{product.name}</h3>
-                        <p className="text-white/60 text-sm mb-4">{product.description}</p>
+                        <h3 className="text-sm font-bold text-white mb-1 line-clamp-1">{product.name}</h3>
+                        <p className="text-white/60 text-xs mb-2 line-clamp-2">{product.description}</p>
                         
                         <div className="flex items-center justify-between">
                           <div>
                             {product.priceNote && (
-                              <span className="text-white/40 text-sm mr-1">{product.priceNote}</span>
+                              <span className="text-white/40 text-xs mr-1">{product.priceNote}</span>
                             )}
-                            <span className="text-xl font-bold" style={{ color: LUNA.highlight }}>
+                            <span className="text-sm font-bold" style={{ color: LUNA.highlight }}>
                               £{product.price.toFixed(2)}
                             </span>
                           </div>
                           <span 
-                            className="text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all"
+                            className="text-xs font-medium flex items-center gap-1 group-hover:gap-2 transition-all"
                             style={{ color: LUNA.highlight }}
                           >
                             View
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                               <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
                           </span>
