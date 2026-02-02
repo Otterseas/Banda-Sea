@@ -93,9 +93,9 @@ const PRODUCT_ROWS = [
         description: 'Unique handmade marine animals - nudibranchs, seahorses, frogfish & more',
         price: 15.00,
         priceNote: 'from',
-        image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/placeholder-crochet.jpg', // Placeholder
+        image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=600',
         link: '/products/crochet-creatures',
-        badge: 'Coming Soon',
+        badge: 'New',
       },
     ],
   },
