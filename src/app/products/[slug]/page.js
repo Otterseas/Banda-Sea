@@ -40,37 +40,65 @@ const STICKER_FAN_IMAGES = [
   }
 ];
 
-// Feature icons data with external SVG paths
-const FEATURE_ICONS = [
-  { icon: '/icons/Vacuum_Insulation.svg', title: 'Double Wall', subtitle: 'Vacuum Sealed', size: 'w-16 h-16' },
-  { icon: '/icons/Water_Capacity.svg', title: '40 oz / 1.2 L', subtitle: 'Capacity', size: 'w-14 h-14' },
-  { icon: '/icons/Stainless_Steel.svg', title: 'Pro-Grade', subtitle: 'Stainless Steel', size: 'w-14 h-14' },
-  { icon: '/icons/BPA_Free.svg', title: 'BPA Free', subtitle: 'Materials', size: 'w-14 h-14' },
-  { icon: '/icons/No_Condensation.svg', title: 'No External', subtitle: 'Condensation', size: 'w-14 h-14' },
-];
+// Inline SVG Icons
+const VacuumIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 52 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="26" cy="26" rx="20" ry="20" stroke="white" strokeWidth="2" fill="none"/>
+    <line x1="10" y1="42" x2="42" y2="10" stroke="white" strokeWidth="2"/>
+    <path d="M30 35C30 35 28 42 26 42C24 42 22 35 22 35" stroke="white" strokeWidth="1.5" fill="none"/>
+    <path d="M28 38C28 38 27 41 26 41C25 41 24 38 24 38" stroke="white" strokeWidth="1.5" fill="none"/>
+    <path d="M26.5 40C26.5 40 26.2 41.5 26 41.5C25.8 41.5 25.5 40 25.5 40" stroke="white" strokeWidth="1.5" fill="none"/>
+  </svg>
+);
 
-// Feature Icon Component
-function FeatureIcon({ icon, title, subtitle, size = 'w-14 h-14' }) {
-  const [imgError, setImgError] = useState(false);
+const CapacityIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 34 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17 4C17 4 6 18 6 28C6 38 11 46 17 46C23 46 28 38 28 28C28 18 17 4 17 4Z" fill="#A1D7E3" stroke="white" strokeWidth="2"/>
+    <path d="M17 6C17 6 8 18 8 27C8 36 12 43 17 43" fill="#6BC7DF" stroke="none"/>
+  </svg>
+);
+
+const SteelIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8" y="8" width="32" height="32" rx="4" stroke="white" strokeWidth="2" fill="none"/>
+    <text x="24" y="22" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">18/8</text>
+    <text x="24" y="34" textAnchor="middle" fill="white" fontSize="8">STEEL</text>
+  </svg>
+);
+
+const BPAFreeIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M24 6C24 6 12 12 12 24C12 32 16 40 24 44C32 40 36 32 36 24C36 12 24 6 24 6Z" fill="#B2CD47" stroke="#0C2844" strokeWidth="2"/>
+    <path d="M20 20C20 20 22 28 24 32C26 28 30 18 30 18" stroke="#0C2844" strokeWidth="2" fill="none" strokeLinecap="round"/>
+  </svg>
+);
+
+const NoCondensationIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 52 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="26" cy="26" rx="20" ry="20" stroke="white" strokeWidth="2" fill="none"/>
+    <line x1="10" y1="42" x2="42" y2="10" stroke="white" strokeWidth="2"/>
+    <path d="M26 16C26 16 20 24 20 30C20 34 22.5 38 26 38C29.5 38 32 34 32 30C32 24 26 16 26 16Z" stroke="white" strokeWidth="2" fill="none"/>
+  </svg>
+);
+
+// Feature Icon Component with inline SVGs
+function FeatureIcon({ type, title, subtitle }) {
+  const iconMap = {
+    vacuum: VacuumIcon,
+    capacity: CapacityIcon,
+    steel: SteelIcon,
+    bpa: BPAFreeIcon,
+    condensation: NoCondensationIcon,
+  };
+  
+  const IconComponent = iconMap[type] || VacuumIcon;
   
   return (
     <div className="flex flex-col items-center text-center">
-      <div className={`${size} mb-1 flex items-center justify-center`}>
-        {!imgError ? (
-          <img 
-            src={icon} 
-            alt={title} 
-            className="w-full h-full object-contain"
-            onError={() => setImgError(true)}
-          />
-        ) : (
-          // Fallback icon if SVG doesn't load
-          <div className="w-10 h-10 rounded-full border-2 border-white/50 flex items-center justify-center">
-            <span className="text-white/50 text-xs">?</span>
-          </div>
-        )}
+      <div className="w-12 h-12 mb-1 flex items-center justify-center">
+        <IconComponent />
       </div>
-      <p className="text-white text-[11px] font-medium leading-tight">{title}</p>
+      <p className="text-white text-[10px] font-medium leading-tight">{title}</p>
       <p className="text-white/60 text-[10px]">{subtitle}</p>
     </div>
   );
@@ -124,14 +152,14 @@ function CollapsibleSection({ title, children, defaultOpen = false }) {
   );
 }
 
-// Floating Cart Button Component - NOW ON RIGHT SIDE
+// Floating Cart Button Component
 function FloatingCartButton() {
   const { totalItems, openDrawer } = useCart();
 
   return (
     <motion.button
       onClick={openDrawer}
-      className="fixed bottom-6 right-6 z-30 w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
+      className="fixed bottom-6 left-6 z-30 w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
       style={{
         background: `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, ${COLORS.midDepth} 100%)`,
         boxShadow: `0 4px 20px ${COLORS.midDepth}80`,
@@ -169,7 +197,7 @@ export default function ProductPage() {
       <div className="h-screen flex items-center justify-center" style={{ background: COLORS.abyss }}>
         <div className="text-center">
           <h1 className="text-2xl font-light text-white mb-4">Product not found</h1>
-          <Link href="/" className="text-white/60 hover:text-white hover:underline">
+          <Link href="/stickers" className="text-white/60 hover:text-white hover:underline">
             ← Back to shop
           </Link>
         </div>
@@ -193,6 +221,9 @@ export default function ProductPage() {
     openDrawer();
   };
 
+  // Feature icon types mapped to product features
+  const featureTypes = ['vacuum', 'capacity', 'steel', 'bpa', 'condensation'];
+
   return (
     <div 
       className="min-h-screen w-full flex flex-col md:flex-row"
@@ -200,14 +231,14 @@ export default function ProductPage() {
     >
       {/* ==================== LEFT PANEL - FIXED (60%) ==================== */}
       <div 
-        className="w-full md:w-[60%] md:h-screen md:sticky md:top-0 flex flex-col relative"
+        className="w-full md:w-[60%] md:h-screen md:sticky md:top-0 flex flex-col relative overflow-hidden"
         style={{
           background: `linear-gradient(160deg, ${COLORS.midDepth} 0%, ${COLORS.deepWater} 40%, ${COLORS.abyss} 100%)`
         }}
       >
         {/* Header */}
-        <header className="flex-shrink-0 h-12 flex items-center px-6 relative z-10">
-          <Link href="/" className="flex items-center gap-2">
+        <header className="flex-shrink-0 h-16 flex items-center justify-between px-6 relative z-10">
+          <Link href="/" className="flex items-center gap-3">
             <img
               src="/logo.png"
               alt="Otterseas"
@@ -220,12 +251,11 @@ export default function ProductPage() {
         </header>
 
         {/* Main Content */}
-        <div className="flex-1 flex flex-col px-6 pb-4 overflow-hidden">
-          
-          {/* TITLE - Full Width, Large, Single Line */}
-          <div className="mb-2">
+        <div className="flex-1 flex flex-col px-6 pb-6 relative overflow-y-auto">
+          {/* Title */}
+          <div className="mb-3">
             <h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold whitespace-nowrap"
+              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-1"
               style={{
                 background: `linear-gradient(135deg, ${COLORS.highlight} 0%, #FF6B9D 50%, ${COLORS.highlight} 100%)`,
                 WebkitBackgroundClip: 'text',
@@ -233,114 +263,180 @@ export default function ProductPage() {
                 backgroundClip: 'text',
               }}
             >
-              The Surface Tank
+              {product.name}
             </h1>
             <p 
-              className="text-xl md:text-2xl tracking-wide font-light mt-1"
+              className="text-xs tracking-[0.2em] font-medium"
               style={{ color: COLORS.highlight }}
             >
-              MEMORIES THAT STICK
+              {product.tagline}
             </p>
           </div>
 
-          {/* Content Grid - 3 Columns */}
-          <div className="flex-1 grid grid-cols-12 gap-2 min-h-0">
-            
-            {/* Left Column - Text & CTA */}
-            <div className="col-span-4 flex flex-col justify-between py-1">
-              {/* Descriptions - stacked closer together */}
-              <div>
-                <p className="text-white/80 text-xs leading-relaxed italic">
-                  {product.description.intro}
-                </p>
-                <p className="text-white/80 text-xs leading-relaxed italic mt-4">
-                  {product.description.stickers}
-                </p>
-              </div>
+          {/* Description */}
+          <div className="max-w-sm mb-4">
+            <p className="text-white/80 text-xs leading-relaxed mb-2">
+              {product.description.intro}
+            </p>
+            <p className="text-white/80 text-xs leading-relaxed">
+              {product.description.stickers}
+            </p>
+          </div>
 
-              {/* Bottom Section - Variant, Price, CTA */}
-              <div>
-                {/* Variant Selector */}
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-white/60 text-xs">Color:</span>
-                  <div className="flex gap-2">
-                    {product.variants.map((variant, index) => (
-                      <button
-                        key={variant.id}
-                        onClick={() => setSelectedVariant(index)}
-                        className={`w-6 h-6 rounded-full border-2 transition-all ${
-                          selectedVariant === index ? 'scale-110' : 'opacity-60'
-                        }`}
-                        style={{
-                          backgroundColor: variant.color,
-                          borderColor: selectedVariant === index ? COLORS.highlight : 'transparent'
-                        }}
-                        title={variant.name}
-                      />
-                    ))}
-                  </div>
-                  <span className="text-white/60 text-xs">{currentVariant.name}</span>
-                  {!currentVariant.inStock && (
-                    <span className="text-red-400 text-xs font-medium">Out of Stock</span>
-                  )}
-                </div>
-
-                {/* Price */}
-                <p 
-                  className="text-2xl font-bold mb-2"
-                  style={{ color: COLORS.highlight }}
-                >
-                  £{product.price.toFixed(2)}
-                </p>
-
-                {/* Add to Collection Button */}
-                <motion.button
-                  onClick={handleAddToCart}
-                  disabled={!currentVariant.inStock}
-                  className="px-5 py-2.5 rounded-lg text-sm font-semibold transition-all"
-                  style={{
-                    background: currentVariant.inStock 
-                      ? 'rgba(255, 255, 255, 0.1)'
-                      : 'rgba(255, 255, 255, 0.05)',
-                    backdropFilter: 'blur(10px)',
-                    border: `2px solid ${currentVariant.inStock ? COLORS.highlight : 'rgba(255,255,255,0.2)'}`,
-                    color: currentVariant.inStock ? 'white' : 'rgba(255,255,255,0.4)',
-                    cursor: currentVariant.inStock ? 'pointer' : 'not-allowed',
-                    boxShadow: currentVariant.inStock ? `0 0 15px ${COLORS.highlight}30` : 'none'
-                  }}
-                  whileHover={currentVariant.inStock ? { scale: 1.02, boxShadow: `0 0 25px ${COLORS.highlight}50` } : {}}
-                  whileTap={currentVariant.inStock ? { scale: 0.98 } : {}}
-                >
-                  {currentVariant.inStock ? 'Add to Collection' : 'Out of Stock'}
-                </motion.button>
-              </div>
-            </div>
-
-            {/* Center Column - Product Image (shifted right) */}
-            <div className="col-span-5 flex items-center justify-end pr-2">
-              <div className="w-full max-w-[240px]">
+          {/* Product Image & Features Row */}
+          <div className="flex-1 flex items-center justify-center gap-4 min-h-0">
+            {/* Single Large Product Image */}
+            <div className="flex-1 flex items-center justify-center">
+              <div className="w-full max-w-xs md:max-w-sm">
                 <img 
                   src={product.variants[0].image}
                   alt={product.name}
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain drop-shadow-2xl"
                   style={{
-                    filter: `drop-shadow(0 20px 40px rgba(0,0,0,0.4))`
+                    filter: `drop-shadow(0 0 30px ${COLORS.highlight}30)`
                   }}
                 />
               </div>
             </div>
 
-            {/* Right Column - Feature Icons */}
-            <div className="col-span-3 flex flex-col justify-center items-center gap-3">
-              {FEATURE_ICONS.map((feature, index) => (
+            {/* Feature Icons - Right side */}
+            <div className="flex flex-col gap-3 flex-shrink-0">
+              {product.features.map((feature, index) => (
                 <FeatureIcon
                   key={index}
-                  icon={feature.icon}
+                  type={featureTypes[index]}
                   title={feature.title}
                   subtitle={feature.subtitle}
-                  size={feature.size}
                 />
               ))}
+            </div>
+          </div>
+
+          {/* Variant Selector, Price & Add to Cart */}
+          <div className="flex-shrink-0 mt-4 pt-4 border-t border-white/10">
+            {/* Colour Dropdown Selector */}
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-white/60 text-xs">Colour:</span>
+              <div className="relative">
+                <select
+                  value={selectedVariant}
+                  onChange={(e) => setSelectedVariant(Number(e.target.value))}
+                  className="appearance-none px-4 py-2 pr-8 rounded-lg text-sm font-medium cursor-pointer"
+                  style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(10px)',
+                    border: `1px solid ${COLORS.highlight}50`,
+                    color: 'white',
+                  }}
+                >
+                  {product.variants.map((variant, index) => (
+                    <option 
+                      key={variant.id} 
+                      value={index}
+                      disabled={!variant.inStock}
+                      style={{ color: '#023859', backgroundColor: 'white' }}
+                    >
+                      {variant.name} {!variant.inStock ? '(Out of Stock)' : ''}
+                    </option>
+                  ))}
+                </select>
+                <svg 
+                  className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" 
+                  width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"
+                >
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </div>
+              {/* Colour swatch preview */}
+              <div 
+                className="w-6 h-6 rounded-full border-2"
+                style={{ 
+                  backgroundColor: currentVariant.color,
+                  borderColor: COLORS.highlight 
+                }}
+              />
+              {!currentVariant.inStock && (
+                <span className="text-red-400 text-xs font-medium">Out of Stock</span>
+              )}
+            </div>
+
+            {/* Price */}
+            <p 
+              className="text-2xl font-bold mb-3"
+              style={{ color: COLORS.highlight }}
+            >
+              £{product.price.toFixed(2)}
+            </p>
+
+            {/* Add to Cart Button - Glassmorphism */}
+            <motion.button
+              onClick={handleAddToCart}
+              disabled={!currentVariant.inStock}
+              className="px-6 py-3 rounded-xl text-sm font-semibold transition-all"
+              style={{
+                background: currentVariant.inStock 
+                  ? 'rgba(255, 255, 255, 0.1)'
+                  : 'rgba(255, 255, 255, 0.05)',
+                backdropFilter: 'blur(10px)',
+                border: `2px solid ${currentVariant.inStock ? COLORS.highlight : 'rgba(255,255,255,0.2)'}`,
+                color: currentVariant.inStock ? 'white' : 'rgba(255,255,255,0.4)',
+                cursor: currentVariant.inStock ? 'pointer' : 'not-allowed',
+                boxShadow: currentVariant.inStock ? `0 0 20px ${COLORS.highlight}30` : 'none'
+              }}
+              whileHover={currentVariant.inStock ? { scale: 1.02, boxShadow: `0 0 30px ${COLORS.highlight}50` } : {}}
+              whileTap={currentVariant.inStock ? { scale: 0.98 } : {}}
+            >
+              {currentVariant.inStock ? 'Add to Cart' : 'Out of Stock'}
+            </motion.button>
+
+            {/* Gift Set Upsell */}
+            <div 
+              className="mt-4 p-4 rounded-xl"
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: `1px solid ${COLORS.highlight}30`,
+              }}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ backgroundColor: COLORS.surfaceTeal, color: 'white' }}>
+                  GIFT SET
+                </span>
+                <span className="text-green-400 text-xs font-medium">Save £10.05</span>
+              </div>
+              <p className="text-white text-sm font-medium mb-1">Diver's Gift Set</p>
+              <p className="text-white/60 text-xs mb-3">Surface Tank + Dive Journal</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-white/40 text-xs line-through mr-2">£68.00</span>
+                  <span className="text-lg font-bold" style={{ color: COLORS.highlight }}>£57.95</span>
+                </div>
+                <motion.button
+                  onClick={() => {
+                    const giftSetVariantId = currentVariant.id === 'blue' ? '52493497565450' : '52493497598218';
+                    addToCart({
+                      id: giftSetVariantId,
+                      shopifyVariantId: giftSetVariantId,
+                      name: `Diver's Gift Set (${currentVariant.name})`,
+                      price: 57.95,
+                      image: currentVariant.image,
+                      type: 'product',
+                    });
+                    openDrawer();
+                  }}
+                  disabled={!currentVariant.inStock}
+                  className="px-4 py-2 rounded-lg text-xs font-semibold transition-all"
+                  style={{
+                    background: currentVariant.inStock ? COLORS.surfaceTeal : 'rgba(255,255,255,0.1)',
+                    color: 'white',
+                    cursor: currentVariant.inStock ? 'pointer' : 'not-allowed',
+                    opacity: currentVariant.inStock ? 1 : 0.5,
+                  }}
+                  whileHover={currentVariant.inStock ? { scale: 1.05 } : {}}
+                  whileTap={currentVariant.inStock ? { scale: 0.95 } : {}}
+                >
+                  Add Gift Set
+                </motion.button>
+              </div>
             </div>
           </div>
         </div>
@@ -366,38 +462,59 @@ export default function ProductPage() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute top-12 right-0 w-48 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden"
+                className="absolute top-12 right-0 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden"
               >
                 <Link 
                   href="/" 
-                  className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
+                  className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
                   style={{ color: COLORS.deepWater }}
                 >
                   Home
                 </Link>
                 <Link 
-                  href="/stickers" 
-                  className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm"
+                  href="/products" 
+                  className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
                   style={{ color: COLORS.deepWater }}
                 >
-                  Sticker Collection
+                  All Products
                 </Link>
                 <Link 
                   href="/products/surface-tank" 
-                  className="block px-4 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
+                  className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
                   style={{ color: COLORS.surfaceTeal }}
                 >
                   Surface Tank
+                </Link>
+                <Link 
+                  href="/products/dive-journal" 
+                  className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                  style={{ color: COLORS.deepWater }}
+                >
+                  Dive Journal
+                </Link>
+                <Link 
+                  href="/products/logbook-booster-pack" 
+                  className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                  style={{ color: COLORS.deepWater }}
+                >
+                  Booster Pack
+                </Link>
+                <Link 
+                  href="/stickers" 
+                  className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                  style={{ color: COLORS.deepWater }}
+                >
+                  Location Stickers
                 </Link>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
-        {/* Scrollable Content - Added top padding to align with title */}
-        <div className="flex-1 overflow-y-auto px-6 pt-14 pb-8">
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto px-6 py-10">
           {/* Story Section */}
-          <section className="mb-8">
+          <section className="mb-10">
             <h2 
               className="text-xl md:text-2xl font-light mb-3"
               style={{ color: COLORS.deepWater, fontFamily: 'Montserrat, sans-serif' }}
@@ -409,50 +526,53 @@ export default function ProductPage() {
             </p>
 
             {/* 3-Step Journey with Circles */}
-            <div className="space-y-4">
+            <div className="space-y-5">
               {product.story.steps.map((step, index) => (
                 <div key={index} className="flex gap-4 items-start">
                   <div 
-                    className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border-2"
+                    className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 border-2"
                     style={{ 
                       borderColor: COLORS.midDepth,
                       color: COLORS.midDepth
                     }}
                   >
-                    <span className="text-sm font-light">{step.number}</span>
+                    <span className="text-lg font-light">{step.number}</span>
                   </div>
-                  <div className="pt-0.5">
+                  <div className="pt-1">
                     <h4 
-                      className="font-semibold text-sm"
+                      className="font-semibold text-base"
                       style={{ color: COLORS.deepWater }}
                     >
                       {step.title}
                     </h4>
-                    <p className="text-gray-500 text-xs">{step.description}</p>
+                    <p className="text-gray-500 text-sm">{step.description}</p>
                   </div>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* Sticker Fan Visual - TRUE MASK SHAPES */}
-          <section className="mb-8">
-            <div className="relative h-28 flex items-center justify-center mb-2">
-              {/* Sticker fan - True mask shaped stickers with transparent backgrounds */}
-              <div className="flex -space-x-6">
+          {/* Sticker Fan Visual */}
+          <section className="mb-10">
+            <div className="relative h-20 flex items-center justify-center mb-3">
+              {/* Sticker fan - overlapping circles with real sticker images */}
+              <div className="flex -space-x-3">
                 {STICKER_FAN_IMAGES.map((sticker, i) => (
-                  <motion.img
+                  <motion.div
                     key={i}
-                    src={sticker.image}
-                    alt={sticker.name}
-                    className="w-24 h-auto object-contain drop-shadow-lg"
+                    className="w-14 h-14 rounded-full border-2 border-white shadow-lg overflow-hidden"
                     style={{
                       zIndex: i === 2 ? 10 : 5 - Math.abs(i - 2),
-                      transform: `rotate(${(i - 2) * 6}deg) scale(${i === 2 ? 1.1 : 0.95})`,
+                      transform: `rotate(${(i - 2) * 6}deg) scale(${i === 2 ? 1.1 : 0.95})`
                     }}
-                    whileHover={{ scale: 1.25, zIndex: 15, rotate: 0 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                  />
+                    whileHover={{ scale: 1.15, zIndex: 15 }}
+                  >
+                    <img 
+                      src={sticker.image} 
+                      alt={sticker.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
                 ))}
               </div>
               {/* Arrow pointing down */}
@@ -460,7 +580,7 @@ export default function ProductPage() {
                 className="absolute -bottom-1 left-1/2 -translate-x-1/2"
                 style={{ color: '#FF6B9D' }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 16l-6-6h12z" />
                 </svg>
               </div>
@@ -468,7 +588,7 @@ export default function ProductPage() {
 
             <Link
               href="/stickers"
-              className="block text-center text-base md:text-lg font-semibold transition-colors hover:opacity-80"
+              className="block text-center text-lg md:text-xl font-semibold transition-colors hover:opacity-80"
               style={{ color: COLORS.surfaceTeal }}
             >
               Explore The Collection
@@ -476,7 +596,7 @@ export default function ProductPage() {
           </section>
 
           {/* Product Description */}
-          <section className="mb-5">
+          <section className="mb-6">
             <p className="text-gray-600 text-sm leading-relaxed">
               {product.story.description}
             </p>
@@ -499,7 +619,7 @@ export default function ProductPage() {
               </p>
               
               {/* Temperature Icons */}
-              <div className="flex items-center justify-between gap-2 mt-4 p-3 bg-gray-50 rounded-xl">
+              <div className="flex items-center justify-between gap-3 mt-4 p-3 bg-gray-50 rounded-xl">
                 {/* Hot */}
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
@@ -584,7 +704,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* Floating Cart Button - NOW ON RIGHT SIDE */}
+      {/* Floating Cart Button */}
       <FloatingCartButton />
     </div>
   );
