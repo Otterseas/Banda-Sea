@@ -685,6 +685,9 @@ export default function HomePage() {
                 <Link href="/products/crochet-creatures" className="text-white/50 hover:text-white text-sm transition-colors">
                   Crochet Creatures
                 </Link>
+                <Link href="/policies" className="text-white/50 hover:text-white text-sm transition-colors">
+                  Policies
+                </Link>
               </nav>
 
               <p className="text-white/40 text-sm">
