@@ -1,6 +1,7 @@
 'use client';
 
 import { useCart, STICKER_PRICING } from '@/context/CartContext';
+import { useCurrency } from '@/context/CurrencyContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 
@@ -58,6 +59,9 @@ export default function CartDrawer() {
     getDiscountCode,
   } = useCart();
 
+  // Currency context
+  const { formatPrice, getCheckoutCurrencyParam, currency } = useCurrency();
+
   // Convert cartItems object to arrays by type
   const cartArray = Object.values(cartItems);
   const locationStickers = cartArray.filter(item => item.type === 'location-sticker');
@@ -77,18 +81,26 @@ export default function CartDrawer() {
     const cartString = items.join(',');
     
     // Use /cart/ URL which auto-redirects to checkout
-    // Adding ?checkout=true forces immediate checkout redirect
     const baseUrl = 'https://38a44d-4c.myshopify.com/cart/';
     
     // Get discount code based on location sticker count
     const discountCode = getDiscountCode();
     
-    // Build checkout URL - discount param triggers auto-checkout
+    // Build checkout URL with discount and currency
     let checkoutUrl = `${baseUrl}${cartString}`;
     
     // Add discount code if applicable
+    const params = [];
     if (discountCode) {
-      checkoutUrl += `?discount=${discountCode}`;
+      params.push(`discount=${discountCode}`);
+    }
+    // Add currency parameter for Shopify Markets
+    if (currency !== 'GBP') {
+      params.push(`currency=${currency}`);
+    }
+    
+    if (params.length > 0) {
+      checkoutUrl += `?${params.join('&')}`;
     }
     
     window.location.href = checkoutUrl;
@@ -124,7 +136,7 @@ export default function CartDrawer() {
             <p className="text-white/40 text-xs">{item.region}</p>
           )}
           <p className="text-white/60 text-xs">
-            £{(item.price || 0).toFixed(2)} each
+            {formatPrice(item.price || 0)} each
           </p>
         </div>
         
@@ -285,14 +297,14 @@ export default function CartDrawer() {
                       {locationStickerCount < minOrder 
                         ? `Add ${minOrder - locationStickerCount} more stickers to checkout`
                         : locationStickerCount < 10
-                          ? `Add ${10 - locationStickerCount} more for £1.75/each!`
+                          ? `Add ${10 - locationStickerCount} more for ${formatPrice(1.75)}/each!`
                           : locationStickerCount < 15
-                            ? `Add ${15 - locationStickerCount} more for £1.50/each!`
+                            ? `Add ${15 - locationStickerCount} more for ${formatPrice(1.50)}/each!`
                             : '🎉 Best price unlocked!'
                       }
                     </span>
                     <span className="font-bold" style={{ color: LUNA.highlight }}>
-                      £{locationStickerPricePerItem.toFixed(2)}/each
+                      {formatPrice(locationStickerPricePerItem)}/each
                     </span>
                   </div>
                   
@@ -345,9 +357,9 @@ export default function CartDrawer() {
                   
                   {/* Price per tier */}
                   <div className="flex justify-between text-[10px] text-white/30 mt-0.5">
-                    <span>£2.00</span>
-                    <span>£1.75</span>
-                    <span>£1.50</span>
+                    <span>{formatPrice(2.00)}</span>
+                    <span>{formatPrice(1.75)}</span>
+                    <span>{formatPrice(1.50)}</span>
                   </div>
                 </div>
               )}
@@ -357,27 +369,27 @@ export default function CartDrawer() {
                 {productCount > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-white/60">Products ({productCount})</span>
-                    <span className="text-white">£{productTotal.toFixed(2)}</span>
+                    <span className="text-white">{formatPrice(productTotal)}</span>
                   </div>
                 )}
                 {locationStickerCount > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-white/60">
-                      Location Stickers ({locationStickerCount} × £{locationStickerPricePerItem.toFixed(2)})
+                      Location Stickers ({locationStickerCount} × {formatPrice(locationStickerPricePerItem)})
                     </span>
-                    <span className="text-white">£{locationStickerTotal.toFixed(2)}</span>
+                    <span className="text-white">{formatPrice(locationStickerTotal)}</span>
                   </div>
                 )}
                 {funStickerCount > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-white/60">Fun Stickers ({funStickerCount})</span>
-                    <span className="text-white">£{funStickerTotal.toFixed(2)}</span>
+                    <span className="text-white">{formatPrice(funStickerTotal)}</span>
                   </div>
                 )}
                 {locationStickerSavings > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-green-400">Volume Savings ({locationStickerDiscount}% off)</span>
-                    <span className="text-green-400">-£{locationStickerSavings.toFixed(2)}</span>
+                    <span className="text-green-400">-{formatPrice(locationStickerSavings)}</span>
                   </div>
                 )}
               </div>
@@ -386,7 +398,7 @@ export default function CartDrawer() {
               <div className="flex justify-between items-baseline mb-2">
                 <span className="text-white/60 text-sm font-medium">Total</span>
                 <span className="text-3xl font-light" style={{ color: LUNA.highlight }}>
-                  £{totalPrice.toFixed(2)}
+                  {formatPrice(totalPrice)}
                 </span>
               </div>
 
@@ -412,7 +424,7 @@ export default function CartDrawer() {
                         <span className="text-green-400 text-xs font-medium">FREE UK shipping unlocked!</span>
                       </div>
                       <p className="text-white/40 text-xs text-center">
-                        Add £{amountToFreeIntl.toFixed(2)} more for free international shipping
+                        Add {formatPrice(amountToFreeIntl)} more for free international shipping
                       </p>
                     </div>
                   );
@@ -421,7 +433,7 @@ export default function CartDrawer() {
                     <div className="mb-4 p-2 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)' }}>
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-white/50 text-xs">🚚 Free UK shipping</span>
-                        <span className="text-white/50 text-xs">£{amountToFreeUK.toFixed(2)} away</span>
+                        <span className="text-white/50 text-xs">{formatPrice(amountToFreeUK)} away</span>
                       </div>
                       <div className="h-1.5 rounded-full overflow-hidden bg-white/10">
                         <div 
@@ -433,7 +445,7 @@ export default function CartDrawer() {
                         />
                       </div>
                       <p className="text-white/30 text-[10px] mt-1 text-center">
-                        Free international shipping over £100
+                        Free international shipping over {formatPrice(100)}
                       </p>
                     </div>
                   );
