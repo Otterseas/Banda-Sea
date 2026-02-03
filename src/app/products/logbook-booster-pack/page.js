@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
+import { useCurrency } from '@/context/CurrencyContext';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -49,6 +51,9 @@ export default function BoosterPackPage() {
   
   // Get cart context
   const { addToCart, openCart } = useCart();
+  
+  // Get currency context
+  const { formatPrice } = useCurrency();
 
   // Get selected quantity option
   const currentOption = QUANTITY_OPTIONS.find(opt => opt.qty === selectedQty) || QUANTITY_OPTIONS[0];
@@ -267,9 +272,9 @@ export default function BoosterPackPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <span className="text-white font-bold text-lg">£{option.price.toFixed(2)}</span>
+                        <span className="text-white font-bold text-lg">{formatPrice(option.price)}</span>
                         {option.savings > 0 && (
-                          <p className="text-xs" style={{ color: '#FF6B9D' }}>Save £{option.savings.toFixed(2)}</p>
+                          <p className="text-xs" style={{ color: '#FF6B9D' }}>Save {formatPrice(option.savings)}</p>
                         )}
                       </div>
                     </div>
@@ -281,7 +286,7 @@ export default function BoosterPackPage() {
               <div className="flex items-center justify-between pt-4">
                 <div>
                   <span className="text-white/50 text-sm">Total:</span>
-                  <span className="text-white text-2xl font-bold ml-2">£{currentOption.price.toFixed(2)}</span>
+                  <span className="text-white text-2xl font-bold ml-2">{formatPrice(currentOption.price)}</span>
                 </div>
                 <motion.button
                   onClick={handleAddToCart}
