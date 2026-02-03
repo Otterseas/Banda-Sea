@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { STICKERS, REGIONS, BASE_PRICE, getAllStickers } from '@/data/stickers';
 import { LOCATION_BUNDLES } from '@/data/bundles';
 import { useCart } from '@/context/CartContext';
+import { useCurrency } from '@/context/CurrencyContext';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // ===========================================
@@ -42,6 +44,8 @@ export default function Home() {
     clearCart,
     openCart,
   } = useCart();
+
+  const { formatPrice } = useCurrency();
 
   // Get stickers for current tab
   const activeStickers = STICKERS[activeTab] || [];
@@ -185,65 +189,70 @@ export default function Home() {
             </span>
           </Link>
 
-          {/* Hamburger Menu - Right (matching Surface Tank) */}
-          <div className="relative">
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex flex-col gap-1.5 p-2 hover:bg-white/10 rounded-lg transition-colors"
-            >
-              <span className="w-6 h-0.5 bg-white" />
-              <span className="w-6 h-0.5 bg-white" />
-              <span className="w-6 h-0.5 bg-white" />
-            </button>
+          {/* Right Side: Currency Switcher + Menu */}
+          <div className="flex items-center gap-3">
+            {/* Currency Switcher */}
+            <CurrencySwitcher />
+            
+            {/* Hamburger Menu */}
+            <div className="relative">
+              <button 
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="flex flex-col gap-1.5 p-2 hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <span className="w-6 h-0.5 bg-white" />
+                <span className="w-6 h-0.5 bg-white" />
+                <span className="w-6 h-0.5 bg-white" />
+              </button>
 
-            {/* Dropdown Menu */}
-            <AnimatePresence>
-              {isMenuOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="absolute top-12 right-0 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
-                >
-                  <Link 
-                    href="/" 
-                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                    style={{ color: LUNA.deepWater }}
-                    onClick={() => setIsMenuOpen(false)}
+              {/* Dropdown Menu */}
+              <AnimatePresence>
+                {isMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute top-12 right-0 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
                   >
-                    Home
-                  </Link>
-                  <Link 
-                    href="/products" 
-                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                    style={{ color: LUNA.deepWater }}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    All Products
-                  </Link>
-                  <Link 
-                    href="/stickers" 
-                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
-                    style={{ color: LUNA.surfaceTeal }}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Sticker Collection
-                  </Link>
-                  <Link 
-                    href="/products/surface-tank" 
-                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                    style={{ color: LUNA.deepWater }}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Surface Tank
-                  </Link>
-                  <Link 
-                    href="/products/dive-journal" 
-                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                    style={{ color: LUNA.deepWater }}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Dive Journal
+                    <Link 
+                      href="/" 
+                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                      style={{ color: LUNA.deepWater }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Home
+                    </Link>
+                    <Link 
+                      href="/products" 
+                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                      style={{ color: LUNA.deepWater }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      All Products
+                    </Link>
+                    <Link 
+                      href="/stickers" 
+                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
+                      style={{ color: LUNA.surfaceTeal }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Sticker Collection
+                    </Link>
+                    <Link 
+                      href="/products/surface-tank" 
+                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                      style={{ color: LUNA.deepWater }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Surface Tank
+                    </Link>
+                    <Link 
+                      href="/products/dive-journal" 
+                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                      style={{ color: LUNA.deepWater }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Dive Journal
                   </Link>
                   <Link 
                     href="/products/logbook-booster-pack" 
@@ -300,7 +309,7 @@ export default function Home() {
                     border: `1px solid ${LUNA.highlight}40`
                   }}
                 >
-                  {pricingTier.tier} (£{pricePerItem.toFixed(2)}/each)
+                  {pricingTier.tier} ({formatPrice(pricePerItem)}/each)
                 </span>
               </div>
             </div>
@@ -341,7 +350,7 @@ export default function Home() {
                       }}
                     />
                     <span className="absolute top-6 text-xs font-semibold whitespace-nowrap" style={{ color: LUNA.highlight }}>
-                      £2.50
+                      {formatPrice(2.50)}
                     </span>
                     <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
                       Starter
@@ -362,7 +371,7 @@ export default function Home() {
                       className="absolute top-6 text-xs font-semibold whitespace-nowrap"
                       style={{ color: totalItems >= 11 ? LUNA.highlight : 'rgba(255,255,255,0.4)' }}
                     >
-                      £1.75
+                      {formatPrice(1.75)}
                     </span>
                     <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
                       Explorer
@@ -383,7 +392,7 @@ export default function Home() {
                       className="absolute top-6 text-xs font-semibold whitespace-nowrap"
                       style={{ color: totalItems >= 21 ? LUNA.highlight : 'rgba(255,255,255,0.4)' }}
                     >
-                      £1.50
+                      {formatPrice(1.50)}
                     </span>
                     <span className="absolute top-10 text-xs text-white/50 whitespace-nowrap">
                       Pro
@@ -437,7 +446,7 @@ export default function Home() {
                 <h3 className="text-sm font-bold text-white mb-0.5">Surface Tank</h3>
                 <p className="text-white/60 text-xs mb-2">750ml Insulated</p>
                 <div className="flex items-center justify-between">
-                  <span style={{ color: LUNA.highlight }} className="text-lg font-bold">£40.00</span>
+                  <span style={{ color: LUNA.highlight }} className="text-lg font-bold">{formatPrice(40.00)}</span>
                   <span
                     className="px-3 py-1.5 rounded-lg text-xs font-semibold"
                     style={{ 
@@ -599,7 +608,7 @@ export default function Home() {
                     </div>
                     <div className="flex items-center justify-end mt-1">
                       <span style={{ color: LUNA.highlight }} className="text-sm font-bold">
-                        £{pricePerItem.toFixed(2)}
+                        {formatPrice(pricePerItem)}
                       </span>
                     </div>
                   </div>
@@ -646,7 +655,7 @@ export default function Home() {
                       {bundle.type === 'regional' ? '🗺️ REGIONAL' : '🎯 THEME'}
                     </span>
                     <span className="text-green-400 text-xs font-medium">
-                      Save £{bundle.savings.toFixed(2)}
+                      Save {formatPrice(bundle.savings)}
                     </span>
                   </div>
 
@@ -693,10 +702,10 @@ export default function Home() {
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-white/40 text-xs line-through mr-2">
-                        £{bundle.originalPrice.toFixed(2)}
+                        {formatPrice(bundle.originalPrice)}
                       </span>
                       <span className="text-xl font-bold" style={{ color: LUNA.highlight }}>
-                        £{bundle.price.toFixed(2)}
+                        {formatPrice(bundle.price)}
                       </span>
                       <span className="text-white/50 text-xs ml-1">
                         ({bundle.stickerCount} stickers)
@@ -761,11 +770,11 @@ export default function Home() {
           {/* Total */}
           <div className="text-left">
             <p className="text-white text-sm font-semibold">
-              £{totalPrice.toFixed(2)}
+              {formatPrice(totalPrice)}
             </p>
             {savings > 0 && (
               <p className="text-xs" style={{ color: LUNA.highlight }}>
-                Save £{savings.toFixed(2)}
+                Save {formatPrice(savings)}
               </p>
             )}
           </div>
