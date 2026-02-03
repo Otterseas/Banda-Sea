@@ -125,8 +125,8 @@ export default function ProductsPage() {
       {/* Shared Header */}
       <Header variant="dark" currentPath="/products" />
 
-      {/* Hero Section */}
-      <section className="px-8 pt-10 pb-8">
+      {/* Hero Section - pt-20 accounts for fixed header */}
+      <section className="px-8 pt-20 pb-8">
         <div className="max-w-7xl mx-auto text-center">
           <motion.span 
             className="text-xs tracking-[0.25em] font-medium mb-3 block"
