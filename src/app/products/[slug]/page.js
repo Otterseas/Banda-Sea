@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { getProductBySlug } from '@/data/products';
 import { useCart } from '@/context/CartContext';
+import { useCurrency } from '@/context/CurrencyContext';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -189,6 +191,7 @@ export default function ProductPage() {
   const params = useParams();
   const product = getProductBySlug(params.slug);
   const { addToCart, openDrawer } = useCart();
+  const { formatPrice } = useCurrency();
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -365,7 +368,7 @@ export default function ProductPage() {
               className="text-2xl font-bold mb-3"
               style={{ color: COLORS.highlight }}
             >
-              £{product.price.toFixed(2)}
+              {formatPrice(product.price)}
             </p>
 
             {/* Add to Cart Button - Glassmorphism */}
@@ -401,14 +404,14 @@ export default function ProductPage() {
                 <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ backgroundColor: COLORS.surfaceTeal, color: 'white' }}>
                   GIFT SET
                 </span>
-                <span className="text-green-400 text-xs font-medium">Save £10.05</span>
+                <span className="text-green-400 text-xs font-medium">Save {formatPrice(10.05)}</span>
               </div>
               <p className="text-white text-sm font-medium mb-1">Diver's Gift Set</p>
               <p className="text-white/60 text-xs mb-3">Surface Tank + Dive Journal</p>
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-white/40 text-xs line-through mr-2">£68.00</span>
-                  <span className="text-lg font-bold" style={{ color: COLORS.highlight }}>£57.95</span>
+                  <span className="text-white/40 text-xs line-through mr-2">{formatPrice(68)}</span>
+                  <span className="text-lg font-bold" style={{ color: COLORS.highlight }}>{formatPrice(57.95)}</span>
                 </div>
                 <motion.button
                   onClick={() => {
