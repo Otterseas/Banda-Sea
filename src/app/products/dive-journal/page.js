@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
+import { useCurrency } from '@/context/CurrencyContext';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -132,6 +134,9 @@ export default function DiveJournalPage() {
   
   // Get cart context for side cart
   const { addToCart, openCart } = useCart();
+  
+  // Get currency context
+  const { formatPrice } = useCurrency();
 
   // Thumbnail images for gallery
   const thumbnails = [
@@ -328,13 +333,13 @@ export default function DiveJournalPage() {
                       <div className="text-right">
                         <div className="flex items-center gap-2">
                           {bundle.savings > 0 && (
-                            <span className="text-white/40 text-sm line-through">£{bundle.originalPrice.toFixed(2)}</span>
+                            <span className="text-white/40 text-sm line-through">{formatPrice(bundle.originalPrice)}</span>
                           )}
-                          <span className="text-white font-bold text-lg">£{bundle.price.toFixed(2)}</span>
+                          <span className="text-white font-bold text-lg">{formatPrice(bundle.price)}</span>
                         </div>
                         {bundle.savings > 0 && (
                           <span className="text-xs" style={{ color: '#FF6B9D' }}>
-                            Save £{bundle.savings.toFixed(2)}
+                            Save {formatPrice(bundle.savings)}
                           </span>
                         )}
                       </div>
@@ -358,7 +363,7 @@ export default function DiveJournalPage() {
               <div className="flex items-center justify-between pt-4">
                 <div>
                   <span className="text-white/50 text-sm">Total:</span>
-                  <span className="text-white text-2xl font-bold ml-2">£{currentBundle.price.toFixed(2)}</span>
+                  <span className="text-white text-2xl font-bold ml-2">{formatPrice(currentBundle.price)}</span>
                 </div>
                 <motion.button
                   onClick={handleAddToCart}
@@ -723,7 +728,7 @@ export default function DiveJournalPage() {
                         </span>
                       )}
                     </div>
-                    <span className="text-white font-semibold">£{bundle.price.toFixed(2)}</span>
+                    <span className="text-white font-semibold">{formatPrice(bundle.price)}</span>
                   </div>
                 ))}
               </div>
@@ -741,11 +746,11 @@ export default function DiveJournalPage() {
                 whileHover={{ scale: 1.02, boxShadow: `0 0 40px ${LUNA.highlight}50` }}
                 whileTap={{ scale: 0.98 }}
               >
-                Add to Collection - £{currentBundle.price.toFixed(2)}
+                Add to Collection - {formatPrice(currentBundle.price)}
               </motion.button>
 
               <p className="text-white/50 text-sm text-center">
-                Free shipping on orders over £30
+                Free shipping on orders over {formatPrice(30)}
               </p>
             </div>
           </div>
