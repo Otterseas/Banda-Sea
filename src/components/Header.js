@@ -24,6 +24,7 @@ const NAV_LINKS = [
   { href: '/products/logbook-booster-pack', label: 'Booster Pack' },
   { href: '/products/fun-stickers', label: 'Fun Stickers' },
   { href: '/products/crochet-creatures', label: 'Crochet Creatures' },
+  { href: '/blogs', label: 'Blogs' },
   { href: '/policies', label: 'Policies' },
 ];
 
