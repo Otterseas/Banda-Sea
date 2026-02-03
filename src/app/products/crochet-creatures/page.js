@@ -4,6 +4,8 @@ import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
+import { useCurrency } from '@/context/CurrencyContext';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -430,7 +432,7 @@ function ProductModal({ product, isOpen, onClose }) {
                     {product.name}
                   </h2>
                   <p className="text-2xl font-bold mb-2" style={{ color: LUNA.surfaceTeal }}>
-                    £{product.price.toFixed(2)}
+                    {formatPrice(product.price)}
                   </p>
                   
                   {/* Time to make */}
@@ -602,7 +604,7 @@ function ProductCard({ product, onClick }) {
         </p>
         <div className="flex items-center justify-between">
           <span className="font-bold text-sm" style={{ color: LUNA.surfaceTeal }}>
-            £{product.price.toFixed(2)}
+            {formatPrice(product.price)}
           </span>
           <button
             onClick={handleAddToCart}
@@ -719,6 +721,7 @@ function ProductCarousel({ title, subtitle, products, onProductClick }) {
 export default function CrochetCreaturesPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const { formatPrice } = useCurrency();
 
   // Group products by category
   const nudibranchs = ALL_PRODUCTS.filter(p => p.category === 'Nudibranchs');
@@ -901,7 +904,7 @@ export default function CrochetCreaturesPage() {
             {/* Nudibranchs Carousel */}
             <ProductCarousel
               title="Nudibranchs"
-              subtitle="£17.50 each • Perfect as keychains, bag charms, desk companions"
+              subtitle="{formatPrice(17.50)} each • Perfect as keychains, bag charms, desk companions"
               products={nudibranchs}
               onProductClick={(product) => setSelectedProduct(product)}
             />
@@ -909,7 +912,7 @@ export default function CrochetCreaturesPage() {
             {/* Fish & Friends Carousel */}
             <ProductCarousel
               title="Fish & Friends"
-              subtitle="£25 each • Perfect as keychains, bag charms, rearview mirror hangers"
+              subtitle="{formatPrice(25)} each • Perfect as keychains, bag charms, rearview mirror hangers"
               products={fishFriends}
               onProductClick={(product) => setSelectedProduct(product)}
             />
@@ -917,7 +920,7 @@ export default function CrochetCreaturesPage() {
             {/* Baby Mobiles - Single Item */}
             <ProductCarousel
               title="Baby Mobiles"
-              subtitle="£105 each • Perfect as nursery centrepiece, baby shower gift"
+              subtitle="{formatPrice(105)} each • Perfect as nursery centrepiece, baby shower gift"
               products={babyMobiles}
               onProductClick={(product) => setSelectedProduct(product)}
             />
