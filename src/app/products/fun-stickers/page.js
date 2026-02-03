@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
-import CurrencySwitcher from '@/components/CurrencySwitcher';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { FUN_STICKERS, BUNDLED_STICKER_PRICE, QUALITY_STATEMENT } from '@/data/funStickers';
 
 // Luna Color Palette
@@ -385,7 +386,6 @@ function ProductModal({ sticker, isOpen, onClose }) {
 // MAIN PAGE COMPONENT
 // ===========================================
 export default function FunStickersPage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedSticker, setSelectedSticker] = useState(null);
   const { formatPrice } = useCurrency();
 
@@ -394,73 +394,11 @@ export default function FunStickersPage() {
       className="min-h-screen w-full flex flex-col bg-white"
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
-      {/* ==================== HEADER ==================== */}
-      <header className="flex-shrink-0 h-16 flex items-center justify-between px-8 bg-white border-b border-gray-100 relative z-20">
-        <Link href="/" className="flex items-center gap-3">
-          <img 
-            src="/logo.png" 
-            alt="Otterseas" 
-            className="w-10 h-10 rounded-xl object-contain"
-          />
-          <span 
-            className="text-xl font-medium tracking-tight"
-            style={{ color: LUNA.deepWater }}
-          >
-            Otterseas
-          </span>
-        </Link>
+      {/* ==================== HEADER - SHARED COMPONENT ==================== */}
+      <Header variant="light" currentPath="/products/fun-stickers" />
 
-        {/* Currency Switcher & Menu */}
-        <div className="flex items-center gap-3">
-          <CurrencySwitcher variant="light" />
-          <div className="relative">
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex flex-col gap-1.5 p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-              <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-              <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-            </button>
-
-            <AnimatePresence>
-              {isMenuOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="absolute top-12 right-0 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
-                >
-                  <Link href="/" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
-                    Home
-                  </Link>
-                  <Link href="/products" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
-                    All Products
-                  </Link>
-                  <Link href="/stickers" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
-                    Location Stickers
-                  </Link>
-                  <Link href="/products/fun-stickers" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium" style={{ color: LUNA.surfaceTeal }} onClick={() => setIsMenuOpen(false)}>
-                    Fun Stickers
-                  </Link>
-                  <Link href="/products/surface-tank" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
-                    Surface Tank
-                  </Link>
-                  <Link href="/products/dive-journal" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
-                    Dive Journal
-                  </Link>
-                  <Link href="/products/logbook-booster-pack" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
-                  Booster Pack
-                </Link>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-      </header>
-
-      {/* ==================== HERO SECTION ==================== */}
-      <section className="px-8 py-12 text-center">
+      {/* ==================== HERO SECTION - pt-20 for fixed header ==================== */}
+      <section className="px-8 pt-20 pb-12 text-center">
         <motion.h1 
           className="text-4xl md:text-5xl font-bold mb-3"
           style={{ color: LUNA.deepWater }}
@@ -633,49 +571,8 @@ export default function FunStickersPage() {
         </div>
       </section>
 
-      {/* ==================== FOOTER ==================== */}
-      <footer 
-        className="w-full py-12 px-8"
-        style={{ backgroundColor: LUNA.abyss }}
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <Link href="/" className="flex items-center gap-3">
-              <img
-                src="/logo.png"
-                alt="Otterseas"
-                className="w-10 h-10 rounded-xl object-contain"
-              />
-              <span className="text-lg font-medium text-white">Otterseas</span>
-            </Link>
-            
-            <nav className="flex flex-wrap justify-center gap-6">
-              <Link href="/products" className="text-white/50 hover:text-white text-sm transition-colors">
-                All Products
-              </Link>
-              <Link href="/products/surface-tank" className="text-white/50 hover:text-white text-sm transition-colors">
-                Surface Tank
-              </Link>
-              <Link href="/products/dive-journal" className="text-white/50 hover:text-white text-sm transition-colors">
-                Dive Journal
-              </Link>
-              <Link href="/products/logbook-booster-pack" className="text-white/50 hover:text-white text-sm transition-colors">
-                Booster Pack
-              </Link>
-              <Link href="/stickers" className="text-white/50 hover:text-white text-sm transition-colors">
-                Location Stickers
-              </Link>
-              <Link href="/products/fun-stickers" className="text-white/50 hover:text-white text-sm transition-colors">
-                Fun Stickers
-              </Link>
-            </nav>
-
-            <p className="text-white/40 text-sm">
-              © 2025 Otterseas
-            </p>
-          </div>
-        </div>
-      </footer>
+      {/* ==================== FOOTER - SHARED COMPONENT ==================== */}
+      <Footer />
 
       {/* ==================== PRODUCT MODAL ==================== */}
       <ProductModal 
