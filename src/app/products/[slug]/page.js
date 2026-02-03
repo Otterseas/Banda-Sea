@@ -42,63 +42,26 @@ const STICKER_FAN_IMAGES = [
   }
 ];
 
-// Inline SVG Icons
-const VacuumIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 52 53" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="26" cy="26" rx="20" ry="20" stroke="white" strokeWidth="2" fill="none"/>
-    <line x1="10" y1="42" x2="42" y2="10" stroke="white" strokeWidth="2"/>
-    <path d="M30 35C30 35 28 42 26 42C24 42 22 35 22 35" stroke="white" strokeWidth="1.5" fill="none"/>
-    <path d="M28 38C28 38 27 41 26 41C25 41 24 38 24 38" stroke="white" strokeWidth="1.5" fill="none"/>
-    <path d="M26.5 40C26.5 40 26.2 41.5 26 41.5C25.8 41.5 25.5 40 25.5 40" stroke="white" strokeWidth="1.5" fill="none"/>
-  </svg>
-);
-
-const CapacityIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 34 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M17 4C17 4 6 18 6 28C6 38 11 46 17 46C23 46 28 38 28 28C28 18 17 4 17 4Z" fill="#A1D7E3" stroke="white" strokeWidth="2"/>
-    <path d="M17 6C17 6 8 18 8 27C8 36 12 43 17 43" fill="#6BC7DF" stroke="none"/>
-  </svg>
-);
-
-const SteelIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="8" y="8" width="32" height="32" rx="4" stroke="white" strokeWidth="2" fill="none"/>
-    <text x="24" y="22" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">18/8</text>
-    <text x="24" y="34" textAnchor="middle" fill="white" fontSize="8">STEEL</text>
-  </svg>
-);
-
-const BPAFreeIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M24 6C24 6 12 12 12 24C12 32 16 40 24 44C32 40 36 32 36 24C36 12 24 6 24 6Z" fill="#B2CD47" stroke="#0C2844" strokeWidth="2"/>
-    <path d="M20 20C20 20 22 28 24 32C26 28 30 18 30 18" stroke="#0C2844" strokeWidth="2" fill="none" strokeLinecap="round"/>
-  </svg>
-);
-
-const NoCondensationIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 52 53" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="26" cy="26" rx="20" ry="20" stroke="white" strokeWidth="2" fill="none"/>
-    <line x1="10" y1="42" x2="42" y2="10" stroke="white" strokeWidth="2"/>
-    <path d="M26 16C26 16 20 24 20 30C20 34 22.5 38 26 38C29.5 38 32 34 32 30C32 24 26 16 26 16Z" stroke="white" strokeWidth="2" fill="none"/>
-  </svg>
-);
-
-// Feature Icon Component with inline SVGs
+// Feature Icon Component using SVG files from /public/icons/
 function FeatureIcon({ type, title, subtitle }) {
   const iconMap = {
-    vacuum: VacuumIcon,
-    capacity: CapacityIcon,
-    steel: SteelIcon,
-    bpa: BPAFreeIcon,
-    condensation: NoCondensationIcon,
+    vacuum: '/icons/Vacuum_Insulation.svg',
+    capacity: '/icons/Water_Capacity.svg',
+    steel: '/icons/Stainless_Steel.svg',
+    bpa: '/icons/BPA_Free.svg',
+    condensation: '/icons/No_Condensation.svg',
   };
   
-  const IconComponent = iconMap[type] || VacuumIcon;
+  const iconSrc = iconMap[type] || iconMap.vacuum;
   
   return (
     <div className="flex flex-col items-center text-center">
       <div className="w-12 h-12 mb-1 flex items-center justify-center">
-        <IconComponent />
+        <img 
+          src={iconSrc} 
+          alt={title}
+          className="w-10 h-10 object-contain"
+        />
       </div>
       <p className="text-white text-[10px] font-medium leading-tight">{title}</p>
       <p className="text-white/60 text-[10px]">{subtitle}</p>
@@ -288,9 +251,9 @@ export default function ProductPage() {
 
           {/* Product Image & Features Row */}
           <div className="flex-1 flex items-center justify-center gap-4 min-h-0">
-            {/* Single Large Product Image */}
-            <div className="flex-1 flex items-center justify-center">
-              <div className="w-full max-w-xs md:max-w-sm">
+            {/* Single Large Product Image - Shifted Right & Smaller */}
+            <div className="flex-1 flex items-center justify-end pr-8">
+              <div className="w-full max-w-[160px] md:max-w-[180px]">
                 <img 
                   src={product.variants[0].image}
                   alt={product.name}
