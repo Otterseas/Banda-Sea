@@ -6,7 +6,8 @@ import { STICKERS, REGIONS, BASE_PRICE, getAllStickers } from '@/data/stickers';
 import { LOCATION_BUNDLES } from '@/data/bundles';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
-import CurrencySwitcher from '@/components/CurrencySwitcher';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // ===========================================
@@ -27,7 +28,6 @@ const LUNA = {
 export default function Home() {
   const [activeTab, setActiveTab] = useState(REGIONS[0]);
   const [animatingItems, setAnimatingItems] = useState(new Set());
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const {
     cartItems,
@@ -173,107 +173,14 @@ export default function Home() {
       </div>
 
       {/* ===========================================
-          HEADER - MATCHING SURFACE TANK STYLE
+          HEADER - SHARED COMPONENT
           =========================================== */}
-      <header className="sticky top-0 z-50 px-6 py-3" style={{ backgroundColor: `${LUNA.abyss}80`, backdropFilter: 'blur(12px)' }}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo - Left (matching Surface Tank) */}
-          <Link href="/" className="flex items-center gap-2">
-            <img
-              src="/logo.png"
-              alt="Otterseas"
-              className="w-8 h-8 rounded-lg object-contain"
-            />
-            <span className="text-lg font-normal tracking-tight text-white">
-              Otterseas
-            </span>
-          </Link>
-
-          {/* Right Side: Currency Switcher + Menu */}
-          <div className="flex items-center gap-3">
-            {/* Currency Switcher */}
-            <CurrencySwitcher />
-            
-            {/* Hamburger Menu */}
-            <div className="relative">
-              <button 
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex flex-col gap-1.5 p-2 hover:bg-white/10 rounded-lg transition-colors"
-              >
-                <span className="w-6 h-0.5 bg-white" />
-                <span className="w-6 h-0.5 bg-white" />
-                <span className="w-6 h-0.5 bg-white" />
-              </button>
-
-              {/* Dropdown Menu */}
-              <AnimatePresence>
-                {isMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-12 right-0 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
-                  >
-                    <Link 
-                      href="/" 
-                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                      style={{ color: LUNA.deepWater }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Home
-                    </Link>
-                    <Link 
-                      href="/products" 
-                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                      style={{ color: LUNA.deepWater }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      All Products
-                    </Link>
-                    <Link 
-                      href="/stickers" 
-                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
-                      style={{ color: LUNA.surfaceTeal }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Sticker Collection
-                    </Link>
-                    <Link 
-                      href="/products/surface-tank" 
-                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                      style={{ color: LUNA.deepWater }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Surface Tank
-                    </Link>
-                    <Link 
-                      href="/products/dive-journal" 
-                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                      style={{ color: LUNA.deepWater }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Dive Journal
-                    </Link>
-                    <Link 
-                      href="/products/logbook-booster-pack" 
-                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                      style={{ color: LUNA.deepWater }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Booster Pack
-                    </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header variant="dark" currentPath="/stickers" />
 
       {/* ===========================================
-          HERO SECTION
+          HERO SECTION - pt-20 for fixed header
           =========================================== */}
-      <section className="px-6 pt-6 pb-4">
+      <section className="px-6 pt-20 pb-4">
         <div className="max-w-7xl mx-auto">
           
           {/* Large Title - With MAGENTA GRADIENT EFFECT (matching Surface Tank) */}
@@ -795,41 +702,9 @@ export default function Home() {
       )}
 
       {/* ===========================================
-          FOOTER
+          FOOTER - SHARED COMPONENT
           =========================================== */}
-      <footer 
-        className="px-6 py-12 mt-16"
-        style={{ backgroundColor: LUNA.abyss }}
-      >
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2">
-              <img
-                src="/logo.png"
-                alt="Otterseas"
-                className="w-8 h-8 rounded-lg object-contain"
-              />
-              <span className="text-lg font-normal text-white">Otterseas</span>
-            </div>
-            
-            <p className="text-white/40 text-sm">
-              © 2025 Otterseas. Dive deeper, collect memories.
-            </p>
-
-            <div className="flex gap-4">
-              <a href="#" className="text-white/40 hover:text-white text-sm transition-colors">
-                Privacy
-              </a>
-              <a href="#" className="text-white/40 hover:text-white text-sm transition-colors">
-                Terms
-              </a>
-              <a href="#" className="text-white/40 hover:text-white text-sm transition-colors">
-                Contact
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer compact />
     </div>
   );
 }
