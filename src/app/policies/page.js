@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -203,7 +205,6 @@ function DropdownSection({ heading, content, isOpen, onToggle }) {
 // MAIN PAGE COMPONENT
 // ===========================================
 export default function PoliciesPage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('terms');
   const [openSections, setOpenSections] = useState({});
 
@@ -225,63 +226,11 @@ export default function PoliciesPage() {
       className="min-h-screen w-full bg-white"
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
-      {/* ==================== HEADER ==================== */}
-      <header className="sticky top-0 z-40 h-16 flex items-center justify-between px-8 bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <Link href="/" className="flex items-center gap-3">
-          <img 
-            src="/logo.png" 
-            alt="Otterseas" 
-            className="w-10 h-10 rounded-xl object-contain"
-          />
-          <span className="text-xl font-medium tracking-tight" style={{ color: LUNA.deepWater }}>
-            Otterseas
-          </span>
-        </Link>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
-          <Link href="/products" className="text-sm font-medium transition-colors hover:opacity-70" style={{ color: LUNA.deepWater }}>
-            Products
-          </Link>
-          <Link href="/stickers" className="text-sm font-medium transition-colors hover:opacity-70" style={{ color: LUNA.deepWater }}>
-            Stickers
-          </Link>
-          <Link href="/products/crochet-creatures" className="text-sm font-medium transition-colors hover:opacity-70" style={{ color: LUNA.deepWater }}>
-            Crochet Creatures
-          </Link>
-        </nav>
-
-        {/* Mobile Menu Button */}
-        <button 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden flex flex-col gap-1.5 p-2"
-        >
-          <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-          <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-          <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-        </button>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="absolute top-16 left-0 right-0 bg-white border-b border-gray-100 shadow-lg md:hidden"
-            >
-              <Link href="/" className="block px-8 py-4 hover:bg-gray-50" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>Home</Link>
-              <Link href="/products" className="block px-8 py-4 hover:bg-gray-50" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>All Products</Link>
-              <Link href="/stickers" className="block px-8 py-4 hover:bg-gray-50" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>Location Stickers</Link>
-              <Link href="/products/fun-stickers" className="block px-8 py-4 hover:bg-gray-50" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>Fun Stickers</Link>
-              <Link href="/products/crochet-creatures" className="block px-8 py-4 hover:bg-gray-50" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>Crochet Creatures</Link>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+      {/* ==================== HEADER - SHARED COMPONENT ==================== */}
+      <Header variant="light" currentPath="/policies" hideOnScroll={false} />
 
       {/* ==================== MAIN CONTENT ==================== */}
-      <main className="max-w-3xl mx-auto px-8 py-12">
+      <main className="max-w-3xl mx-auto px-8 py-12 pt-20">
         {/* Page Title */}
         <div className="text-center mb-8">
           <h1 
@@ -388,32 +337,8 @@ export default function PoliciesPage() {
         </div>
       </main>
 
-      {/* ==================== FOOTER ==================== */}
-      <footer 
-        className="w-full py-12 px-8 mt-12"
-        style={{ backgroundColor: LUNA.abyss }}
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <Link href="/" className="flex items-center gap-3">
-              <img src="/logo.png" alt="Otterseas" className="w-10 h-10 rounded-xl object-contain" />
-              <span className="text-lg font-medium text-white">Otterseas</span>
-            </Link>
-            
-            <nav className="flex flex-wrap justify-center gap-6">
-              <Link href="/products" className="text-white/50 hover:text-white text-sm transition-colors">All Products</Link>
-              <Link href="/products/surface-tank" className="text-white/50 hover:text-white text-sm transition-colors">Surface Tank</Link>
-              <Link href="/products/dive-journal" className="text-white/50 hover:text-white text-sm transition-colors">Dive Journal</Link>
-              <Link href="/stickers" className="text-white/50 hover:text-white text-sm transition-colors">Location Stickers</Link>
-              <Link href="/products/fun-stickers" className="text-white/50 hover:text-white text-sm transition-colors">Fun Stickers</Link>
-              <Link href="/products/crochet-creatures" className="text-white/50 hover:text-white text-sm transition-colors">Crochet Creatures</Link>
-              <Link href="/policies" className="text-white/50 hover:text-white text-sm transition-colors">Policies</Link>
-            </nav>
-
-            <p className="text-white/40 text-sm">© 2025 Otterseas</p>
-          </div>
-        </div>
-      </footer>
+      {/* ==================== FOOTER - SHARED COMPONENT ==================== */}
+      <Footer />
     </div>
   );
 }
