@@ -43,7 +43,7 @@ const STICKER_FAN_IMAGES = [
 ];
 
 // Feature Icon Component using SVG files from /public/icons/
-function FeatureIcon({ type, title, subtitle }) {
+function FeatureIcon({ type, title, subtitle, isFirst = false }) {
   const iconMap = {
     vacuum: '/icons/Vacuum_Insulation.svg',
     capacity: '/icons/Water_Capacity.svg',
@@ -56,11 +56,11 @@ function FeatureIcon({ type, title, subtitle }) {
   
   return (
     <div className="flex flex-col items-center text-center">
-      <div className="w-12 h-12 mb-1 flex items-center justify-center">
+      <div className={`${isFirst ? 'w-16 h-16' : 'w-12 h-12'} mb-1 flex items-center justify-center`}>
         <img 
           src={iconSrc} 
           alt={title}
-          className="w-10 h-10 object-contain"
+          className={`${isFirst ? 'w-14 h-14' : 'w-10 h-10'} object-contain`}
         />
       </div>
       <p className="text-white text-[10px] font-medium leading-tight">{title}</p>
@@ -274,6 +274,7 @@ export default function ProductPage() {
                   type={featureTypes[index]}
                   title={feature.title}
                   subtitle={feature.subtitle}
+                  isFirst={index === 0}
                 />
               ))}
             </div>
@@ -356,26 +357,26 @@ export default function ProductPage() {
               {currentVariant.inStock ? 'Add to Cart' : 'Out of Stock'}
             </motion.button>
 
-            {/* Gift Set Upsell */}
+            {/* Gift Set Upsell - Compact */}
             <div 
-              className="mt-4 p-4 rounded-xl"
+              className="mt-4 p-3 rounded-xl max-w-[240px]"
               style={{
                 background: 'rgba(255, 255, 255, 0.05)',
                 border: `1px solid ${COLORS.highlight}30`,
               }}
             >
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ backgroundColor: COLORS.surfaceTeal, color: 'white' }}>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium" style={{ backgroundColor: COLORS.surfaceTeal, color: 'white' }}>
                   GIFT SET
                 </span>
-                <span className="text-green-400 text-xs font-medium">Save {formatPrice(10.05)}</span>
+                <span className="text-green-400 text-[10px] font-medium">Save {formatPrice(10.05)}</span>
               </div>
-              <p className="text-white text-sm font-medium mb-1">Diver's Gift Set</p>
-              <p className="text-white/60 text-xs mb-3">Surface Tank + Dive Journal</p>
-              <div className="flex items-center justify-between">
+              <p className="text-white text-xs font-medium mb-0.5">Diver's Gift Set</p>
+              <p className="text-white/60 text-[10px] mb-2">Surface Tank + Dive Journal</p>
+              <div className="flex items-center justify-between gap-2">
                 <div>
-                  <span className="text-white/40 text-xs line-through mr-2">{formatPrice(68)}</span>
-                  <span className="text-lg font-bold" style={{ color: COLORS.highlight }}>{formatPrice(57.95)}</span>
+                  <span className="text-white/40 text-[10px] line-through mr-1">{formatPrice(68)}</span>
+                  <span className="text-sm font-bold" style={{ color: COLORS.highlight }}>{formatPrice(57.95)}</span>
                 </div>
                 <motion.button
                   onClick={() => {
@@ -391,7 +392,7 @@ export default function ProductPage() {
                     openDrawer();
                   }}
                   disabled={!currentVariant.inStock}
-                  className="px-4 py-2 rounded-lg text-xs font-semibold transition-all"
+                  className="px-3 py-1.5 rounded-lg text-[10px] font-semibold transition-all"
                   style={{
                     background: currentVariant.inStock ? COLORS.surfaceTeal : 'rgba(255,255,255,0.1)',
                     color: 'white',
@@ -521,25 +522,21 @@ export default function ProductPage() {
 
           {/* Sticker Fan Visual */}
           <section className="mb-10">
-            <div className="relative h-20 flex items-center justify-center mb-3">
-              {/* Sticker fan - overlapping circles with real sticker images */}
-              <div className="flex -space-x-3">
+            <div className="relative h-24 flex items-center justify-center mb-3">
+              {/* Sticker fan - overlapping sticker images (no circle frames) */}
+              <div className="flex -space-x-2">
                 {STICKER_FAN_IMAGES.map((sticker, i) => (
-                  <motion.div
+                  <motion.img
                     key={i}
-                    className="w-14 h-14 rounded-full border-2 border-white shadow-lg overflow-hidden"
+                    src={sticker.image}
+                    alt={sticker.name}
+                    className="w-16 h-16 object-contain drop-shadow-lg"
                     style={{
                       zIndex: i === 2 ? 10 : 5 - Math.abs(i - 2),
-                      transform: `rotate(${(i - 2) * 6}deg) scale(${i === 2 ? 1.1 : 0.95})`
+                      transform: `rotate(${(i - 2) * 8}deg) scale(${i === 2 ? 1.15 : 0.9})`
                     }}
-                    whileHover={{ scale: 1.15, zIndex: 15 }}
-                  >
-                    <img 
-                      src={sticker.image} 
-                      alt={sticker.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </motion.div>
+                    whileHover={{ scale: 1.2, zIndex: 15, rotate: 0 }}
+                  />
                 ))}
               </div>
               {/* Arrow pointing down */}
@@ -670,9 +667,6 @@ export default function ProductPage() {
           <div className="h-16" />
         </div>
       </div>
-
-      {/* Floating Cart Button */}
-      <FloatingCartButton />
     </div>
   );
 }
