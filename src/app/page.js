@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 
 // ===========================================
 // LUNA COLOR PALETTE
