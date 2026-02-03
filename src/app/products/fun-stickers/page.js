@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
+import { useCurrency } from '@/context/CurrencyContext';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 import { FUN_STICKERS, BUNDLED_STICKER_PRICE, QUALITY_STATEMENT } from '@/data/funStickers';
 
 // Luna Color Palette
@@ -18,7 +20,7 @@ const LUNA = {
 // ===========================================
 // PRODUCT CARD COMPONENT
 // ===========================================
-function ProductCard({ sticker, onClick }) {
+function ProductCard({ sticker, onClick, formatPrice }) {
   const { addToCart, openCart } = useCart();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -117,7 +119,7 @@ function ProductCard({ sticker, onClick }) {
           className="text-lg font-bold mb-3"
           style={{ color: LUNA.surfaceTeal }}
         >
-          £{sticker.price.toFixed(2)}
+          {formatPrice(sticker.price)}
         </p>
         
         <button
@@ -276,7 +278,7 @@ function ProductModal({ sticker, isOpen, onClose }) {
                   className="text-2xl font-bold mb-6"
                   style={{ color: LUNA.surfaceTeal }}
                 >
-                  £{sticker.price.toFixed(2)}
+                  {formatPrice(sticker.price)}
                 </p>
 
                 {/* Collapsible Description */}
@@ -385,6 +387,7 @@ function ProductModal({ sticker, isOpen, onClose }) {
 export default function FunStickersPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedSticker, setSelectedSticker] = useState(null);
+  const { formatPrice } = useCurrency();
 
   return (
     <div 
@@ -498,6 +501,7 @@ export default function FunStickersPage() {
                 <ProductCard 
                   sticker={sticker} 
                   onClick={() => setSelectedSticker(sticker)}
+                  formatPrice={formatPrice}
                 />
               </motion.div>
             ))}
@@ -559,8 +563,8 @@ export default function FunStickersPage() {
                     <p className="text-white/60 text-sm mb-3">Deck out your water bottle with fun dive stickers!</p>
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-white font-bold">£40.00</span>
-                        <span className="text-white/40 text-sm ml-2">+ sticker £{BUNDLED_STICKER_PRICE.toFixed(2)}</span>
+                        <span className="text-white font-bold">{formatPrice(40)}</span>
+                        <span className="text-white/40 text-sm ml-2">+ sticker {formatPrice(BUNDLED_STICKER_PRICE)}</span>
                       </div>
                       <span 
                         className="text-sm font-medium flex items-center gap-1"
@@ -605,8 +609,8 @@ export default function FunStickersPage() {
                     <p className="text-white/60 text-sm mb-3">Personalise your journal cover with your favourites!</p>
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-white font-bold">£28.00</span>
-                        <span className="text-white/40 text-sm ml-2">+ sticker £{BUNDLED_STICKER_PRICE.toFixed(2)}</span>
+                        <span className="text-white font-bold">{formatPrice(28)}</span>
+                        <span className="text-white/40 text-sm ml-2">+ sticker {formatPrice(BUNDLED_STICKER_PRICE)}</span>
                       </div>
                       <span 
                         className="text-sm font-medium flex items-center gap-1"
