@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import CurrencySwitcher from './CurrencySwitcher';
@@ -33,14 +33,42 @@ const NAV_LINKS = [
  * Props:
  * @param {string} variant - 'dark' (default, for dark backgrounds) or 'light' (for white backgrounds)
  * @param {string} currentPath - Current page path to highlight in nav (e.g., '/products')
- * @param {boolean} sticky - Whether header sticks to top (default: true)
+ * @param {boolean} hideOnScroll - Whether header hides when scrolling down (default: true)
  */
 export default function Header({ 
   variant = 'dark', 
   currentPath = '/',
-  sticky = true,
+  hideOnScroll = true,
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // Handle scroll to show/hide header
+  useEffect(() => {
+    if (!hideOnScroll) return;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Show header when at top of page
+      if (currentScrollY < 50) {
+        setIsVisible(true);
+      }
+      // Hide when scrolling down, show when scrolling up
+      else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+        setIsMenuOpen(false); // Close menu when hiding
+      } else if (currentScrollY < lastScrollY) {
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY, hideOnScroll]);
 
   const isDark = variant === 'dark';
   
@@ -51,12 +79,18 @@ export default function Header({
   const borderColor = isDark ? 'border-white/10' : 'border-gray-100';
 
   return (
-    <header 
-      className={`${sticky ? 'sticky top-0' : ''} z-50 px-6 py-3 ${borderColor}`}
+    <motion.header 
+      className={`fixed top-0 left-0 right-0 z-50 px-6 py-3 ${borderColor}`}
       style={{ 
         backgroundColor: bgColor, 
         backdropFilter: 'blur(12px)',
       }}
+      initial={{ y: 0, opacity: 1 }}
+      animate={{ 
+        y: isVisible ? 0 : -100,
+        opacity: isVisible ? 1 : 0,
+      }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
@@ -127,6 +161,6 @@ export default function Header({
           </div>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }
