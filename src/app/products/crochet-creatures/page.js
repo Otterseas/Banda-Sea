@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
-import CurrencySwitcher from '@/components/CurrencySwitcher';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -720,7 +721,6 @@ function ProductCarousel({ title, subtitle, products, onProductClick, formatPric
 // MAIN PAGE COMPONENT
 // ===========================================
 export default function CrochetCreaturesPage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { formatPrice } = useCurrency();
 
@@ -734,67 +734,11 @@ export default function CrochetCreaturesPage() {
       className="min-h-screen w-full bg-white"
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
-      {/* ==================== HEADER ==================== */}
-      <header className="sticky top-0 z-40 h-16 flex items-center justify-between px-8 bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <Link href="/" className="flex items-center gap-3">
-          <img 
-            src="/logo.png" 
-            alt="Otterseas" 
-            className="w-10 h-10 rounded-xl object-contain"
-          />
-          <span className="text-xl font-medium tracking-tight" style={{ color: LUNA.deepWater }}>
-            Otterseas
-          </span>
-        </Link>
-
-        {/* Desktop Navigation + Currency */}
-        <div className="hidden md:flex items-center gap-8">
-          <Link href="/products" className="text-sm font-medium transition-colors hover:opacity-70" style={{ color: LUNA.deepWater }}>
-            Products
-          </Link>
-          <Link href="/stickers" className="text-sm font-medium transition-colors hover:opacity-70" style={{ color: LUNA.deepWater }}>
-            Stickers
-          </Link>
-          <Link href="/products/crochet-creatures" className="text-sm font-medium" style={{ color: LUNA.surfaceTeal }}>
-            Crochet Creatures
-          </Link>
-          <CurrencySwitcher variant="light" />
-        </div>
-
-        {/* Mobile: Currency + Menu Button */}
-        <div className="md:hidden flex items-center gap-3">
-          <CurrencySwitcher variant="light" />
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex flex-col gap-1.5 p-2"
-          >
-            <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-            <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-            <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="absolute top-16 left-0 right-0 bg-white border-b border-gray-100 shadow-lg md:hidden"
-            >
-              <Link href="/" className="block px-8 py-4 hover:bg-gray-50" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>Home</Link>
-              <Link href="/products" className="block px-8 py-4 hover:bg-gray-50" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>All Products</Link>
-              <Link href="/stickers" className="block px-8 py-4 hover:bg-gray-50" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>Location Stickers</Link>
-              <Link href="/products/fun-stickers" className="block px-8 py-4 hover:bg-gray-50" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>Fun Stickers</Link>
-              <Link href="/products/crochet-creatures" className="block px-8 py-4 hover:bg-gray-50" style={{ color: LUNA.surfaceTeal }} onClick={() => setIsMenuOpen(false)}>Crochet Creatures</Link>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+      {/* ==================== HEADER - SHARED COMPONENT ==================== */}
+      <Header variant="light" currentPath="/products/crochet-creatures" hideOnScroll={false} />
 
       {/* ==================== SPLIT PANEL LAYOUT ==================== */}
-      <div className="flex flex-col lg:flex-row" style={{ height: 'calc(100vh - 64px)' }}>
+      <div className="flex flex-col lg:flex-row pt-14" style={{ height: 'calc(100vh - 56px)' }}>
         
         {/* LEFT PANEL - Story (scrollable) */}
         <div 
@@ -974,31 +918,8 @@ export default function CrochetCreaturesPage() {
         formatPrice={formatPrice}
       />
 
-      {/* ==================== FOOTER ==================== */}
-      <footer 
-        className="w-full py-12 px-8"
-        style={{ backgroundColor: LUNA.abyss }}
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <Link href="/" className="flex items-center gap-3">
-              <img src="/logo.png" alt="Otterseas" className="w-10 h-10 rounded-xl object-contain" />
-              <span className="text-lg font-medium text-white">Otterseas</span>
-            </Link>
-            
-            <nav className="flex flex-wrap justify-center gap-6">
-              <Link href="/products" className="text-white/50 hover:text-white text-sm transition-colors">All Products</Link>
-              <Link href="/products/surface-tank" className="text-white/50 hover:text-white text-sm transition-colors">Surface Tank</Link>
-              <Link href="/products/dive-journal" className="text-white/50 hover:text-white text-sm transition-colors">Dive Journal</Link>
-              <Link href="/stickers" className="text-white/50 hover:text-white text-sm transition-colors">Location Stickers</Link>
-              <Link href="/products/fun-stickers" className="text-white/50 hover:text-white text-sm transition-colors">Fun Stickers</Link>
-              <Link href="/products/crochet-creatures" className="text-white/50 hover:text-white text-sm transition-colors">Crochet Creatures</Link>
-            </nav>
-
-            <p className="text-white/40 text-sm">© 2025 Otterseas</p>
-          </div>
-        </div>
-      </footer>
+      {/* ==================== FOOTER - SHARED COMPONENT ==================== */}
+      <Footer />
     </div>
   );
 }
