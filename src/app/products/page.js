@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCurrency } from '@/context/CurrencyContext';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -106,6 +108,7 @@ const PRODUCT_ROWS = [
 // ===========================================
 export default function ProductsPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { formatPrice } = useCurrency();
 
   return (
     <div 
@@ -288,7 +291,7 @@ export default function ProductsPage() {
                               <span className="text-white/40 text-xs mr-1">{product.priceNote}</span>
                             )}
                             <span className="text-sm font-bold" style={{ color: LUNA.highlight }}>
-                              £{product.price.toFixed(2)}
+                              {formatPrice(product.price)}
                             </span>
                           </div>
                           <span 
