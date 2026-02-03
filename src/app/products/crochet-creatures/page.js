@@ -300,7 +300,7 @@ const STORY_SECTIONS = [
 // ===========================================
 // PRODUCT MODAL COMPONENT
 // ===========================================
-function ProductModal({ product, isOpen, onClose }) {
+function ProductModal({ product, isOpen, onClose, formatPrice }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [descriptionOpen, setDescriptionOpen] = useState(true);
   const [productInfoOpen, setProductInfoOpen] = useState(false);
@@ -551,7 +551,7 @@ function ProductModal({ product, isOpen, onClose }) {
 // ===========================================
 // PRODUCT CARD COMPONENT (for carousel)
 // ===========================================
-function ProductCard({ product, onClick }) {
+function ProductCard({ product, onClick, formatPrice }) {
   const { addToCart, openCart } = useCart();
 
   const handleAddToCart = (e) => {
@@ -625,7 +625,7 @@ function ProductCard({ product, onClick }) {
 // ===========================================
 // PRODUCT CAROUSEL COMPONENT
 // ===========================================
-function ProductCarousel({ title, subtitle, products, onProductClick }) {
+function ProductCarousel({ title, subtitle, products, onProductClick, formatPrice }) {
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -708,6 +708,7 @@ function ProductCarousel({ title, subtitle, products, onProductClick }) {
             key={product.id} 
             product={product} 
             onClick={() => onProductClick(product)}
+            formatPrice={formatPrice}
           />
         ))}
       </div>
@@ -904,25 +905,28 @@ export default function CrochetCreaturesPage() {
             {/* Nudibranchs Carousel */}
             <ProductCarousel
               title="Nudibranchs"
-              subtitle="{formatPrice(17.50)} each • Perfect as keychains, bag charms, desk companions"
+              subtitle={`${formatPrice(17.50)} each • Perfect as keychains, bag charms, desk companions`}
               products={nudibranchs}
               onProductClick={(product) => setSelectedProduct(product)}
+              formatPrice={formatPrice}
             />
 
             {/* Fish & Friends Carousel */}
             <ProductCarousel
               title="Fish & Friends"
-              subtitle="{formatPrice(25)} each • Perfect as keychains, bag charms, rearview mirror hangers"
+              subtitle={`${formatPrice(25)} each • Perfect as keychains, bag charms, rearview mirror hangers`}
               products={fishFriends}
               onProductClick={(product) => setSelectedProduct(product)}
+              formatPrice={formatPrice}
             />
 
             {/* Baby Mobiles - Single Item */}
             <ProductCarousel
               title="Baby Mobiles"
-              subtitle="{formatPrice(105)} each • Perfect as nursery centrepiece, baby shower gift"
+              subtitle={`${formatPrice(105)} each • Perfect as nursery centrepiece, baby shower gift`}
               products={babyMobiles}
               onProductClick={(product) => setSelectedProduct(product)}
+              formatPrice={formatPrice}
             />
 
             {/* Custom Orders CTA */}
@@ -963,6 +967,7 @@ export default function CrochetCreaturesPage() {
         product={selectedProduct}
         isOpen={!!selectedProduct}
         onClose={() => setSelectedProduct(null)}
+        formatPrice={formatPrice}
       />
 
       {/* ==================== FOOTER ==================== */}
