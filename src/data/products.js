@@ -101,7 +101,6 @@ export const PRODUCTS = {
     shipping: {
       title: 'Shipping Info',
       content: [
-        'Free UK shipping on orders over £50',
         'Standard UK delivery: 3-5 business days',
         'Express UK delivery: 1-2 business days',
         'International shipping available',
