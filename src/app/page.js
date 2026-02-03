@@ -587,6 +587,163 @@ export default function HomePage() {
         </section>
 
         {/* ===========================================
+            SALT & STORIES - BLOG SECTION
+            =========================================== */}
+        <section 
+          className="w-full py-16 px-8"
+          style={{ backgroundColor: LUNA.abyss }}
+        >
+          <div className="max-w-6xl mx-auto">
+            {/* Section Header */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <span 
+                className="text-xs tracking-[0.3em] font-medium mb-3 block"
+                style={{ color: LUNA.highlight }}
+              >
+                FROM THE DEEP
+              </span>
+              <h2 
+                className="text-3xl md:text-4xl font-bold text-white mb-4"
+                style={{ 
+                  background: `linear-gradient(135deg, ${LUNA.highlight} 0%, #FF6B9D 50%, ${LUNA.highlight} 100%)`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                Salt & Stories
+              </h2>
+              <p className="text-white/60 max-w-lg mx-auto">
+                Dive tales, travel tips, and underwater adventures from our community.
+              </p>
+            </motion.div>
+
+            {/* Blog Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+              {/* Blog Card 1 - Placeholder */}
+              <motion.article
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="group rounded-2xl overflow-hidden"
+                style={{ 
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${LUNA.highlight}20`,
+                }}
+              >
+                <div 
+                  className="aspect-[16/10] bg-cover bg-center"
+                  style={{ 
+                    backgroundImage: 'url(https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600)',
+                    backgroundColor: LUNA.midDepth,
+                  }}
+                />
+                <div className="p-5">
+                  <span className="text-[10px] tracking-wider font-medium" style={{ color: LUNA.surfaceTeal }}>
+                    DIVE DESTINATIONS
+                  </span>
+                  <h3 className="text-white font-semibold mt-2 mb-2 group-hover:text-[#A7EBF2] transition-colors">
+                    Top 5 Nudibranch Hotspots in Southeast Asia
+                  </h3>
+                  <p className="text-white/50 text-sm line-clamp-2">
+                    Discover the best macro diving destinations for spotting these colorful sea slugs...
+                  </p>
+                </div>
+              </motion.article>
+
+              {/* Blog Card 2 - Placeholder */}
+              <motion.article
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="group rounded-2xl overflow-hidden"
+                style={{ 
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${LUNA.highlight}20`,
+                }}
+              >
+                <div 
+                  className="aspect-[16/10] bg-cover bg-center"
+                  style={{ 
+                    backgroundImage: 'url(https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=600)',
+                    backgroundColor: LUNA.midDepth,
+                  }}
+                />
+                <div className="p-5">
+                  <span className="text-[10px] tracking-wider font-medium" style={{ color: LUNA.surfaceTeal }}>
+                    GEAR GUIDES
+                  </span>
+                  <h3 className="text-white font-semibold mt-2 mb-2 group-hover:text-[#A7EBF2] transition-colors">
+                    How to Keep Your Dive Gear in Perfect Condition
+                  </h3>
+                  <p className="text-white/50 text-sm line-clamp-2">
+                    Essential maintenance tips to extend the life of your dive equipment...
+                  </p>
+                </div>
+              </motion.article>
+
+              {/* Blog Card 3 - Placeholder */}
+              <motion.article
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="group rounded-2xl overflow-hidden"
+                style={{ 
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${LUNA.highlight}20`,
+                }}
+              >
+                <div 
+                  className="aspect-[16/10] bg-cover bg-center"
+                  style={{ 
+                    backgroundImage: 'url(https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=600)',
+                    backgroundColor: LUNA.midDepth,
+                  }}
+                />
+                <div className="p-5">
+                  <span className="text-[10px] tracking-wider font-medium" style={{ color: LUNA.surfaceTeal }}>
+                    COMMUNITY
+                  </span>
+                  <h3 className="text-white font-semibold mt-2 mb-2 group-hover:text-[#A7EBF2] transition-colors">
+                    Meet the Divers Behind Our Sticker Designs
+                  </h3>
+                  <p className="text-white/50 text-sm line-clamp-2">
+                    The stories and adventures that inspire each location sticker...
+                  </p>
+                </div>
+              </motion.article>
+            </div>
+
+            {/* View All Link */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <Link
+                href="/blogs"
+                className="inline-flex items-center gap-2 text-sm font-medium transition-all hover:gap-3"
+                style={{ color: LUNA.highlight }}
+              >
+                Read All Stories
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ===========================================
             NEWSLETTER SUBSCRIBE SECTION
             =========================================== */}
         <section 
