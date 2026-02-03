@@ -3,6 +3,8 @@
 import { useParams } from 'next/navigation';
 import { getStickerBySlug, BASE_PRICE, STICKERS, REGIONS } from '@/data/stickers';
 import { useCart } from '@/context/CartContext';
+import { useCurrency } from '@/context/CurrencyContext';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -20,6 +22,7 @@ export default function StickerPage() {
   const params = useParams();
   const sticker = getStickerBySlug(params.slug);
   const { addToCart, openCart } = useCart();
+  const { formatPrice } = useCurrency();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   // Region tabs - default to current sticker's region
@@ -177,7 +180,7 @@ export default function StickerPage() {
               className="text-2xl font-bold mb-6"
               style={{ color: LUNA.surfaceTeal }}
             >
-              £{BASE_PRICE.toFixed(2)}
+              {formatPrice(BASE_PRICE)}
             </p>
 
             {/* Add to Pack Button */}
