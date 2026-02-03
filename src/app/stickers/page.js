@@ -253,18 +253,19 @@ export default function Home() {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Dive Journal
-                  </Link>
-                  <Link 
-                    href="/products/logbook-booster-pack" 
-                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                    style={{ color: LUNA.deepWater }}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Booster Pack
-                  </Link>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                    </Link>
+                    <Link 
+                      href="/products/logbook-booster-pack" 
+                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                      style={{ color: LUNA.deepWater }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Booster Pack
+                    </Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </header>
