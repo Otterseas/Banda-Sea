@@ -747,8 +747,8 @@ export default function CrochetCreaturesPage() {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Desktop Navigation + Currency */}
+        <div className="hidden md:flex items-center gap-8">
           <Link href="/products" className="text-sm font-medium transition-colors hover:opacity-70" style={{ color: LUNA.deepWater }}>
             Products
           </Link>
@@ -758,17 +758,21 @@ export default function CrochetCreaturesPage() {
           <Link href="/products/crochet-creatures" className="text-sm font-medium" style={{ color: LUNA.surfaceTeal }}>
             Crochet Creatures
           </Link>
-        </nav>
+          <CurrencySwitcher variant="light" />
+        </div>
 
-        {/* Mobile Menu Button */}
-        <button 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden flex flex-col gap-1.5 p-2"
-        >
-          <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-          <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-          <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-        </button>
+        {/* Mobile: Currency + Menu Button */}
+        <div className="md:hidden flex items-center gap-3">
+          <CurrencySwitcher variant="light" />
+          <button 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="flex flex-col gap-1.5 p-2"
+          >
+            <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
+            <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
+            <span className="w-6 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
+          </button>
+        </div>
 
         {/* Mobile Menu */}
         <AnimatePresence>
