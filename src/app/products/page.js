@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useCurrency } from '@/context/CurrencyContext';
-import CurrencySwitcher from '@/components/CurrencySwitcher';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -107,7 +107,6 @@ const PRODUCT_ROWS = [
 // MAIN COMPONENT
 // ===========================================
 export default function ProductsPage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { formatPrice } = useCurrency();
 
   return (
@@ -123,69 +122,8 @@ export default function ProductsPage() {
         }}
       />
 
-      {/* Header */}
-      <header className="sticky top-0 z-50 px-8 py-4" style={{ backgroundColor: `${LUNA.abyss}90`, backdropFilter: 'blur(12px)' }}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <img
-              src="/logo.png"
-              alt="Otterseas"
-              className="w-10 h-10 rounded-xl object-contain"
-            />
-            <span className="text-xl font-medium tracking-tight text-white">
-              Otterseas
-            </span>
-          </Link>
-
-          {/* Currency Switcher & Menu */}
-          <div className="flex items-center gap-3">
-            <CurrencySwitcher />
-            <div className="relative">
-              <button 
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex flex-col gap-1.5 p-2 hover:bg-white/10 rounded-lg transition-colors"
-              >
-                <span className="w-6 h-0.5 bg-white" />
-                <span className="w-6 h-0.5 bg-white" />
-                <span className="w-6 h-0.5 bg-white" />
-              </button>
-
-              <AnimatePresence>
-                {isMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-12 right-0 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
-                  >
-                    <Link href="/" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
-                      Home
-                    </Link>
-                    <Link href="/products" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium" style={{ color: LUNA.surfaceTeal }} onClick={() => setIsMenuOpen(false)}>
-                      All Products
-                    </Link>
-                    <Link href="/products/surface-tank" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
-                      Surface Tank
-                    </Link>
-                    <Link href="/products/dive-journal" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
-                      Dive Journal
-                    </Link>
-                    <Link href="/products/logbook-booster-pack" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
-                      Booster Pack
-                    </Link>
-                    <Link href="/stickers" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
-                      Location Stickers
-                    </Link>
-                    <Link href="/products/fun-stickers" className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm" style={{ color: LUNA.deepWater }} onClick={() => setIsMenuOpen(false)}>
-                      Fun Stickers
-                    </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* Shared Header */}
+      <Header variant="dark" currentPath="/products" />
 
       {/* Hero Section */}
       <section className="px-8 pt-10 pb-8">
@@ -348,49 +286,8 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer 
-        className="w-full py-12 px-8"
-        style={{ backgroundColor: LUNA.abyss }}
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <Link href="/" className="flex items-center gap-3">
-              <img
-                src="/logo.png"
-                alt="Otterseas"
-                className="w-10 h-10 rounded-xl object-contain"
-              />
-              <span className="text-lg font-medium text-white">Otterseas</span>
-            </Link>
-            
-            <nav className="flex flex-wrap justify-center gap-6">
-              <Link href="/products" className="text-white/50 hover:text-white text-sm transition-colors">
-                All Products
-              </Link>
-              <Link href="/products/surface-tank" className="text-white/50 hover:text-white text-sm transition-colors">
-                Surface Tank
-              </Link>
-              <Link href="/products/dive-journal" className="text-white/50 hover:text-white text-sm transition-colors">
-                Dive Journal
-              </Link>
-              <Link href="/products/logbook-booster-pack" className="text-white/50 hover:text-white text-sm transition-colors">
-                Booster Pack
-              </Link>
-              <Link href="/stickers" className="text-white/50 hover:text-white text-sm transition-colors">
-                Location Stickers
-              </Link>
-              <Link href="/products/fun-stickers" className="text-white/50 hover:text-white text-sm transition-colors">
-                Fun Stickers
-              </Link>
-            </nav>
-
-            <p className="text-white/40 text-sm">
-              © 2025 Otterseas
-            </p>
-          </div>
-        </div>
-      </footer>
+      {/* Shared Footer */}
+      <Footer />
     </div>
   );
 }
