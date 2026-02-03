@@ -214,6 +214,7 @@ export default function ProductPage() {
               Otterseas
             </span>
           </Link>
+          <CurrencySwitcher />
         </header>
 
         {/* Main Content */}
