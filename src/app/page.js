@@ -320,8 +320,9 @@ export default function HomePage() {
               RIGHT PANEL - NAVIGATION (40%)
               =========================================== */}
           <div className="w-full md:w-[40%] min-h-screen bg-white flex flex-col relative">
-            {/* Hamburger Menu */}
-            <div className="absolute top-4 right-6 z-20">
+            {/* Currency Switcher & Hamburger Menu */}
+            <div className="absolute top-4 right-6 z-20 flex items-center gap-3">
+              <CurrencySwitcher variant="light" />
               <button 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="flex flex-col gap-1.5 p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -330,34 +331,35 @@ export default function HomePage() {
                 <span className="w-7 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
                 <span className="w-7 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
               </button>
+            </div>
 
-              {/* Dropdown Menu */}
-              <AnimatePresence>
-                {isMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-14 right-0 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden"
+            {/* Dropdown Menu */}
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute top-14 right-6 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-20"
+                >
+                  <Link 
+                    href="/" 
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
+                    style={{ color: LUNA.surfaceTeal }}
+                    onClick={() => setIsMenuOpen(false)}
                   >
-                    <Link 
-                      href="/" 
-                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
-                      style={{ color: LUNA.surfaceTeal }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Home
-                    </Link>
-                    <Link 
-                      href="/products" 
-                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                      style={{ color: LUNA.deepWater }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      All Products
-                    </Link>
-                    <Link 
-                      href="/products/surface-tank" 
+                    Home
+                  </Link>
+                  <Link 
+                    href="/products" 
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    All Products
+                  </Link>
+                  <Link 
+                    href="/products/surface-tank" 
                       className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
                       style={{ color: LUNA.deepWater }}
                       onClick={() => setIsMenuOpen(false)}
@@ -380,34 +382,33 @@ export default function HomePage() {
                     >
                       Booster Pack
                     </Link>
-                    <Link 
-                      href="/stickers" 
-                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                      style={{ color: LUNA.deepWater }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Location Stickers
-                    </Link>
-                    <Link 
-                      href="/products/fun-stickers" 
-                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                      style={{ color: LUNA.deepWater }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Fun Stickers
-                    </Link>
-                    <Link 
-                      href="/products/crochet-creatures" 
-                      className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                      style={{ color: LUNA.deepWater }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Crochet Creatures
-                    </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                  <Link 
+                    href="/stickers" 
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Location Stickers
+                  </Link>
+                  <Link 
+                    href="/products/fun-stickers" 
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Fun Stickers
+                  </Link>
+                  <Link 
+                    href="/products/crochet-creatures" 
+                    className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                    style={{ color: LUNA.deepWater }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Crochet Creatures
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Product Navigation */}
             <div className="flex-1 flex flex-col justify-center px-8 md:px-12">
