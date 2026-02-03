@@ -290,10 +290,10 @@ export default function Home() {
           </h1>
 
           {/* Content Row: Text Left, Gauge Center, Water Bottle Right */}
-          <div className="flex flex-col lg:flex-row gap-8 items-start">
+          <div className="flex flex-col lg:flex-row gap-8 items-start justify-between">
             
             {/* Left: Description Text */}
-            <div className="flex-1 lg:max-w-sm">
+            <div className="flex-1 lg:max-w-xs">
               <p className="text-white/70 text-base leading-relaxed mb-4">
                 Every sticker marks a memory. Collect the dive sites you've conquered, 
                 the wrecks you've explored, and the reefs that took your breath away.
