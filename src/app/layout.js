@@ -1,5 +1,6 @@
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
+import { CurrencyProvider } from '@/context/CurrencyContext';
 import CartDrawer from '@/components/CartDrawer';
 
 export const metadata = {
@@ -16,10 +17,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <CartProvider>
-          {children}
-          <CartDrawer />
-        </CartProvider>
+        <CurrencyProvider>
+          <CartProvider>
+            {children}
+            <CartDrawer />
+          </CartProvider>
+        </CurrencyProvider>
       </body>
     </html>
   );
