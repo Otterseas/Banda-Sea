@@ -1,43 +1,132 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { useCart } from '@/context/CartContext';
+import { motion, AnimatePresence } from 'framer-motion';
+import CurrencySwitcher from './CurrencySwitcher';
 
-export default function Header() {
-  const { totalItems, openDrawer } = useCart();
+// Luna Color Palette
+const LUNA = {
+  highlight: '#A7EBF2',
+  surfaceTeal: '#54ACBF',
+  midDepth: '#26658C',
+  deepWater: '#023859',
+  abyss: '#011C40',
+};
+
+// Complete Navigation Links
+const NAV_LINKS = [
+  { href: '/', label: 'Home' },
+  { href: '/products', label: 'All Products' },
+  { href: '/stickers', label: 'Sticker Collection' },
+  { href: '/products/surface-tank', label: 'Surface Tank' },
+  { href: '/products/dive-journal', label: 'Dive Journal' },
+  { href: '/products/logbook-booster-pack', label: 'Booster Pack' },
+  { href: '/products/fun-stickers', label: 'Fun Stickers' },
+  { href: '/products/crochet-creatures', label: 'Crochet Creatures' },
+  { href: '/policies', label: 'Policies' },
+];
+
+/**
+ * Shared Header Component
+ * 
+ * Props:
+ * @param {string} variant - 'dark' (default, for dark backgrounds) or 'light' (for white backgrounds)
+ * @param {string} currentPath - Current page path to highlight in nav (e.g., '/products')
+ * @param {boolean} sticky - Whether header sticks to top (default: true)
+ */
+export default function Header({ 
+  variant = 'dark', 
+  currentPath = '/',
+  sticky = true,
+}) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const isDark = variant === 'dark';
+  
+  // Colors based on variant
+  const bgColor = isDark ? `${LUNA.abyss}80` : 'rgba(255, 255, 255, 0.95)';
+  const textColor = isDark ? 'white' : LUNA.deepWater;
+  const hoverBg = isDark ? 'hover:bg-white/10' : 'hover:bg-gray-100';
+  const borderColor = isDark ? 'border-white/10' : 'border-gray-100';
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-30 h-16 flex items-center justify-between px-6 bg-white/95 backdrop-blur-sm border-b border-gray-100">
-      {/* Logo */}
-      <Link href="/" className="flex items-center gap-3">
-        <img 
-          src="/logo.png" 
-          alt="Otterseas" 
-          className="w-9 h-9 rounded-xl object-contain"
-        />
-        <span 
-          className="text-xl font-light tracking-tight"
-          style={{ fontFamily: 'Montserrat, sans-serif', color: '#0A2540' }}
-        >
-          Otterseas
-        </span>
-      </Link>
+    <header 
+      className={`${sticky ? 'sticky top-0' : ''} z-50 px-6 py-3 ${borderColor}`}
+      style={{ 
+        backgroundColor: bgColor, 
+        backdropFilter: 'blur(12px)',
+      }}
+    >
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2">
+          <img
+            src="/logo.png"
+            alt="Otterseas"
+            className="w-8 h-8 rounded-lg object-contain"
+          />
+          <span 
+            className="text-lg font-normal tracking-tight"
+            style={{ color: textColor }}
+          >
+            Otterseas
+          </span>
+        </Link>
 
-      {/* Cart Button */}
-      <button
-        onClick={openDrawer}
-        className="flex items-center gap-2 px-4 py-2 rounded-full transition-all hover:scale-105"
-        style={{ backgroundColor: '#D99E30', color: 'white' }}
-      >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <path d="M16 10a4 4 0 0 1-8 0"/>
-        </svg>
-        {totalItems > 0 && (
-          <span className="font-semibold">{totalItems}</span>
-        )}
-      </button>
+        {/* Right Side: Currency Switcher + Menu */}
+        <div className="flex items-center gap-3">
+          <CurrencySwitcher variant={isDark ? 'dark' : 'light'} />
+          
+          {/* Hamburger Menu */}
+          <div className="relative">
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className={`flex flex-col gap-1.5 p-2 ${hoverBg} rounded-lg transition-colors`}
+            >
+              <span 
+                className="w-6 h-0.5"
+                style={{ backgroundColor: textColor }}
+              />
+              <span 
+                className="w-6 h-0.5"
+                style={{ backgroundColor: textColor }}
+              />
+              <span 
+                className="w-6 h-0.5"
+                style={{ backgroundColor: textColor }}
+              />
+            </button>
+
+            {/* Dropdown Menu */}
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute top-12 right-0 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
+                >
+                  {NAV_LINKS.map((link) => {
+                    const isActive = currentPath === link.href;
+                    return (
+                      <Link 
+                        key={link.href}
+                        href={link.href}
+                        className={`block px-5 py-3 hover:bg-gray-50 transition-colors text-sm ${isActive ? 'font-medium' : ''}`}
+                        style={{ color: isActive ? LUNA.surfaceTeal : LUNA.deepWater }}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }
