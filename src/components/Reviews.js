@@ -39,11 +39,17 @@ export function ReviewCard({ review, variant = 'light' }) {
   
   return (
     <div 
-      className="p-6 rounded-2xl h-full flex flex-col"
+      className="p-6 rounded-2xl h-full flex flex-col backdrop-blur-md"
       style={{
-        backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'white',
-        border: isDark ? `1px solid ${LUNA.highlight}20` : '1px solid #E5E7EB',
-        boxShadow: isDark ? 'none' : '0 2px 8px rgba(0,0,0,0.04)',
+        backgroundColor: isDark 
+          ? 'rgba(255, 255, 255, 0.05)' 
+          : 'rgba(255, 255, 255, 0.7)',
+        border: isDark 
+          ? `1px solid ${LUNA.highlight}20` 
+          : '1px solid rgba(255, 255, 255, 0.8)',
+        boxShadow: isDark 
+          ? 'none' 
+          : '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.5)',
       }}
     >
       {/* Stars & Date */}
@@ -125,12 +131,28 @@ export function ReviewsSection({
 
   return (
     <section 
-      className="w-full py-16 px-8"
-      style={{ backgroundColor: isDark ? LUNA.abyss : '#F9FAFB' }}
+      className="w-full py-16 px-8 relative overflow-hidden"
+      style={{ 
+        backgroundColor: isDark ? LUNA.abyss : 'white',
+      }}
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
     >
-      <div className="max-w-6xl mx-auto">
+      {/* Subtle gradient blobs for glass effect - only on light variant */}
+      {!isDark && (
+        <>
+          <div 
+            className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-30"
+            style={{ background: `radial-gradient(circle, ${LUNA.highlight} 0%, transparent 70%)` }}
+          />
+          <div 
+            className="absolute bottom-0 left-0 w-80 h-80 rounded-full blur-3xl opacity-20"
+            style={{ background: `radial-gradient(circle, ${LUNA.surfaceTeal} 0%, transparent 70%)` }}
+          />
+        </>
+      )}
+      
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-10">
           {subtitle && (
