@@ -105,13 +105,13 @@ export function NotifyMeButton({
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl"
+              className="bg-white rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}
               <button
                 onClick={() => setIsOpen(false)}
-                className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
                 disabled={status === 'loading'}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2">
