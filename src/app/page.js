@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import CurrencySwitcher from '@/components/CurrencySwitcher';
+import { ReviewsSection } from '@/components/Reviews';
+import { getFeaturedReviews } from '@/data/reviews';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -585,6 +587,17 @@ export default function HomePage() {
             </motion.div>
           </div>
         </section>
+
+        {/* ===========================================
+            CUSTOMER REVIEWS SECTION
+            =========================================== */}
+        <ReviewsSection 
+          reviews={getFeaturedReviews(6)}
+          title="What Divers Say"
+          subtitle="TRUSTED BY THE COMMUNITY"
+          variant="light"
+          showAllLink={true}
+        />
 
         {/* ===========================================
             SALT & STORIES - BLOG SECTION
