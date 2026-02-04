@@ -40,36 +40,16 @@ export function NotifyMeButton({
 
     try {
       // Klaviyo Client-Side Back in Stock API
-      const response = await fetch('https://a.klaviyo.com/client/back-in-stock-subscriptions/', {
+      const response = await fetch(`https://a.klaviyo.com/onsite/components/back-in-stock/subscribe`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'revision': '2024-02-15',
-          'Authorization': `Klaviyo-API-Key ${KLAVIYO_PUBLIC_KEY}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify({
-          data: {
-            type: 'back-in-stock-subscription',
-            attributes: {
-              channels: ['EMAIL'],
-              profile: {
-                data: {
-                  type: 'profile',
-                  attributes: {
-                    email: email,
-                  },
-                },
-              },
-            },
-            relationships: {
-              variant: {
-                data: {
-                  type: 'catalog-variant',
-                  id: `$shopify:::$default:::${variantId}`,
-                },
-              },
-            },
-          },
+        body: new URLSearchParams({
+          a: KLAVIYO_PUBLIC_KEY,
+          email: email,
+          variant: variantId,
+          platform: 'shopify',
         }),
       });
 
