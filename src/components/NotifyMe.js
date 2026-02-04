@@ -39,17 +39,16 @@ export function NotifyMeButton({
     setErrorMessage('');
 
     try {
-      // Klaviyo Client-Side Back in Stock API
-      const response = await fetch(`https://a.klaviyo.com/onsite/components/back-in-stock/subscribe`, {
+      // Call our server-side API to handle Klaviyo subscription
+      const response = await fetch('/api/notify', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
         },
-        body: new URLSearchParams({
-          a: KLAVIYO_PUBLIC_KEY,
+        body: JSON.stringify({
           email: email,
-          variant: variantId,
-          platform: 'shopify',
+          variantId: variantId,
+          productName: productName,
         }),
       });
 
