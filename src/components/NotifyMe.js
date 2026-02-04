@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // ===========================================
@@ -242,30 +242,18 @@ export function NotifyMeButton({
 
 // ===========================================
 // STOCK STATUS BADGE COMPONENT
+// Only shows when stock is 3 or less
 // ===========================================
-export function StockBadge({ quantity, lowStockThreshold = 5 }) {
-  if (quantity === 0) {
-    return (
-      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
-        <span className="w-1.5 h-1.5 rounded-full bg-red-500"/>
-        Out of Stock
-      </span>
-    );
-  }
-  
-  if (quantity <= lowStockThreshold) {
-    return (
-      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
-        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"/>
-        Only {quantity} left!
-      </span>
-    );
+export function StockBadge({ quantity, threshold = 3 }) {
+  // Only show badge if quantity is 1, 2, or 3
+  if (quantity === null || quantity > threshold || quantity === 0) {
+    return null;
   }
 
   return (
-    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-      <span className="w-1.5 h-1.5 rounded-full bg-green-500"/>
-      In Stock
+    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"/>
+      Only {quantity} left!
     </span>
   );
 }
@@ -276,7 +264,7 @@ export function StockBadge({ quantity, lowStockThreshold = 5 }) {
 export function SmartCartButton({
   productName,
   variantId,
-  quantity, // Stock quantity
+  quantity, // Stock quantity (passed in)
   onAddToCart,
   variant = 'dark',
 }) {
@@ -306,6 +294,107 @@ export function SmartCartButton({
     >
       Add to Cart
     </button>
+  );
+}
+
+// ===========================================
+// SMART PRODUCT BUTTON WITH AUTO STOCK FETCH
+// Use this for automatic stock checking
+// ===========================================
+export function SmartProductButton({
+  productName,
+  variantId,
+  onAddToCart,
+  variant = 'dark',
+  lowStockThreshold = 3, // Only show "X left" when 3 or less
+  showStockBadge = true,
+  className = '',
+}) {
+  const [stock, setStock] = useState({ loading: true, quantity: null, available: true });
+  const isDark = variant === 'dark';
+
+  // Fetch stock on mount
+  useEffect(() => {
+    if (!variantId) {
+      setStock({ loading: false, quantity: null, available: true });
+      return;
+    }
+
+    const fetchStock = async () => {
+      try {
+        const response = await fetch(`/api/stock?ids=${variantId}`);
+        const data = await response.json();
+        
+        if (data[variantId]) {
+          setStock({
+            loading: false,
+            quantity: data[variantId].quantity,
+            available: data[variantId].available && !data[variantId].outOfStock,
+          });
+        } else {
+          setStock({ loading: false, quantity: null, available: true });
+        }
+      } catch (error) {
+        console.error('Failed to fetch stock:', error);
+        setStock({ loading: false, quantity: null, available: true });
+      }
+    };
+
+    fetchStock();
+  }, [variantId]);
+
+  // Loading state
+  if (stock.loading) {
+    return (
+      <div className={`flex flex-col gap-2 ${className}`}>
+        <button
+          disabled
+          className="w-full py-4 px-6 rounded-xl font-semibold text-sm opacity-50"
+          style={{
+            background: isDark ? 'rgba(255,255,255,0.1)' : `${LUNA.deepWater}10`,
+            color: isDark ? 'white' : LUNA.deepWater,
+            border: `2px solid ${isDark ? LUNA.highlight : LUNA.surfaceTeal}40`,
+          }}
+        >
+          Checking availability...
+        </button>
+      </div>
+    );
+  }
+
+  const isOutOfStock = !stock.available || stock.quantity === 0;
+  const isLowStock = stock.quantity !== null && stock.quantity > 0 && stock.quantity <= lowStockThreshold;
+
+  return (
+    <div className={`flex flex-col gap-2 ${className}`}>
+      {/* Stock Badge - Only shows when 3 or less */}
+      {showStockBadge && isLowStock && (
+        <div className="flex justify-end">
+          <StockBadge quantity={stock.quantity} threshold={lowStockThreshold} />
+        </div>
+      )}
+
+      {/* Button */}
+      {isOutOfStock ? (
+        <NotifyMeButton 
+          productName={productName}
+          variantId={variantId}
+          variant={variant}
+        />
+      ) : (
+        <button
+          onClick={onAddToCart}
+          className="w-full py-4 px-6 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02]"
+          style={{
+            background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+            color: 'white',
+            boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`,
+          }}
+        >
+          Add to Cart
+        </button>
+      )}
+    </div>
   );
 }
 
