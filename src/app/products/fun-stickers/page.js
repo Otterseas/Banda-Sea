@@ -141,7 +141,7 @@ function ProductCard({ sticker, onClick, formatPrice }) {
 // ===========================================
 // PRODUCT MODAL COMPONENT
 // ===========================================
-function ProductModal({ sticker, isOpen, onClose }) {
+function ProductModal({ sticker, isOpen, onClose, formatPrice }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [descriptionOpen, setDescriptionOpen] = useState(true);
   const [productInfoOpen, setProductInfoOpen] = useState(false);
@@ -579,6 +579,7 @@ export default function FunStickersPage() {
         sticker={selectedSticker}
         isOpen={!!selectedSticker}
         onClose={() => setSelectedSticker(null)}
+        formatPrice={formatPrice}
       />
     </div>
   );
