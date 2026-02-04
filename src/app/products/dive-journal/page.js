@@ -9,7 +9,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ReviewsSection } from '@/components/Reviews';
 import { getReviewsByProduct } from '@/data/reviews';
-import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
+import { NotifyMeButton, StockBadge, SmartProductButton } from '@/components/NotifyMe';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -311,45 +311,20 @@ export default function DiveJournalPage() {
                 </Link>
               </div>
 
-              {/* Add to Cart / Notify Me Button */}
+              {/* Add to Cart / Notify Me Button - Auto-checks stock */}
               <div className="flex items-center justify-between pt-4">
                 <div>
                   <span className="text-white/50 text-sm">Total:</span>
                   <span className="text-white text-2xl font-bold ml-2">{formatPrice(currentBundle.price)}</span>
                 </div>
                 
-                {/* TEST: Set testOutOfStock to true to see Notify Me button */}
-                {(() => {
-                  const testOutOfStock = false; // Change to true to test Notify Me
-                  
-                  if (testOutOfStock) {
-                    return (
-                      <NotifyMeButton 
-                        productName={currentBundle.name}
-                        variantId={currentBundle.shopifyVariantId}
-                        variant="dark"
-                      />
-                    );
-                  }
-                  
-                  return (
-                    <motion.button
-                      onClick={handleAddToCart}
-                      className="px-8 py-4 rounded-xl text-sm font-semibold transition-all"
-                      style={{ 
-                        background: 'rgba(255, 255, 255, 0.1)',
-                        backdropFilter: 'blur(10px)',
-                        border: `2px solid ${LUNA.highlight}`,
-                        color: 'white',
-                        boxShadow: `0 0 30px ${LUNA.highlight}30`
-                      }}
-                      whileHover={{ scale: 1.02, boxShadow: `0 0 40px ${LUNA.highlight}50` }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      Add to Collection
-                    </motion.button>
-                  );
-                })()}
+                <SmartProductButton
+                  productName={currentBundle.name}
+                  variantId={currentBundle.shopifyVariantId}
+                  onAddToCart={handleAddToCart}
+                  variant="dark"
+                  showStockBadge={true}
+                />
               </div>
             </motion.div>
           </div>
