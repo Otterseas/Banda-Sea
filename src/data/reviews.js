@@ -230,7 +230,29 @@ export const REVIEWS = [
     verified: true,
   },
 ];
-
+export const REVIEWS = [
+  {
+    id: 1,
+    reviewer: "Katie",
+    // ... existing reviews
+  },
+  // ... all your other reviews
+  {
+    id: 25,
+    reviewer: "Emma",
+    // ... last current review
+  },
+  // 👇 ADD NEW ONES HERE
+  {
+    id: 26,
+    reviewer: "Sarah",
+    date: "Feb 2026",
+    rating: 5,
+    message: "Amazing quality! Love my dive journal.",
+    product: "dive-journal",
+    verified: true,
+  },
+];
 // Helper function to get reviews by product
 export function getReviewsByProduct(productSlug) {
   const productMap = {
