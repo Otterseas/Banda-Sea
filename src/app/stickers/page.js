@@ -8,6 +8,8 @@ import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { ReviewsSection } from '@/components/Reviews';
+import { getReviewsByProduct } from '@/data/reviews';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // ===========================================
@@ -700,6 +702,17 @@ export default function Home() {
           </svg>
         </motion.button>
       )}
+
+      {/* ===========================================
+          CUSTOMER REVIEWS SECTION
+          =========================================== */}
+      <ReviewsSection 
+        reviews={getReviewsByProduct('stickers')}
+        title="What Divers Say"
+        subtitle="VERIFIED REVIEWS"
+        variant="dark"
+        showAllLink={true}
+      />
 
       {/* ===========================================
           FOOTER - SHARED COMPONENT
