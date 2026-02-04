@@ -45,6 +45,7 @@ export function NotifyMeButton({
         headers: {
           'Content-Type': 'application/json',
           'revision': '2024-02-15',
+          'Authorization': `Klaviyo-API-Key ${KLAVIYO_PUBLIC_KEY}`,
         },
         body: JSON.stringify({
           data: {
@@ -69,7 +70,6 @@ export function NotifyMeButton({
               },
             },
           },
-          company_id: KLAVIYO_PUBLIC_KEY,
         }),
       });
 
