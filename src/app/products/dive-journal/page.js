@@ -7,6 +7,8 @@ import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { ReviewsSection } from '@/components/Reviews';
+import { getReviewsByProduct } from '@/data/reviews';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -705,6 +707,17 @@ export default function DiveJournalPage() {
           </div>
         </div>
       </section>
+
+      {/* ===========================================
+          CUSTOMER REVIEWS SECTION
+          =========================================== */}
+      <ReviewsSection 
+        reviews={getReviewsByProduct('dive-journal')}
+        title="What Divers Say"
+        subtitle="VERIFIED REVIEWS"
+        variant="dark"
+        showAllLink={true}
+      />
 
       {/* ===========================================
           FOOTER - SHARED COMPONENT
