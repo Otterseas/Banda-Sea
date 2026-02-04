@@ -19,6 +19,90 @@ const LUNA = {
 };
 
 // ===========================================
+// NEWSLETTER FORM COMPONENT
+// ===========================================
+function NewsletterForm() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle'); // idle, loading, success, error
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('loading');
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus('success');
+        setMessage('Thanks for subscribing! 🎉');
+        setEmail('');
+      } else {
+        throw new Error(data.error || 'Failed to subscribe');
+      }
+    } catch (error) {
+      setStatus('error');
+      setMessage('Something went wrong. Please try again.');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center gap-3 px-5 py-4 rounded-xl bg-white/10 border border-white/20"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={LUNA.highlight} strokeWidth="2">
+          <path d="M20 6L9 17l-5-5"/>
+        </svg>
+        <span className="text-white">{message}</span>
+      </motion.div>
+    );
+  }
+
+  return (
+    <form 
+      className="flex flex-col sm:flex-row gap-3"
+      onSubmit={handleSubmit}
+    >
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email"
+        required
+        disabled={status === 'loading'}
+        className="flex-1 px-5 py-4 rounded-xl text-sm bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all disabled:opacity-50"
+      />
+      <button
+        type="submit"
+        disabled={status === 'loading'}
+        className="px-8 py-4 rounded-xl text-sm font-semibold transition-all hover:scale-105 whitespace-nowrap disabled:opacity-50 disabled:hover:scale-100"
+        style={{
+          background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+          color: 'white',
+          boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`
+        }}
+      >
+        {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+      </button>
+      {status === 'error' && (
+        <p className="text-red-400 text-sm mt-2">{message}</p>
+      )}
+    </form>
+  );
+}
+
+// ===========================================
 // PRODUCT DATA
 // ===========================================
 const PRODUCTS = [
@@ -779,36 +863,7 @@ export default function HomePage() {
               </p>
               
               {/* Email Subscription Form */}
-              <form 
-                className="flex flex-col sm:flex-row gap-3"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  // Handle subscription - integrate with your email service
-                  const email = e.target.email.value;
-                  console.log('Subscribe:', email);
-                  alert('Thanks for subscribing!');
-                  e.target.reset();
-                }}
-              >
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email"
-                  required
-                  className="flex-1 px-5 py-4 rounded-xl text-sm bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all"
-                />
-                <button
-                  type="submit"
-                  className="px-8 py-4 rounded-xl text-sm font-semibold transition-all hover:scale-105 whitespace-nowrap"
-                  style={{
-                    background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                    color: 'white',
-                    boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`
-                  }}
-                >
-                  Subscribe
-                </button>
-              </form>
+              <NewsletterForm />
               
               <p className="text-white/40 text-xs mt-4">
                 No spam, unsubscribe anytime.
