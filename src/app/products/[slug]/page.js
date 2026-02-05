@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { getProductBySlug } from '@/data/products';
 import { useCart } from '@/context/CartContext';
@@ -8,6 +8,7 @@ import { useCurrency } from '@/context/CurrencyContext';
 import CurrencySwitcher from '@/components/CurrencySwitcher';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
 
 // Luna Color Palette
 const COLORS = {
@@ -157,6 +158,35 @@ export default function ProductPage() {
   const { formatPrice } = useCurrency();
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [stock, setStock] = useState({ loading: true, quantity: null, available: true });
+
+  const currentVariant = product?.variants?.[selectedVariant];
+
+  // Fetch stock when variant changes
+  useEffect(() => {
+    if (!currentVariant?.shopifyVariantId) return;
+    
+    const fetchStock = async () => {
+      try {
+        const response = await fetch(`/api/stock?ids=${currentVariant.shopifyVariantId}`);
+        const data = await response.json();
+        if (data[currentVariant.shopifyVariantId]) {
+          setStock({
+            loading: false,
+            quantity: data[currentVariant.shopifyVariantId].quantity,
+            available: data[currentVariant.shopifyVariantId].available && !data[currentVariant.shopifyVariantId].outOfStock,
+          });
+        } else {
+          setStock({ loading: false, quantity: null, available: true });
+        }
+      } catch (error) {
+        setStock({ loading: false, quantity: null, available: true });
+      }
+    };
+    
+    setStock({ loading: true, quantity: null, available: true });
+    fetchStock();
+  }, [currentVariant?.shopifyVariantId]);
 
   if (!product) {
     return (
@@ -171,10 +201,11 @@ export default function ProductPage() {
     );
   }
 
-  const currentVariant = product.variants[selectedVariant];
+  const isOutOfStock = !stock.available || stock.quantity === 0;
+  const isLowStock = stock.quantity !== null && stock.quantity > 0 && stock.quantity <= 3;
 
   const handleAddToCart = () => {
-    if (!currentVariant.inStock) return;
+    if (isOutOfStock) return;
     
     addToCart({
       id: `${product.id}-${currentVariant.id}`,
@@ -323,7 +354,11 @@ export default function ProductPage() {
                   borderColor: COLORS.highlight 
                 }}
               />
-              {!currentVariant.inStock && (
+              {/* Stock Badge */}
+              {!stock.loading && isLowStock && (
+                <StockBadge quantity={stock.quantity} />
+              )}
+              {!stock.loading && isOutOfStock && (
                 <span className="text-red-400 text-xs font-medium">Out of Stock</span>
               )}
             </div>
@@ -336,26 +371,42 @@ export default function ProductPage() {
               {formatPrice(product.price)}
             </p>
 
-            {/* Add to Cart Button - Glassmorphism */}
-            <motion.button
-              onClick={handleAddToCart}
-              disabled={!currentVariant.inStock}
-              className="px-6 py-3 rounded-xl text-sm font-semibold transition-all"
-              style={{
-                background: currentVariant.inStock 
-                  ? 'rgba(255, 255, 255, 0.1)'
-                  : 'rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(10px)',
-                border: `2px solid ${currentVariant.inStock ? COLORS.highlight : 'rgba(255,255,255,0.2)'}`,
-                color: currentVariant.inStock ? 'white' : 'rgba(255,255,255,0.4)',
-                cursor: currentVariant.inStock ? 'pointer' : 'not-allowed',
-                boxShadow: currentVariant.inStock ? `0 0 20px ${COLORS.highlight}30` : 'none'
-              }}
-              whileHover={currentVariant.inStock ? { scale: 1.02, boxShadow: `0 0 30px ${COLORS.highlight}50` } : {}}
-              whileTap={currentVariant.inStock ? { scale: 0.98 } : {}}
-            >
-              {currentVariant.inStock ? 'Add to Cart' : 'Out of Stock'}
-            </motion.button>
+            {/* Add to Cart / Notify Me Button */}
+            {stock.loading ? (
+              <button
+                disabled
+                className="px-6 py-3 rounded-xl text-sm font-semibold opacity-50"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  border: `2px solid ${COLORS.highlight}40`,
+                  color: 'white',
+                }}
+              >
+                Checking...
+              </button>
+            ) : isOutOfStock ? (
+              <NotifyMeButton 
+                productName={`${product.name} - ${currentVariant.name}`}
+                variantId={currentVariant.shopifyVariantId}
+                variant="dark"
+              />
+            ) : (
+              <motion.button
+                onClick={handleAddToCart}
+                className="px-6 py-3 rounded-xl text-sm font-semibold transition-all"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(10px)',
+                  border: `2px solid ${COLORS.highlight}`,
+                  color: 'white',
+                  boxShadow: `0 0 20px ${COLORS.highlight}30`
+                }}
+                whileHover={{ scale: 1.02, boxShadow: `0 0 30px ${COLORS.highlight}50` }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Add to Cart
+              </motion.button>
+            )}
 
             {/* Gift Set Upsell - Compact */}
             <div 
