@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
@@ -8,6 +8,7 @@ import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { FUN_STICKERS, BUNDLED_STICKER_PRICE, QUALITY_STATEMENT } from '@/data/funStickers';
+import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
 
 // Luna Color Palette
 const LUNA = {
@@ -145,10 +146,39 @@ function ProductModal({ sticker, isOpen, onClose, formatPrice }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [descriptionOpen, setDescriptionOpen] = useState(true);
   const [productInfoOpen, setProductInfoOpen] = useState(false);
+  const [stock, setStock] = useState({ loading: true, quantity: null, available: true });
   const { addToCart, openCart } = useCart();
+
+  // Fetch stock when sticker changes
+  useEffect(() => {
+    if (!sticker?.shopifyVariantId) return;
+    
+    const fetchStock = async () => {
+      try {
+        const response = await fetch(`/api/stock?ids=${sticker.shopifyVariantId}`);
+        const data = await response.json();
+        if (data[sticker.shopifyVariantId]) {
+          setStock({
+            loading: false,
+            quantity: data[sticker.shopifyVariantId].quantity,
+            available: data[sticker.shopifyVariantId].available && !data[sticker.shopifyVariantId].outOfStock,
+          });
+        } else {
+          setStock({ loading: false, quantity: null, available: true });
+        }
+      } catch (error) {
+        setStock({ loading: false, quantity: null, available: true });
+      }
+    };
+    
+    fetchStock();
+  }, [sticker?.shopifyVariantId]);
 
   // Reset image index when sticker changes
   if (!sticker) return null;
+
+  const isOutOfStock = !stock.available || stock.quantity === 0;
+  const isLowStock = stock.quantity !== null && stock.quantity > 0 && stock.quantity <= 3;
 
   const handleAddToCart = () => {
     addToCart({
@@ -358,20 +388,46 @@ function ProductModal({ sticker, isOpen, onClose, formatPrice }) {
                   </AnimatePresence>
                 </div>
 
-                {/* Add to Cart Button */}
-                <motion.button
-                  onClick={handleAddToCart}
-                  className="w-full py-4 rounded-xl text-sm font-semibold transition-all"
-                  style={{ 
-                    background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                    color: 'white',
-                    boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`,
-                  }}
-                  whileHover={{ scale: 1.02, boxShadow: `0 6px 30px ${LUNA.surfaceTeal}60` }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Add to Cart
-                </motion.button>
+                {/* Stock Badge */}
+                {!stock.loading && isLowStock && (
+                  <div className="flex justify-end mb-2">
+                    <StockBadge quantity={stock.quantity} />
+                  </div>
+                )}
+
+                {/* Add to Cart / Notify Me Button */}
+                {stock.loading ? (
+                  <button
+                    disabled
+                    className="w-full py-4 rounded-xl text-sm font-semibold opacity-50"
+                    style={{ 
+                      background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                      color: 'white',
+                    }}
+                  >
+                    Checking availability...
+                  </button>
+                ) : isOutOfStock ? (
+                  <NotifyMeButton 
+                    productName={sticker.title}
+                    variantId={sticker.shopifyVariantId}
+                    variant="light"
+                  />
+                ) : (
+                  <motion.button
+                    onClick={handleAddToCart}
+                    className="w-full py-4 rounded-xl text-sm font-semibold transition-all"
+                    style={{ 
+                      background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                      color: 'white',
+                      boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`,
+                    }}
+                    whileHover={{ scale: 1.02, boxShadow: `0 6px 30px ${LUNA.surfaceTeal}60` }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Add to Cart
+                  </motion.button>
+                )}
               </div>
             </div>
           </motion.div>
