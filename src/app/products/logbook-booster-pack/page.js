@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -48,6 +49,7 @@ const QUANTITY_OPTIONS = [
 export default function BoosterPackPage() {
   const [selectedQty, setSelectedQty] = useState(1);
   const [selectedImage, setSelectedImage] = useState('hero');
+  const [stock, setStock] = useState({ loading: true, quantity: null, available: true });
   
   // Get cart context
   const { addToCart, openCart } = useCart();
@@ -57,6 +59,31 @@ export default function BoosterPackPage() {
 
   // Get selected quantity option
   const currentOption = QUANTITY_OPTIONS.find(opt => opt.qty === selectedQty) || QUANTITY_OPTIONS[0];
+
+  // Fetch stock on mount
+  useEffect(() => {
+    const fetchStock = async () => {
+      try {
+        const response = await fetch(`/api/stock?ids=${currentOption.shopifyVariantId}`);
+        const data = await response.json();
+        if (data[currentOption.shopifyVariantId]) {
+          setStock({
+            loading: false,
+            quantity: data[currentOption.shopifyVariantId].quantity,
+            available: data[currentOption.shopifyVariantId].available && !data[currentOption.shopifyVariantId].outOfStock,
+          });
+        } else {
+          setStock({ loading: false, quantity: null, available: true });
+        }
+      } catch (error) {
+        setStock({ loading: false, quantity: null, available: true });
+      }
+    };
+    fetchStock();
+  }, [currentOption.shopifyVariantId]);
+
+  const isOutOfStock = !stock.available || stock.quantity === 0;
+  const isLowStock = stock.quantity !== null && stock.quantity > 0 && stock.quantity <= 3;
 
   // Thumbnail images
   const thumbnails = [
@@ -232,26 +259,56 @@ export default function BoosterPackPage() {
               </div>
 
               {/* Add to Cart */}
-              <div className="flex items-center justify-between pt-4">
-                <div>
-                  <span className="text-white/50 text-sm">Total:</span>
-                  <span className="text-white text-2xl font-bold ml-2">{formatPrice(currentOption.price)}</span>
+              <div className="flex flex-col gap-3 pt-4">
+                {/* Stock Badge */}
+                {!stock.loading && isLowStock && (
+                  <div className="flex justify-end">
+                    <StockBadge quantity={stock.quantity} />
+                  </div>
+                )}
+                
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-white/50 text-sm">Total:</span>
+                    <span className="text-white text-2xl font-bold ml-2">{formatPrice(currentOption.price)}</span>
+                  </div>
+                  
+                  {stock.loading ? (
+                    <button
+                      disabled
+                      className="px-8 py-4 rounded-xl text-sm font-semibold opacity-50"
+                      style={{ 
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        border: `2px solid ${LUNA.highlight}40`,
+                        color: 'white',
+                      }}
+                    >
+                      Checking...
+                    </button>
+                  ) : isOutOfStock ? (
+                    <NotifyMeButton 
+                      productName={PRODUCT.name}
+                      variantId={currentOption.shopifyVariantId}
+                      variant="dark"
+                    />
+                  ) : (
+                    <motion.button
+                      onClick={handleAddToCart}
+                      className="px-8 py-4 rounded-xl text-sm font-semibold transition-all"
+                      style={{ 
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        backdropFilter: 'blur(10px)',
+                        border: `2px solid ${LUNA.highlight}`,
+                        color: 'white',
+                        boxShadow: `0 0 30px ${LUNA.highlight}30`
+                      }}
+                      whileHover={{ scale: 1.02, boxShadow: `0 0 40px ${LUNA.highlight}50` }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Add to Collection
+                    </motion.button>
+                  )}
                 </div>
-                <motion.button
-                  onClick={handleAddToCart}
-                  className="px-8 py-4 rounded-xl text-sm font-semibold transition-all"
-                  style={{ 
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    backdropFilter: 'blur(10px)',
-                    border: `2px solid ${LUNA.highlight}`,
-                    color: 'white',
-                    boxShadow: `0 0 30px ${LUNA.highlight}30`
-                  }}
-                  whileHover={{ scale: 1.02, boxShadow: `0 0 40px ${LUNA.highlight}50` }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Add to Collection
-                </motion.button>
               </div>
             </motion.div>
           </div>
