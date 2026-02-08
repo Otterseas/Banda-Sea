@@ -4,6 +4,7 @@ import { useCart, STICKER_PRICING } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { SHOPIFY_CHECKOUT_URL } from '@/config/urls';
 
 // Luna color palette
 const LUNA = {
@@ -79,15 +80,12 @@ export default function CartDrawer() {
     });
     
     const cartString = items.join(',');
-    
-    // Use /cart/ URL which auto-redirects to checkout
-    const baseUrl = 'https://38a44d-4c.myshopify.com/cart/';
-    
+
     // Get discount code based on location sticker count
     const discountCode = getDiscountCode();
     
     // Build checkout URL with discount and currency
-    let checkoutUrl = `${baseUrl}${cartString}`;
+    let checkoutUrl = `${SHOPIFY_CHECKOUT_URL}${cartString}`;
     
     // Add discount code if applicable
     const params = [];

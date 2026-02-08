@@ -23,6 +23,14 @@ export const metadata = {
     siteName: 'Otterseas',
     title: 'Otterseas - Dive Stickers & Accessories',
     description: 'Build your dive story with waterproof vinyl stickers from the world\'s best dive sites. Premium dive journals, location stickers, and gifts for scuba divers.',
+    images: [
+      {
+        url: '/logo.png',
+        width: 512,
+        height: 512,
+        alt: 'Otterseas Logo',
+      },
+    ],
   },
   robots: {
     index: true,

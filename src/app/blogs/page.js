@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { SHOPIFY_BLOG_URL } from '@/config/urls';
 
 // Luna Color Palette
 const LUNA = {
@@ -14,9 +15,6 @@ const LUNA = {
   deepWater: '#023859',
   abyss: '#011C40',
 };
-
-// Shopify store URL for blog links
-const SHOPIFY_STORE_URL = 'https://otterseas.com';
 
 // Helper to format date
 function formatDate(dateString) {
@@ -60,7 +58,7 @@ function getCategoryFromTags(tags) {
 // Blog Card Component
 function BlogCard({ post, index, isShopifyPost }) {
   const blogUrl = isShopifyPost
-    ? `${SHOPIFY_STORE_URL}/blogs/news/${post.handle}`
+    ? `${SHOPIFY_BLOG_URL}/${post.handle}`
     : '#';
 
   const CardWrapper = isShopifyPost ? 'a' : 'div';

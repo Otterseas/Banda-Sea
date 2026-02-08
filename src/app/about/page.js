@@ -5,9 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-
-// Shopify store URL for blog links
-const SHOPIFY_STORE_URL = 'https://otterseas.com';
+import { SHOPIFY_BLOG_URL, SOCIAL_LINKS } from '@/config/urls';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -82,7 +80,7 @@ export default function AboutPage() {
             excerpt: article.excerpt || 'Read more about this topic...',
             image: article.image?.url || article.image,
             date: formatDate(article.publishedAt),
-            href: `${SHOPIFY_STORE_URL}/blogs/news/${article.handle}`,
+            href: `${SHOPIFY_BLOG_URL}/${article.handle}`,
             isShopify: true,
           }));
           setBlogPosts(posts);
@@ -625,7 +623,7 @@ export default function AboutPage() {
               Follow us on social media for daily dive inspiration
             </p>
             <a
-              href="https://instagram.com/otter_seas"
+              href={SOCIAL_LINKS.instagram}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-6 py-3 rounded-full transition-all hover:scale-105"
