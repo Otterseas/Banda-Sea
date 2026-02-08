@@ -712,7 +712,7 @@ export default function CrochetCreaturesPage() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.2 }}
-                        className={`${imageAlign === 'right' ? 'float-right ml-4' : 'float-left mr-4'} mb-3 w-2/5 max-w-[180px]`}
+                        className={`${imageAlign === 'right' ? 'float-right ml-4' : 'float-left mr-4'} mb-3 w-1/2 max-w-[270px]`}
                       >
                         <div
                           className="rounded-xl overflow-hidden"
@@ -762,16 +762,6 @@ export default function CrochetCreaturesPage() {
               );
             })}
 
-            {/* Pricing Context */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-sm text-gray-600 mb-4 italic"
-            >
-              Our pricing reflects the time, skill, and love poured into each handmade piece.
-            </motion.p>
-
             {/* Time Summary */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -783,9 +773,12 @@ export default function CrochetCreaturesPage() {
                 border: `1px solid ${LUNA.highlight}40`,
               }}
             >
-              <h3 className="font-bold mb-3" style={{ color: LUNA.deepWater }}>
+              <h3 className="font-bold mb-2" style={{ color: LUNA.deepWater }}>
                 Time & Love In Every Stitch
               </h3>
+              <p className="text-sm text-gray-600 mb-4 italic">
+                Our pricing reflects the time, skill, and love poured into each handmade piece.
+              </p>
               <div className="space-y-2 text-sm text-gray-600">
                 <p className="flex items-center gap-2">
                   <span style={{ color: LUNA.surfaceTeal }}>•</span>
