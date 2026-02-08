@@ -257,19 +257,20 @@ const STORY_SECTIONS = [
   {
     id: 'born-from-reef',
     title: 'Born From The Reef',
-    content: 'Every creature in our collection is designed and handcrafted by a very talented artist, who creates each pattern from scratch — no templates, no kits, just pure creativity. Inspired by the animals we\'ve encountered underwater, each design captures the personality of the real thing — the psychedelic swirls of a nudibranch, the grumpy pout of a frogfish, the delicate curl of a pygmy seahorse. It\'s original artwork you can hold in your hand.',
-    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=600',
+    content: 'Every creature in our collection is designed and handcrafted by a very talented artist, who creates each pattern from scratch — no templates, no kits, just pure creativity.\n\nInspired by the animals we\'ve encountered underwater, from the psychedelic swirls of a nudibranch, the grumpy pout of a frogfish, the delicate curl of a pygmy seahorse. It\'s original artwork you can hold in your hand.',
+    image: 'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/IMG_20260202_130533_587.jpg?v=1770009456&width=990',
   },
   {
     id: 'every-stitch',
     title: 'Every Stitch Tells a Story',
-    content: 'Each creature is crocheted by hand using 100% cotton yarn. There are no machines, no moulds, no shortcuts. A single nudibranch takes 3–4 hours. A fish or seahorse takes 5–6. Our baby mobiles take 15–20 hours of dedicated work. That\'s why no two are ever exactly the same — and why each one is so uniquely special!',
-    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/20260202_132328_c68439a2-7680-4fbd-9fed-a0057b12f707.jpg?v=1770010704&width=600',
+    content: 'Each creature is crocheted by hand using 100% cotton yarn. There are no machines, no patterns, no shortcuts. A single nudibranch takes 3–4 hours. A fish or seahorse takes 5–6. Our baby mobiles take 15–20 hours of dedicated work.\n\nThat\'s why no two are ever exactly the same — and why each one is so uniquely special!',
+    image: 'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/20260202_132348_b89869bc-a6a8-4b05-8d55-de1473481338.jpg?v=1770010707&width=990',
   },
   {
     id: 'made-to-be-loved',
-    title: 'Made to Be Loved',
+    title: '',
     content: 'Whether it\'s a keychain clipped to your dive bag, a frogfish hanging from your rearview mirror, or a nudibranch keeping watch on your desk — these creatures are designed to travel with you. And for the littlest ocean lovers, our baby mobiles bring the underwater world into the nursery.',
+    image: 'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/IMG-20260109-WA0009.jpg?v=1770010474&width=990',
   },
   {
     id: 'custom-orders',
@@ -688,15 +689,19 @@ export default function CrochetCreaturesPage() {
               >
                 {section.image && (
                   <div className="rounded-xl overflow-hidden mb-4" style={{ boxShadow: `0 10px 40px ${LUNA.deepWater}10` }}>
-                    <img src={section.image} alt={section.title} className="w-full h-auto" />
+                    <img src={section.image} alt={section.title || 'Story image'} className="w-full h-auto" />
                   </div>
                 )}
-                <h2 className="text-xl font-bold mb-3" style={{ color: LUNA.deepWater }}>
-                  {section.title}
-                </h2>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {section.content}
-                </p>
+                {section.title && (
+                  <h2 className="text-xl font-bold mb-3" style={{ color: LUNA.deepWater }}>
+                    {section.title}
+                  </h2>
+                )}
+                <div className="text-gray-600 text-sm leading-relaxed space-y-4">
+                  {section.content.split('\n\n').map((paragraph, pIndex) => (
+                    <p key={pIndex}>{paragraph}</p>
+                  ))}
+                </div>
                 {section.cta && (
                   <a
                     href={`mailto:${section.cta.email}`}
@@ -716,13 +721,23 @@ export default function CrochetCreaturesPage() {
               </motion.div>
             ))}
 
+            {/* Pricing Context */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-sm text-gray-600 mb-4 italic"
+            >
+              Our pricing reflects the time, skill, and love poured into each handmade piece.
+            </motion.p>
+
             {/* Time Summary */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="p-6 rounded-xl mb-8"
-              style={{ 
+              style={{
                 background: `linear-gradient(135deg, ${LUNA.highlight}20 0%, ${LUNA.surfaceTeal}10 100%)`,
                 border: `1px solid ${LUNA.highlight}40`,
               }}
@@ -744,9 +759,6 @@ export default function CrochetCreaturesPage() {
                   <strong>Baby Mobiles:</strong> 15-20 hours each
                 </p>
               </div>
-              <p className="text-xs text-gray-500 mt-3">
-                Our pricing reflects the time, skill, and love poured into each handmade piece.
-              </p>
             </motion.div>
           </div>
         </div>
