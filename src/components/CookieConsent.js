@@ -15,6 +15,19 @@ const LUNA = {
 
 const COOKIE_CONSENT_KEY = 'otterseas-cookie-consent';
 
+// Helper to check if analytics cookies are allowed
+export function hasAnalyticsConsent() {
+  if (typeof window === 'undefined') return false;
+  try {
+    const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+    if (!consent) return false;
+    const parsed = JSON.parse(consent);
+    return parsed.analytics === true;
+  } catch {
+    return false;
+  }
+}
+
 export default function CookieConsent() {
   const [showBanner, setShowBanner] = useState(false);
 
@@ -28,20 +41,26 @@ export default function CookieConsent() {
     }
   }, []);
 
-  const handleAccept = () => {
+  const handleEssentialOnly = () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify({
-      accepted: true,
+      essential: true,
+      analytics: false,
+      marketing: false,
       timestamp: new Date().toISOString(),
     }));
     setShowBanner(false);
   };
 
-  const handleDecline = () => {
+  const handleAcceptAll = () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify({
-      accepted: false,
+      essential: true,
+      analytics: true,
+      marketing: true,
       timestamp: new Date().toISOString(),
     }));
     setShowBanner(false);
+    // Here you could trigger analytics/marketing scripts
+    // e.g., window.gtag?.('consent', 'update', { analytics_storage: 'granted' });
   };
 
   return (
@@ -55,57 +74,51 @@ export default function CookieConsent() {
           className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6"
         >
           <div
-            className="max-w-4xl mx-auto rounded-2xl p-4 md:p-6 shadow-2xl border"
+            className="max-w-4xl mx-auto rounded-2xl p-5 md:p-6 shadow-2xl border"
             style={{
               backgroundColor: 'white',
               borderColor: `${LUNA.highlight}30`,
             }}
           >
-            <div className="flex flex-col md:flex-row md:items-center gap-4">
-              {/* Text Content */}
-              <div className="flex-1">
-                <h3
-                  className="font-semibold text-base mb-1"
-                  style={{ color: LUNA.deepWater }}
+            {/* Text Content */}
+            <div className="mb-4">
+              <p className="text-sm text-gray-600 leading-relaxed mb-3">
+                To make sure Otterseas swims smoothly, we use cookies. Some are essential to make the shop work (like keeping track of your cart), while others help us see how many visitors are diving into our site.
+              </p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                We respect your privacy and will never share your data without permission. You can change your mind at any time in our{' '}
+                <Link
+                  href="/policies#privacy"
+                  className="underline hover:no-underline"
+                  style={{ color: LUNA.surfaceTeal }}
                 >
-                  We use cookies
-                </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  We use essential cookies to make our site work and analytics cookies to understand how you use it.
-                  By clicking "Accept", you consent to our use of cookies. See our{' '}
-                  <Link
-                    href="/policies#privacy"
-                    className="underline hover:no-underline"
-                    style={{ color: LUNA.surfaceTeal }}
-                  >
-                    Privacy Policy
-                  </Link>{' '}
-                  for more details.
-                </p>
-              </div>
+                  Privacy Policy
+                </Link>.
+              </p>
+            </div>
 
-              {/* Buttons */}
-              <div className="flex gap-3 flex-shrink-0">
-                <button
-                  onClick={handleDecline}
-                  className="px-5 py-2.5 rounded-xl text-sm font-medium transition-all hover:bg-gray-100"
-                  style={{
-                    color: LUNA.midDepth,
-                    border: `1px solid ${LUNA.midDepth}30`,
-                  }}
-                >
-                  Decline
-                </button>
-                <button
-                  onClick={handleAccept}
-                  className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
-                  style={{
-                    background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                  }}
-                >
-                  Accept
-                </button>
-              </div>
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={handleEssentialOnly}
+                className="flex-1 px-5 py-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50"
+                style={{
+                  color: LUNA.midDepth,
+                  border: `1px solid ${LUNA.midDepth}30`,
+                  backgroundColor: 'white',
+                }}
+              >
+                Accept Essential Only
+              </button>
+              <button
+                onClick={handleAcceptAll}
+                className="flex-1 px-5 py-3 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
+                style={{
+                  background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                }}
+              >
+                Accept All Cookies
+              </button>
             </div>
           </div>
         </motion.div>
