@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import CurrencySwitcher from '@/components/CurrencySwitcher';
 import { ReviewsSection } from '@/components/Reviews';
 import { getFeaturedReviews } from '@/data/reviews';
+import { SOCIAL_LINKS, SHOPIFY_BLOG_URL } from '@/config/urls';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -264,6 +265,8 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeProduct, setActiveProduct] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [isBlogLoading, setIsBlogLoading] = useState(true);
 
   const currentProduct = PRODUCTS[activeProduct];
 
@@ -273,6 +276,24 @@ export default function HomePage() {
     if (hasVisited) {
       setIsLoading(false);
     }
+  }, []);
+
+  // Fetch blog posts from Shopify
+  useEffect(() => {
+    async function fetchBlogPosts() {
+      try {
+        const response = await fetch('/api/blog?blog=news&limit=3');
+        const data = await response.json();
+        if (data.articles && data.articles.length > 0) {
+          setBlogPosts(data.articles);
+        }
+      } catch (err) {
+        console.error('Failed to fetch blog posts:', err);
+      } finally {
+        setIsBlogLoading(false);
+      }
+    }
+    fetchBlogPosts();
   }, []);
 
   const handleLoadingComplete = () => {
@@ -650,7 +671,7 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="text-center mt-12"
+              className="flex justify-center items-center gap-4 mt-12"
             >
               <Link
                 href="/about"
@@ -668,6 +689,24 @@ export default function HomePage() {
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
               </Link>
+              <a
+                href={SOCIAL_LINKS.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:scale-105"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(10px)',
+                  border: `2px solid ${LUNA.highlight}`,
+                  color: 'white',
+                  boxShadow: `0 0 20px ${LUNA.highlight}30`
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+                @otter_seas
+              </a>
             </motion.div>
           </div>
         </section>
@@ -721,102 +760,74 @@ export default function HomePage() {
             </motion.div>
 
             {/* Blog Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-              {/* Blog Card 1 - Placeholder */}
-              <motion.article
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="group rounded-2xl overflow-hidden"
-                style={{ 
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: `1px solid ${LUNA.highlight}20`,
-                }}
-              >
-                <div 
-                  className="aspect-[16/10] bg-cover bg-center"
-                  style={{ 
-                    backgroundImage: 'url(https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600)',
-                    backgroundColor: LUNA.midDepth,
-                  }}
-                />
-                <div className="p-5">
-                  <span className="text-[10px] tracking-wider font-medium" style={{ color: LUNA.surfaceTeal }}>
-                    DIVE DESTINATIONS
-                  </span>
-                  <h3 className="text-white font-semibold mt-2 mb-2 group-hover:text-[#A7EBF2] transition-colors">
-                    Top 5 Nudibranch Hotspots in Southeast Asia
-                  </h3>
-                  <p className="text-white/50 text-sm line-clamp-2">
-                    Discover the best macro diving destinations for spotting these colorful sea slugs...
-                  </p>
+            <div className={`grid gap-6 mb-10 ${blogPosts.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' : 'grid-cols-1 md:grid-cols-3'}`}>
+              {isBlogLoading ? (
+                // Loading skeletons
+                [0, 1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="rounded-2xl overflow-hidden"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: `1px solid ${LUNA.highlight}20`,
+                    }}
+                  >
+                    <div className="aspect-[16/10] bg-white/10 animate-pulse" />
+                    <div className="p-5">
+                      <div className="h-3 w-20 bg-white/10 rounded animate-pulse mb-3" />
+                      <div className="h-5 w-3/4 bg-white/10 rounded animate-pulse mb-2" />
+                      <div className="h-4 w-full bg-white/10 rounded animate-pulse" />
+                    </div>
+                  </div>
+                ))
+              ) : blogPosts.length > 0 ? (
+                // Real blog posts from Shopify
+                blogPosts.map((post, index) => (
+                  <motion.article
+                    key={post.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group rounded-2xl overflow-hidden"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: `1px solid ${LUNA.highlight}20`,
+                    }}
+                  >
+                    <a
+                      href={`${SHOPIFY_BLOG_URL}/${post.handle}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block"
+                    >
+                      <div
+                        className="aspect-[16/10] bg-cover bg-center"
+                        style={{
+                          backgroundImage: post.image?.url ? `url(${post.image.url})` : undefined,
+                          backgroundColor: LUNA.midDepth,
+                        }}
+                      />
+                      <div className="p-5">
+                        <span className="text-[10px] tracking-wider font-medium" style={{ color: LUNA.surfaceTeal }}>
+                          {(post.tags?.[0] || 'BLOG').toUpperCase()}
+                        </span>
+                        <h3 className="text-white font-semibold mt-2 mb-2 group-hover:text-[#A7EBF2] transition-colors line-clamp-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-white/50 text-sm line-clamp-2">
+                          {post.excerpt || 'Read more...'}
+                        </p>
+                      </div>
+                    </a>
+                  </motion.article>
+                ))
+              ) : (
+                // No posts - show coming soon message
+                <div className="col-span-full text-center py-8">
+                  <p className="text-white/50">Blog posts coming soon!</p>
                 </div>
-              </motion.article>
-
-              {/* Blog Card 2 - Placeholder */}
-              <motion.article
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="group rounded-2xl overflow-hidden"
-                style={{ 
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: `1px solid ${LUNA.highlight}20`,
-                }}
-              >
-                <div 
-                  className="aspect-[16/10] bg-cover bg-center"
-                  style={{ 
-                    backgroundImage: 'url(https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=600)',
-                    backgroundColor: LUNA.midDepth,
-                  }}
-                />
-                <div className="p-5">
-                  <span className="text-[10px] tracking-wider font-medium" style={{ color: LUNA.surfaceTeal }}>
-                    GEAR GUIDES
-                  </span>
-                  <h3 className="text-white font-semibold mt-2 mb-2 group-hover:text-[#A7EBF2] transition-colors">
-                    How to Keep Your Dive Gear in Perfect Condition
-                  </h3>
-                  <p className="text-white/50 text-sm line-clamp-2">
-                    Essential maintenance tips to extend the life of your dive equipment...
-                  </p>
-                </div>
-              </motion.article>
-
-              {/* Blog Card 3 - Placeholder */}
-              <motion.article
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                className="group rounded-2xl overflow-hidden"
-                style={{ 
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: `1px solid ${LUNA.highlight}20`,
-                }}
-              >
-                <div 
-                  className="aspect-[16/10] bg-cover bg-center"
-                  style={{ 
-                    backgroundImage: 'url(https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=600)',
-                    backgroundColor: LUNA.midDepth,
-                  }}
-                />
-                <div className="p-5">
-                  <span className="text-[10px] tracking-wider font-medium" style={{ color: LUNA.surfaceTeal }}>
-                    COMMUNITY
-                  </span>
-                  <h3 className="text-white font-semibold mt-2 mb-2 group-hover:text-[#A7EBF2] transition-colors">
-                    Meet the Divers Behind Our Sticker Designs
-                  </h3>
-                  <p className="text-white/50 text-sm line-clamp-2">
-                    The stories and adventures that inspire each location sticker...
-                  </p>
-                </div>
-              </motion.article>
+              )}
             </div>
 
             {/* View All Link */}
