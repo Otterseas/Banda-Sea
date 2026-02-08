@@ -7,6 +7,7 @@ import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -463,14 +464,44 @@ function ProductCarousel({ title, subtitle, products, onProductClick, formatPric
 // ===========================================
 function ProductModal({ product, isOpen, onClose, formatPrice }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [stock, setStock] = useState({ loading: true, quantity: null, available: true });
   const { addToCart, openCart } = useCart();
+
+  // Fetch stock when product changes
+  useEffect(() => {
+    if (!product?.shopifyVariantId || product.comingSoon) {
+      setStock({ loading: false, quantity: null, available: true });
+      return;
+    }
+
+    const fetchStock = async () => {
+      try {
+        const response = await fetch(`/api/stock?ids=${product.shopifyVariantId}`);
+        const data = await response.json();
+        if (data[product.shopifyVariantId]) {
+          setStock({
+            loading: false,
+            quantity: data[product.shopifyVariantId].quantity,
+            available: data[product.shopifyVariantId].available && !data[product.shopifyVariantId].outOfStock,
+          });
+        } else {
+          setStock({ loading: false, quantity: null, available: true });
+        }
+      } catch (error) {
+        setStock({ loading: false, quantity: null, available: true });
+      }
+    };
+    fetchStock();
+  }, [product?.shopifyVariantId, product?.comingSoon]);
 
   if (!product) return null;
 
   const isComingSoon = product.comingSoon;
+  const isOutOfStock = !stock.available || stock.quantity === 0;
+  const isLowStock = stock.quantity !== null && stock.quantity > 0 && stock.quantity <= 3;
 
   const handleAddToCart = () => {
-    if (isComingSoon) return;
+    if (isComingSoon || isOutOfStock) return;
     addToCart({
       id: product.shopifyVariantId,
       shopifyVariantId: product.shopifyVariantId,
@@ -590,11 +621,18 @@ function ProductModal({ product, isOpen, onClose, formatPrice }) {
                   </ul>
                 </div>
 
+                {/* Stock Badge */}
+                {!isComingSoon && !stock.loading && isLowStock && (
+                  <div className="flex justify-end mb-2">
+                    <StockBadge quantity={stock.quantity} />
+                  </div>
+                )}
+
                 {/* Button */}
                 {isComingSoon ? (
-                  <div 
+                  <div
                     className="w-full py-3 rounded-xl text-sm font-semibold text-center"
-                    style={{ 
+                    style={{
                       backgroundColor: `${LUNA.deepWater}10`,
                       color: LUNA.midDepth,
                       border: `2px solid ${LUNA.midDepth}30`,
@@ -602,11 +640,29 @@ function ProductModal({ product, isOpen, onClose, formatPrice }) {
                   >
                     Coming Soon
                   </div>
+                ) : stock.loading ? (
+                  <button
+                    disabled
+                    className="w-full py-3 rounded-xl text-sm font-semibold opacity-50"
+                    style={{
+                      backgroundColor: `${LUNA.deepWater}10`,
+                      color: LUNA.midDepth,
+                      border: `2px solid ${LUNA.midDepth}30`,
+                    }}
+                  >
+                    Checking availability...
+                  </button>
+                ) : isOutOfStock ? (
+                  <NotifyMeButton
+                    productName={product.name}
+                    variantId={product.shopifyVariantId}
+                    variant="light"
+                  />
                 ) : (
                   <motion.button
                     onClick={handleAddToCart}
                     className="w-full py-3 rounded-xl text-sm font-semibold transition-all"
-                    style={{ 
+                    style={{
                       background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
                       color: 'white',
                     }}

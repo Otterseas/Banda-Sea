@@ -770,7 +770,7 @@ export default function Home() {
               {/* Close Button */}
               <button
                 onClick={handleClosePreview}
-                className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
                 style={{
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   border: `1px solid ${LUNA.highlight}40`
