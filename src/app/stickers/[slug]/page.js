@@ -195,16 +195,55 @@ export default function StickerPage() {
       </main>
 
       {/* ==================== BOTTOM SECTION ==================== */}
-      <section 
+      <section
         className="flex-shrink-0"
         style={{ backgroundColor: LUNA.abyss }}
       >
+        {/* Region Tabs - Glass Style with Sliding Indicator */}
+        <div className="px-6 md:px-8 py-4 flex justify-center border-b" style={{ borderColor: `${LUNA.highlight}15` }}>
+          <nav
+            className="inline-flex items-center gap-1 p-1.5 rounded-full overflow-x-auto hide-scrollbar max-w-full relative"
+            style={{
+              backgroundColor: `${LUNA.abyss}30`,
+              backdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255,255,255,0.1)'
+            }}
+          >
+            {REGIONS.map((region) => (
+              <button
+                key={region}
+                onClick={() => handleRegionChange(region)}
+                className="relative px-4 py-2 text-sm font-medium rounded-full transition-colors whitespace-nowrap z-10"
+                style={{
+                  color: activeRegion === region ? LUNA.highlight : 'rgba(255,255,255,0.7)',
+                }}
+              >
+                {/* Sliding Glass Indicator */}
+                {activeRegion === region && (
+                  <motion.div
+                    layoutId="activeRegionIndicatorDetail"
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      backgroundColor: 'rgba(167, 235, 242, 0.25)',
+                      backdropFilter: 'blur(8px)',
+                      border: `1px solid ${LUNA.highlight}`,
+                      boxShadow: `0 0 20px ${LUNA.highlight}40, inset 0 1px 1px rgba(255,255,255,0.1)`,
+                    }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{region}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
+
         {/* More From Region - With Slide Transition */}
-        <div className="px-6 md:px-8 py-6 border-b overflow-hidden" style={{ borderColor: `${LUNA.highlight}15` }}>
+        <div className="px-6 md:px-8 py-6 overflow-hidden">
           <p className="text-white/50 text-xs uppercase tracking-wider mb-4">
             More from {activeRegion}
           </p>
-          
+
           <div className="relative min-h-[88px]">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
@@ -249,45 +288,6 @@ export default function StickerPage() {
               </motion.div>
             </AnimatePresence>
           </div>
-        </div>
-
-        {/* Region Tabs - Glass Style with Sliding Indicator */}
-        <div className="px-6 md:px-8 py-4 flex justify-center">
-          <nav 
-            className="inline-flex items-center gap-1 p-1.5 rounded-full overflow-x-auto hide-scrollbar max-w-full relative"
-            style={{ 
-              backgroundColor: `${LUNA.abyss}30`,
-              backdropFilter: 'blur(12px)',
-              border: '1px solid rgba(255,255,255,0.1)'
-            }}
-          >
-            {REGIONS.map((region) => (
-              <button
-                key={region}
-                onClick={() => handleRegionChange(region)}
-                className="relative px-4 py-2 text-sm font-medium rounded-full transition-colors whitespace-nowrap z-10"
-                style={{
-                  color: activeRegion === region ? LUNA.highlight : 'rgba(255,255,255,0.7)',
-                }}
-              >
-                {/* Sliding Glass Indicator */}
-                {activeRegion === region && (
-                  <motion.div
-                    layoutId="activeRegionIndicatorDetail"
-                    className="absolute inset-0 rounded-full"
-                    style={{
-                      backgroundColor: 'rgba(167, 235, 242, 0.25)',
-                      backdropFilter: 'blur(8px)',
-                      border: `1px solid ${LUNA.highlight}`,
-                      boxShadow: `0 0 20px ${LUNA.highlight}40, inset 0 1px 1px rgba(255,255,255,0.1)`,
-                    }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                  />
-                )}
-                <span className="relative z-10">{region}</span>
-              </button>
-            ))}
-          </nav>
         </div>
       </section>
 
