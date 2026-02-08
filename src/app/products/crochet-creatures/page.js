@@ -242,7 +242,7 @@ const ALL_PRODUCTS = [
       'Each one unique - slight variations in colour and shape',
     ],
     images: [
-      'https://38a44d-4c.myshopify.com/cdn/shop/files/20260202_132328_c68439a2-7680-4fbd-9fed-a0057b12f707.jpg?v=1770010704&width=600',
+      'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/IMG-20260109-WA0009.jpg?v=1770010474&width=990',
     ],
     shopifyVariantId: 'mobile-ocean-001',
     uses: 'Nursery centrepiece, baby shower gift, children\'s room decor',
