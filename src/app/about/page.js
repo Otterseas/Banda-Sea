@@ -1,9 +1,13 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+
+// Shopify store URL for blog links
+const SHOPIFY_STORE_URL = 'https://otterseas.com';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -46,34 +50,53 @@ const PRODUCT_LINKS = [
   },
 ];
 
-// ===========================================
-// PLACEHOLDER BLOG POSTS
-// ===========================================
-const BLOG_POSTS = [
-  {
-    title: 'Top 10 Dive Destinations for 2026',
-    excerpt: 'Discover the most breathtaking underwater locations to add to your bucket list this year.',
-    image: 'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/DSC05580_copy.jpg?v=1736924733&width=990',
-    href: '/blogs',
-  },
-  {
-    title: 'How to Start Your Dive Journal',
-    excerpt: 'Tips and tricks for documenting your underwater adventures in a meaningful way.',
-    image: 'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/Dive-journals-stock.jpg?v=1770557899&width=990',
-    href: '/blogs',
-  },
-  {
-    title: 'The Story Behind Our Stickers',
-    excerpt: 'Learn how each location sticker is designed through a diver\'s perspective.',
-    image: 'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/Location_sticker_overlays.png?v=1770000931&width=990',
-    href: '/blogs',
-  },
-];
+// Helper to format date
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+}
 
 // ===========================================
 // MAIN COMPONENT
 // ===========================================
 export default function AboutPage() {
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [isLoadingBlogs, setIsLoadingBlogs] = useState(true);
+
+  // Fetch blog posts from Shopify
+  useEffect(() => {
+    async function fetchBlogPosts() {
+      try {
+        const response = await fetch('/api/blog?blog=news&limit=3');
+        const data = await response.json();
+
+        if (data.articles && data.articles.length > 0) {
+          const posts = data.articles.map((article) => ({
+            id: article.id,
+            handle: article.handle,
+            title: article.title,
+            excerpt: article.excerpt || 'Read more about this topic...',
+            image: article.image?.url || article.image,
+            date: formatDate(article.publishedAt),
+            href: `${SHOPIFY_STORE_URL}/blogs/news/${article.handle}`,
+            isShopify: true,
+          }));
+          setBlogPosts(posts);
+        }
+      } catch (err) {
+        console.error('Failed to fetch blog posts:', err);
+      } finally {
+        setIsLoadingBlogs(false);
+      }
+    }
+
+    fetchBlogPosts();
+  }, []);
+
   return (
     <div
       className="min-h-screen w-full"
@@ -407,50 +430,97 @@ export default function AboutPage() {
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {BLOG_POSTS.map((post, index) => (
-              <motion.div
-                key={post.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Link
-                  href={post.href}
-                  className="block rounded-2xl overflow-hidden transition-all hover:scale-[1.02] h-full group bg-white"
-                  style={{
-                    boxShadow: `0 4px 20px ${LUNA.deepWater}10`,
-                  }}
-                >
-                  {/* Blog Image */}
-                  <div className="aspect-video overflow-hidden">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                  </div>
-                  {/* Blog Info */}
+          {/* Loading State */}
+          {isLoadingBlogs && (
+            <div className="grid md:grid-cols-3 gap-8">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="rounded-2xl overflow-hidden bg-white shadow-sm">
+                  <div className="aspect-video bg-gray-200 animate-pulse" />
                   <div className="p-5">
-                    <h3
-                      className="font-bold mb-2 line-clamp-2"
-                      style={{ color: LUNA.deepWater }}
-                    >
-                      {post.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm line-clamp-2">{post.excerpt}</p>
-                    <span
-                      className="inline-block mt-3 text-sm font-semibold"
-                      style={{ color: LUNA.surfaceTeal }}
-                    >
-                      Read More →
-                    </span>
+                    <div className="h-5 w-3/4 bg-gray-200 rounded animate-pulse mb-2" />
+                    <div className="h-4 w-full bg-gray-200 rounded animate-pulse mb-1" />
+                    <div className="h-4 w-2/3 bg-gray-200 rounded animate-pulse" />
                   </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Blog Posts Grid */}
+          {!isLoadingBlogs && blogPosts.length > 0 && (
+            <div className={`grid gap-8 ${blogPosts.length === 2 ? 'md:grid-cols-2 max-w-4xl mx-auto' : 'md:grid-cols-3'}`}>
+              {blogPosts.map((post, index) => (
+                <motion.div
+                  key={post.id || post.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <a
+                    href={post.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block rounded-2xl overflow-hidden transition-all hover:scale-[1.02] h-full group bg-white"
+                    style={{
+                      boxShadow: `0 4px 20px ${LUNA.deepWater}10`,
+                    }}
+                  >
+                    {/* Blog Image */}
+                    <div className="aspect-video overflow-hidden">
+                      {post.image ? (
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div
+                          className="w-full h-full flex items-center justify-center"
+                          style={{ backgroundColor: LUNA.midDepth }}
+                        >
+                          <span className="text-white/50 text-sm">Blog Post</span>
+                        </div>
+                      )}
+                    </div>
+                    {/* Blog Info */}
+                    <div className="p-5">
+                      {post.date && (
+                        <span className="text-xs text-gray-400 mb-2 block">{post.date}</span>
+                      )}
+                      <h3
+                        className="font-bold mb-2 line-clamp-2"
+                        style={{ color: LUNA.deepWater }}
+                      >
+                        {post.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm line-clamp-2">{post.excerpt}</p>
+                      <span
+                        className="inline-block mt-3 text-sm font-semibold"
+                        style={{ color: LUNA.surfaceTeal }}
+                      >
+                        Read More →
+                      </span>
+                    </div>
+                  </a>
+                </motion.div>
+              ))}
+            </div>
+          )}
+
+          {/* No Posts State */}
+          {!isLoadingBlogs && blogPosts.length === 0 && (
+            <div className="text-center py-8">
+              <p className="text-gray-500 mb-4">Blog posts coming soon!</p>
+              <Link
+                href="/blogs"
+                className="text-sm font-medium hover:underline"
+                style={{ color: LUNA.surfaceTeal }}
+              >
+                Visit our blog page →
+              </Link>
+            </div>
+          )}
 
           <motion.div
             initial={{ opacity: 0 }}
