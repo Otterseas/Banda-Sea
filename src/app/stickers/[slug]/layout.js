@@ -22,14 +22,41 @@ export async function generateMetadata({ params }) {
     title,
     description,
     keywords: [
+      // Location-specific keywords
       `${sticker.name} dive sticker`,
       `${sticker.name} scuba diving`,
-      `${sticker.region} diving stickers`,
-      'dive stickers',
-      'scuba diving stickers',
-      'underwater stickers',
-      'dive journal stickers',
+      `${sticker.name} diving`,
+      `dive ${sticker.name}`,
+      `scuba ${sticker.name}`,
       sticker.country !== sticker.name ? `${sticker.country} diving` : null,
+      sticker.country !== sticker.name ? `${sticker.country} scuba` : null,
+      // Region keywords
+      `${sticker.region} diving stickers`,
+      `${sticker.region} scuba diving`,
+      // Dive travel keywords
+      'dive travel',
+      'dive travel stickers',
+      'scuba travel',
+      'dive destination',
+      'dive trip',
+      'bucket list diving',
+      // Scuba diving keywords
+      'scuba diving stickers',
+      'scuba stickers',
+      'dive stickers',
+      'diver stickers',
+      'underwater stickers',
+      // Sticker product keywords
+      'dive journal stickers',
+      'dive log stickers',
+      'waterproof stickers',
+      'laptop stickers diving',
+      'water bottle stickers scuba',
+      'dive gear stickers',
+      // General diving keywords
+      'scuba diver gift',
+      'diving gift ideas',
+      'diver accessories',
     ].filter(Boolean),
     openGraph: {
       title: `${sticker.name} Dive Sticker | Otterseas`,

@@ -114,7 +114,7 @@ export default function StickerPage() {
               className="text-3xl md:text-4xl font-bold mb-2"
               style={{ color: LUNA.deepWater }}
             >
-              {sticker.name} <span className="font-normal">Dive Sticker</span>
+              {sticker.name}
             </h1>
             <p className="text-gray-500 mb-1">{sticker.region}</p>
             <p className="text-gray-400 text-sm mb-4">{sticker.country}</p>
@@ -167,11 +167,11 @@ export default function StickerPage() {
           {/* Story Content - Scrollable */}
           <div className="flex-1 overflow-y-auto px-6 md:px-8 pb-8">
             {/* Story Headline */}
-            <h2 
+            <h2
               className="text-2xl md:text-3xl font-light mb-6 italic"
               style={{ color: LUNA.highlight }}
             >
-              {sticker.story?.headline || 'The Story'}
+              {sticker.name}: {sticker.story?.headline || 'The Story'}
             </h2>
 
             {/* Story Content */}
@@ -179,13 +179,13 @@ export default function StickerPage() {
               {sticker.story?.content || 'Story content coming soon...'}
             </p>
 
-            {/* Why We Chose This Design */}
-            <h3 
+            {/* Why We Chose This Sticker Design */}
+            <h2
               className="text-xl md:text-2xl font-light mb-4"
               style={{ color: LUNA.highlight }}
             >
-              Why We Chose This Design
-            </h3>
+              Why We Chose This Sticker Design
+            </h2>
 
             <p className="text-white/85 text-sm leading-relaxed">
               {sticker.story?.designRationale || 'Design rationale coming soon...'}
@@ -222,26 +222,23 @@ export default function StickerPage() {
                       href={`/stickers/${s.slug}`}
                       className="flex-shrink-0 group"
                     >
-                      <div 
-                        className="w-16 h-16 rounded-xl overflow-hidden transition-all group-hover:scale-110 mb-1"
-                        style={{ border: `2px solid ${LUNA.highlight}30` }}
-                      >
+                      <div className="w-20 h-20 flex items-center justify-center transition-all group-hover:scale-110 mb-1">
                         {s.image ? (
-                          <img 
-                            src={s.image} 
+                          <img
+                            src={s.image}
                             alt={s.name}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-contain drop-shadow-lg"
                           />
                         ) : (
-                          <div 
-                            className="w-full h-full flex items-center justify-center"
+                          <div
+                            className="w-16 h-16 rounded-xl flex items-center justify-center"
                             style={{ background: `linear-gradient(135deg, ${LUNA.midDepth} 0%, ${LUNA.abyss} 100%)` }}
                           >
                             <span className="text-white/50 text-[8px] text-center px-1">{s.name}</span>
                           </div>
                         )}
                       </div>
-                      <p className="text-white/40 text-[10px] text-center truncate w-16 group-hover:text-white/70 transition-colors">
+                      <p className="text-white/40 text-[10px] text-center truncate w-20 group-hover:text-white/70 transition-colors">
                         {s.name}
                       </p>
                     </Link>
