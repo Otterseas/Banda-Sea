@@ -65,7 +65,11 @@ export default function StickerPage() {
   }
 
   const handleAddToPack = () => {
-    addToCart(sticker);
+    addToCart({
+      ...sticker,
+      type: 'location-sticker',
+      price: BASE_PRICE,
+    });
     if (openCart) openCart();
   };
 

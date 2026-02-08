@@ -2,6 +2,7 @@ import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import { CurrencyProvider } from '@/context/CurrencyContext';
 import CartDrawer from '@/components/CartDrawer';
+import CookieConsent from '@/components/CookieConsent';
 
 export const metadata = {
   title: 'Otterseas - Dive Stickers & Accessories',
@@ -22,20 +23,6 @@ export const metadata = {
     siteName: 'Otterseas',
     title: 'Otterseas - Dive Stickers & Accessories',
     description: 'Build your dive story with waterproof vinyl stickers from the world\'s best dive sites. Premium dive journals, location stickers, and gifts for scuba divers.',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Otterseas - Dive Stickers & Accessories',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Otterseas - Dive Stickers & Accessories',
-    description: 'Build your dive story with waterproof vinyl stickers from the world\'s best dive sites.',
-    images: ['/og-image.jpg'],
   },
   robots: {
     index: true,
@@ -58,6 +45,7 @@ export default function RootLayout({ children }) {
           <CartProvider>
             {children}
             <CartDrawer />
+            <CookieConsent />
           </CartProvider>
         </CurrencyProvider>
       </body>
