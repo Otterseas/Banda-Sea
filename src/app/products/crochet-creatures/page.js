@@ -947,7 +947,7 @@ export default function CrochetCreaturesPage() {
       />
 
       {/* ==================== FOOTER - SHARED COMPONENT ==================== */}
-      <Footer />
+      <Footer compact />
     </div>
   );
 }
