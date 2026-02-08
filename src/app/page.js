@@ -147,8 +147,8 @@ const PRODUCTS = [
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Nudibranches_no_background.png?v=1770015398&width=990',
     link: '/products/crochet-creatures',
     linkText: 'Read More...',
-    imageScale: 0.85,
-    imageOffset: '5%', // Shift right
+    imageScale: 0.765,
+    imageOffset: '12%', // Shift right to avoid text overlap
   },
 ];
 

@@ -645,12 +645,12 @@ export default function CrochetCreaturesPage() {
       <Header variant="light" currentPath="/products/crochet-creatures" hideOnScroll={false} />
 
       {/* ==================== SPLIT PANEL LAYOUT ==================== */}
-      <div className="flex flex-col lg:flex-row pt-14" style={{ minHeight: 'calc(100vh - 56px)' }}>
-        
-        {/* LEFT PANEL - Story (scrollable) */}
-        <div 
-          className="w-full lg:w-1/2 overflow-y-auto"
-          style={{ 
+      <div className="flex flex-col lg:flex-row pt-14 lg:h-[calc(100vh-56px)]">
+
+        {/* LEFT PANEL - Story (scrollable independently) */}
+        <div
+          className="w-full lg:w-1/2 overflow-y-auto lg:h-full"
+          style={{
             background: `linear-gradient(180deg, white 0%, ${LUNA.highlight}08 100%)`,
           }}
         >
@@ -751,9 +751,9 @@ export default function CrochetCreaturesPage() {
           </div>
         </div>
 
-        {/* RIGHT PANEL - Products (scrollable) */}
-        <div 
-          className="w-full lg:w-1/2 overflow-y-auto border-l border-gray-100"
+        {/* RIGHT PANEL - Products (scrollable independently) */}
+        <div
+          className="w-full lg:w-1/2 overflow-y-auto lg:h-full border-l border-gray-100"
           style={{ background: 'white' }}
         >
           <div className="p-6 lg:p-8">
