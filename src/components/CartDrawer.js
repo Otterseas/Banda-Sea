@@ -46,14 +46,44 @@ const SHIPPING_THRESHOLDS = {
 // shipping margins on heavier items.
 // ===========================================
 const UPSELL_PRODUCTS = {
-  funSticker: {
-    id: '50590639194378',
-    shopifyVariantId: '50590639194378',
-    name: "Post-Dive Hair. Don't Care",
-    type: 'fun-sticker',
-    price: 3.50,
-    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/PostDiveHairDontCare-MarketingImage.jpg?v=1746535285&width=200',
-    tagline: 'Lightweight & fun!',
+  // Rotated for variety each time the gap falls in the £1-£9 range
+  funStickers: [
+    {
+      id: '50590639194378',
+      shopifyVariantId: '50590639194378',
+      name: "Post-Dive Hair. Don't Care",
+      type: 'fun-sticker',
+      price: 3.50,
+      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/PostDiveHairDontCare-MarketingImage.jpg?v=1746535285&width=200',
+      tagline: 'Lightweight & fun!',
+    },
+    {
+      id: '51143940047114',
+      shopifyVariantId: '51143940047114',
+      name: 'BCD... Bring Coffee Down',
+      type: 'fun-sticker',
+      price: 3.50,
+      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/BCD....BringCoffeeDown-MarketingImage.jpg?v=1746535044&width=200',
+      tagline: 'What BCD really stands for!',
+    },
+    {
+      id: '51143553548554',
+      shopifyVariantId: '51143553548554',
+      name: 'But First. Coffee!',
+      type: 'fun-sticker',
+      price: 3.50,
+      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/DiveFirstCoffeeSecond-MarketingImage.jpg?v=1746534827&width=200',
+      tagline: 'Best buddy = hot coffee!',
+    },
+  ],
+  boosterPack: {
+    id: '49872531325194',
+    shopifyVariantId: '49872531325194',
+    name: 'Logbook Booster Pack',
+    type: 'product',
+    price: 12.00,
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Logs.jpg?v=1743749112&width=200',
+    tagline: '30 extra dive log pages!',
   },
   locationPack: {
     id: '52451906945290',
@@ -63,6 +93,15 @@ const UPSELL_PRODUCTS = {
     price: 15.00,
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/RajaAmpat-sticker.png?v=1769313395&width=200',
     tagline: '9 stickers, 1 great price!',
+  },
+  booster2Pack: {
+    id: '52493596131594',
+    shopifyVariantId: '52493596131594',
+    name: '2\u00d7 Booster Packs',
+    type: 'product',
+    price: 20.00,
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Logs.jpg?v=1743749112&width=200',
+    tagline: 'Save \u00a34 \u2014 more logs, more dives!',
   },
   diveJournal: {
     id: '49658874331402',
@@ -77,10 +116,16 @@ const UPSELL_PRODUCTS = {
 
 // Returns the recommended upsell product based on the gap to free shipping (in GBP).
 // Never recommends single Location Stickers (min-order = 5 would cause validation errors).
-function getUpsellRecommendation(gap) {
+// For fun stickers, rotates through the pool based on totalItems to add variety.
+function getUpsellRecommendation(gap, totalItems) {
   if (gap <= 0) return null;
-  if (gap <= 9) return UPSELL_PRODUCTS.funSticker;
-  if (gap <= 25) return UPSELL_PRODUCTS.locationPack;
+  if (gap <= 9) {
+    const stickers = UPSELL_PRODUCTS.funStickers;
+    return stickers[totalItems % stickers.length];
+  }
+  if (gap <= 14) return UPSELL_PRODUCTS.boosterPack;
+  if (gap <= 19) return UPSELL_PRODUCTS.locationPack;
+  if (gap <= 25) return UPSELL_PRODUCTS.booster2Pack;
   return UPSELL_PRODUCTS.diveJournal;
 }
 
@@ -462,7 +507,7 @@ export default function CartDrawer() {
                 const gap = threshold - totalPrice;
                 const progress = Math.min(100, (totalPrice / threshold) * 100);
                 const regionLabel = currency === 'GBP' ? 'UK' : currency === 'EUR' ? 'EU' : 'international';
-                const upsell = totalPrice > 0 ? getUpsellRecommendation(gap) : null;
+                const upsell = totalPrice > 0 ? getUpsellRecommendation(gap, totalItems) : null;
 
                 if (gap <= 0) {
                   return (
