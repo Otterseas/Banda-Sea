@@ -7,6 +7,7 @@ import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -242,7 +243,7 @@ const ALL_PRODUCTS = [
       'Each one unique - slight variations in colour and shape',
     ],
     images: [
-      'https://38a44d-4c.myshopify.com/cdn/shop/files/20260202_132328_c68439a2-7680-4fbd-9fed-a0057b12f707.jpg?v=1770010704&width=600',
+      'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/IMG-20260109-WA0009.jpg?v=1770010474&width=990',
     ],
     shopifyVariantId: 'mobile-ocean-001',
     uses: 'Nursery centrepiece, baby shower gift, children\'s room decor',
@@ -257,19 +258,20 @@ const STORY_SECTIONS = [
   {
     id: 'born-from-reef',
     title: 'Born From The Reef',
-    content: 'Every creature in our collection is designed and handcrafted by a very talented artist, who creates each pattern from scratch — no templates, no kits, just pure creativity. Inspired by the animals we\'ve encountered underwater, each design captures the personality of the real thing — the psychedelic swirls of a nudibranch, the grumpy pout of a frogfish, the delicate curl of a pygmy seahorse. It\'s original artwork you can hold in your hand.',
-    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=600',
+    content: 'Every creature in our collection is designed and handcrafted by a very talented artist, who creates each pattern from scratch — no templates, no kits, just pure creativity.\n\nInspired by the animals we\'ve encountered underwater, from the psychedelic swirls of a nudibranch, the grumpy pout of a frogfish, the delicate curl of a pygmy seahorse. It\'s original artwork you can hold in your hand.',
+    image: 'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/IMG_20260202_130533_587.jpg?v=1770009456&width=990',
   },
   {
     id: 'every-stitch',
     title: 'Every Stitch Tells a Story',
-    content: 'Each creature is crocheted by hand using 100% cotton yarn. There are no machines, no moulds, no shortcuts. A single nudibranch takes 3–4 hours. A fish or seahorse takes 5–6. Our baby mobiles take 15–20 hours of dedicated work. That\'s why no two are ever exactly the same — and why each one is so uniquely special!',
-    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/20260202_132328_c68439a2-7680-4fbd-9fed-a0057b12f707.jpg?v=1770010704&width=600',
+    content: 'Each creature is crocheted by hand using 100% cotton yarn. There are no machines, no patterns, no shortcuts. A single nudibranch takes 3–4 hours. A fish or seahorse takes 5–6. Our baby mobiles take 15–20 hours of dedicated work.\n\nThat\'s why no two are ever exactly the same — and why each one is so uniquely special!',
+    image: 'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/20260202_132348_b89869bc-a6a8-4b05-8d55-de1473481338.jpg?v=1770010707&width=990',
   },
   {
     id: 'made-to-be-loved',
-    title: 'Made to Be Loved',
+    title: '',
     content: 'Whether it\'s a keychain clipped to your dive bag, a frogfish hanging from your rearview mirror, or a nudibranch keeping watch on your desk — these creatures are designed to travel with you. And for the littlest ocean lovers, our baby mobiles bring the underwater world into the nursery.',
+    image: 'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/IMG-20260109-WA0009.jpg?v=1770010474&width=990',
   },
   {
     id: 'custom-orders',
@@ -462,14 +464,44 @@ function ProductCarousel({ title, subtitle, products, onProductClick, formatPric
 // ===========================================
 function ProductModal({ product, isOpen, onClose, formatPrice }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [stock, setStock] = useState({ loading: true, quantity: null, available: true });
   const { addToCart, openCart } = useCart();
+
+  // Fetch stock when product changes
+  useEffect(() => {
+    if (!product?.shopifyVariantId || product.comingSoon) {
+      setStock({ loading: false, quantity: null, available: true });
+      return;
+    }
+
+    const fetchStock = async () => {
+      try {
+        const response = await fetch(`/api/stock?ids=${product.shopifyVariantId}`);
+        const data = await response.json();
+        if (data[product.shopifyVariantId]) {
+          setStock({
+            loading: false,
+            quantity: data[product.shopifyVariantId].quantity,
+            available: data[product.shopifyVariantId].available && !data[product.shopifyVariantId].outOfStock,
+          });
+        } else {
+          setStock({ loading: false, quantity: null, available: true });
+        }
+      } catch (error) {
+        setStock({ loading: false, quantity: null, available: true });
+      }
+    };
+    fetchStock();
+  }, [product?.shopifyVariantId, product?.comingSoon]);
 
   if (!product) return null;
 
   const isComingSoon = product.comingSoon;
+  const isOutOfStock = !stock.available || stock.quantity === 0;
+  const isLowStock = stock.quantity !== null && stock.quantity > 0 && stock.quantity <= 3;
 
   const handleAddToCart = () => {
-    if (isComingSoon) return;
+    if (isComingSoon || isOutOfStock) return;
     addToCart({
       id: product.shopifyVariantId,
       shopifyVariantId: product.shopifyVariantId,
@@ -589,11 +621,18 @@ function ProductModal({ product, isOpen, onClose, formatPrice }) {
                   </ul>
                 </div>
 
+                {/* Stock Badge */}
+                {!isComingSoon && !stock.loading && isLowStock && (
+                  <div className="flex justify-end mb-2">
+                    <StockBadge quantity={stock.quantity} />
+                  </div>
+                )}
+
                 {/* Button */}
                 {isComingSoon ? (
-                  <div 
+                  <div
                     className="w-full py-3 rounded-xl text-sm font-semibold text-center"
-                    style={{ 
+                    style={{
                       backgroundColor: `${LUNA.deepWater}10`,
                       color: LUNA.midDepth,
                       border: `2px solid ${LUNA.midDepth}30`,
@@ -601,11 +640,29 @@ function ProductModal({ product, isOpen, onClose, formatPrice }) {
                   >
                     Coming Soon
                   </div>
+                ) : stock.loading ? (
+                  <button
+                    disabled
+                    className="w-full py-3 rounded-xl text-sm font-semibold opacity-50"
+                    style={{
+                      backgroundColor: `${LUNA.deepWater}10`,
+                      color: LUNA.midDepth,
+                      border: `2px solid ${LUNA.midDepth}30`,
+                    }}
+                  >
+                    Checking availability...
+                  </button>
+                ) : isOutOfStock ? (
+                  <NotifyMeButton
+                    productName={product.name}
+                    variantId={product.shopifyVariantId}
+                    variant="light"
+                  />
                 ) : (
                   <motion.button
                     onClick={handleAddToCart}
                     className="w-full py-3 rounded-xl text-sm font-semibold transition-all"
-                    style={{ 
+                    style={{
                       background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
                       color: 'white',
                     }}
@@ -645,12 +702,12 @@ export default function CrochetCreaturesPage() {
       <Header variant="light" currentPath="/products/crochet-creatures" hideOnScroll={false} />
 
       {/* ==================== SPLIT PANEL LAYOUT ==================== */}
-      <div className="flex flex-col lg:flex-row pt-14" style={{ minHeight: 'calc(100vh - 56px)' }}>
-        
-        {/* LEFT PANEL - Story (scrollable) */}
-        <div 
-          className="w-full lg:w-1/2 overflow-y-auto"
-          style={{ 
+      <div className="flex flex-col lg:flex-row pt-14 lg:h-[calc(100vh-56px)]">
+
+        {/* LEFT PANEL - Story (scrollable independently) */}
+        <div
+          className="w-full lg:w-1/2 overflow-y-auto lg:h-full"
+          style={{
             background: `linear-gradient(180deg, white 0%, ${LUNA.highlight}08 100%)`,
           }}
         >
@@ -677,44 +734,89 @@ export default function CrochetCreaturesPage() {
             </motion.div>
 
             {/* Story Sections */}
-            {STORY_SECTIONS.map((section, index) => (
-              <motion.div
-                key={section.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ delay: index * 0.1 }}
-                className="mb-12"
-              >
-                {section.image && (
-                  <div className="rounded-xl overflow-hidden mb-4" style={{ boxShadow: `0 10px 40px ${LUNA.deepWater}10` }}>
-                    <img src={section.image} alt={section.title} className="w-full h-auto" />
+            {STORY_SECTIONS.map((section, index) => {
+              // Alternate image alignment: even = right, odd = left
+              const imageAlign = index % 2 === 0 ? 'right' : 'left';
+
+              return (
+                <motion.div
+                  key={section.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  transition={{ duration: 0.6, ease: 'easeOut' }}
+                  className="mb-10 overflow-hidden"
+                >
+                  {section.title && (
+                    <motion.h2
+                      initial={{ opacity: 0, x: imageAlign === 'left' ? 20 : -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: 0.1 }}
+                      className="text-xl font-bold mb-3"
+                      style={{ color: LUNA.deepWater }}
+                    >
+                      {section.title}
+                    </motion.h2>
+                  )}
+
+                  <div className="text-gray-600 text-sm leading-relaxed">
+                    {/* Floating image with text wrap */}
+                    {section.image && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className={`${imageAlign === 'right' ? 'float-right ml-4' : 'float-left mr-4'} mb-3 w-1/2 max-w-[270px]`}
+                      >
+                        <div
+                          className="rounded-xl overflow-hidden"
+                          style={{ boxShadow: `0 8px 30px ${LUNA.deepWater}15` }}
+                        >
+                          <img
+                            src={section.image}
+                            alt={section.title || 'Story image'}
+                            className="w-full h-auto"
+                          />
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* Text content */}
+                    {section.content.split('\n\n').map((paragraph, pIndex) => (
+                      <p key={pIndex} className={pIndex > 0 ? 'mt-4' : ''}>
+                        {paragraph}
+                      </p>
+                    ))}
+
+                    {/* Clear float */}
+                    <div className="clear-both" />
                   </div>
-                )}
-                <h2 className="text-xl font-bold mb-3" style={{ color: LUNA.deepWater }}>
-                  {section.title}
-                </h2>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {section.content}
-                </p>
-                {section.cta && (
-                  <a
-                    href={`mailto:${section.cta.email}`}
-                    className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all hover:scale-105"
-                    style={{
-                      background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                      color: 'white',
-                    }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                      <polyline points="22,6 12,13 2,6"/>
-                    </svg>
-                    {section.cta.text}
-                  </a>
-                )}
-              </motion.div>
-            ))}
+
+                  {section.cta && (
+                    <motion.a
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: 0.3 }}
+                      href={`mailto:${section.cta.email}`}
+                      className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all hover:scale-105"
+                      style={{
+                        background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                        color: 'white',
+                      }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                      </svg>
+                      {section.cta.text}
+                    </motion.a>
+                  )}
+                </motion.div>
+              );
+            })}
 
             {/* Time Summary */}
             <motion.div
@@ -722,14 +824,17 @@ export default function CrochetCreaturesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="p-6 rounded-xl mb-8"
-              style={{ 
+              style={{
                 background: `linear-gradient(135deg, ${LUNA.highlight}20 0%, ${LUNA.surfaceTeal}10 100%)`,
                 border: `1px solid ${LUNA.highlight}40`,
               }}
             >
-              <h3 className="font-bold mb-3" style={{ color: LUNA.deepWater }}>
+              <h3 className="font-bold mb-2" style={{ color: LUNA.deepWater }}>
                 Time & Love In Every Stitch
               </h3>
+              <p className="text-sm text-gray-600 mb-4 italic">
+                Our pricing reflects the time, skill, and love poured into each handmade piece.
+              </p>
               <div className="space-y-2 text-sm text-gray-600">
                 <p className="flex items-center gap-2">
                   <span style={{ color: LUNA.surfaceTeal }}>•</span>
@@ -744,16 +849,13 @@ export default function CrochetCreaturesPage() {
                   <strong>Baby Mobiles:</strong> 15-20 hours each
                 </p>
               </div>
-              <p className="text-xs text-gray-500 mt-3">
-                Our pricing reflects the time, skill, and love poured into each handmade piece.
-              </p>
             </motion.div>
           </div>
         </div>
 
-        {/* RIGHT PANEL - Products (scrollable) */}
-        <div 
-          className="w-full lg:w-1/2 overflow-y-auto border-l border-gray-100"
+        {/* RIGHT PANEL - Products (scrollable independently) */}
+        <div
+          className="w-full lg:w-1/2 overflow-y-auto lg:h-full border-l border-gray-100"
           style={{ background: 'white' }}
         >
           <div className="p-6 lg:p-8">
@@ -845,7 +947,7 @@ export default function CrochetCreaturesPage() {
       />
 
       {/* ==================== FOOTER - SHARED COMPONENT ==================== */}
-      <Footer />
+      <Footer compact />
     </div>
   );
 }

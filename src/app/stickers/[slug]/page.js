@@ -65,7 +65,11 @@ export default function StickerPage() {
   }
 
   const handleAddToPack = () => {
-    addToCart(sticker);
+    addToCart({
+      ...sticker,
+      type: 'location-sticker',
+      price: BASE_PRICE,
+    });
     if (openCart) openCart();
   };
 
@@ -110,7 +114,7 @@ export default function StickerPage() {
 
           {/* Sticker Info */}
           <div className="flex-shrink-0">
-            <h1 
+            <h1
               className="text-3xl md:text-4xl font-bold mb-2"
               style={{ color: LUNA.deepWater }}
             >
@@ -167,11 +171,11 @@ export default function StickerPage() {
           {/* Story Content - Scrollable */}
           <div className="flex-1 overflow-y-auto px-6 md:px-8 pb-8">
             {/* Story Headline */}
-            <h2 
+            <h2
               className="text-2xl md:text-3xl font-light mb-6 italic"
               style={{ color: LUNA.highlight }}
             >
-              {sticker.story?.headline || 'The Story'}
+              {sticker.name}: {sticker.story?.headline || 'The Story'}
             </h2>
 
             {/* Story Content */}
@@ -179,13 +183,13 @@ export default function StickerPage() {
               {sticker.story?.content || 'Story content coming soon...'}
             </p>
 
-            {/* Why We Chose This Design */}
-            <h3 
+            {/* Why We Chose This Sticker Design */}
+            <h2
               className="text-xl md:text-2xl font-light mb-4"
               style={{ color: LUNA.highlight }}
             >
-              Why We Chose This Design
-            </h3>
+              Why We Chose This Sticker Design
+            </h2>
 
             <p className="text-white/85 text-sm leading-relaxed">
               {sticker.story?.designRationale || 'Design rationale coming soon...'}
@@ -195,70 +199,15 @@ export default function StickerPage() {
       </main>
 
       {/* ==================== BOTTOM SECTION ==================== */}
-      <section 
+      <section
         className="flex-shrink-0"
         style={{ backgroundColor: LUNA.abyss }}
       >
-        {/* More From Region - With Slide Transition */}
-        <div className="px-6 md:px-8 py-6 border-b overflow-hidden" style={{ borderColor: `${LUNA.highlight}15` }}>
-          <p className="text-white/50 text-xs uppercase tracking-wider mb-4">
-            More from {activeRegion}
-          </p>
-          
-          <div className="relative min-h-[88px]">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={activeRegion}
-                initial={{ x: slideDirection * 100 + '%', opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: slideDirection * -100 + '%', opacity: 0 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="flex gap-3 overflow-x-auto hide-scrollbar pb-2"
-              >
-                {regionStickers.length > 0 ? (
-                  regionStickers.map((s) => (
-                    <Link
-                      key={s.id}
-                      href={`/stickers/${s.slug}`}
-                      className="flex-shrink-0 group"
-                    >
-                      <div 
-                        className="w-16 h-16 rounded-xl overflow-hidden transition-all group-hover:scale-110 mb-1"
-                        style={{ border: `2px solid ${LUNA.highlight}30` }}
-                      >
-                        {s.image ? (
-                          <img 
-                            src={s.image} 
-                            alt={s.name}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div 
-                            className="w-full h-full flex items-center justify-center"
-                            style={{ background: `linear-gradient(135deg, ${LUNA.midDepth} 0%, ${LUNA.abyss} 100%)` }}
-                          >
-                            <span className="text-white/50 text-[8px] text-center px-1">{s.name}</span>
-                          </div>
-                        )}
-                      </div>
-                      <p className="text-white/40 text-[10px] text-center truncate w-16 group-hover:text-white/70 transition-colors">
-                        {s.name}
-                      </p>
-                    </Link>
-                  ))
-                ) : (
-                  <p className="text-white/30 text-sm">No other stickers in this region</p>
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-
         {/* Region Tabs - Glass Style with Sliding Indicator */}
-        <div className="px-6 md:px-8 py-4 flex justify-center">
-          <nav 
+        <div className="px-6 md:px-8 py-4 flex justify-center border-b" style={{ borderColor: `${LUNA.highlight}15` }}>
+          <nav
             className="inline-flex items-center gap-1 p-1.5 rounded-full overflow-x-auto hide-scrollbar max-w-full relative"
-            style={{ 
+            style={{
               backgroundColor: `${LUNA.abyss}30`,
               backdropFilter: 'blur(12px)',
               border: '1px solid rgba(255,255,255,0.1)'
@@ -291,6 +240,58 @@ export default function StickerPage() {
               </button>
             ))}
           </nav>
+        </div>
+
+        {/* More From Region - With Slide Transition */}
+        <div className="px-6 md:px-8 py-6 overflow-hidden">
+          <p className="text-white/50 text-xs uppercase tracking-wider mb-4">
+            More from {activeRegion}
+          </p>
+
+          <div className="relative min-h-[88px]">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={activeRegion}
+                initial={{ x: slideDirection * 100 + '%', opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: slideDirection * -100 + '%', opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="flex gap-3 overflow-x-auto hide-scrollbar pb-2"
+              >
+                {regionStickers.length > 0 ? (
+                  regionStickers.map((s) => (
+                    <Link
+                      key={s.id}
+                      href={`/stickers/${s.slug}`}
+                      className="flex-shrink-0 group"
+                    >
+                      <div className="w-20 h-20 flex items-center justify-center transition-all group-hover:scale-110 mb-1">
+                        {s.image ? (
+                          <img
+                            src={s.image}
+                            alt={s.name}
+                            className="w-full h-full object-contain drop-shadow-lg"
+                          />
+                        ) : (
+                          <div
+                            className="w-16 h-16 rounded-xl flex items-center justify-center"
+                            style={{ background: `linear-gradient(135deg, ${LUNA.midDepth} 0%, ${LUNA.abyss} 100%)` }}
+                          >
+                            <span className="text-white/50 text-[8px] text-center px-1">{s.name}</span>
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-white/40 text-[10px] text-center truncate w-20 group-hover:text-white/70 transition-colors">
+                        {s.name}
+                      </p>
+                    </Link>
+                  ))
+                ) : (
+                  <p className="text-white/30 text-sm">No other stickers in this region</p>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </section>
 

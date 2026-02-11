@@ -37,40 +37,32 @@ const POLICY_CONTENT = {
     lastUpdated: 'February 2026',
     sections: [
       {
-        heading: 'Introduction',
-        content: `Welcome to Otterseas ("we", "our", "us"). By accessing and using our website www.otterseas.com, you accept and agree to be bound by the terms and conditions outlined below. Please read these terms carefully before using our website or making a purchase.`,
+        heading: '1. Welcome',
+        content: `Hi there! Thanks for stopping by Otterseas. By shopping with us or using our website, you agree to these Terms & Conditions. We are a UK-registered company, and we've written these terms to be friendly but legally solid to protect both you and us.\n\n"We/Us/Our" refers to Otterseas (Registered in the UK).\n"You" refers to the customer visiting or buying from us.`,
       },
       {
-        heading: 'Use of Website',
-        content: `You may use our website for lawful purposes only. You must not use our website in any way that causes, or may cause, damage to the website or impairment of the availability or accessibility of the website. You must not use our website in any way which is unlawful, illegal, fraudulent, or harmful.`,
+        heading: '2. Our Products',
+        content: `We do our absolute best to ensure that the photos and descriptions of our goods are accurate. However, screens vary, and colours may look slightly different in real life.\n\nConformity of Goods: Under the UK Consumer Rights Act 2015, all goods sold must be of satisfactory quality, fit for purpose, and as described.\n\nAvailability: If you order something that has sadly gone out of stock, we will refund you immediately and let you know.\n\nPricing: We reserve the right to change prices at any time, but we will never change the price of an order you have already placed.`,
       },
       {
-        heading: 'Products & Pricing',
-        content: `All products are subject to availability. We reserve the right to discontinue any product at any time. Prices are shown in multiple currencies for your convenience. The final price charged will be in the currency selected at checkout. We reserve the right to change prices at any time without prior notice. Prices do not include shipping costs, which will be calculated at checkout.`,
+        heading: '3. Shipping, Customs & Delivery',
+        content: `We ship internationally! Whether you are in the UK, the EU, or the USA, we want our goods to reach you safely.\n\nDispatch Times: We aim to ship orders within 1-2 business days.\n\nUK Customers: No extra duties or taxes will apply for domestic shipping.\n\nInternational Customers (EU & USA): If you are ordering from outside the UK, please note that you (the buyer) are responsible for any customs fees, import VAT, or taxes charged by your country. We have no control over these charges and cannot falsify customs forms (it's illegal!).\n\nDelays: We are not liable for delays caused by customs processing or the postal service once the package has left our hands.`,
       },
       {
-        heading: 'Orders & Payment',
-        content: `When you place an order, you are making an offer to purchase. We reserve the right to accept or decline your order. Payment must be made in full at the time of ordering. We accept major credit cards and other payment methods as displayed at checkout. All payments are processed securely through Shopify Payments.`,
+        heading: '4. Returns & Refunds (Your Right to Cancel)',
+        content: `We comply with the UK Consumer Contracts Regulations and the EU Consumer Rights Directive, which gives you a "cooling-off" period.\n\n14-Day Cancellation Right: You have 14 days from the day you receive your goods to notify us that you want to return them for a refund—no questions asked.\n\nReturn Window: Once you've notified us, you have another 14 days to post the goods back to us.\n\nReturn Costs: You are responsible for the cost of return shipping unless the item arrived damaged or faulty.\n\nRefund Processing: We will process your refund within 14 days of receiving the returned goods.\n\nDamaged/Faulty Goods: If an item arrives broken or defective, please email us within 30 days. Under the Consumer Rights Act, you are entitled to a full refund or replacement for faulty goods.`,
       },
       {
-        heading: 'Intellectual Property',
-        content: `All content on this website, including but not limited to text, graphics, logos, images, artwork, and designs, is the property of Otterseas and is protected by copyright and other intellectual property laws. Our original artwork and sticker designs may not be reproduced, distributed, or used without our express written permission.`,
+        heading: '5. Liability',
+        content: `UK/EU: We do not exclude liability for death or personal injury caused by our negligence or for fraud. For other losses, our liability is limited to the purchase price of the goods.\n\nUSA: To the fullest extent permitted by law, we provide our goods "as is." We disclaim implied warranties of merchantability and fitness for a particular purpose.`,
       },
       {
-        heading: 'Limitation of Liability',
-        content: `To the fullest extent permitted by law, Otterseas shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, or other intangible losses, resulting from your use of our website or products.`,
-      },
-      {
-        heading: 'Governing Law',
-        content: `These terms and conditions are governed by and construed in accordance with the laws of the United Kingdom. Any disputes relating to these terms shall be subject to the exclusive jurisdiction of the courts of the United Kingdom.`,
-      },
-      {
-        heading: 'Changes to Terms',
-        content: `We reserve the right to update these terms and conditions at any time. Changes will be posted on this page with an updated revision date. Your continued use of the website after any changes constitutes acceptance of the new terms.`,
+        heading: '6. Governing Law',
+        content: `These terms are governed by the laws of England and Wales. Any disputes arising from your use of this site shall be settled in the courts of England and Wales.`,
       },
       {
         heading: 'Contact Us',
-        content: `If you have any questions about these Terms & Conditions, please contact us at hello@otterseas.com.`,
+        content: `If you have any questions about these Terms & Conditions, please contact us at info@otterseas.com.`,
       },
     ],
   },
@@ -79,48 +71,36 @@ const POLICY_CONTENT = {
     lastUpdated: 'February 2026',
     sections: [
       {
-        heading: 'Introduction',
-        content: `Otterseas ("we", "our", "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website www.otterseas.com or make a purchase from us.`,
+        heading: '1. Who We Are',
+        content: `This Privacy Policy explains how we handle your data in compliance with the UK Data Protection Act 2018 (UK GDPR), EU GDPR, and standard US privacy practices.\n\nThe data controller for your information is Otterseas (Registered in the UK). You can contact us at: info@otterseas.com.`,
       },
       {
-        heading: 'Information We Collect',
-        content: `We collect information you provide directly to us, including: name, email address, shipping address, billing address, phone number (optional), and payment information. We also automatically collect certain information when you visit our website, including your IP address, browser type, operating system, referring URLs, and information about how you interact with our website.`,
+        heading: '2. What Information We Collect',
+        content: `We only collect information that is necessary to fulfil your order or improve your experience:\n\nIdentity Data: Name, username.\n\nContact Data: Billing address, delivery address, email address, telephone number.\n\nTransaction Data: Details of products you have purchased.\n\nNote: We do not see or store your credit card numbers; these are handled securely by our payment processor.`,
       },
       {
-        heading: 'How We Use Your Information',
-        content: `We use the information we collect to: process and fulfill your orders, communicate with you about your order and provide customer support, send you marketing communications (with your consent), improve our website and products, comply with legal obligations, and detect and prevent fraud.`,
+        heading: '3. How We Use Your Data',
+        content: `We use your data strictly for the following legal bases:\n\nContractual Necessity: To process and deliver your order.\n\nLegal Obligation: To keep tax and accounting records (e.g., HMRC requires us to keep sales records for 6 years).\n\nConsent: To send you marketing emails only if you have actively opted in.`,
       },
       {
-        heading: 'Sharing Your Information',
-        content: `We may share your information with: service providers who assist us in operating our website and fulfilling orders (such as Shopify, payment processors, and shipping carriers), and legal authorities when required by law. We do not sell your personal information to third parties.`,
+        heading: '4. Sharing Your Data',
+        content: `We respect your privacy and will never sell your data. We only share data with third parties required to make the shop run:\n\nShipping Providers: (e.g., Royal Mail, USPS) to deliver your package.\n\nPayment Processors: (e.g., Stripe, PayPal) to handle payments.\n\nWebsite Hosts: Shopify, to keep the site online.`,
       },
       {
-        heading: 'Cookies',
-        content: `We use cookies and similar tracking technologies to track activity on our website and hold certain information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some parts of our website.`,
+        heading: '5. International Transfers',
+        content: `If we transfer your data outside the UK/EU (for example, if our website server is in the US), we ensure it is protected by appropriate safeguards (such as Standard Contractual Clauses).`,
       },
       {
-        heading: 'Data Security',
-        content: `We implement appropriate technical and organisational measures to protect your personal information against unauthorised access, alteration, disclosure, or destruction. All payment transactions are encrypted using SSL technology and processed through secure payment providers.`,
+        heading: '6. Your Rights',
+        content: `Under GDPR, you have the right to:\n\nAccess: Ask for a copy of the data we hold about you.\n\nCorrection: Ask us to fix wrong information.\n\nErasure: Ask us to delete your data ("Right to be Forgotten"), provided we don't need it for legal tax reasons.\n\nObjection: Opt-out of marketing at any time.\n\nTo exercise any of these rights, please email us at info@otterseas.com.`,
       },
       {
-        heading: 'Your Rights',
-        content: `Under UK GDPR, you have the right to: access the personal data we hold about you, request correction of inaccurate data, request deletion of your data, object to processing of your data, request restriction of processing, and data portability. To exercise any of these rights, please contact us at hello@otterseas.com.`,
-      },
-      {
-        heading: 'Data Retention',
-        content: `We retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law. Order information is retained for accounting and legal purposes.`,
-      },
-      {
-        heading: 'Marketing Communications',
-        content: `With your consent, we may send you emails about new products, special offers, and other updates. You can opt out of marketing communications at any time by clicking the "unsubscribe" link in any marketing email or by contacting us directly.`,
-      },
-      {
-        heading: 'Changes to This Policy',
-        content: `We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date.`,
+        heading: '7. Cookies',
+        content: `We use cookies to keep track of what is in your shopping basket and to understand how visitors use our site. You can choose to accept only essential cookies or all cookies including analytics. You can change your preferences at any time. Please note that our shop may not work perfectly without essential cookies.`,
       },
       {
         heading: 'Contact Us',
-        content: `If you have any questions about this Privacy Policy, please contact us at hello@otterseas.com.`,
+        content: `If you have any questions about this Privacy Policy, please contact us at info@otterseas.com.`,
       },
     ],
   },
@@ -138,7 +118,7 @@ const POLICY_CONTENT = {
       },
       {
         heading: 'How to Request a Return',
-        content: `To initiate a return, please contact us at hello@otterseas.com with your order number and reason for return. We will provide you with return instructions and a return address. Please do not send items back without contacting us first.`,
+        content: `To initiate a return, please contact us at info@otterseas.com with your order number and reason for return. We will provide you with return instructions and a return address. Please do not send items back without contacting us first.`,
       },
       {
         heading: 'Return Shipping',
@@ -150,7 +130,7 @@ const POLICY_CONTENT = {
       },
       {
         heading: 'Exchanges',
-        content: `If you'd like to exchange an item for a different product or variant, please contact us at hello@otterseas.com. We'll do our best to accommodate exchanges subject to stock availability. For exchanges, please follow our standard return process and place a new order.`,
+        content: `If you'd like to exchange an item for a different product or variant, please contact us at info@otterseas.com. We'll do our best to accommodate exchanges subject to stock availability. For exchanges, please follow our standard return process and place a new order.`,
       },
       {
         heading: 'Damaged or Faulty Items',
@@ -162,7 +142,7 @@ const POLICY_CONTENT = {
       },
       {
         heading: 'Contact Us',
-        content: `For any returns or refund queries, please email us at hello@otterseas.com. We aim to respond to all enquiries within 24-48 hours.`,
+        content: `For any returns or refund queries, please email us at info@otterseas.com. We aim to respond to all enquiries within 24-48 hours.`,
       },
     ],
   },
@@ -200,7 +180,7 @@ const POLICY_CONTENT = {
       },
       {
         heading: 'Lost or Delayed Parcels',
-        content: `If your parcel appears to be lost or significantly delayed, please contact us at hello@otterseas.com. For UK orders, please allow 10 business days before reporting a lost parcel. For international orders, please allow 28 business days. We will work with the carrier to locate your parcel or arrange a replacement/refund.`,
+        content: `If your parcel appears to be lost or significantly delayed, please contact us at info@otterseas.com. For UK orders, please allow 10 business days before reporting a lost parcel. For international orders, please allow 28 business days. We will work with the carrier to locate your parcel or arrange a replacement/refund.`,
       },
       {
         heading: 'Incorrect Address',
@@ -226,7 +206,7 @@ const POLICY_CONTENT = {
       },
       {
         heading: 'Can I customise my order?',
-        content: `Currently, we don't offer custom sticker designs. However, we're always adding new designs based on customer suggestions! If you have a dive location you'd love to see as a sticker, please let us know at hello@otterseas.com.`,
+        content: `Currently, we don't offer custom sticker designs. However, we're always adding new designs based on customer suggestions! If you have a dive location you'd love to see as a sticker, please let us know at info@otterseas.com.`,
       },
       {
         heading: 'How does the Dive Journal work?',
@@ -234,11 +214,11 @@ const POLICY_CONTENT = {
       },
       {
         heading: 'Do you offer wholesale or bulk orders?',
-        content: `Yes, we offer wholesale pricing for dive shops, resorts, and retailers. Please contact us at hello@otterseas.com with details about your business and the products you're interested in.`,
+        content: `Yes, we offer wholesale pricing for dive shops, resorts, and retailers. Please contact us at info@otterseas.com with details about your business and the products you're interested in.`,
       },
       {
         heading: 'How can I contact customer support?',
-        content: `You can reach us by email at hello@otterseas.com. We aim to respond to all enquiries within 24-48 hours. For order-related questions, please include your order number in your message.`,
+        content: `You can reach us by email at info@otterseas.com. We aim to respond to all enquiries within 24-48 hours. For order-related questions, please include your order number in your message.`,
       },
       {
         heading: 'Do you ship internationally?',
@@ -250,7 +230,7 @@ const POLICY_CONTENT = {
       },
       {
         heading: 'Can I change or cancel my order?',
-        content: `If you need to change or cancel your order, please contact us as soon as possible at hello@otterseas.com. If your order hasn't been dispatched yet, we can usually make changes. Once dispatched, changes cannot be made and you may need to return the item.`,
+        content: `If you need to change or cancel your order, please contact us as soon as possible at info@otterseas.com. If your order hasn't been dispatched yet, we can usually make changes. Once dispatched, changes cannot be made and you may need to return the item.`,
       },
       {
         heading: 'Do you have a rewards or loyalty programme?',
@@ -380,7 +360,7 @@ export default function PoliciesPage() {
                   We're here to help! Get in touch with our friendly team.
                 </p>
                 <a
-                  href="mailto:hello@otterseas.com"
+                  href="mailto:info@otterseas.com"
                   className="inline-flex items-center gap-2 px-6 py-2 rounded-full text-sm font-medium text-white transition-all hover:opacity-90"
                   style={{ backgroundColor: LUNA.surfaceTeal }}
                 >
@@ -388,7 +368,7 @@ export default function PoliciesPage() {
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                     <polyline points="22,6 12,13 2,6"/>
                   </svg>
-                  hello@otterseas.com
+                  info@otterseas.com
                 </a>
               </div>
             </motion.div>

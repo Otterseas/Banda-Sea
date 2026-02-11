@@ -30,6 +30,7 @@ const LUNA = {
 export default function Home() {
   const [activeTab, setActiveTab] = useState(REGIONS[0]);
   const [animatingItems, setAnimatingItems] = useState(new Set());
+  const [selectedSticker, setSelectedSticker] = useState(null); // For modal
   
   const {
     cartItems,
@@ -42,7 +43,6 @@ export default function Home() {
     addToCart,
     removeFromCart,
     updateQuantity,
-    toggleItem,
     clearCart,
     openCart,
   } = useCart();
@@ -56,13 +56,14 @@ export default function Home() {
   const allStickers = getAllStickers();
 
   // Check if sticker is in cart
-  const isInCart = (stickerId) => cartItems[stickerId] > 0;
-  
-  // Get quantity for a sticker
-  const getItemQuantity = (stickerId) => cartItems[stickerId] || 0;
+  const isInCart = (stickerId) => cartItems[stickerId]?.quantity > 0;
 
-  // Toggle sticker in cart with animation
-  const handleToggleSticker = (sticker) => {
+  // Get quantity for a sticker
+  const getItemQuantity = (stickerId) => cartItems[stickerId]?.quantity || 0;
+
+  // Add sticker to cart with animation
+  const handleAddToCart = (sticker, e) => {
+    if (e) e.stopPropagation();
     setAnimatingItems(prev => new Set(prev).add(sticker.id));
     setTimeout(() => {
       setAnimatingItems(prev => {
@@ -72,7 +73,35 @@ export default function Home() {
       });
     }, 300);
 
-    toggleItem(sticker.id);
+    // Add with type for cart categorization (tiered pricing)
+    addToCart({
+      ...sticker,
+      type: 'location-sticker',
+      price: BASE_PRICE,
+    });
+  };
+
+  // Open sticker preview modal
+  const handleOpenPreview = (sticker) => {
+    setSelectedSticker(sticker);
+  };
+
+  // Close modal
+  const handleClosePreview = () => {
+    setSelectedSticker(null);
+  };
+
+  // Navigate to next/previous sticker in region
+  const handleNavigateSticker = (direction) => {
+    if (!selectedSticker) return;
+    const currentIndex = activeStickers.findIndex(s => s.id === selectedSticker.id);
+    let newIndex;
+    if (direction === 'next') {
+      newIndex = currentIndex < activeStickers.length - 1 ? currentIndex + 1 : 0;
+    } else {
+      newIndex = currentIndex > 0 ? currentIndex - 1 : activeStickers.length - 1;
+    }
+    setSelectedSticker(activeStickers[newIndex]);
   };
 
   // Checkout handler
@@ -442,25 +471,24 @@ export default function Home() {
               return (
                 <div
                   key={sticker.id}
-                  className={`glass-card relative rounded-3xl p-4 cursor-pointer ${inCart ? 'selected' : ''}`}
+                  className={`glass-card relative rounded-3xl p-4 ${inCart ? 'selected' : ''}`}
                   style={{
                     background: `linear-gradient(145deg, rgba(38, 101, 140, 0.5) 0%, rgba(2, 56, 89, 0.7) 100%)`,
                     backdropFilter: 'blur(24px)',
                     WebkitBackdropFilter: 'blur(24px)',
-                    border: inCart 
+                    border: inCart
                       ? `3px solid ${LUNA.highlight}`
                       : `3px solid rgba(167, 235, 242, 0.35)`,
                     boxShadow: inCart
                       ? `0 0 30px rgba(167, 235, 242, 0.4), inset 0 1px 2px rgba(255,255,255,0.15)`
                       : `0 8px 32px rgba(1, 28, 64, 0.5), inset 0 1px 2px rgba(255,255,255,0.1)`,
                   }}
-                  onClick={() => handleToggleSticker(sticker)}
                 >
                   {/* Quantity Badge - positioned outside card bounds */}
                   {quantity > 0 && (
-                    <div 
+                    <div
                       className="absolute w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold z-20"
-                      style={{ 
+                      style={{
                         top: '-10px',
                         right: '-10px',
                         backgroundColor: LUNA.highlight,
@@ -472,21 +500,22 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* Inner Box - Semi-transparent glass effect */}
-                  <div 
-                    className="rounded-2xl p-2"
+                  {/* Clickable Image Area - Opens Preview Modal */}
+                  <div
+                    className="rounded-2xl p-2 cursor-pointer transition-transform hover:scale-[1.02]"
                     style={{
                       backgroundColor: 'rgba(255, 255, 255, 0.2)',
                       backdropFilter: 'blur(8px)',
                       WebkitBackdropFilter: 'blur(8px)',
                       boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.3), 0 4px 15px rgba(0,0,0,0.1)'
                     }}
+                    onClick={() => handleOpenPreview(sticker)}
                   >
                     {/* Sticker Image */}
                     <div className="aspect-square rounded-xl overflow-hidden flex items-center justify-center">
                       {sticker.image && sticker.image !== '/stickers/placeholder.png' ? (
-                        <img 
-                          src={sticker.image} 
+                        <img
+                          src={sticker.image}
                           alt={sticker.name}
                           className="w-full h-full object-contain"
                         />
@@ -503,23 +532,30 @@ export default function Home() {
                     <h3 className="text-white text-sm font-bold truncate">
                       {sticker.name}
                     </h3>
-                    <div className="flex items-center justify-between mt-1">
-                      <span className="text-white/60 text-xs truncate flex-1">
-                        {sticker.country}
-                      </span>
-                      <Link 
-                        href={`/stickers/${sticker.slug}`}
-                        onClick={(e) => e.stopPropagation()}
-                        className="text-xs font-semibold transition-all hover:scale-105"
-                        style={{ color: LUNA.highlight }}
-                      >
-                        View →
-                      </Link>
-                    </div>
-                    <div className="flex items-center justify-end mt-1">
+                    <p className="text-white/60 text-xs truncate mt-0.5">
+                      {sticker.country}
+                    </p>
+
+                    {/* Price and Add Button Row */}
+                    <div className="flex items-center justify-between mt-3 gap-2">
                       <span style={{ color: LUNA.highlight }} className="text-sm font-bold">
                         {formatPrice(pricePerItem)}
                       </span>
+                      <button
+                        onClick={(e) => handleAddToCart(sticker, e)}
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105 flex-shrink-0"
+                        style={{
+                          background: inCart
+                            ? LUNA.highlight
+                            : 'rgba(255, 255, 255, 0.1)',
+                          backdropFilter: 'blur(10px)',
+                          border: `2px solid ${LUNA.highlight}`,
+                          color: inCart ? LUNA.abyss : 'white',
+                          boxShadow: `0 0 15px ${LUNA.highlight}30`
+                        }}
+                      >
+                        {inCart ? '+ Add More' : 'Add to Pack'}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -702,6 +738,162 @@ export default function Home() {
           </svg>
         </motion.button>
       )}
+
+      {/* ===========================================
+          STICKER PREVIEW MODAL
+          =========================================== */}
+      <AnimatePresence>
+        {selectedSticker && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ backgroundColor: 'rgba(1, 28, 64, 0.9)' }}
+            onClick={handleClosePreview}
+          >
+            {/* Modal Content */}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              className="relative w-full max-w-md rounded-3xl p-6"
+              style={{
+                background: `linear-gradient(145deg, rgba(38, 101, 140, 0.95) 0%, rgba(2, 56, 89, 0.98) 100%)`,
+                backdropFilter: 'blur(24px)',
+                border: `3px solid ${LUNA.highlight}`,
+                boxShadow: `0 0 60px ${LUNA.highlight}40, 0 25px 50px rgba(1, 28, 64, 0.8)`
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={handleClosePreview}
+                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                style={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  border: `1px solid ${LUNA.highlight}40`
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={LUNA.highlight} strokeWidth="2">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+
+              {/* Navigation Arrows */}
+              <button
+                onClick={() => handleNavigateSticker('prev')}
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                style={{
+                  backgroundColor: LUNA.abyss,
+                  border: `2px solid ${LUNA.highlight}`,
+                  boxShadow: `0 0 20px ${LUNA.highlight}40`
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={LUNA.highlight} strokeWidth="2">
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                onClick={() => handleNavigateSticker('next')}
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                style={{
+                  backgroundColor: LUNA.abyss,
+                  border: `2px solid ${LUNA.highlight}`,
+                  boxShadow: `0 0 20px ${LUNA.highlight}40`
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={LUNA.highlight} strokeWidth="2">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+
+              {/* Sticker Image */}
+              <div
+                className="rounded-2xl p-4 mb-4"
+                style={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                  backdropFilter: 'blur(8px)'
+                }}
+              >
+                <div className="aspect-square rounded-xl overflow-hidden flex items-center justify-center">
+                  {selectedSticker.image && selectedSticker.image !== '/stickers/placeholder.png' ? (
+                    <img
+                      src={selectedSticker.image}
+                      alt={selectedSticker.name}
+                      className="w-full h-full object-contain drop-shadow-2xl"
+                    />
+                  ) : (
+                    <div className="text-white/50 text-xl text-center p-4">
+                      {selectedSticker.name}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Sticker Info */}
+              <div className="text-center mb-4">
+                <h3 className="text-2xl font-bold text-white mb-1">
+                  {selectedSticker.name}
+                </h3>
+                <p className="text-white/60 text-sm">
+                  {selectedSticker.country} • {selectedSticker.region}
+                </p>
+              </div>
+
+              {/* Region Counter */}
+              <p className="text-center text-white/40 text-xs mb-4">
+                {activeStickers.findIndex(s => s.id === selectedSticker.id) + 1} of {activeStickers.length} in {activeTab}
+              </p>
+
+              {/* Price */}
+              <div className="text-center mb-4">
+                <span style={{ color: LUNA.highlight }} className="text-2xl font-bold">
+                  {formatPrice(pricePerItem)}
+                </span>
+                <span className="text-white/50 text-sm ml-2">each</span>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3">
+                <Link
+                  href={`/stickers/${selectedSticker.slug}`}
+                  className="flex-1 py-3 rounded-xl text-center text-sm font-semibold transition-all hover:scale-[1.02]"
+                  style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    border: `2px solid ${LUNA.highlight}40`,
+                    color: 'white'
+                  }}
+                >
+                  More Info →
+                </Link>
+                <button
+                  onClick={(e) => {
+                    handleAddToCart(selectedSticker, e);
+                  }}
+                  className="flex-1 py-3 rounded-xl text-sm font-semibold transition-all hover:scale-[1.02]"
+                  style={{
+                    background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                    border: `2px solid ${LUNA.highlight}`,
+                    color: 'white',
+                    boxShadow: `0 0 20px ${LUNA.highlight}40`
+                  }}
+                >
+                  {isInCart(selectedSticker.id) ? '+ Add Another' : 'Add to Pack'}
+                </button>
+              </div>
+
+              {/* Quantity indicator if in cart */}
+              {isInCart(selectedSticker.id) && (
+                <p className="text-center mt-3 text-sm" style={{ color: LUNA.highlight }}>
+                  {getItemQuantity(selectedSticker.id)} in your pack
+                </p>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ===========================================
           CUSTOMER REVIEWS SECTION

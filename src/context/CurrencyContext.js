@@ -1,40 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
-
-// ===========================================
-// FALLBACK RATES (used if API fails)
-// ===========================================
-const FALLBACK_RATES = {
-  GBP: 1,
-  EUR: 1.17,
-  USD: 1.26,
-};
-
-// Currency display settings
-const CURRENCY_CONFIG = {
-  GBP: {
-    code: 'GBP',
-    symbol: '£',
-    name: 'British Pound',
-    flag: '🇬🇧',
-    locale: 'en-GB',
-  },
-  EUR: {
-    code: 'EUR',
-    symbol: '€',
-    name: 'Euro',
-    flag: '🇪🇺',
-    locale: 'de-DE',
-  },
-  USD: {
-    code: 'USD',
-    symbol: '$',
-    name: 'US Dollar',
-    flag: '🇺🇸',
-    locale: 'en-US',
-  },
-};
+import { FALLBACK_RATES, CURRENCY_CONFIG } from '@/utils/currencyConfig';
 
 // ===========================================
 // CURRENCY CONTEXT
