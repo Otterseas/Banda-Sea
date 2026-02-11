@@ -9,6 +9,8 @@ import CurrencySwitcher from '@/components/CurrencySwitcher';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 // Luna Color Palette
 const COLORS = {
@@ -157,7 +159,6 @@ export default function ProductPage() {
   const { addToCart, openDrawer } = useCart();
   const { formatPrice } = useCurrency();
   const [selectedVariant, setSelectedVariant] = useState(0);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [stock, setStock] = useState({ loading: true, quantity: null, available: true });
 
   const currentVariant = product?.variants?.[selectedVariant];
@@ -222,31 +223,22 @@ export default function ProductPage() {
   const featureTypes = ['vacuum', 'capacity', 'steel', 'bpa', 'condensation'];
 
   return (
-    <div 
-      className="min-h-screen w-full flex flex-col md:flex-row"
+    <div
+      className="min-h-screen w-full"
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
-      {/* ==================== LEFT PANEL - FIXED (60%) ==================== */}
-      <div 
-        className="w-full md:w-[60%] md:h-screen md:sticky md:top-0 flex flex-col relative overflow-hidden"
-        style={{
-          background: `linear-gradient(160deg, ${COLORS.midDepth} 0%, ${COLORS.deepWater} 40%, ${COLORS.abyss} 100%)`
-        }}
-      >
-        {/* Header */}
-        <header className="flex-shrink-0 h-16 flex items-center justify-between px-6 relative z-10">
-          <Link href="/" className="flex items-center gap-3">
-            <img
-              src="/logo.png"
-              alt="Otterseas"
-              className="w-8 h-8 rounded-lg object-contain"
-            />
-            <span className="text-lg font-normal tracking-tight text-white">
-              Otterseas
-            </span>
-          </Link>
-          <CurrencySwitcher />
-        </header>
+      {/* Shared Header */}
+      <Header variant="dark" currentPath={`/products/${params.slug}`} />
+
+      {/* Main Content - Split Layout */}
+      <div className="flex flex-col md:flex-row">
+        {/* ==================== LEFT PANEL (60%) ==================== */}
+        <div
+          className="w-full md:w-[60%] min-h-[calc(100vh-64px)] flex flex-col relative overflow-hidden"
+          style={{
+            background: `linear-gradient(160deg, ${COLORS.midDepth} 0%, ${COLORS.deepWater} 40%, ${COLORS.abyss} 100%)`
+          }}
+        >
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col px-6 pb-6 relative overflow-y-auto">
@@ -463,73 +455,6 @@ export default function ProductPage() {
 
       {/* ==================== RIGHT PANEL - SCROLLABLE (40%) ==================== */}
       <div className="w-full md:w-[40%] min-h-screen bg-white flex flex-col relative">
-        {/* Hamburger Menu */}
-        <div className="absolute top-4 right-4 z-20">
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex flex-col gap-1.5 p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <span className="w-6 h-0.5" style={{ backgroundColor: COLORS.deepWater }} />
-            <span className="w-6 h-0.5" style={{ backgroundColor: COLORS.deepWater }} />
-            <span className="w-6 h-0.5" style={{ backgroundColor: COLORS.deepWater }} />
-          </button>
-
-          {/* Dropdown Menu */}
-          <AnimatePresence>
-            {isMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute top-12 right-0 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden"
-              >
-                <Link 
-                  href="/" 
-                  className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                  style={{ color: COLORS.deepWater }}
-                >
-                  Home
-                </Link>
-                <Link 
-                  href="/products" 
-                  className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                  style={{ color: COLORS.deepWater }}
-                >
-                  All Products
-                </Link>
-                <Link 
-                  href="/products/surface-tank" 
-                  className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium"
-                  style={{ color: COLORS.surfaceTeal }}
-                >
-                  Surface Tank
-                </Link>
-                <Link 
-                  href="/products/dive-journal" 
-                  className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                  style={{ color: COLORS.deepWater }}
-                >
-                  Dive Journal
-                </Link>
-                <Link 
-                  href="/products/logbook-booster-pack" 
-                  className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                  style={{ color: COLORS.deepWater }}
-                >
-                  Booster Pack
-                </Link>
-                <Link 
-                  href="/stickers" 
-                  className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                  style={{ color: COLORS.deepWater }}
-                >
-                  Location Stickers
-                </Link>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto px-6 py-10">
           {/* Story Section */}
@@ -718,6 +643,10 @@ export default function ProductPage() {
           <div className="h-16" />
         </div>
       </div>
+      </div>
+
+      {/* Shared Footer */}
+      <Footer />
     </div>
   );
 }

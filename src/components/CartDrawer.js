@@ -16,6 +16,101 @@ const LUNA = {
 };
 
 // ===========================================
+// SHIPPING THRESHOLDS BY REGION (in GBP)
+// ===========================================
+const SHIPPING_THRESHOLDS = {
+  GBP: 50,   // UK
+  EUR: 80,   // EU
+  USD: 100,  // USA / Rest of World
+};
+
+// ===========================================
+// UPSELL PRODUCT RECOMMENDATIONS
+// Stickers have no weight — they help offset
+// shipping margins on heavier items.
+// ===========================================
+const UPSELL_PRODUCTS = {
+  funStickers: [
+    {
+      id: '50590639194378',
+      shopifyVariantId: '50590639194378',
+      name: "Post-Dive Hair. Don't Care",
+      type: 'fun-sticker',
+      price: 3.50,
+      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/PostDiveHairDontCare-MarketingImage.jpg?v=1746535285&width=200',
+      tagline: 'Lightweight & fun!',
+    },
+    {
+      id: '51143940047114',
+      shopifyVariantId: '51143940047114',
+      name: 'BCD... Bring Coffee Down',
+      type: 'fun-sticker',
+      price: 3.50,
+      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/BCD....BringCoffeeDown-MarketingImage.jpg?v=1746535044&width=200',
+      tagline: 'What BCD really stands for!',
+    },
+    {
+      id: '51143553548554',
+      shopifyVariantId: '51143553548554',
+      name: 'But First. Coffee!',
+      type: 'fun-sticker',
+      price: 3.50,
+      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/DiveFirstCoffeeSecond-MarketingImage.jpg?v=1746534827&width=200',
+      tagline: 'Best buddy = hot coffee!',
+    },
+  ],
+  boosterPack: {
+    id: '49872531325194',
+    shopifyVariantId: '49872531325194',
+    name: 'Logbook Booster Pack',
+    type: 'product',
+    price: 12.00,
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Logs.jpg?v=1743749112&width=200',
+    tagline: '30 extra dive log pages!',
+  },
+  locationPack: {
+    id: '52451906945290',
+    shopifyVariantId: '52451906945290',
+    name: 'The Indonesia Pack',
+    type: 'product',
+    price: 15.00,
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/RajaAmpat-sticker.png?v=1769313395&width=200',
+    tagline: '9 stickers, 1 great price!',
+  },
+  booster2Pack: {
+    id: '52493596131594',
+    shopifyVariantId: '52493596131594',
+    name: '2× Booster Packs',
+    type: 'product',
+    price: 20.00,
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Logs.jpg?v=1743749112&width=200',
+    tagline: 'Save £4 — more logs, more dives!',
+  },
+  diveJournal: {
+    id: '49658874331402',
+    shopifyVariantId: '49658874331402',
+    name: 'The Dive Journal',
+    type: 'product',
+    price: 28.00,
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Journal_-_Image_only.jpg?v=1769573325&width=200',
+    tagline: 'More than just stats!',
+  },
+};
+
+// Returns the recommended upsell product based on the gap to free shipping (in GBP).
+function getUpsellRecommendation(gap, totalItems) {
+  if (gap <= 0) return null;
+  if (gap <= 9) {
+    const stickers = UPSELL_PRODUCTS.funStickers;
+    return stickers[totalItems % stickers.length];
+  }
+  if (gap <= 14) return UPSELL_PRODUCTS.boosterPack;
+  if (gap <= 19) return UPSELL_PRODUCTS.locationPack;
+  if (gap <= 25) return UPSELL_PRODUCTS.booster2Pack;
+  return UPSELL_PRODUCTS.diveJournal;
+}
+
+// ===========================================
 // PRODUCT IMAGES (for items without images stored)
 // ===========================================
 const PRODUCT_IMAGES = {
@@ -39,6 +134,7 @@ export default function CartDrawer() {
     closeDrawer,
     updateQuantity,
     removeFromCart,
+    addToCart,
     // Location stickers
     locationStickerCount,
     locationStickerTotal,
@@ -400,51 +496,75 @@ export default function CartDrawer() {
                 </span>
               </div>
 
-              {/* Free Shipping Progress */}
+              {/* Free Shipping Progress & Upsell CTA */}
               {(() => {
-                const ukThreshold = 75;
-                const intlThreshold = 100;
-                const amountToFreeUK = ukThreshold - totalPrice;
-                const amountToFreeIntl = intlThreshold - totalPrice;
-                
-                if (totalPrice >= intlThreshold) {
+                const threshold = SHIPPING_THRESHOLDS[currency] || SHIPPING_THRESHOLDS.USD;
+                const gap = threshold - totalPrice;
+                const progress = Math.min(100, (totalPrice / threshold) * 100);
+                const regionLabel = currency === 'GBP' ? 'UK' : currency === 'EUR' ? 'EU' : 'international';
+                const upsell = totalPrice > 0 ? getUpsellRecommendation(gap, totalItems) : null;
+
+                if (gap <= 0) {
                   return (
                     <div className="flex items-center gap-2 mb-4 p-2 rounded-lg" style={{ backgroundColor: 'rgba(74, 222, 128, 0.1)' }}>
                       <span className="text-green-400 text-lg">🚚</span>
-                      <span className="text-green-400 text-xs font-medium">FREE worldwide shipping unlocked!</span>
-                    </div>
-                  );
-                } else if (totalPrice >= ukThreshold) {
-                  return (
-                    <div className="mb-4">
-                      <div className="flex items-center gap-2 p-2 rounded-lg mb-1" style={{ backgroundColor: 'rgba(74, 222, 128, 0.1)' }}>
-                        <span className="text-green-400 text-lg">🚚</span>
-                        <span className="text-green-400 text-xs font-medium">FREE UK shipping unlocked!</span>
-                      </div>
-                      <p className="text-white/40 text-xs text-center">
-                        Add {formatPrice(amountToFreeIntl)} more for free international shipping
-                      </p>
+                      <span className="text-green-400 text-xs font-medium">FREE {regionLabel} shipping unlocked!</span>
                     </div>
                   );
                 } else if (totalPrice > 0) {
                   return (
-                    <div className="mb-4 p-2 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)' }}>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-white/50 text-xs">🚚 Free UK shipping</span>
-                        <span className="text-white/50 text-xs">{formatPrice(amountToFreeUK)} away</span>
+                    <div className="mb-4">
+                      {/* Progress bar */}
+                      <div className="p-2 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)' }}>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-white/50 text-xs">🚚 Free {regionLabel} shipping</span>
+                          <span className="text-white/50 text-xs">{formatPrice(gap)} away</span>
+                        </div>
+                        <div className="h-1.5 rounded-full overflow-hidden bg-white/10">
+                          <div
+                            className="h-full rounded-full transition-all duration-500"
+                            style={{
+                              width: `${progress}%`,
+                              backgroundColor: LUNA.surfaceTeal,
+                            }}
+                          />
+                        </div>
                       </div>
-                      <div className="h-1.5 rounded-full overflow-hidden bg-white/10">
-                        <div 
-                          className="h-full rounded-full transition-all duration-500"
-                          style={{ 
-                            width: `${Math.min(100, (totalPrice / ukThreshold) * 100)}%`,
-                            backgroundColor: LUNA.surfaceTeal
+
+                      {/* Upsell Recommendation Card */}
+                      {upsell && (
+                        <div
+                          className="mt-2 p-3 rounded-xl flex items-center gap-3"
+                          style={{
+                            backgroundColor: 'rgba(167, 235, 242, 0.08)',
+                            border: `1px dashed ${LUNA.highlight}30`,
                           }}
-                        />
-                      </div>
-                      <p className="text-white/30 text-[10px] mt-1 text-center">
-                        Free international shipping over {formatPrice(100)}
-                      </p>
+                        >
+                          {upsell.image && (
+                            <div
+                              className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0"
+                              style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                            >
+                              <img src={upsell.image} alt={upsell.name} className="w-full h-full object-cover" />
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-white/80 text-xs font-medium truncate">{upsell.name}</p>
+                            <p className="text-white/40 text-[10px]">{upsell.tagline}</p>
+                            <p style={{ color: LUNA.highlight }} className="text-xs font-medium">{formatPrice(upsell.price)}</p>
+                          </div>
+                          <button
+                            onClick={() => addToCart(upsell)}
+                            className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105 flex-shrink-0"
+                            style={{
+                              backgroundColor: LUNA.surfaceTeal,
+                              color: 'white',
+                            }}
+                          >
+                            Add +
+                          </button>
+                        </div>
+                      )}
                     </div>
                   );
                 }

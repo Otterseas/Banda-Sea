@@ -410,7 +410,7 @@ export default function DiveJournalPage() {
               <motion.div
                 key={feature.id}
                 className="group relative overflow-hidden rounded-2xl cursor-pointer"
-                style={{ 
+                style={{
                   background: `linear-gradient(160deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 100%)`,
                 }}
                 initial={{ opacity: 0, y: 30 }}
@@ -422,13 +422,13 @@ export default function DiveJournalPage() {
                 <div className="flex flex-col md:flex-row h-full">
                   {/* Image - Better positioning */}
                   <div className="md:w-1/2 h-48 md:h-64 overflow-hidden">
-                    <img 
+                    <img
                       src={PRODUCT.images[feature.image]}
                       alt={feature.title}
                       className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
                     />
                   </div>
-                  
+
                   {/* Content */}
                   <div className="md:w-1/2 p-6 flex flex-col justify-center">
                     <span className="text-3xl mb-3">{feature.icon}</span>
@@ -440,6 +440,32 @@ export default function DiveJournalPage() {
               </motion.div>
             ))}
           </div>
+
+          {/* Add to Cart Button */}
+          <motion.div
+            className="flex justify-end mt-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <motion.button
+              onClick={handleAddToCart}
+              className="px-8 py-4 rounded-xl text-sm font-semibold transition-all flex items-center gap-2"
+              style={{
+                background: `linear-gradient(135deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 100%)`,
+                border: `2px solid ${LUNA.surfaceTeal}`,
+                color: 'white',
+                boxShadow: `0 4px 20px ${LUNA.deepWater}50`
+              }}
+              whileHover={{ scale: 1.02, boxShadow: `0 6px 30px ${LUNA.deepWater}70` }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Add to Cart - {formatPrice(currentBundle.price)}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </motion.button>
+          </motion.div>
         </div>
       </section>
 

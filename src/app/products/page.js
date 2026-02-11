@@ -58,7 +58,7 @@ const PRODUCT_ROWS = [
   },
   {
     id: 'row-2',
-    categories: ['Stickers', null, null], // Only first column has header
+    categories: ['Stickers', null, 'Handmade'],
     products: [
       {
         id: 'location-stickers',
@@ -82,12 +82,6 @@ const PRODUCT_ROWS = [
         link: '/products/fun-stickers',
         badge: 'New',
       },
-    ],
-  },
-  {
-    id: 'row-3',
-    categories: ['Handmade', null, null],
-    products: [
       {
         id: 'crochet-creatures',
         name: 'Crochet Creatures',
