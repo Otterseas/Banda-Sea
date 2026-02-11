@@ -4,6 +4,7 @@ import { useCart, STICKER_PRICING } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { SHOPIFY_CHECKOUT_URL } from '@/config/urls';
 
 // Luna color palette
@@ -25,89 +26,100 @@ const SHIPPING_THRESHOLDS = {
 };
 
 // ===========================================
-// UPSELL PRODUCT RECOMMENDATIONS
-// Stickers have no weight — they help offset
-// shipping margins on heavier items.
+// UPSELL PRODUCTS CATALOG
 // ===========================================
-const UPSELL_PRODUCTS = {
-  funStickers: [
-    {
-      id: '50590639194378',
-      shopifyVariantId: '50590639194378',
-      name: "Post-Dive Hair. Don't Care",
-      type: 'fun-sticker',
-      price: 3.50,
-      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/PostDiveHairDontCare-MarketingImage.jpg?v=1746535285&width=200',
-      tagline: 'Lightweight & fun!',
-    },
-    {
-      id: '51143940047114',
-      shopifyVariantId: '51143940047114',
-      name: 'BCD... Bring Coffee Down',
-      type: 'fun-sticker',
-      price: 3.50,
-      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/BCD....BringCoffeeDown-MarketingImage.jpg?v=1746535044&width=200',
-      tagline: 'What BCD really stands for!',
-    },
-    {
-      id: '51143553548554',
-      shopifyVariantId: '51143553548554',
-      name: 'But First. Coffee!',
-      type: 'fun-sticker',
-      price: 3.50,
-      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/DiveFirstCoffeeSecond-MarketingImage.jpg?v=1746534827&width=200',
-      tagline: 'Best buddy = hot coffee!',
-    },
-  ],
+const UPSELL_CATALOG = {
+  // Fun Stickers (Small - £3.50)
+  funSticker1: {
+    id: '50590639194378',
+    shopifyVariantId: '50590639194378',
+    name: "Post-Dive Hair",
+    type: 'fun-sticker',
+    price: 3.50,
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/PostDiveHairDontCare-MarketingImage.jpg?v=1746535285&width=200',
+  },
+  funSticker2: {
+    id: '51143940047114',
+    shopifyVariantId: '51143940047114',
+    name: 'BCD Coffee',
+    type: 'fun-sticker',
+    price: 3.50,
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/BCD....BringCoffeeDown-MarketingImage.jpg?v=1746535044&width=200',
+  },
+  // Booster Pack (Medium - £12)
   boosterPack: {
     id: '49872531325194',
     shopifyVariantId: '49872531325194',
-    name: 'Logbook Booster Pack',
+    name: 'Booster Pack',
     type: 'product',
     price: 12.00,
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Logs.jpg?v=1743749112&width=200',
-    tagline: '30 extra dive log pages!',
   },
+  // Location Pack (Medium - £15)
   locationPack: {
     id: '52451906945290',
     shopifyVariantId: '52451906945290',
-    name: 'The Indonesia Pack',
+    name: 'Indonesia Pack',
     type: 'product',
     price: 15.00,
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/RajaAmpat-sticker.png?v=1769313395&width=200',
-    tagline: '9 stickers, 1 great price!',
   },
-  booster2Pack: {
-    id: '52493596131594',
-    shopifyVariantId: '52493596131594',
-    name: '2× Booster Packs',
-    type: 'product',
-    price: 20.00,
-    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Logs.jpg?v=1743749112&width=200',
-    tagline: 'Save £4 — more logs, more dives!',
-  },
+  // Dive Journal (Large - £28)
   diveJournal: {
     id: '49658874331402',
     shopifyVariantId: '49658874331402',
-    name: 'The Dive Journal',
+    name: 'Dive Journal',
     type: 'product',
     price: 28.00,
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Journal_-_Image_only.jpg?v=1769573325&width=200',
-    tagline: 'More than just stats!',
+  },
+  // Surface Tank (Large - £40)
+  surfaceTank: {
+    id: '52453682807050',
+    shopifyVariantId: '52453682807050',
+    name: 'Surface Tank',
+    type: 'product',
+    price: 40.00,
+    image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=200',
   },
 };
 
-// Returns the recommended upsell product based on the gap to free shipping (in GBP).
-function getUpsellRecommendation(gap, totalItems) {
-  if (gap <= 0) return null;
-  if (gap <= 9) {
-    const stickers = UPSELL_PRODUCTS.funStickers;
-    return stickers[totalItems % stickers.length];
-  }
-  if (gap <= 14) return UPSELL_PRODUCTS.boosterPack;
-  if (gap <= 19) return UPSELL_PRODUCTS.locationPack;
-  if (gap <= 25) return UPSELL_PRODUCTS.booster2Pack;
-  return UPSELL_PRODUCTS.diveJournal;
+// ===========================================
+// PAGE-SPECIFIC UPSELL RECOMMENDATIONS
+// Each page shows 2-3 relevant products
+// ===========================================
+const PAGE_UPSELLS = {
+  // Location Stickers page → Surface Tank, Fun Stickers
+  'stickers': [
+    UPSELL_CATALOG.funSticker1,
+    UPSELL_CATALOG.surfaceTank,
+  ],
+  // Dive Journal page → Booster Packs, Location Pack, Fun Stickers
+  'dive-journal': [
+    UPSELL_CATALOG.funSticker2,
+    UPSELL_CATALOG.boosterPack,
+    UPSELL_CATALOG.locationPack,
+  ],
+  // Surface Tank page → Location Pack, Fun Stickers, Dive Journal
+  'surface-tank': [
+    UPSELL_CATALOG.funSticker1,
+    UPSELL_CATALOG.locationPack,
+    UPSELL_CATALOG.diveJournal,
+  ],
+  // Default/fallback
+  'default': [
+    UPSELL_CATALOG.funSticker1,
+    UPSELL_CATALOG.boosterPack,
+    UPSELL_CATALOG.diveJournal,
+  ],
+};
+
+// Get page context from pathname
+function getPageContext(pathname) {
+  if (pathname?.includes('stickers')) return 'stickers';
+  if (pathname?.includes('dive-journal')) return 'dive-journal';
+  if (pathname?.includes('surface-tank')) return 'surface-tank';
+  return 'default';
 }
 
 // ===========================================
@@ -128,6 +140,10 @@ const PRODUCT_IMAGES = {
 };
 
 export default function CartDrawer() {
+  const pathname = usePathname();
+  const pageContext = getPageContext(pathname);
+  const upsellProducts = PAGE_UPSELLS[pageContext] || PAGE_UPSELLS.default;
+
   const {
     cartItems,
     isDrawerOpen,
@@ -496,13 +512,12 @@ export default function CartDrawer() {
                 </span>
               </div>
 
-              {/* Free Shipping Progress & Upsell CTA */}
+              {/* Free Shipping Progress & Upsell Tabs */}
               {(() => {
                 const threshold = SHIPPING_THRESHOLDS[currency] || SHIPPING_THRESHOLDS.USD;
                 const gap = threshold - totalPrice;
                 const progress = Math.min(100, (totalPrice / threshold) * 100);
                 const regionLabel = currency === 'GBP' ? 'UK' : currency === 'EUR' ? 'EU' : 'international';
-                const upsell = totalPrice > 0 ? getUpsellRecommendation(gap, totalItems) : null;
 
                 if (gap <= 0) {
                   return (
@@ -531,40 +546,40 @@ export default function CartDrawer() {
                         </div>
                       </div>
 
-                      {/* Upsell Recommendation Card */}
-                      {upsell && (
-                        <div
-                          className="mt-2 p-3 rounded-xl flex items-center gap-3"
-                          style={{
-                            backgroundColor: 'rgba(167, 235, 242, 0.08)',
-                            border: `1px dashed ${LUNA.highlight}30`,
-                          }}
-                        >
-                          {upsell.image && (
-                            <div
-                              className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0"
-                              style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                            >
-                              <img src={upsell.image} alt={upsell.name} className="w-full h-full object-cover" />
-                            </div>
-                          )}
-                          <div className="flex-1 min-w-0">
-                            <p className="text-white/80 text-xs font-medium truncate">{upsell.name}</p>
-                            <p className="text-white/40 text-[10px]">{upsell.tagline}</p>
-                            <p style={{ color: LUNA.highlight }} className="text-xs font-medium">{formatPrice(upsell.price)}</p>
-                          </div>
-                          <button
-                            onClick={() => addToCart(upsell)}
-                            className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105 flex-shrink-0"
+                      {/* Upsell Product Tabs - Multiple smaller cards */}
+                      <div className="mt-2 flex gap-2">
+                        {upsellProducts.map((product) => (
+                          <div
+                            key={product.id}
+                            className="flex-1 p-2 rounded-lg flex flex-col items-center text-center"
                             style={{
-                              backgroundColor: LUNA.surfaceTeal,
-                              color: 'white',
+                              backgroundColor: 'rgba(167, 235, 242, 0.06)',
+                              border: `1px solid ${LUNA.highlight}20`,
                             }}
                           >
-                            Add +
-                          </button>
-                        </div>
-                      )}
+                            {product.image && (
+                              <div
+                                className="w-10 h-10 rounded-lg overflow-hidden mb-1"
+                                style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                              >
+                                <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                              </div>
+                            )}
+                            <p className="text-white/70 text-[10px] font-medium truncate w-full">{product.name}</p>
+                            <p style={{ color: LUNA.highlight }} className="text-[10px] font-semibold mb-1">{formatPrice(product.price)}</p>
+                            <button
+                              onClick={() => addToCart(product)}
+                              className="w-full py-1 rounded text-[9px] font-semibold transition-all hover:scale-105"
+                              style={{
+                                backgroundColor: LUNA.surfaceTeal,
+                                color: 'white',
+                              }}
+                            >
+                              Add
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   );
                 }
