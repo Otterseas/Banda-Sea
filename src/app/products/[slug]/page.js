@@ -232,16 +232,15 @@ export default function ProductPage() {
 
       {/* Main Content - Split Layout */}
       <div className="flex flex-col md:flex-row">
-        {/* ==================== LEFT PANEL (60%) ==================== */}
+        {/* ==================== LEFT PANEL - FIXED (60%) ==================== */}
         <div
-          className="w-full md:w-[60%] min-h-[calc(100vh-64px)] flex flex-col relative overflow-hidden"
+          className="w-full md:w-[60%] md:h-[calc(100vh-64px)] md:sticky md:top-16 flex flex-col relative overflow-hidden"
           style={{
             background: `linear-gradient(160deg, ${COLORS.midDepth} 0%, ${COLORS.deepWater} 40%, ${COLORS.abyss} 100%)`
           }}
         >
-
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col px-6 pb-6 relative overflow-y-auto">
+          {/* Main Content */}
+          <div className="flex-1 flex flex-col px-6 py-6 relative overflow-y-auto">
           {/* Title */}
           <div className="mb-3">
             <h1
