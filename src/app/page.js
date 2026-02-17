@@ -264,6 +264,7 @@ function LoadingScreen({ onComplete }) {
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeProduct, setActiveProduct] = useState(0);
+  const [expandedMobile, setExpandedMobile] = useState(null); // For mobile accordion
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [blogPosts, setBlogPosts] = useState([]);
   const [isBlogLoading, setIsBlogLoading] = useState(true);
@@ -316,10 +317,10 @@ export default function HomePage() {
         {/* Hero Section - Split Panels */}
         <div className="min-h-screen w-full flex flex-col md:flex-row">
           {/* ===========================================
-              LEFT PANEL - PRODUCT SHOWCASE (60%)
+              LEFT PANEL - PRODUCT SHOWCASE (60%) - Desktop Only
               =========================================== */}
           <div
-            className="w-full md:w-[60%] min-h-[50vh] md:min-h-screen md:h-screen md:sticky md:top-0 flex flex-col relative"
+            className="hidden md:flex w-full md:w-[60%] min-h-screen md:h-screen md:sticky md:top-0 flex-col relative"
             style={{
               background: `linear-gradient(160deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 40%, ${LUNA.abyss} 100%)`
             }}
@@ -424,13 +425,30 @@ export default function HomePage() {
           </div>
 
           {/* ===========================================
-              RIGHT PANEL - NAVIGATION (40%)
+              RIGHT PANEL - NAVIGATION (40%) + Mobile Accordion
               =========================================== */}
-          <div className="w-full md:w-[40%] min-h-[50vh] md:min-h-screen bg-white flex flex-col relative">
+          <div className="w-full md:w-[40%] min-h-screen bg-white flex flex-col relative">
+            {/* Mobile Header - Logo visible on mobile */}
+            <header className="flex md:hidden items-center justify-between px-6 py-4 border-b border-gray-100">
+              <Link href="/" className="flex items-center gap-3">
+                <img
+                  src="/logo.png"
+                  alt="Otterseas"
+                  className="w-10 h-10 rounded-xl object-contain"
+                />
+                <span
+                  className="text-xl font-medium tracking-tight"
+                  style={{ color: LUNA.deepWater }}
+                >
+                  Otterseas
+                </span>
+              </Link>
+            </header>
+
             {/* Currency Switcher & Hamburger Menu */}
             <div className="absolute top-4 right-6 z-20 flex items-center gap-3">
               <CurrencySwitcher variant="light" />
-              <button 
+              <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="flex flex-col gap-1.5 p-2 hover:bg-gray-100 rounded-lg transition-colors"
               >
@@ -519,44 +537,132 @@ export default function HomePage() {
 
             {/* Product Navigation */}
             <div className="flex-1 flex flex-col justify-center px-8 md:px-12">
-              <nav className="space-y-6 md:space-y-8">
-                {PRODUCTS.map((product, index) => (
-                  <motion.button
-                    key={product.id}
-                    onClick={() => setActiveProduct(index)}
-                    className="w-full text-left group"
-                    whileHover={{ x: 5 }}
-                    transition={{ type: 'spring', stiffness: 400 }}
-                  >
-                    <div className="flex items-center gap-4 mb-2">
-                      <span
-                        className="text-sm font-light"
-                        style={{
-                          color: activeProduct === index ? LUNA.deepWater : LUNA.midDepth
+              <nav className="space-y-4 md:space-y-8">
+                {PRODUCTS.map((product, index) => {
+                  const isExpanded = expandedMobile === index;
+                  const isActive = activeProduct === index;
+
+                  return (
+                    <div key={product.id}>
+                      <motion.button
+                        onClick={() => {
+                          // Desktop: just set active product
+                          // Mobile: toggle accordion
+                          if (window.innerWidth >= 768) {
+                            setActiveProduct(index);
+                          } else {
+                            setExpandedMobile(isExpanded ? null : index);
+                            setActiveProduct(index);
+                          }
                         }}
+                        className="w-full text-left group"
+                        whileHover={{ x: 5 }}
+                        transition={{ type: 'spring', stiffness: 400 }}
                       >
-                        {product.id}
-                      </span>
-                      <div
-                        className="h-px flex-1 max-w-[100px] transition-all duration-300"
-                        style={{
-                          backgroundColor: activeProduct === index ? LUNA.deepWater : '#E5E7EB',
-                          transform: activeProduct === index ? 'scaleX(1)' : 'scaleX(0.6)',
-                          transformOrigin: 'left'
-                        }}
-                      />
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4 mb-2">
+                            <span
+                              className="text-sm font-light"
+                              style={{
+                                color: isActive ? LUNA.deepWater : LUNA.midDepth
+                              }}
+                            >
+                              {product.id}
+                            </span>
+                            <div
+                              className="h-px flex-1 max-w-[100px] transition-all duration-300"
+                              style={{
+                                backgroundColor: isActive ? LUNA.deepWater : '#E5E7EB',
+                                transform: isActive ? 'scaleX(1)' : 'scaleX(0.6)',
+                                transformOrigin: 'left'
+                              }}
+                            />
+                          </div>
+                          {/* Mobile accordion arrow */}
+                          <motion.div
+                            className="md:hidden"
+                            animate={{ rotate: isExpanded ? 180 : 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke={isActive ? LUNA.deepWater : LUNA.midDepth}
+                              strokeWidth="2"
+                            >
+                              <path d="M6 9l6 6 6-6" />
+                            </svg>
+                          </motion.div>
+                        </div>
+                        <h2
+                          className="text-xl md:text-3xl font-semibold transition-colors duration-300"
+                          style={{
+                            color: isActive ? LUNA.deepWater : LUNA.midDepth,
+                            opacity: isActive ? 1 : 0.6
+                          }}
+                        >
+                          {product.name}
+                        </h2>
+                      </motion.button>
+
+                      {/* Mobile Accordion Content */}
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="md:hidden overflow-hidden"
+                          >
+                            <div
+                              className="mt-4 p-4 rounded-2xl"
+                              style={{
+                                background: `linear-gradient(160deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 100%)`,
+                              }}
+                            >
+                              {/* Product Image */}
+                              <div className="flex justify-center mb-4">
+                                <img
+                                  src={product.image}
+                                  alt={product.name}
+                                  className="max-h-40 object-contain drop-shadow-xl"
+                                  style={{
+                                    filter: `drop-shadow(0 10px 30px rgba(0,0,0,0.4))`,
+                                  }}
+                                />
+                              </div>
+                              {/* Tagline */}
+                              <p
+                                className="text-xs tracking-[0.2em] font-medium text-center mb-2"
+                                style={{ color: LUNA.highlight }}
+                              >
+                                {product.tagline}
+                              </p>
+                              {/* Description */}
+                              <p className="text-sm text-white/80 text-center mb-4">
+                                {product.description}
+                              </p>
+                              {/* Link */}
+                              <Link
+                                href={product.link}
+                                className="block text-center text-sm font-medium py-2 px-4 rounded-xl transition-all hover:scale-105"
+                                style={{
+                                  background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                                  color: 'white',
+                                }}
+                              >
+                                {product.linkText}
+                              </Link>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
-                    <h2
-                      className="text-xl md:text-3xl font-semibold transition-colors duration-300"
-                      style={{
-                        color: activeProduct === index ? LUNA.deepWater : LUNA.midDepth,
-                        opacity: activeProduct === index ? 1 : 0.6
-                      }}
-                    >
-                      {product.name}
-                    </h2>
-                  </motion.button>
-                ))}
+                  );
+                })}
               </nav>
 
               {/* See Products Button - Links to future products overview */}
