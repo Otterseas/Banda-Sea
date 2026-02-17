@@ -38,10 +38,17 @@ export default function Home() {
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   const stickerGridRef = useRef(null);
 
+  // Region nav scroll state
+  const regionNavRef = useRef(null);
+  const [showNavArrows, setShowNavArrows] = useState({ left: false, right: true });
+
   // Location suggestion state
   const [locationSuggestion, setLocationSuggestion] = useState('');
   const [suggestionSubmitted, setSuggestionSubmitted] = useState(false);
   const [suggestionSubmitting, setSuggestionSubmitting] = useState(false);
+
+  // Grid stock state - tracks stock for all visible stickers
+  const [gridStock, setGridStock] = useState({});
 
   // Fetch stock when a sticker is selected for the modal
   useEffect(() => {
@@ -95,6 +102,37 @@ export default function Home() {
     }
   }, [activeTab]); // Re-check when tab changes
 
+  // Check region nav scroll position for arrows
+  useEffect(() => {
+    const checkNavScroll = () => {
+      if (regionNavRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = regionNavRef.current;
+        setShowNavArrows({
+          left: scrollLeft > 10,
+          right: scrollLeft < scrollWidth - clientWidth - 10,
+        });
+      }
+    };
+
+    checkNavScroll();
+    const navEl = regionNavRef.current;
+    if (navEl) {
+      navEl.addEventListener('scroll', checkNavScroll);
+      window.addEventListener('resize', checkNavScroll);
+      return () => {
+        navEl.removeEventListener('scroll', checkNavScroll);
+        window.removeEventListener('resize', checkNavScroll);
+      };
+    }
+  }, []);
+
+  const scrollRegionNav = (direction) => {
+    if (regionNavRef.current) {
+      const scrollAmount = direction === 'left' ? -150 : 150;
+      regionNavRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   // Handle location suggestion submit to Klaviyo
   const handleSuggestionSubmit = async (e) => {
     e.preventDefault();
@@ -141,6 +179,36 @@ export default function Home() {
 
   // Get all stickers flat
   const allStickers = getAllStickers();
+
+  // Fetch stock for all stickers in current tab
+  useEffect(() => {
+    const variantIds = activeStickers
+      .filter(s => s.shopifyVariantId)
+      .map(s => s.shopifyVariantId);
+
+    if (variantIds.length === 0) return;
+
+    const fetchGridStock = async () => {
+      try {
+        const response = await fetch(`/api/stock?ids=${variantIds.join(',')}&_t=${Date.now()}`, { cache: 'no-store' });
+        const data = await response.json();
+        if (!data.error) {
+          setGridStock(prev => ({ ...prev, ...data }));
+        }
+      } catch (error) {
+        console.error('Failed to fetch grid stock:', error);
+      }
+    };
+
+    fetchGridStock();
+  }, [activeTab]);
+
+  // Helper to check if a sticker is out of stock
+  const isStickerOutOfStock = (sticker) => {
+    const stock = gridStock[sticker.shopifyVariantId];
+    if (!stock) return false; // Assume in stock if not loaded
+    return !stock.available || stock.outOfStock || stock.quantity === 0;
+  };
 
   // Check if sticker is in cart
   const isInCart = (stickerId) => cartItems[stickerId]?.quantity > 0;
@@ -496,41 +564,76 @@ export default function Home() {
           FLOATING GLASS NAVIGATION
           =========================================== */}
       <div className="sticky top-16 z-40 flex justify-center px-6 py-4">
-        <nav 
-          className="inline-flex items-center gap-1 p-1.5 rounded-full overflow-x-auto hide-scrollbar max-w-full relative"
-          style={{ 
-            backgroundColor: `${LUNA.abyss}30`,
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255,255,255,0.1)'
-          }}
-        >
-          {REGIONS.map((region, index) => (
+        <div className="relative flex items-center max-w-full">
+          {/* Left Arrow - Mobile */}
+          {showNavArrows.left && (
             <button
-              key={region}
-              onClick={() => setActiveTab(region)}
-              className="relative px-4 py-2 text-sm font-medium rounded-full transition-colors whitespace-nowrap z-10"
+              onClick={() => scrollRegionNav('left')}
+              className="md:hidden absolute left-0 z-20 w-8 h-8 flex items-center justify-center rounded-full transition-all"
               style={{
-                color: activeTab === region ? LUNA.highlight : 'rgba(255,255,255,0.7)',
+                background: `linear-gradient(90deg, ${LUNA.abyss} 0%, transparent 100%)`,
               }}
+              aria-label="Scroll regions left"
             >
-              {/* Sliding Glass Indicator */}
-              {activeTab === region && (
-                <motion.div
-                  layoutId="activeRegionIndicator"
-                  className="absolute inset-0 rounded-full"
-                  style={{
-                    backgroundColor: 'rgba(167, 235, 242, 0.25)',
-                    backdropFilter: 'blur(8px)',
-                    border: `1px solid ${LUNA.highlight}`,
-                    boxShadow: `0 0 20px ${LUNA.highlight}40, inset 0 1px 1px rgba(255,255,255,0.1)`,
-                  }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                />
-              )}
-              <span className="relative z-10">{region}</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={LUNA.highlight} strokeWidth="2.5">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
             </button>
-          ))}
-        </nav>
+          )}
+
+          <nav
+            ref={regionNavRef}
+            className="inline-flex items-center gap-1 p-1.5 rounded-full overflow-x-auto hide-scrollbar max-w-full relative"
+            style={{
+              backgroundColor: `${LUNA.abyss}30`,
+              backdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255,255,255,0.1)'
+            }}
+          >
+            {REGIONS.map((region, index) => (
+              <button
+                key={region}
+                onClick={() => setActiveTab(region)}
+                className="relative px-4 py-2 text-sm font-medium rounded-full transition-colors whitespace-nowrap z-10"
+                style={{
+                  color: activeTab === region ? LUNA.highlight : 'rgba(255,255,255,0.7)',
+                }}
+              >
+                {/* Sliding Glass Indicator */}
+                {activeTab === region && (
+                  <motion.div
+                    layoutId="activeRegionIndicator"
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      backgroundColor: 'rgba(167, 235, 242, 0.25)',
+                      backdropFilter: 'blur(8px)',
+                      border: `1px solid ${LUNA.highlight}`,
+                      boxShadow: `0 0 20px ${LUNA.highlight}40, inset 0 1px 1px rgba(255,255,255,0.1)`,
+                    }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{region}</span>
+              </button>
+            ))}
+          </nav>
+
+          {/* Right Arrow - Mobile */}
+          {showNavArrows.right && (
+            <button
+              onClick={() => scrollRegionNav('right')}
+              className="md:hidden absolute right-0 z-20 w-8 h-8 flex items-center justify-center rounded-full transition-all"
+              style={{
+                background: `linear-gradient(270deg, ${LUNA.abyss} 0%, transparent 100%)`,
+              }}
+              aria-label="Scroll regions right"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={LUNA.highlight} strokeWidth="2.5">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* ===========================================
@@ -561,25 +664,44 @@ export default function Home() {
               const inCart = isInCart(sticker.id);
               const quantity = getItemQuantity(sticker.id);
               const isAnimating = animatingItems.has(sticker.id);
+              const outOfStock = isStickerOutOfStock(sticker);
 
               return (
                 <div
                   key={sticker.id}
-                  className={`glass-card relative rounded-3xl p-4 ${inCart ? 'selected' : ''}`}
+                  className={`glass-card relative rounded-3xl p-4 ${inCart ? 'selected' : ''} ${outOfStock ? 'opacity-75' : ''}`}
                   style={{
                     background: `linear-gradient(145deg, rgba(38, 101, 140, 0.5) 0%, rgba(2, 56, 89, 0.7) 100%)`,
                     backdropFilter: 'blur(24px)',
                     WebkitBackdropFilter: 'blur(24px)',
-                    border: inCart
-                      ? `3px solid ${LUNA.highlight}`
-                      : `3px solid rgba(167, 235, 242, 0.35)`,
+                    border: outOfStock
+                      ? `3px solid rgba(255, 100, 100, 0.5)`
+                      : inCart
+                        ? `3px solid ${LUNA.highlight}`
+                        : `3px solid rgba(167, 235, 242, 0.35)`,
                     boxShadow: inCart
                       ? `0 0 30px rgba(167, 235, 242, 0.4), inset 0 1px 2px rgba(255,255,255,0.15)`
                       : `0 8px 32px rgba(1, 28, 64, 0.5), inset 0 1px 2px rgba(255,255,255,0.1)`,
                   }}
                 >
+                  {/* Out of Stock Badge */}
+                  {outOfStock && (
+                    <div
+                      className="absolute w-auto px-2 py-1 rounded-full flex items-center justify-center text-xs font-bold z-20"
+                      style={{
+                        top: '-10px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        backgroundColor: 'rgba(220, 38, 38, 0.9)',
+                        color: 'white',
+                      }}
+                    >
+                      Out of Stock
+                    </div>
+                  )}
+
                   {/* Quantity Badge - positioned outside card bounds */}
-                  {quantity > 0 && (
+                  {quantity > 0 && !outOfStock && (
                     <div
                       className="absolute w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold z-20"
                       style={{
@@ -632,24 +754,39 @@ export default function Home() {
 
                     {/* Price and Add Button Row */}
                     <div className="flex items-center justify-between mt-3 gap-2">
-                      <span style={{ color: LUNA.highlight }} className="text-sm font-bold">
+                      <span style={{ color: outOfStock ? 'rgba(255,255,255,0.4)' : LUNA.highlight }} className="text-sm font-bold">
                         {formatPrice(pricePerItem)}
                       </span>
-                      <button
-                        onClick={(e) => handleAddToCart(sticker, e)}
-                        className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105 flex-shrink-0"
-                        style={{
-                          background: inCart
-                            ? LUNA.highlight
-                            : 'rgba(255, 255, 255, 0.1)',
-                          backdropFilter: 'blur(10px)',
-                          border: `2px solid ${LUNA.highlight}`,
-                          color: inCart ? LUNA.abyss : 'white',
-                          boxShadow: `0 0 15px ${LUNA.highlight}30`
-                        }}
-                      >
-                        {inCart ? '+ Add More' : 'Add to Pack'}
-                      </button>
+                      {outOfStock ? (
+                        <button
+                          onClick={() => handleOpenPreview(sticker)}
+                          className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105 flex-shrink-0"
+                          style={{
+                            background: 'rgba(220, 38, 38, 0.2)',
+                            backdropFilter: 'blur(10px)',
+                            border: '2px solid rgba(220, 38, 38, 0.5)',
+                            color: 'rgba(255, 150, 150, 1)',
+                          }}
+                        >
+                          Notify Me
+                        </button>
+                      ) : (
+                        <button
+                          onClick={(e) => handleAddToCart(sticker, e)}
+                          className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105 flex-shrink-0"
+                          style={{
+                            background: inCart
+                              ? LUNA.highlight
+                              : 'rgba(255, 255, 255, 0.1)',
+                            backdropFilter: 'blur(10px)',
+                            border: `2px solid ${LUNA.highlight}`,
+                            color: inCart ? LUNA.abyss : 'white',
+                            boxShadow: `0 0 15px ${LUNA.highlight}30`
+                          }}
+                        >
+                          {inCart ? '+ Add More' : 'Add to Pack'}
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>

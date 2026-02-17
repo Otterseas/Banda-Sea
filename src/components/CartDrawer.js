@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useCart, STICKER_PRICING } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -143,6 +144,39 @@ export default function CartDrawer() {
   const pathname = usePathname();
   const pageContext = getPageContext(pathname);
   const upsellProducts = PAGE_UPSELLS[pageContext] || PAGE_UPSELLS.default;
+
+  // Stock state for upsell products
+  const [upsellStock, setUpsellStock] = useState({});
+
+  // Fetch stock for upsell products
+  useEffect(() => {
+    const variantIds = upsellProducts
+      .map(p => p.shopifyVariantId)
+      .filter(Boolean);
+
+    if (variantIds.length === 0) return;
+
+    const fetchUpsellStock = async () => {
+      try {
+        const response = await fetch(`/api/stock?ids=${variantIds.join(',')}&_t=${Date.now()}`, { cache: 'no-store' });
+        const data = await response.json();
+        if (!data.error) {
+          setUpsellStock(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch upsell stock:', error);
+      }
+    };
+
+    fetchUpsellStock();
+  }, [pageContext]);
+
+  // Filter out out-of-stock upsell products
+  const availableUpsells = upsellProducts.filter(product => {
+    const stock = upsellStock[product.shopifyVariantId];
+    if (!stock) return true; // Show if not loaded yet
+    return stock.available && !stock.outOfStock && stock.quantity !== 0;
+  });
 
   const {
     cartItems,
@@ -546,9 +580,10 @@ export default function CartDrawer() {
                         </div>
                       </div>
 
-                      {/* Upsell Product Tabs - Multiple smaller cards */}
+                      {/* Upsell Product Tabs - Multiple smaller cards (only in-stock items) */}
+                      {availableUpsells.length > 0 && (
                       <div className="mt-2 flex gap-2">
-                        {upsellProducts.map((product) => (
+                        {availableUpsells.map((product) => (
                           <div
                             key={product.id}
                             className="flex-1 p-2 rounded-lg flex flex-col items-center text-center"
@@ -580,6 +615,7 @@ export default function CartDrawer() {
                           </div>
                         ))}
                       </div>
+                      )}
                     </div>
                   );
                 }
