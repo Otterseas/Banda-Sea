@@ -316,10 +316,10 @@ export default function HomePage() {
         {/* Hero Section - Split Panels */}
         <div className="min-h-screen w-full flex flex-col md:flex-row">
           {/* ===========================================
-              LEFT PANEL - PRODUCT SHOWCASE (60%) - Desktop Only
+              LEFT PANEL - PRODUCT SHOWCASE (60%)
               =========================================== */}
           <div
-            className="hidden md:flex w-full md:w-[60%] min-h-screen md:h-screen md:sticky md:top-0 flex-col relative"
+            className="w-full md:w-[60%] min-h-[50vh] md:min-h-screen md:h-screen md:sticky md:top-0 flex flex-col relative"
             style={{
               background: `linear-gradient(160deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 40%, ${LUNA.abyss} 100%)`
             }}
@@ -424,9 +424,9 @@ export default function HomePage() {
           </div>
 
           {/* ===========================================
-              RIGHT PANEL - NAVIGATION (40%) / Mobile Full Width
+              RIGHT PANEL - NAVIGATION (40%)
               =========================================== */}
-          <div className="w-full md:w-[40%] min-h-screen bg-white flex flex-col relative">
+          <div className="w-full md:w-[40%] min-h-[50vh] md:min-h-screen bg-white flex flex-col relative">
             {/* Currency Switcher & Hamburger Menu */}
             <div className="absolute top-4 right-6 z-20 flex items-center gap-3">
               <CurrencySwitcher variant="light" />
@@ -517,129 +517,45 @@ export default function HomePage() {
               )}
             </AnimatePresence>
 
-            {/* Product Navigation - Accordion on Mobile, Tabs on Desktop */}
-            <div className="flex-1 flex flex-col justify-center px-8 md:px-12 py-8 md:py-0">
-              {/* Mobile Header */}
-              <div className="md:hidden mb-6">
-                <Link href="/" className="flex items-center gap-3 mb-4">
-                  <img
-                    src="/logo.png"
-                    alt="Otterseas"
-                    className="w-10 h-10 rounded-xl object-contain"
-                  />
-                  <span className="text-xl font-medium tracking-tight" style={{ color: LUNA.deepWater }}>
-                    Otterseas
-                  </span>
-                </Link>
-              </div>
-
-              <nav className="space-y-4 md:space-y-8">
+            {/* Product Navigation */}
+            <div className="flex-1 flex flex-col justify-center px-8 md:px-12">
+              <nav className="space-y-6 md:space-y-8">
                 {PRODUCTS.map((product, index) => (
-                  <div key={product.id}>
-                    <motion.button
-                      onClick={() => setActiveProduct(activeProduct === index ? -1 : index)}
-                      className="w-full text-left group"
-                      whileHover={{ x: 5 }}
-                      transition={{ type: 'spring', stiffness: 400 }}
-                    >
-                      <div className="flex items-center gap-4 mb-2">
-                        <span
-                          className="text-sm font-light"
-                          style={{
-                            color: activeProduct === index ? LUNA.deepWater : LUNA.midDepth
-                          }}
-                        >
-                          {product.id}
-                        </span>
-                        <div
-                          className="h-px flex-1 max-w-[100px] transition-all duration-300"
-                          style={{
-                            backgroundColor: activeProduct === index ? LUNA.deepWater : '#E5E7EB',
-                            transform: activeProduct === index ? 'scaleX(1)' : 'scaleX(0.6)',
-                            transformOrigin: 'left'
-                          }}
-                        />
-                        {/* Mobile Accordion Arrow */}
-                        <span className="md:hidden ml-auto">
-                          <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke={activeProduct === index ? LUNA.deepWater : LUNA.midDepth}
-                            strokeWidth="2"
-                            className={`transition-transform duration-300 ${activeProduct === index ? 'rotate-180' : ''}`}
-                          >
-                            <polyline points="6 9 12 15 18 9" />
-                          </svg>
-                        </span>
-                      </div>
-                      <h2
-                        className="text-2xl md:text-3xl font-semibold transition-colors duration-300"
+                  <motion.button
+                    key={product.id}
+                    onClick={() => setActiveProduct(index)}
+                    className="w-full text-left group"
+                    whileHover={{ x: 5 }}
+                    transition={{ type: 'spring', stiffness: 400 }}
+                  >
+                    <div className="flex items-center gap-4 mb-2">
+                      <span
+                        className="text-sm font-light"
                         style={{
-                          color: activeProduct === index ? LUNA.deepWater : LUNA.midDepth,
-                          opacity: activeProduct === index ? 1 : 0.6
+                          color: activeProduct === index ? LUNA.deepWater : LUNA.midDepth
                         }}
                       >
-                        {product.name}
-                      </h2>
-                    </motion.button>
-
-                    {/* Mobile Accordion Content - Image & Info */}
-                    <AnimatePresence>
-                      {activeProduct === index && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="md:hidden overflow-hidden"
-                        >
-                          <div
-                            className="mt-4 p-4 rounded-2xl"
-                            style={{
-                              background: `linear-gradient(160deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 100%)`
-                            }}
-                          >
-                            {/* Product Image */}
-                            <div className="flex justify-center mb-4">
-                              <img
-                                src={product.image}
-                                alt={product.name}
-                                className="object-contain drop-shadow-xl"
-                                style={{
-                                  maxHeight: product.imageScale ? `${200 * product.imageScale}px` : '200px',
-                                  maxWidth: '80%',
-                                }}
-                              />
-                            </div>
-                            {/* Tagline */}
-                            <p
-                              className="text-xs tracking-[0.15em] font-medium text-center mb-2"
-                              style={{ color: LUNA.highlight }}
-                            >
-                              {product.tagline}
-                            </p>
-                            {/* Description */}
-                            <p className="text-white/70 text-sm text-center mb-4">
-                              {product.description}
-                            </p>
-                            {/* Link */}
-                            <Link
-                              href={product.link}
-                              className="block w-full py-3 rounded-xl text-center text-sm font-semibold transition-all"
-                              style={{
-                                background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                                color: 'white',
-                              }}
-                            >
-                              {product.linkText}
-                            </Link>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
+                        {product.id}
+                      </span>
+                      <div
+                        className="h-px flex-1 max-w-[100px] transition-all duration-300"
+                        style={{
+                          backgroundColor: activeProduct === index ? LUNA.deepWater : '#E5E7EB',
+                          transform: activeProduct === index ? 'scaleX(1)' : 'scaleX(0.6)',
+                          transformOrigin: 'left'
+                        }}
+                      />
+                    </div>
+                    <h2
+                      className="text-xl md:text-3xl font-semibold transition-colors duration-300"
+                      style={{
+                        color: activeProduct === index ? LUNA.deepWater : LUNA.midDepth,
+                        opacity: activeProduct === index ? 1 : 0.6
+                      }}
+                    >
+                      {product.name}
+                    </h2>
+                  </motion.button>
                 ))}
               </nav>
 
