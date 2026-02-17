@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import CurrencySwitcher from './CurrencySwitcher';
 import { useCart } from '@/context/CartContext';
 import { ANNOUNCEMENT_CONFIG } from '@/config/announcement';
+import { BANNER_HEIGHT } from './AnnouncementBanner';
 
 // Luna Color Palette
 const LUNA = {
@@ -112,7 +113,8 @@ export default function Header({
   const borderColor = isDark ? 'border-white/10' : 'border-gray-100';
 
   // Banner height (approx 40px when visible)
-  const bannerHeight = bannerVisible ? 40 : 0;
+  // Header positions below banner when banner is visible (not dismissed)
+  const bannerHeight = bannerVisible ? BANNER_HEIGHT : 0;
 
   return (
     <motion.header
