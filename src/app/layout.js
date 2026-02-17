@@ -4,6 +4,7 @@ import { CurrencyProvider } from '@/context/CurrencyContext';
 import CartDrawer from '@/components/CartDrawer';
 import FloatingCartButton from '@/components/FloatingCartButton';
 import CookieConsent from '@/components/CookieConsent';
+import AnnouncementBannerWrapper from '@/components/AnnouncementBannerWrapper';
 
 export const metadata = {
   title: 'Otterseas - Dive Stickers & Accessories',
@@ -52,6 +53,7 @@ export default function RootLayout({ children }) {
       <body>
         <CurrencyProvider>
           <CartProvider>
+            <AnnouncementBannerWrapper />
             {children}
             <CartDrawer />
             <FloatingCartButton />
