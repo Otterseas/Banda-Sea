@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import CurrencySwitcher from './CurrencySwitcher';
 import { useCart } from '@/context/CartContext';
+import { ANNOUNCEMENT_CONFIG } from '@/config/announcement';
 
 // Luna Color Palette
 const LUNA = {
@@ -45,7 +46,36 @@ export default function Header({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [bannerVisible, setBannerVisible] = useState(false);
   const { totalItems, openCart } = useCart();
+
+  // Check if announcement banner is visible
+  useEffect(() => {
+    if (!ANNOUNCEMENT_CONFIG.enabled) {
+      setBannerVisible(false);
+      return;
+    }
+    const dismissed = localStorage.getItem(`${ANNOUNCEMENT_CONFIG.bannerId}-dismissed`);
+    setBannerVisible(!dismissed);
+
+    // Listen for storage changes (in case banner is dismissed)
+    const handleStorage = () => {
+      const dismissed = localStorage.getItem(`${ANNOUNCEMENT_CONFIG.bannerId}-dismissed`);
+      setBannerVisible(!dismissed);
+    };
+    window.addEventListener('storage', handleStorage);
+
+    // Also check periodically for same-tab dismissal
+    const interval = setInterval(() => {
+      const dismissed = localStorage.getItem(`${ANNOUNCEMENT_CONFIG.bannerId}-dismissed`);
+      setBannerVisible(!dismissed);
+    }, 500);
+
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      clearInterval(interval);
+    };
+  }, []);
 
   // Handle scroll to show/hide header
   useEffect(() => {
@@ -81,15 +111,19 @@ export default function Header({
   const hoverBg = isDark ? 'hover:bg-white/10' : 'hover:bg-gray-100';
   const borderColor = isDark ? 'border-white/10' : 'border-gray-100';
 
+  // Banner height (approx 40px when visible)
+  const bannerHeight = bannerVisible ? 40 : 0;
+
   return (
-    <motion.header 
-      className={`fixed top-0 left-0 right-0 z-50 px-6 py-3 ${borderColor}`}
-      style={{ 
-        backgroundColor: bgColor, 
+    <motion.header
+      className={`fixed left-0 right-0 z-50 px-6 py-3 ${borderColor}`}
+      style={{
+        backgroundColor: bgColor,
         backdropFilter: 'blur(12px)',
+        top: bannerHeight,
       }}
       initial={{ y: 0, opacity: 1 }}
-      animate={{ 
+      animate={{
         y: isVisible ? 0 : -100,
         opacity: isVisible ? 1 : 0,
       }}
