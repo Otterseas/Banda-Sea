@@ -116,7 +116,7 @@ export default function StickerPage() {
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* ==================== HEADER - SHARED COMPONENT ==================== */}
-      <Header variant="light" currentPath="/stickers" hideOnScroll={false} />
+      <Header variant="light" currentPath="/stickers" />
 
       {/* ==================== MAIN CONTENT ==================== */}
       <main className="flex-1 flex flex-col md:flex-row pt-14">

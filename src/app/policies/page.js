@@ -254,7 +254,7 @@ export default function PoliciesPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F8FAFB' }}>
       {/* Header */}
-      <Header variant="light" currentPath="/policies" hideOnScroll={false} />
+      <Header variant="light" currentPath="/policies" />
 
       {/* Main Content */}
       <main className="pt-20 pb-16 px-4">
