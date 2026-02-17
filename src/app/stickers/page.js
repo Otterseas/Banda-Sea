@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { STICKERS, REGIONS, BASE_PRICE, getAllStickers } from '@/data/stickers';
 import { LOCATION_BUNDLES } from '@/data/bundles';
@@ -11,6 +11,7 @@ import Footer from '@/components/Footer';
 import { ReviewsSection } from '@/components/Reviews';
 import { getReviewsByProduct } from '@/data/reviews';
 import { motion, AnimatePresence } from 'framer-motion';
+import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -31,7 +32,41 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState(REGIONS[0]);
   const [animatingItems, setAnimatingItems] = useState(new Set());
   const [selectedSticker, setSelectedSticker] = useState(null); // For modal
-  
+  const [selectedStock, setSelectedStock] = useState({ loading: false, quantity: null, available: true });
+
+  // Fetch stock when a sticker is selected for the modal
+  useEffect(() => {
+    if (!selectedSticker?.shopifyVariantId) {
+      setSelectedStock({ loading: false, quantity: null, available: true });
+      return;
+    }
+
+    const fetchStock = async () => {
+      setSelectedStock({ loading: true, quantity: null, available: true });
+      try {
+        const response = await fetch(`/api/stock?ids=${selectedSticker.shopifyVariantId}`);
+        const data = await response.json();
+        if (data[selectedSticker.shopifyVariantId]) {
+          setSelectedStock({
+            loading: false,
+            quantity: data[selectedSticker.shopifyVariantId].quantity,
+            available: data[selectedSticker.shopifyVariantId].available && !data[selectedSticker.shopifyVariantId].outOfStock,
+          });
+        } else {
+          setSelectedStock({ loading: false, quantity: null, available: true });
+        }
+      } catch (error) {
+        console.error('Failed to fetch stock:', error);
+        setSelectedStock({ loading: false, quantity: null, available: true });
+      }
+    };
+
+    fetchStock();
+  }, [selectedSticker?.shopifyVariantId]);
+
+  const isSelectedOutOfStock = !selectedStock.available || selectedStock.quantity === 0;
+  const isSelectedLowStock = selectedStock.quantity !== null && selectedStock.quantity > 0 && selectedStock.quantity <= 3;
+
   const {
     cartItems,
     totalItems,
@@ -847,12 +882,20 @@ export default function Home() {
                 {activeStickers.findIndex(s => s.id === selectedSticker.id) + 1} of {activeStickers.length} in {activeTab}
               </p>
 
-              {/* Price */}
+              {/* Price & Stock Status */}
               <div className="text-center mb-4">
-                <span style={{ color: LUNA.highlight }} className="text-2xl font-bold">
-                  {formatPrice(pricePerItem)}
-                </span>
-                <span className="text-white/50 text-sm ml-2">each</span>
+                <div className="flex items-center justify-center gap-2">
+                  <span style={{ color: LUNA.highlight }} className="text-2xl font-bold">
+                    {formatPrice(pricePerItem)}
+                  </span>
+                  <span className="text-white/50 text-sm">each</span>
+                  {!selectedStock.loading && isSelectedLowStock && (
+                    <StockBadge quantity={selectedStock.quantity} />
+                  )}
+                </div>
+                {!selectedStock.loading && isSelectedOutOfStock && (
+                  <p className="text-red-400 text-xs mt-1">Out of Stock</p>
+                )}
               </div>
 
               {/* Action Buttons */}
@@ -868,20 +911,41 @@ export default function Home() {
                 >
                   More Info →
                 </Link>
-                <button
-                  onClick={(e) => {
-                    handleAddToCart(selectedSticker, e);
-                  }}
-                  className="flex-1 py-3 rounded-xl text-sm font-semibold transition-all hover:scale-[1.02]"
-                  style={{
-                    background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                    border: `2px solid ${LUNA.highlight}`,
-                    color: 'white',
-                    boxShadow: `0 0 20px ${LUNA.highlight}40`
-                  }}
-                >
-                  {isInCart(selectedSticker.id) ? '+ Add Another' : 'Add to Pack'}
-                </button>
+                {selectedStock.loading ? (
+                  <button
+                    disabled
+                    className="flex-1 py-3 rounded-xl text-sm font-semibold opacity-50"
+                    style={{
+                      background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                      color: 'white',
+                    }}
+                  >
+                    Checking...
+                  </button>
+                ) : isSelectedOutOfStock ? (
+                  <div className="flex-1">
+                    <NotifyMeButton
+                      productName={selectedSticker.name}
+                      variantId={selectedSticker.shopifyVariantId}
+                      variant="dark"
+                    />
+                  </div>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      handleAddToCart(selectedSticker, e);
+                    }}
+                    className="flex-1 py-3 rounded-xl text-sm font-semibold transition-all hover:scale-[1.02]"
+                    style={{
+                      background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                      border: `2px solid ${LUNA.highlight}`,
+                      color: 'white',
+                      boxShadow: `0 0 20px ${LUNA.highlight}40`
+                    }}
+                  >
+                    {isInCart(selectedSticker.id) ? '+ Add Another' : 'Add to Pack'}
+                  </button>
+                )}
               </div>
 
               {/* Quantity indicator if in cart */}
