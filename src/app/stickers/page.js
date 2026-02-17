@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { STICKERS, REGIONS, BASE_PRICE, getAllStickers } from '@/data/stickers';
 import { LOCATION_BUNDLES } from '@/data/bundles';
@@ -34,6 +34,15 @@ export default function Home() {
   const [selectedSticker, setSelectedSticker] = useState(null); // For modal
   const [selectedStock, setSelectedStock] = useState({ loading: false, quantity: null, available: true });
 
+  // Scroll indicator state
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false);
+  const stickerGridRef = useRef(null);
+
+  // Location suggestion state
+  const [locationSuggestion, setLocationSuggestion] = useState('');
+  const [suggestionSubmitted, setSuggestionSubmitted] = useState(false);
+  const [suggestionSubmitting, setSuggestionSubmitting] = useState(false);
+
   // Fetch stock when a sticker is selected for the modal
   useEffect(() => {
     if (!selectedSticker?.shopifyVariantId) {
@@ -66,6 +75,49 @@ export default function Home() {
 
   const isSelectedOutOfStock = !selectedStock.available || selectedStock.quantity === 0;
   const isSelectedLowStock = selectedStock.quantity !== null && selectedStock.quantity > 0 && selectedStock.quantity <= 3;
+
+  // Check if sticker grid can scroll (more than 2 rows of 5)
+  useEffect(() => {
+    const checkScroll = () => {
+      if (stickerGridRef.current) {
+        const { scrollHeight, clientHeight, scrollTop } = stickerGridRef.current;
+        // Show indicator if there's more content and not scrolled to bottom
+        const canScrollMore = scrollHeight > clientHeight && scrollTop < scrollHeight - clientHeight - 10;
+        setShowScrollIndicator(canScrollMore);
+      }
+    };
+
+    checkScroll();
+    const gridEl = stickerGridRef.current;
+    if (gridEl) {
+      gridEl.addEventListener('scroll', checkScroll);
+      return () => gridEl.removeEventListener('scroll', checkScroll);
+    }
+  }, [activeTab]); // Re-check when tab changes
+
+  // Handle location suggestion submit to Klaviyo
+  const handleSuggestionSubmit = async (e) => {
+    e.preventDefault();
+    if (!locationSuggestion.trim()) return;
+
+    setSuggestionSubmitting(true);
+    try {
+      // Submit to Klaviyo API
+      await fetch('/api/klaviyo/suggest-location', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ location: locationSuggestion.trim() }),
+      });
+      setSuggestionSubmitted(true);
+      setLocationSuggestion('');
+      // Reset after 3 seconds
+      setTimeout(() => setSuggestionSubmitted(false), 3000);
+    } catch (error) {
+      console.error('Failed to submit suggestion:', error);
+    } finally {
+      setSuggestionSubmitting(false);
+    }
+  };
 
   const {
     cartItems,
@@ -482,7 +534,7 @@ export default function Home() {
       </div>
 
       {/* ===========================================
-          STICKER GRID
+          STICKER GRID - Scrollable Section
           =========================================== */}
       <section className="px-6 py-8">
         <div className="max-w-7xl mx-auto">
@@ -496,8 +548,15 @@ export default function Home() {
             </span>
           </div>
 
-          {/* Grid - extra padding for badge overflow */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pt-3 px-1">
+          {/* Scrollable Grid Container - Shows 2 rows, scrolls for more */}
+          <div className="relative">
+            <div
+              ref={stickerGridRef}
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pt-3 px-1 overflow-y-auto hide-scrollbar"
+              style={{
+                maxHeight: 'calc(2 * (280px + 20px))', // ~2 rows of cards + gap
+              }}
+            >
             {activeStickers.map((sticker, index) => {
               const inCart = isInCart(sticker.id);
               const quantity = getItemQuantity(sticker.id);
@@ -596,6 +655,101 @@ export default function Home() {
                 </div>
               );
             })}
+            </div>
+
+            {/* Scroll Indicator Arrow */}
+            {showScrollIndicator && (
+              <div className="flex justify-center mt-4">
+                <button
+                  onClick={() => {
+                    if (stickerGridRef.current) {
+                      stickerGridRef.current.scrollBy({ top: 300, behavior: 'smooth' });
+                    }
+                  }}
+                  className="p-2 rounded-full transition-all hover:scale-110 animate-bounce"
+                  style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    border: `2px solid ${LUNA.highlight}40`,
+                  }}
+                  aria-label="Scroll to see more stickers"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={LUNA.highlight}
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ===========================================
+          LOCATION SUGGESTION BOX
+          =========================================== */}
+      <section className="px-6 py-8">
+        <div className="max-w-2xl mx-auto">
+          <div
+            className="rounded-2xl p-6 text-center"
+            style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(12px)',
+              border: `1px solid ${LUNA.highlight}30`,
+            }}
+          >
+            <h3 className="text-xl font-bold text-white mb-2">
+              Can't see your next dive spot?
+            </h3>
+            <p className="text-white/60 text-sm mb-4">
+              Tell us where you dive and we'll add it to our collection
+            </p>
+
+            {suggestionSubmitted ? (
+              <div
+                className="py-3 px-6 rounded-xl inline-flex items-center gap-2"
+                style={{ backgroundColor: `${LUNA.highlight}20`, color: LUNA.highlight }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span className="font-medium">Thanks! We'll look into it</span>
+              </div>
+            ) : (
+              <form onSubmit={handleSuggestionSubmit} className="flex gap-3 max-w-md mx-auto">
+                <input
+                  type="text"
+                  value={locationSuggestion}
+                  onChange={(e) => setLocationSuggestion(e.target.value)}
+                  placeholder="e.g. Blue Hole, Belize"
+                  className="flex-1 px-4 py-3 rounded-xl text-white placeholder-white/40 outline-none transition-all focus:ring-2"
+                  style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    border: `1px solid ${LUNA.highlight}30`,
+                  }}
+                />
+                <button
+                  type="submit"
+                  disabled={suggestionSubmitting || !locationSuggestion.trim()}
+                  className="px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+                  style={{
+                    background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                    color: 'white',
+                    border: `2px solid ${LUNA.highlight}`,
+                    boxShadow: `0 0 15px ${LUNA.highlight}30`,
+                  }}
+                >
+                  {suggestionSubmitting ? 'Sending...' : 'Suggest'}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </section>
