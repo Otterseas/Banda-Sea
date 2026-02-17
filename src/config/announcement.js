@@ -19,7 +19,7 @@ export const ANNOUNCEMENT_CONFIG = {
   message: 'Welcome to Otterseas! Use code for 10% off your first order:',
 
   // Discount code (shown with copy button) - set to null to hide
-  discountCode: 'DIVE10',
+  discountCode: 'NEWDIVER10',
 
   // Optional link - set both to null to hide
   linkText: null, // e.g., 'Shop Now'
