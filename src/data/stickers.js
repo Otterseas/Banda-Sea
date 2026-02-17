@@ -6,14 +6,14 @@ export const BASE_PRICE = 2.50;
 export const MIN_ORDER = 5;
 
 export const REGIONS = [
-  'Caribbean',
-  'Expeditions',
-  'Indian Ocean',
-  'Latin America',
-  'Pacific & Oceania',
-  'South East Asia',
   'UK/Europe',
-  'USA/Canada'
+  'USA/Canada',
+  'South East Asia',
+  'Caribbean',
+  'Indian Ocean',
+  'Pacific & Oceania',
+  'Latin America',
+  'Expeditions'
 ];
 
 export const STICKERS = {
