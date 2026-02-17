@@ -5,6 +5,10 @@
 
 import { NextResponse } from 'next/server';
 
+// Disable caching for this route
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // Shopify Storefront API config
 const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || '38a44d-4c.myshopify.com';
 const SHOPIFY_STOREFRONT_TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN || '6954beed3229fdfe57aa5e08779bc83c';

@@ -43,7 +43,7 @@ export default function StickerPage() {
 
     const fetchStock = async () => {
       try {
-        const response = await fetch(`/api/stock?ids=${sticker.shopifyVariantId}`);
+        const response = await fetch(`/api/stock?ids=${sticker.shopifyVariantId}&_t=${Date.now()}`, { cache: 'no-store' });
         const data = await response.json();
         if (data[sticker.shopifyVariantId]) {
           setStock({

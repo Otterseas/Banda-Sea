@@ -45,7 +45,7 @@ export default function Header({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const { totalItems, openDrawer } = useCart();
+  const { totalItems, openCart } = useCart();
 
   // Handle scroll to show/hide header
   useEffect(() => {
@@ -117,7 +117,7 @@ export default function Header({
 
           {/* Cart Icon */}
           <button
-            onClick={openDrawer}
+            onClick={openCart}
             className={`relative p-2 ${hoverBg} rounded-lg transition-colors`}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={textColor} strokeWidth="1.5">

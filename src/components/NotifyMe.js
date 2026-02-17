@@ -301,7 +301,7 @@ export function SmartProductButton({
 
     const fetchStock = async () => {
       try {
-        const response = await fetch(`/api/stock?ids=${variantId}`);
+        const response = await fetch(`/api/stock?ids=${variantId}&_t=${Date.now()}`, { cache: 'no-store' });
         const data = await response.json();
         
         if (data[variantId]) {

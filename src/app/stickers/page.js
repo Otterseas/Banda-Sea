@@ -53,7 +53,7 @@ export default function Home() {
     const fetchStock = async () => {
       setSelectedStock({ loading: true, quantity: null, available: true });
       try {
-        const response = await fetch(`/api/stock?ids=${selectedSticker.shopifyVariantId}`);
+        const response = await fetch(`/api/stock?ids=${selectedSticker.shopifyVariantId}&_t=${Date.now()}`, { cache: 'no-store' });
         const data = await response.json();
         if (data[selectedSticker.shopifyVariantId]) {
           setSelectedStock({
