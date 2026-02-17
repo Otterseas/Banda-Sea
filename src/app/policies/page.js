@@ -156,19 +156,19 @@ const POLICY_CONTENT = {
       },
       {
         heading: 'UK Delivery',
-        content: `Standard Delivery (Royal Mail): 3-5 business days, from £2.99. Tracked Delivery (Royal Mail Tracked 48): 2-3 business days, from £3.99. Express Delivery (Royal Mail Tracked 24): 1-2 business days, from £5.99. Free standard shipping on orders over £30.`,
+        content: `Standard Delivery (Royal Mail): 3-5 business days. Tracked Delivery (Royal Mail Tracked 48): 2-3 business days. Express Delivery (Royal Mail Tracked 24): 1-2 business days. Shipping costs are calculated at checkout.`,
       },
       {
         heading: 'European Delivery',
-        content: `Standard International: 7-14 business days, from £5.99. Tracked International: 5-10 business days, from £8.99. Delivery times vary by country. Please note that customs duties and taxes may apply and are the responsibility of the recipient.`,
+        content: `Standard International: 7-14 business days. Tracked International: 5-10 business days. Delivery times vary by country. Shipping costs are calculated at checkout. Please note that customs duties and taxes may apply and are the responsibility of the recipient.`,
       },
       {
         heading: 'USA & Canada Delivery',
-        content: `Standard International: 10-21 business days, from £6.99. Tracked International: 7-14 business days, from £12.99. Customs duties and import taxes may apply and are the responsibility of the recipient.`,
+        content: `Standard International: 10-21 business days. Tracked International: 7-14 business days. Shipping costs are calculated at checkout. Customs duties and import taxes may apply and are the responsibility of the recipient.`,
       },
       {
         heading: 'Rest of World',
-        content: `Standard International: 14-28 business days, from £7.99. Tracked International: 10-21 business days, from £14.99. Delivery times vary by destination. Customs duties and taxes may apply.`,
+        content: `Standard International: 14-28 business days. Tracked International: 10-21 business days. Delivery times vary by destination. Shipping costs are calculated at checkout. Customs duties and taxes may apply.`,
       },
       {
         heading: 'Order Tracking',
@@ -254,7 +254,7 @@ export default function PoliciesPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F8FAFB' }}>
       {/* Header */}
-      <Header variant="light" currentPath="/policies" hideOnScroll={false} />
+      <Header variant="light" currentPath="/policies" />
 
       {/* Main Content */}
       <main className="pt-20 pb-16 px-4">

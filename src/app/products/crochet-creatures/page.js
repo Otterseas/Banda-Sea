@@ -699,7 +699,7 @@ export default function CrochetCreaturesPage() {
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* ==================== HEADER - SHARED COMPONENT ==================== */}
-      <Header variant="light" currentPath="/products/crochet-creatures" hideOnScroll={false} />
+      <Header variant="light" currentPath="/products/crochet-creatures" />
 
       {/* ==================== SPLIT PANEL LAYOUT ==================== */}
       <div className="flex flex-col lg:flex-row pt-14 lg:h-[calc(100vh-56px)]">
