@@ -669,13 +669,13 @@ export default function Home() {
               return (
                 <div
                   key={sticker.id}
-                  className={`glass-card relative rounded-3xl p-4 ${inCart ? 'selected' : ''} ${outOfStock ? 'opacity-75' : ''}`}
+                  className={`glass-card relative rounded-3xl p-4 ${inCart ? 'selected' : ''} ${outOfStock ? 'opacity-60' : ''}`}
                   style={{
                     background: `linear-gradient(145deg, rgba(38, 101, 140, 0.5) 0%, rgba(2, 56, 89, 0.7) 100%)`,
                     backdropFilter: 'blur(24px)',
                     WebkitBackdropFilter: 'blur(24px)',
                     border: outOfStock
-                      ? `3px solid rgba(255, 100, 100, 0.5)`
+                      ? `3px solid rgba(255, 255, 255, 0.2)`
                       : inCart
                         ? `3px solid ${LUNA.highlight}`
                         : `3px solid rgba(167, 235, 242, 0.35)`,
@@ -687,13 +687,14 @@ export default function Home() {
                   {/* Out of Stock Badge */}
                   {outOfStock && (
                     <div
-                      className="absolute w-auto px-2 py-1 rounded-full flex items-center justify-center text-xs font-bold z-20"
+                      className="absolute w-auto px-2 py-1 rounded-full flex items-center justify-center text-xs font-medium z-20"
                       style={{
                         top: '-10px',
                         left: '50%',
                         transform: 'translateX(-50%)',
-                        backgroundColor: 'rgba(220, 38, 38, 0.9)',
-                        color: 'white',
+                        backgroundColor: LUNA.midDepth,
+                        color: 'rgba(255, 255, 255, 0.8)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
                       }}
                     >
                       Out of Stock
@@ -762,10 +763,10 @@ export default function Home() {
                           onClick={() => handleOpenPreview(sticker)}
                           className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:scale-105 flex-shrink-0"
                           style={{
-                            background: 'rgba(220, 38, 38, 0.2)',
+                            background: `${LUNA.midDepth}40`,
                             backdropFilter: 'blur(10px)',
-                            border: '2px solid rgba(220, 38, 38, 0.5)',
-                            color: 'rgba(255, 150, 150, 1)',
+                            border: `2px solid ${LUNA.midDepth}`,
+                            color: 'rgba(255, 255, 255, 0.7)',
                           }}
                         >
                           Notify Me
@@ -1185,7 +1186,7 @@ export default function Home() {
                   )}
                 </div>
                 {!selectedStock.loading && isSelectedOutOfStock && (
-                  <p className="text-red-400 text-xs mt-1">Out of Stock</p>
+                  <p className="text-xs mt-1" style={{ color: LUNA.midDepth }}>Out of Stock</p>
                 )}
               </div>
 
