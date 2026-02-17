@@ -8,6 +8,7 @@ import Header from '@/components/Header';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
 
 // Luna Color Palette
 const LUNA = {
@@ -26,10 +27,46 @@ export default function StickerPage() {
   
   // Region tabs - default to current sticker's region
   const [activeRegion, setActiveRegion] = useState(sticker?.region || REGIONS[0]);
-  
+
   // Track slide direction for animation
   const [slideDirection, setSlideDirection] = useState(0);
-  
+
+  // Stock state
+  const [stock, setStock] = useState({ loading: true, quantity: null, available: true });
+
+  // Fetch stock when sticker changes
+  useEffect(() => {
+    if (!sticker?.shopifyVariantId) {
+      setStock({ loading: false, quantity: null, available: true });
+      return;
+    }
+
+    const fetchStock = async () => {
+      try {
+        const response = await fetch(`/api/stock?ids=${sticker.shopifyVariantId}`);
+        const data = await response.json();
+        if (data[sticker.shopifyVariantId]) {
+          setStock({
+            loading: false,
+            quantity: data[sticker.shopifyVariantId].quantity,
+            available: data[sticker.shopifyVariantId].available && !data[sticker.shopifyVariantId].outOfStock,
+          });
+        } else {
+          setStock({ loading: false, quantity: null, available: true });
+        }
+      } catch (error) {
+        console.error('Failed to fetch stock:', error);
+        setStock({ loading: false, quantity: null, available: true });
+      }
+    };
+
+    setStock({ loading: true, quantity: null, available: true });
+    fetchStock();
+  }, [sticker?.shopifyVariantId]);
+
+  const isOutOfStock = !stock.available || stock.quantity === 0;
+  const isLowStock = stock.quantity !== null && stock.quantity > 0 && stock.quantity <= 3;
+
   // Update active region when sticker changes
   useEffect(() => {
     if (sticker?.region) {
@@ -123,27 +160,54 @@ export default function StickerPage() {
             <p className="text-gray-500 mb-1">{sticker.region}</p>
             <p className="text-gray-400 text-sm mb-4">{sticker.country}</p>
             
-            <p 
-              className="text-2xl font-bold mb-6"
-              style={{ color: LUNA.surfaceTeal }}
-            >
-              {formatPrice(BASE_PRICE)}
-            </p>
+            <div className="flex items-center gap-3 mb-6">
+              <p
+                className="text-2xl font-bold"
+                style={{ color: LUNA.surfaceTeal }}
+              >
+                {formatPrice(BASE_PRICE)}
+              </p>
+              {!stock.loading && isLowStock && (
+                <StockBadge quantity={stock.quantity} />
+              )}
+              {!stock.loading && isOutOfStock && (
+                <span className="text-red-500 text-xs font-medium">Out of Stock</span>
+              )}
+            </div>
 
-            {/* Add to Pack Button */}
-            <motion.button
-              onClick={handleAddToPack}
-              className="w-full md:w-auto px-10 py-4 rounded-xl text-sm font-semibold transition-all"
-              style={{ 
-                background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                color: 'white',
-                boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`
-              }}
-              whileHover={{ scale: 1.02, boxShadow: `0 6px 30px ${LUNA.surfaceTeal}60` }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Add to Pack
-            </motion.button>
+            {/* Add to Pack / Notify Me Button */}
+            {stock.loading ? (
+              <button
+                disabled
+                className="w-full md:w-auto px-10 py-4 rounded-xl text-sm font-semibold opacity-50"
+                style={{
+                  background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                  color: 'white',
+                }}
+              >
+                Checking stock...
+              </button>
+            ) : isOutOfStock ? (
+              <NotifyMeButton
+                productName={sticker.name}
+                variantId={sticker.shopifyVariantId}
+                variant="light"
+              />
+            ) : (
+              <motion.button
+                onClick={handleAddToPack}
+                className="w-full md:w-auto px-10 py-4 rounded-xl text-sm font-semibold transition-all"
+                style={{
+                  background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                  color: 'white',
+                  boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`
+                }}
+                whileHover={{ scale: 1.02, boxShadow: `0 6px 30px ${LUNA.surfaceTeal}60` }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Add to Pack
+              </motion.button>
+            )}
           </div>
         </div>
 
