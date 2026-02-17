@@ -2,6 +2,7 @@ import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import { CurrencyProvider } from '@/context/CurrencyContext';
 import CartDrawer from '@/components/CartDrawer';
+import FloatingCartButton from '@/components/FloatingCartButton';
 import CookieConsent from '@/components/CookieConsent';
 
 export const metadata = {
@@ -53,6 +54,7 @@ export default function RootLayout({ children }) {
           <CartProvider>
             {children}
             <CartDrawer />
+            <FloatingCartButton />
             <CookieConsent />
           </CartProvider>
         </CurrencyProvider>

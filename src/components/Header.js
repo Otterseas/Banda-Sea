@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import CurrencySwitcher from './CurrencySwitcher';
+import { useCart } from '@/context/CartContext';
 
 // Luna Color Palette
 const LUNA = {
@@ -44,6 +45,7 @@ export default function Header({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const { totalItems, openDrawer } = useCart();
 
   // Handle scroll to show/hide header
   useEffect(() => {
@@ -109,10 +111,31 @@ export default function Header({
           </span>
         </Link>
 
-        {/* Right Side: Currency Switcher + Menu */}
+        {/* Right Side: Currency Switcher + Cart + Menu */}
         <div className="flex items-center gap-3">
           <CurrencySwitcher variant={isDark ? 'dark' : 'light'} />
-          
+
+          {/* Cart Icon */}
+          <button
+            onClick={openDrawer}
+            className={`relative p-2 ${hoverBg} rounded-lg transition-colors`}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={textColor} strokeWidth="1.5">
+              <path d="M6 6h15l-1.5 9h-12z" />
+              <circle cx="9" cy="20" r="1" />
+              <circle cx="18" cy="20" r="1" />
+              <path d="M6 6L5 3H2" />
+            </svg>
+            {totalItems > 0 && (
+              <span
+                className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full text-[10px] font-bold flex items-center justify-center"
+                style={{ backgroundColor: LUNA.highlight, color: LUNA.abyss }}
+              >
+                {totalItems}
+              </span>
+            )}
+          </button>
+
           {/* Hamburger Menu */}
           <div className="relative">
             <button 
