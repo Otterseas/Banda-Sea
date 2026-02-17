@@ -64,7 +64,7 @@ export default function BoosterPackPage() {
   useEffect(() => {
     const fetchStock = async () => {
       try {
-        const response = await fetch(`/api/stock?ids=${currentOption.shopifyVariantId}`);
+        const response = await fetch(`/api/stock?ids=${currentOption.shopifyVariantId}&_t=${Date.now()}`, { cache: 'no-store' });
         const data = await response.json();
         if (data[currentOption.shopifyVariantId]) {
           setStock({

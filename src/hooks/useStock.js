@@ -6,7 +6,7 @@ import { useState, useEffect, useCallback } from 'react';
 // STOCK CACHE (in-memory, clears on refresh)
 // ===========================================
 const stockCache = new Map();
-const CACHE_TTL = 60 * 1000; // 1 minute cache
+const CACHE_TTL = 10 * 1000; // 10 second cache for fresher data
 
 // ===========================================
 // USE STOCK HOOK
@@ -43,7 +43,7 @@ export function useStock(variantId) {
     // Fetch from API
     const fetchStock = async () => {
       try {
-        const response = await fetch(`/api/stock?ids=${variantId}`);
+        const response = await fetch(`/api/stock?ids=${variantId}&_t=${Date.now()}`, { cache: 'no-store' });
         const data = await response.json();
 
         if (data.error) {
@@ -125,7 +125,7 @@ export function useStocks(variantIds = []) {
     // Fetch uncached items
     const fetchStocks = async () => {
       try {
-        const response = await fetch(`/api/stock?ids=${uncachedIds.join(',')}`);
+        const response = await fetch(`/api/stock?ids=${uncachedIds.join(',')}&_t=${Date.now()}`, { cache: 'no-store' });
         const data = await response.json();
 
         if (data.error) {

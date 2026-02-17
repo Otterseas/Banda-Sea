@@ -169,7 +169,7 @@ export default function ProductPage() {
     
     const fetchStock = async () => {
       try {
-        const response = await fetch(`/api/stock?ids=${currentVariant.shopifyVariantId}`);
+        const response = await fetch(`/api/stock?ids=${currentVariant.shopifyVariantId}&_t=${Date.now()}`, { cache: 'no-store' });
         const data = await response.json();
         if (data[currentVariant.shopifyVariantId]) {
           setStock({

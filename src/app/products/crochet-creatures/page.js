@@ -476,7 +476,7 @@ function ProductModal({ product, isOpen, onClose, formatPrice }) {
 
     const fetchStock = async () => {
       try {
-        const response = await fetch(`/api/stock?ids=${product.shopifyVariantId}`);
+        const response = await fetch(`/api/stock?ids=${product.shopifyVariantId}&_t=${Date.now()}`, { cache: 'no-store' });
         const data = await response.json();
         if (data[product.shopifyVariantId]) {
           setStock({
