@@ -1,17 +1,80 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+// Simple password for admin access - change this to something secure
+const ADMIN_PASSWORD = 'otterseas2025';
 
 /**
  * Product Lookup Tool
  * Simple admin page to look up Shopify product info (variant IDs, images, etc.)
  * Access at: /admin/product-lookup
+ * Password protected - enter password to access
  */
 export default function ProductLookupPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
+  const [authError, setAuthError] = useState(false);
   const [handle, setHandle] = useState('');
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
+
+  // Check if already authenticated this session
+  useEffect(() => {
+    const authed = sessionStorage.getItem('admin-auth');
+    if (authed === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    if (password === ADMIN_PASSWORD) {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('admin-auth', 'true');
+      setAuthError(false);
+    } else {
+      setAuthError(true);
+    }
+  };
+
+  // Password gate
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <div className="max-w-sm w-full">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+            <h1 className="text-xl font-bold text-gray-900 mb-2 text-center">Admin Access</h1>
+            <p className="text-gray-500 text-sm text-center mb-6">
+              Enter password to access admin tools
+            </p>
+            <form onSubmit={handlePasswordSubmit}>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3 ${
+                  authError ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                }`}
+                autoFocus
+              />
+              {authError && (
+                <p className="text-red-600 text-sm mb-3">Incorrect password</p>
+              )}
+              <button
+                type="submit"
+                className="w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
+              >
+                Access
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleLookup = async (e) => {
     e.preventDefault();
