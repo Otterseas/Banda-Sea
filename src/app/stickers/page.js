@@ -13,6 +13,7 @@ import { getReviewsByProduct } from '@/data/reviews';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
 import BundleBuilder from '@/components/BundleBuilder';
+import DiveMap from '@/components/DiveMap';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -636,6 +637,15 @@ export default function Home() {
           )}
         </div>
       </div>
+
+      {/* ===========================================
+          INTERACTIVE DIVE MAP
+          =========================================== */}
+      <section className="px-6 py-8">
+        <div className="max-w-4xl mx-auto">
+          <DiveMap onRegionSelect={(region) => setActiveTab(region)} />
+        </div>
+      </section>
 
       {/* ===========================================
           STICKER GRID - Scrollable Section
