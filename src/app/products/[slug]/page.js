@@ -11,6 +11,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import TrustBadges from '@/components/TrustBadges';
+import RecentlyViewed from '@/components/RecentlyViewed';
+import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 
 // Luna Color Palette
 const COLORS = {
@@ -158,10 +161,25 @@ export default function ProductPage() {
   const product = getProductBySlug(params.slug);
   const { addToCart, openDrawer } = useCart();
   const { formatPrice } = useCurrency();
+  const { addToRecentlyViewed } = useRecentlyViewed();
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [stock, setStock] = useState({ loading: true, quantity: null, available: true });
 
   const currentVariant = product?.variants?.[selectedVariant];
+
+  // Track recently viewed
+  useEffect(() => {
+    if (product) {
+      addToRecentlyViewed({
+        id: product.id,
+        name: product.name,
+        slug: params.slug,
+        image: product.image || currentVariant?.image,
+        price: product.price,
+        type: 'product',
+      });
+    }
+  }, [product?.id]);
 
   // Fetch stock when variant changes
   useEffect(() => {
@@ -403,6 +421,11 @@ export default function ProductPage() {
                 Add to Cart
               </motion.button>
             )}
+
+            {/* Trust Badges */}
+            <div className="mt-3">
+              <TrustBadges variant="dark" size="sm" />
+            </div>
 
             {/* Gift Set Upsell - Compact */}
             <div 
@@ -648,6 +671,9 @@ export default function ProductPage() {
         </div>
       </div>
       </div>
+
+      {/* Recently Viewed */}
+      <RecentlyViewed excludeId={product?.id} variant="dark" />
 
       {/* Shared Footer */}
       <Footer />

@@ -12,6 +12,7 @@ import { ReviewsSection } from '@/components/Reviews';
 import { getReviewsByProduct } from '@/data/reviews';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
+import BundleBuilder from '@/components/BundleBuilder';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -899,6 +900,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-2">Curated Packs</h2>
           <p className="text-white/60 mb-8">Pre-selected collections - better value than picking individually</p>
+
+          {/* Build Your Own Bundle - At top of section */}
+          <div className="mb-12">
+            <BundleBuilder />
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {LOCATION_BUNDLES.map((bundle) => {

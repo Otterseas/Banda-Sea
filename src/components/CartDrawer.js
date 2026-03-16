@@ -7,6 +7,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SHOPIFY_CHECKOUT_URL } from '@/config/urls';
+import GiftMessage, { getGiftMessageData } from './GiftMessage';
+import { TrustBadgesInline } from './TrustBadges';
 
 // Luna color palette
 const LUNA = {
@@ -218,21 +220,24 @@ export default function CartDrawer() {
   // Handle checkout - goes directly to Shopify checkout
   const handleCheckout = () => {
     const items = [];
-    
+
     // Add all items
     cartArray.forEach(item => {
       const variantId = item.shopifyVariantId || item.id;
       items.push(`${variantId}:${item.quantity}`);
     });
-    
+
     const cartString = items.join(',');
 
     // Get discount code based on location sticker count
     const discountCode = getDiscountCode();
-    
+
+    // Get gift message if set
+    const giftData = getGiftMessageData();
+
     // Build checkout URL with discount and currency
     let checkoutUrl = `${SHOPIFY_CHECKOUT_URL}${cartString}`;
-    
+
     // Add discount code if applicable
     const params = [];
     if (discountCode) {
@@ -242,11 +247,22 @@ export default function CartDrawer() {
     if (currency !== 'GBP') {
       params.push(`currency=${currency}`);
     }
-    
+    // Add gift message as order note
+    if (giftData && giftData.isGift) {
+      let note = '🎁 GIFT ORDER';
+      if (giftData.recipientName) {
+        note += ` - For: ${giftData.recipientName}`;
+      }
+      if (giftData.message) {
+        note += ` - Message: "${giftData.message}"`;
+      }
+      params.push(`note=${encodeURIComponent(note)}`);
+    }
+
     if (params.length > 0) {
       checkoutUrl += `?${params.join('&')}`;
     }
-    
+
     window.location.href = checkoutUrl;
   };
 
@@ -621,6 +637,16 @@ export default function CartDrawer() {
                 }
                 return null;
               })()}
+
+              {/* Gift Message Option */}
+              <div className="mb-4 rounded-xl overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                <GiftMessage />
+              </div>
+
+              {/* Trust Badges */}
+              <div className="mb-4">
+                <TrustBadgesInline variant="dark" />
+              </div>
 
               {/* Checkout Button */}
               <button
