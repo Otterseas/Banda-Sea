@@ -911,7 +911,7 @@ export const STICKERS = {
       region: 'UK/Europe',
       country: 'Spain',
       shopifyVariantId: '52451135848714',
-      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/CaymanIslands-sticker.png?v=1769309752&width=990',
+      image: 'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/CanaryIslands-sticker.png?v=1769309629',
       story: {
         headline: 'The Angel Shark Capital',
         content: 'The Canary Islands are basically Europe’s answer to Hawaii—a volcanic playground that offers year-round sunshine and some of the clearest water in the Atlantic. This archipelago is famous for its dramatic underwater topography, where ancient lava flows have created massive arches, caves, and basalt columns that look like they belong on another planet. But the real reason divers flock here is for a creature that is critically endangered almost everywhere else on Earth. The Canaries are the last great stronghold of the Angel Shark, making this the number one place in the world to see these unique, flat sharks in the wild.',
