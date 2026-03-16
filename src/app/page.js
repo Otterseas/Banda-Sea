@@ -7,7 +7,6 @@ import CurrencySwitcher from '@/components/CurrencySwitcher';
 import { ReviewsSection } from '@/components/Reviews';
 import { getFeaturedReviews } from '@/data/reviews';
 import { SOCIAL_LINKS, SHOPIFY_BLOG_URL } from '@/config/urls';
-import DiveMap from '@/components/DiveMap';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -685,58 +684,6 @@ export default function HomePage() {
         </div>
 
         {/* ===========================================
-            DIVE MAP SECTION - Explore Sticker Locations
-            =========================================== */}
-        <section
-          className="w-full py-16 px-6"
-          style={{ backgroundColor: '#F8FAFB' }}
-        >
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-8"
-            >
-              <span
-                className="text-xs tracking-[0.3em] font-medium mb-3 block"
-                style={{ color: LUNA.surfaceTeal }}
-              >
-                EXPLORE THE WORLD
-              </span>
-              <h2
-                className="text-3xl md:text-4xl font-bold mb-3"
-                style={{ color: LUNA.deepWater }}
-              >
-                Where Will You Dive Next?
-              </h2>
-              <p className="text-gray-500 max-w-lg mx-auto">
-                Discover our collection of dive location stickers from around the globe
-              </p>
-            </motion.div>
-
-            <DiveMap showSuggest={true} />
-
-            <div className="text-center mt-6">
-              <Link
-                href="/stickers"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:scale-105"
-                style={{
-                  background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                  color: 'white',
-                  boxShadow: `0 4px 20px ${LUNA.surfaceTeal}40`
-                }}
-              >
-                View All Stickers
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ===========================================
             ABOUT US SECTION - With Parallax Background
             =========================================== */}
         <section
@@ -752,7 +699,7 @@ export default function HomePage() {
           <div
             className="absolute inset-0"
             style={{
-              background: `linear-gradient(180deg, ${LUNA.abyss}ee 0%, ${LUNA.deepWater}dd 50%, ${LUNA.midDepth}ee 100%)`
+              background: `linear-gradient(180deg, ${LUNA.abyss}99 0%, ${LUNA.deepWater}88 50%, ${LUNA.midDepth}99 100%)`
             }}
           />
           <div className="max-w-6xl mx-auto relative z-10">
