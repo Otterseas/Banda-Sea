@@ -12,7 +12,6 @@ import { ReviewsSection } from '@/components/Reviews';
 import { getReviewsByProduct } from '@/data/reviews';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
-import BundleBuilder from '@/components/BundleBuilder';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -384,10 +383,10 @@ export default function Home() {
           </h1>
 
           {/* Content Row: Text Left, Gauge Center, Water Bottle Right */}
-          <div className="flex flex-col lg:flex-row gap-8 items-start justify-between">
-            
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
+
             {/* Left: Description Text */}
-            <div className="flex-1 lg:max-w-xs">
+            <div className="lg:w-72 flex-shrink-0">
               <p className="text-white/70 text-base leading-relaxed mb-4">
                 Every sticker marks a memory. Collect the dive sites you've conquered, 
                 the wrecks you've explored, and the reefs that took your breath away.
@@ -410,7 +409,7 @@ export default function Home() {
             </div>
 
             {/* Center: Depth Gauge Pricing */}
-            <div className="flex-1 w-full max-w-sm">
+            <div className="flex-1 w-full lg:max-w-sm">
               <p className="text-white/50 text-xs font-medium mb-3 uppercase tracking-wider text-center">
                 Dive Deeper, Save More
               </p>
@@ -498,9 +497,9 @@ export default function Home() {
             </div>
 
             {/* Right: Featured Product (Water Bottle) - GLASS EFFECT CARD */}
-            <Link 
+            <Link
               href="/products/surface-tank"
-              className="w-full lg:w-56 rounded-2xl p-3 floating relative flex-shrink-0 block transition-all hover:scale-105"
+              className="w-full lg:w-56 rounded-2xl p-3 floating relative flex-shrink-0 block transition-all hover:scale-105 lg:ml-auto"
               style={{ 
                 background: 'rgba(255, 255, 255, 0.1)',
                 backdropFilter: 'blur(12px)',
@@ -900,11 +899,6 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-2">Curated Packs</h2>
           <p className="text-white/60 mb-8">Pre-selected collections - better value than picking individually</p>
-
-          {/* Build Your Own Bundle - At top of section */}
-          <div className="mb-12">
-            <BundleBuilder />
-          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {LOCATION_BUNDLES.map((bundle) => {
