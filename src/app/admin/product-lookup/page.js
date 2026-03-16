@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 
-// Simple password for admin access - change this to something secure
-const ADMIN_PASSWORD = 'otterseas2025';
+// Simple password for admin access
+const ADMIN_PASSWORD = 'MurphyProducts1992!';
 
 /**
  * Product Lookup Tool
