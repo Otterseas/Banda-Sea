@@ -56,6 +56,26 @@ export const LOCATION_BUNDLES = [
     ],
     locations: ['Anilao', 'Apo Island', 'Coron', 'Dauin', 'Layte', 'Malapascua', 'Moalboal', 'Tubbataha'],
   },
+  {
+    id: 'pack-uk',
+    type: 'regional',
+    name: 'The UK Bundle Pack',
+    description: 'Cold water classics - from Scottish wrecks to English reefs',
+    price: 10.00,
+    originalPrice: 15.00, // 6 stickers × £2.50
+    savings: 5.00,
+    stickerCount: 6,
+    shopifyVariantId: 'REPLACE_WITH_VARIANT_ID', // Get from /api/product-info?handle=the-uk-bundle-pack
+    stickerIds: [
+      'uk-13', // Scapa Flow
+      'uk-5',  // Farne Islands
+      'uk-14', // St Abbs
+      'uk-8',  // Lundy
+      'uk-2',  // Cornwall
+      'uk-11', // Plymouth
+    ],
+    locations: ['Scapa Flow', 'Farne Islands', 'St Abbs', 'Lundy', 'Cornwall', 'Plymouth'],
+  },
   // Add more regional packs as created in Shopify:
   // - Red Sea Collection
   // - Thailand & Malaysia
