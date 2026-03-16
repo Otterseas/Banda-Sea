@@ -11,7 +11,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import ShippingCountdown from '@/components/ShippingCountdown';
 import TrustBadges from '@/components/TrustBadges';
 import RecentlyViewed from '@/components/RecentlyViewed';
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
@@ -422,11 +421,6 @@ export default function ProductPage() {
                 Add to Cart
               </motion.button>
             )}
-
-            {/* Shipping Countdown */}
-            <div className="mt-3">
-              <ShippingCountdown variant="dark" />
-            </div>
 
             {/* Trust Badges */}
             <div className="mt-3">
