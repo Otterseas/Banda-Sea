@@ -65,7 +65,7 @@ export const LOCATION_BUNDLES = [
     originalPrice: 15.00, // 6 stickers × £2.50
     savings: 5.00,
     stickerCount: 6,
-    shopifyVariantId: 'REPLACE_WITH_VARIANT_ID', // Get from /api/product-info?handle=the-uk-bundle-pack
+    shopifyVariantId: '52722406424842',
     stickerIds: [
       'uk-13', // Scapa Flow
       'uk-5',  // Farne Islands
