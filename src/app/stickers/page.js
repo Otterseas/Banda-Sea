@@ -12,6 +12,7 @@ import { ReviewsSection } from '@/components/Reviews';
 import { getReviewsByProduct } from '@/data/reviews';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
+import BundleBuilder from '@/components/BundleBuilder';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -1010,6 +1011,11 @@ export default function Home() {
                 </div>
               );
             })}
+          </div>
+
+          {/* Build Your Own Bundle */}
+          <div className="mt-12">
+            <BundleBuilder />
           </div>
         </div>
       </section>
