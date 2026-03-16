@@ -61,9 +61,9 @@ export const LOCATION_BUNDLES = [
     type: 'regional',
     name: 'The UK Bundle Pack',
     description: 'Cold water classics - from Scottish wrecks to English reefs',
-    price: 15.00,
-    originalPrice: 15.00, // Update based on sticker count
-    savings: 0, // Update once pricing confirmed
+    price: 10.00,
+    originalPrice: 15.00, // 6 stickers × £2.50
+    savings: 5.00,
     stickerCount: 6,
     shopifyVariantId: 'REPLACE_WITH_VARIANT_ID', // Get from /api/product-info?handle=the-uk-bundle-pack
     stickerIds: [
