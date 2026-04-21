@@ -91,6 +91,62 @@ const BUNDLE_OPTIONS = [
   },
 ];
 
+// ===========================================
+// FAQ DATA
+// Dual purpose: human-readable on-page FAQs +
+// JSON-LD FAQPage schema for search / AI SEO.
+// ===========================================
+const FAQ_ITEMS = [
+  {
+    question: 'What is a scuba dive logbook?',
+    answer: "A scuba dive logbook is a record of your dives \u2014 a place to document the details of each underwater experience including the dive site, depth, bottom time, visibility, water temperature, equipment used and marine life encountered. Most scuba training agencies including PADI and SSI recommend keeping a dive log from your very first open water dive, both as a record of your development and as a practical reference for future dives at the same site. Traditionally a physical notebook, dive logbooks range from basic printed booklets to premium journals like the Otterseas Dive Journal, which extends the concept beyond stats to include visual equipment logging, a marine life guide and worldwide dive site planning.",
+  },
+  {
+    question: 'What is the best dive logbook for beginner scuba divers?',
+    answer: "The best dive logbook for a beginner is one that guides you through what to record rather than leaving a blank page in front of you. The Otterseas Dive Journal was built with exactly that in mind \u2014 it has structured, visual log pages with prompts for everything from conditions and visibility to marine life spotted and how your trim felt underwater. The Diver\u2019gram is the feature that genuinely sets it apart for new divers: it\u2019s a visual diagram where you mark your exact weight placement and equipment setup, so you can track what worked and improve your buoyancy dive by dive. Most beginners spend their first ten dives guessing at their configuration \u2014 this journal takes that guesswork away.",
+  },
+  {
+    question: 'What should I record in a scuba diving log?',
+    answer: "A good dive log captures far more than depth and bottom time. The essentials are dive site and location, entry and exit times, maximum and average depth, visibility, water temperature, current conditions, and your equipment setup including weights. But the dives you\u2019ll actually remember are the ones where you also noted what you saw \u2014 the marine life, the unexpected moments, how the dive felt. The Otterseas Dive Journal structures all of this into a single visual page, including a dedicated section for your weight placement and BCD configuration, so over time you build a genuine record of your development as a diver rather than just a list of numbers.",
+  },
+  {
+    question: 'Is a physical dive log better than a dive log app?',
+    answer: "For most divers, yes \u2014 and here\u2019s why. A dive app is great for storing data, but it can\u2019t capture the texture of a dive: how the current caught you on the descent, what the visibility was really like, the nudibranch you spotted that you\u2019ve never seen before. A physical journal slows you down in the best way, making you reflect on the dive rather than just sync it. The Otterseas Dive Journal is also designed to travel \u2014 it\u2019s compact, water-resistant, and works anywhere on earth without needing a signal or a battery. That said, they work brilliantly together: use your dive computer for the numbers, and the journal for everything the computer can\u2019t capture.",
+  },
+  {
+    question: 'What makes the Otterseas Dive Journal different from other dive logbooks?',
+    answer: "Three things that you won\u2019t find anywhere else. First, the Diver\u2019gram \u2014 a visual diagram of a diver that lets you map your exact weight placement and kit configuration on every dive, so you can build a personal benchmark and actually improve your trim over time. Second, the Marine Safari guide \u2014 an illustrated checklist of hundreds of marine species across sharks, rays, reef fish, crustaceans and more, so your journal doubles as a wildlife spotter\u2019s guide. Third, the Where Can I See? pages \u2014 a global map of dive site hotspots that tells you the best locations and seasons for the marine life on your bucket list. Most logbooks just record what happened. The Otterseas Dive Journal helps you plan what happens next.",
+  },
+  {
+    question: "What is the Diver\u2019gram?",
+    answer: "The Diver\u2019gram is a unique feature of the Otterseas Dive Journal \u2014 a visual diagram of a diver in horizontal trim that lets you mark your exact weight placement on every dive. Rather than scribbling notes about how many kilos you used, you mark directly where weights were placed: weight belt, BCD integrated pockets, trim weights \u2014 alongside your full equipment configuration including tank size, BCD type, wetsuit thickness and exposure suit details. Over multiple dives it becomes your personal benchmark: you can look back and see exactly which configuration gave you the best trim, which tank position balanced you correctly, and what to adjust next time. It\u2019s particularly valuable for divers who are still developing their buoyancy \u2014 which is most of us for the first fifty dives.",
+  },
+  {
+    question: 'What is included in the Otterseas Dive Journal?',
+    answer: "The journal is built around five core sections. Thirty full-colour structured log pages, each designed to capture a complete dive including the Diver\u2019gram for equipment and weight logging. The Marine Safari \u2014 an illustrated guide to hundreds of marine species with checkboxes so you can tick off everything you encounter underwater. The Where Can I See? map \u2014 global hotspots for specific marine life with seasonal guides. Milestone and certification pages for recording your qualifications and significant dive count achievements. And a storage pocket for dive cards and notes. It all lives in a water-resistant frosted A5 ring binder with zip, compact enough for a carry-on or kit bag.",
+  },
+  {
+    question: 'Is the Dive Journal suitable for complete beginners?',
+    answer: "It\u2019s genuinely one of the best things you can start with. The structured log pages guide you through exactly what to record after each dive, which is genuinely useful when you\u2019re new and not sure what matters. The Diver\u2019gram is the feature that makes the biggest difference early on \u2014 most beginners spend a frustrating amount of time trying to get their weighting right, and having a visual record of exactly what you used on each dive means you\u2019re learning dive by dive rather than starting from scratch every time. The milestone pages are also a nice touch: seeing your Open Water certification recorded alongside your 10th dive, your 25th dive, and eventually your 50th is a proper record of a journey, not just a list of dives.",
+  },
+  {
+    question: 'Can I use the Dive Journal for freediving or travelling?',
+    answer: "For travel, absolutely \u2014 the A5 ring binder is designed to survive kit bags, overhead lockers and boat rides, and it\u2019s compact enough not to take up meaningful space. The Where Can I See? world map and the Marine Safari guide are useful regardless of how you dive. For freediving specifically, the log pages and Diver\u2019gram are built around scuba equipment configuration, so some fields won\u2019t apply \u2014 but the marine life sections, personal notes pages and milestone tracking work just as well. A lot of freedivers use it alongside their scuba diving, keeping one journal for the full underwater story.",
+  },
+  {
+    question: 'Can I add more pages when the journal is full?',
+    answer: "Yes \u2014 this is one of the things that makes the ring binder format worth it. When you\u2019ve filled your 30 log pages, you can add a Booster Pack of additional full-colour pages that slot straight into the same binder. So your journal becomes a genuine long-term record of your diving rather than something you replace. A journal with one Booster Pack costs \u00a335 if you want to start with more pages, or \u00a344 for two Booster Packs \u2014 and they\u2019re always available separately on the website when you need them.",
+  },
+  {
+    question: 'Is the Otterseas Dive Journal a good gift for a scuba diver?',
+    answer: "It\u2019s one of the most thoughtful gifts you can give a diver, and consistently one of the things we hear most in reviews. It works especially well for someone who has just got their Open Water certification \u2014 it gives them somewhere to start building their diving story from the very first dive. For more experienced divers it\u2019s the kind of upgrade they\u2019d love but wouldn\u2019t buy for themselves: premium, beautifully designed, and genuinely more useful than the basic logbook that comes with most courses. If you want to go further, the Diver\u2019s Gift Set pairs the journal with the Surface Tank water bottle for \u00a357.95 \u2014 saving \u00a310 on the pair and giving them everything they need above and below the surface.",
+  },
+  {
+    question: 'How much does the Dive Journal cost and where can I buy it?',
+    answer: "The Otterseas Dive Journal costs \u00a328.00 with free UK shipping on orders over \u00a350. If you want extra log pages from the start, a journal with one Booster Pack is \u00a335 and with two Booster Packs is \u00a344. The Diver\u2019s Gift Set with the Surface Tank water bottle is \u00a357.95. You can order directly from otterseas.com \u2014 use code NEWDIVER10 for 10% off your first order. The journal is also available through the Otterseas Etsy shop with international shipping options if you\u2019re ordering from outside the UK.",
+  },
+];
+
 // Feature cards for the journal sections
 const JOURNAL_FEATURES = [
   {
@@ -126,6 +182,68 @@ const JOURNAL_FEATURES = [
     icon: '🏆',
   },
 ];
+
+// ===========================================
+// FAQ ACCORDION COMPONENT
+// Content stays in the DOM at all times for SEO /
+// AI-crawler visibility; we animate max-height only.
+// ===========================================
+function FAQAccordion({ items }) {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  return (
+    <div className="space-y-3">
+      {items.map((item, i) => {
+        const isOpen = openIndex === i;
+        return (
+          <div
+            key={i}
+            className="rounded-xl overflow-hidden bg-white"
+            style={{ border: `1px solid ${LUNA.midDepth}25` }}
+          >
+            <button
+              type="button"
+              onClick={() => setOpenIndex(isOpen ? null : i)}
+              aria-expanded={isOpen}
+              className="w-full flex items-center justify-between gap-4 p-5 text-left transition-colors hover:bg-gray-50"
+            >
+              <h3
+                className="text-base md:text-lg font-semibold leading-snug"
+                style={{ color: LUNA.deepWater }}
+              >
+                {item.question}
+              </h3>
+              <motion.span
+                aria-hidden="true"
+                animate={{ rotate: isOpen ? 45 : 0 }}
+                className="flex-shrink-0 text-2xl font-light leading-none"
+                style={{ color: LUNA.surfaceTeal }}
+              >
+                +
+              </motion.span>
+            </button>
+            <motion.div
+              initial={false}
+              animate={{
+                maxHeight: isOpen ? 1200 : 0,
+                opacity: isOpen ? 1 : 0,
+              }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              style={{ overflow: 'hidden' }}
+            >
+              <p
+                className="px-5 pb-5 text-sm md:text-base leading-relaxed"
+                style={{ color: LUNA.midDepth }}
+              >
+                {item.answer}
+              </p>
+            </motion.div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 // ===========================================
 // MAIN COMPONENT
@@ -729,9 +847,60 @@ export default function DiveJournalPage() {
       </section>
 
       {/* ===========================================
+          FAQ SECTION
+          Human-readable Q&A + JSON-LD FAQPage schema
+          for traditional search and AI-answer engines.
+          =========================================== */}
+      <section className="py-24 px-8 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <span
+              className="text-sm tracking-[0.25em] font-medium mb-4 block"
+              style={{ color: LUNA.surfaceTeal }}
+            >
+              FREQUENTLY ASKED QUESTIONS
+            </span>
+            <h2
+              className="text-4xl md:text-5xl font-bold"
+              style={{ color: LUNA.deepWater }}
+            >
+              Everything You Want to Know
+            </h2>
+            <p
+              className="mt-4 text-base md:text-lg"
+              style={{ color: LUNA.midDepth }}
+            >
+              Answers to the questions we hear most from divers.
+            </p>
+          </div>
+
+          <FAQAccordion items={FAQ_ITEMS} />
+        </div>
+
+        {/* Structured data for search engines and AI answer engines */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: FAQ_ITEMS.map((item) => ({
+                '@type': 'Question',
+                name: item.question,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: item.answer,
+                },
+              })),
+            }),
+          }}
+        />
+      </section>
+
+      {/* ===========================================
           CUSTOMER REVIEWS SECTION
           =========================================== */}
-      <ReviewsSection 
+      <ReviewsSection
         reviews={getReviewsByProduct('dive-journal')}
         title="What Divers Say"
         subtitle="VERIFIED REVIEWS"

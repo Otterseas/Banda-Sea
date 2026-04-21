@@ -76,6 +76,8 @@ function FeatureIcon({ type, title, subtitle, isFirst = false }) {
 }
 
 // Collapsible Section Component
+// Content stays in the DOM when collapsed (height: 0 + overflow hidden)
+// so search engines and AI crawlers can always index the text.
 function CollapsibleSection({ title, children, defaultOpen = false }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
@@ -85,7 +87,7 @@ function CollapsibleSection({ title, children, defaultOpen = false }) {
         onClick={() => setIsOpen(!isOpen)}
         className="w-full py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
       >
-        <h3 
+        <h3
           className="text-lg md:text-xl font-light"
           style={{ color: COLORS.deepWater, fontFamily: 'Montserrat, sans-serif' }}
         >
@@ -104,21 +106,60 @@ function CollapsibleSection({ title, children, defaultOpen = false }) {
           <path d="M6 9l6 6 6-6" />
         </motion.svg>
       </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
-          >
-            <div className="pb-5 text-gray-600 text-sm leading-relaxed">
-              {children}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.div
+        initial={false}
+        animate={{
+          height: isOpen ? 'auto' : 0,
+          opacity: isOpen ? 1 : 0,
+        }}
+        transition={{ duration: 0.3 }}
+        style={{ overflow: 'hidden' }}
+      >
+        <div className="pb-5 text-gray-600 text-sm leading-relaxed">
+          {children}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+// Individual FAQ toggle — answers stay in DOM for SEO.
+function FAQItem({ question, answer }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="border-b border-gray-100 last:border-b-0">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        className="w-full py-3 flex items-center justify-between text-left gap-3"
+      >
+        <h4 className="font-medium text-sm" style={{ color: COLORS.deepWater }}>
+          {question}
+        </h4>
+        <motion.span
+          aria-hidden="true"
+          animate={{ rotate: isOpen ? 45 : 0 }}
+          className="flex-shrink-0 text-lg font-light leading-none"
+          style={{ color: COLORS.surfaceTeal }}
+        >
+          +
+        </motion.span>
+      </button>
+      <motion.div
+        initial={false}
+        animate={{
+          maxHeight: isOpen ? 1200 : 0,
+          opacity: isOpen ? 1 : 0,
+        }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        style={{ overflow: 'hidden' }}
+      >
+        <p className="pb-3 text-gray-500 text-sm leading-relaxed">
+          {answer}
+        </p>
+      </motion.div>
     </div>
   );
 }
@@ -634,16 +675,11 @@ export default function ProductPage() {
               </ul>
             </CollapsibleSection>
 
-            {/* FAQs */}
-            <CollapsibleSection title="FAQs">
-              <div className="space-y-3">
+            {/* FAQs — individual toggles, section defaults open */}
+            <CollapsibleSection title="FAQs" defaultOpen={true}>
+              <div>
                 {product.faqs.map((faq, i) => (
-                  <div key={i}>
-                    <p className="font-medium mb-1 text-sm" style={{ color: COLORS.deepWater }}>
-                      {faq.question}
-                    </p>
-                    <p className="text-gray-500 text-sm">{faq.answer}</p>
-                  </div>
+                  <FAQItem key={i} question={faq.question} answer={faq.answer} />
                 ))}
               </div>
             </CollapsibleSection>
@@ -677,6 +713,27 @@ export default function ProductPage() {
 
       {/* Shared Footer */}
       <Footer />
+
+      {/* JSON-LD FAQPage structured data for search / AI answer engines */}
+      {product.faqs && product.faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: product.faqs.map((faq) => ({
+                '@type': 'Question',
+                name: faq.question,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faq.answer,
+                },
+              })),
+            }),
+          }}
+        />
+      )}
     </div>
   );
 }
