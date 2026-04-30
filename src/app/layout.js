@@ -5,6 +5,7 @@ import CartDrawer from '@/components/CartDrawer';
 import FloatingCartButton from '@/components/FloatingCartButton';
 import CookieConsent from '@/components/CookieConsent';
 import AnnouncementBannerWrapper from '@/components/AnnouncementBannerWrapper';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {
   title: 'Otterseas - Dive Stickers & Accessories',
@@ -60,6 +61,7 @@ export default function RootLayout({ children }) {
             <CookieConsent />
           </CartProvider>
         </CurrencyProvider>
+        <Analytics />
       </body>
     </html>
   );
