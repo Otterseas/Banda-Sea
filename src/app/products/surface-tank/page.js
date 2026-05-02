@@ -27,7 +27,6 @@ const COLORS = {
 
 const SLUG = 'surface-tank';
 
-// Local lifestyle photos that supplement the Shopify variant image.
 const GALLERY_IMAGES = [
   {
     src: '/images/products/The-surface-tank-sunset.jpg',
@@ -54,7 +53,6 @@ const STICKER_FAN_IMAGES = [
   { name: 'Dauin 01', image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dauin1-sticker.png?v=1769310438&width=713' },
 ];
 
-// Compact pill — used inside the hero next to the price for trust signals.
 function HeroBadge({ children, color = COLORS.surfaceTeal }) {
   return (
     <span
@@ -66,7 +64,6 @@ function HeroBadge({ children, color = COLORS.surfaceTeal }) {
   );
 }
 
-// Modified ProductCard pattern — feature card with SVG icon.
 function FeatureCard({ iconSrc, title, subtitle, index }) {
   return (
     <motion.div
@@ -75,14 +72,14 @@ function FeatureCard({ iconSrc, title, subtitle, index }) {
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -4 }}
-      className="bg-white rounded-2xl p-5 md:p-6 border transition-shadow hover:shadow-md"
+      className="bg-white rounded-2xl p-5 md:p-6 border transition-shadow hover:shadow-md flex flex-col items-center text-center"
       style={{ borderColor: '#E6EEF2' }}
     >
       <div
-        className="w-14 h-14 mb-4 rounded-full flex items-center justify-center"
+        className="w-16 h-16 mb-4 rounded-full flex items-center justify-center"
         style={{ backgroundColor: `${COLORS.highlight}33` }}
       >
-        <img src={iconSrc} alt="" className="w-9 h-9 object-contain" />
+        <img src={iconSrc} alt="" className="w-10 h-10 object-contain" />
       </div>
       <h3 className="text-base font-semibold mb-0.5 leading-tight" style={{ color: COLORS.deepWater }}>
         {title}
@@ -92,25 +89,85 @@ function FeatureCard({ iconSrc, title, subtitle, index }) {
   );
 }
 
-// Lamp-style spotlight section — adapted inline from the staging Lamp component
-// so we don't pull a tailwind config extension or a cn helper into the project.
+// Compact gift-set card to slot into the hero right column.
+function GiftSetMini({ formatPrice, currentVariant, onAdd }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+      className="rounded-xl p-4 grid grid-cols-[1fr_auto] gap-3 items-center mt-5"
+      style={{
+        background: `linear-gradient(135deg, ${COLORS.deepWater} 0%, ${COLORS.midDepth} 100%)`,
+        boxShadow: `0 6px 20px ${COLORS.midDepth}30`,
+      }}
+    >
+      <div className="min-w-0">
+        <div className="flex items-center gap-2 mb-1 flex-wrap">
+          <span
+            className="text-[9px] tracking-[0.2em] font-bold uppercase px-2 py-0.5 rounded-full"
+            style={{ backgroundColor: COLORS.highlight, color: COLORS.abyss }}
+          >
+            Gift Set
+          </span>
+          <span className="text-[10px] font-medium" style={{ color: COLORS.highlight }}>
+            Save {formatPrice(10.05)}
+          </span>
+        </div>
+        <h4 className="text-sm font-bold text-white mb-0.5 leading-tight">
+          The Diver&rsquo;s Gift Set
+        </h4>
+        <p className="text-white/70 text-[11px] mb-1.5 leading-tight">
+          Surface Tank + Dive Journal
+        </p>
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-white/40 text-[10px] line-through">{formatPrice(68)}</span>
+          <span className="text-base font-bold" style={{ color: COLORS.highlight }}>
+            {formatPrice(57.95)}
+          </span>
+        </div>
+      </div>
+      <button
+        type="button"
+        onClick={onAdd}
+        disabled={!currentVariant.inStock}
+        className="px-4 py-2.5 rounded-lg text-[11px] font-semibold tracking-wider uppercase transition-all whitespace-nowrap"
+        style={{
+          backgroundColor: currentVariant.inStock ? COLORS.highlight : 'rgba(255,255,255,0.2)',
+          color: currentVariant.inStock ? COLORS.abyss : 'white',
+          cursor: currentVariant.inStock ? 'pointer' : 'not-allowed',
+          opacity: currentVariant.inStock ? 1 : 0.6,
+        }}
+      >
+        Add Set
+      </button>
+    </motion.div>
+  );
+}
+
+// Lamp-style spotlight section. Tweaks vs the previous version:
+// - Smoother easing + longer duration on the cone/light-bar reveal
+// - Three-stop conic gradients (color → transparent → transparent) for a softer falloff
+// - Wide vertical seam-hider blob to soften where the two cones meet
+// - Light bar is 60rem (≈ +50% on each side of the previous 30rem)
 function LampSpotlight({ children }) {
+  const ease = [0.22, 1, 0.36, 1];
   return (
     <section
-      className="relative flex flex-col items-center justify-center overflow-hidden py-28 md:py-36 px-6"
+      className="relative flex flex-col items-center justify-center overflow-hidden py-32 md:py-40 px-6"
       style={{ backgroundColor: COLORS.abyss }}
     >
       <div className="relative flex w-full flex-1 scale-y-125 items-center justify-center isolate z-0 mb-4">
         {/* Left cone */}
         <motion.div
-          initial={{ opacity: 0.3, width: '15rem' }}
-          whileInView={{ opacity: 1, width: '30rem' }}
+          initial={{ opacity: 0.35, width: '15rem' }}
+          whileInView={{ opacity: 1, width: '32rem' }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3, duration: 1.4, ease: 'easeInOut' }}
+          transition={{ delay: 0.4, duration: 1.8, ease }}
           style={{
-            backgroundImage: `conic-gradient(from 70deg at center top, ${COLORS.surfaceTeal}, transparent 30%)`,
+            backgroundImage: `conic-gradient(from 70deg at center top, ${COLORS.surfaceTeal}, transparent, transparent)`,
           }}
-          className="absolute inset-auto right-1/2 h-56 overflow-visible w-[30rem] text-white"
+          className="absolute inset-auto right-1/2 h-56 overflow-visible w-[32rem] text-white"
         >
           <div
             className="absolute w-[100%] left-0 h-40 bottom-0 z-20"
@@ -131,14 +188,14 @@ function LampSpotlight({ children }) {
         </motion.div>
         {/* Right cone */}
         <motion.div
-          initial={{ opacity: 0.3, width: '15rem' }}
-          whileInView={{ opacity: 1, width: '30rem' }}
+          initial={{ opacity: 0.35, width: '15rem' }}
+          whileInView={{ opacity: 1, width: '32rem' }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3, duration: 1.4, ease: 'easeInOut' }}
+          transition={{ delay: 0.4, duration: 1.8, ease }}
           style={{
-            backgroundImage: `conic-gradient(from 290deg at center top, transparent, ${COLORS.surfaceTeal} 70%)`,
+            backgroundImage: `conic-gradient(from 290deg at center top, transparent, transparent, ${COLORS.surfaceTeal})`,
           }}
-          className="absolute inset-auto left-1/2 h-56 w-[30rem] text-white"
+          className="absolute inset-auto left-1/2 h-56 w-[32rem] text-white"
         >
           <div
             className="absolute w-40 h-[100%] right-0 bottom-0 z-20"
@@ -157,7 +214,14 @@ function LampSpotlight({ children }) {
             }}
           />
         </motion.div>
-        {/* Bottom blur band hides cone bases */}
+
+        {/* Soft vertical seam-hider — covers the line where the two cones meet */}
+        <div
+          className="absolute inset-auto z-25 h-56 w-40 -translate-y-2 rounded-full blur-3xl"
+          style={{ backgroundColor: COLORS.abyss, opacity: 0.7 }}
+        />
+
+        {/* Bottom blur band to hide cone bases */}
         <div
           className="absolute top-1/2 h-48 w-full translate-y-12 scale-x-150 blur-2xl"
           style={{ backgroundColor: COLORS.abyss }}
@@ -172,17 +236,17 @@ function LampSpotlight({ children }) {
           initial={{ width: '8rem' }}
           whileInView={{ width: '16rem' }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3, duration: 1.4, ease: 'easeInOut' }}
+          transition={{ delay: 0.4, duration: 1.8, ease }}
           className="absolute inset-auto z-30 h-36 w-64 -translate-y-[6rem] rounded-full blur-2xl"
           style={{ backgroundColor: COLORS.highlight }}
         />
-        {/* Light bar */}
+        {/* Light bar — extended 50% each side: 30rem → 60rem */}
         <motion.div
-          initial={{ width: '15rem' }}
-          whileInView={{ width: '30rem' }}
+          initial={{ width: '20rem' }}
+          whileInView={{ width: '60rem' }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3, duration: 1.4, ease: 'easeInOut' }}
-          className="absolute inset-auto z-50 h-0.5 w-[30rem] -translate-y-[7rem]"
+          transition={{ delay: 0.4, duration: 1.8, ease }}
+          className="absolute inset-auto z-50 h-0.5 w-[60rem] -translate-y-[7rem]"
           style={{ backgroundColor: COLORS.highlight }}
         />
         {/* Top mask */}
@@ -199,7 +263,6 @@ function LampSpotlight({ children }) {
   );
 }
 
-// Collapsible spec / shipping / returns block — content stays in the DOM for SEO.
 function CollapsibleSection({ title, children, defaultOpen = false }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   return (
@@ -283,13 +346,11 @@ export default function SurfaceTankPage() {
 
   const currentVariant = product?.variants?.[selectedVariant];
 
-  // Build the gallery: variant Shopify image first, then local lifestyle shots.
   const galleryImages = product
     ? [{ src: currentVariant.image, alt: `${product.name} — ${currentVariant.name}`, type: 'product' }, ...GALLERY_IMAGES]
     : [];
   const activeImage = galleryImages[selectedImageIndex] || galleryImages[0];
 
-  // Track recently viewed
   useEffect(() => {
     if (product) {
       addToRecentlyViewed({
@@ -304,12 +365,10 @@ export default function SurfaceTankPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product?.id]);
 
-  // Reset to the variant image when the user picks a different colour.
   useEffect(() => {
     setSelectedImageIndex(0);
   }, [selectedVariant]);
 
-  // Live stock fetch from /api/stock for the current variant.
   useEffect(() => {
     if (!currentVariant?.shopifyVariantId) return;
     const fetchStock = async () => {
@@ -406,7 +465,7 @@ export default function SurfaceTankPage() {
               <img
                 src={activeImage.src}
                 alt={activeImage.alt}
-                className="w-full h-full object-cover"
+                className="w-full h-full"
                 style={{
                   objectFit: activeImage.type === 'product' ? 'contain' : 'cover',
                   padding: activeImage.type === 'product' ? '12%' : 0,
@@ -440,7 +499,7 @@ export default function SurfaceTankPage() {
             </div>
           </div>
 
-          {/* Product info / buy box */}
+          {/* Buy box */}
           <div className="flex flex-col">
             <p
               className="text-xs tracking-[0.25em] font-medium mb-3"
@@ -535,34 +594,19 @@ export default function SurfaceTankPage() {
               )}
             </div>
 
-            {/* Trust badges */}
             <TrustBadges variant="light" size="sm" />
+
+            {/* Compact gift set — sits under trust badges in the right column */}
+            <GiftSetMini
+              formatPrice={formatPrice}
+              currentVariant={currentVariant}
+              onAdd={handleAddGiftSet}
+            />
           </div>
         </div>
       </section>
 
-      {/* ============ LAMP SPOTLIGHT — STORY ============ */}
-      <LampSpotlight>
-        <p
-          className="text-xs tracking-[0.3em] font-medium mb-3"
-          style={{ color: COLORS.highlight }}
-        >
-          MORE THAN A WATER BOTTLE
-        </p>
-        <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-5 text-white">
-          <WhisperText text={product.story.headline} wordDelay={0.18} duration={1.4} />
-        </h2>
-        <p className="text-white/80 text-base md:text-lg leading-relaxed mb-8 max-w-xl mx-auto">
-          {product.story.intro}
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <FishyButton href="/stickers" variant="1">
-            BROWSE STICKERS
-          </FishyButton>
-        </div>
-      </LampSpotlight>
-
-      {/* ============ FEATURE GRID ============ */}
+      {/* ============ FEATURE GRID — moved up, immediately under the hero ============ */}
       <section className="px-4 md:px-8 py-16 md:py-20" style={{ backgroundColor: COLORS.cream }}>
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10 md:mb-14">
@@ -587,10 +631,52 @@ export default function SurfaceTankPage() {
         </div>
       </section>
 
+      {/* ============ COMBINED LAMP STORY + STICKER FAN — single CTA ============ */}
+      <LampSpotlight>
+        <p
+          className="text-xs tracking-[0.3em] font-medium mb-3"
+          style={{ color: COLORS.highlight }}
+        >
+          MORE THAN A WATER BOTTLE
+        </p>
+        <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-5 text-white">
+          <WhisperText text={product.story.headline} wordDelay={0.18} duration={1.4} />
+        </h2>
+        <p className="text-white/80 text-base md:text-lg leading-relaxed mb-8 max-w-xl mx-auto">
+          {product.story.intro}
+        </p>
+
+        {/* Sticker fan inside the lamp section */}
+        <div className="relative h-28 flex items-center justify-center mb-8">
+          <div className="flex -space-x-3">
+            {STICKER_FAN_IMAGES.map((sticker, i) => (
+              <motion.img
+                key={i}
+                src={sticker.image}
+                alt={sticker.name}
+                className="w-20 h-20 object-contain drop-shadow-2xl"
+                style={{
+                  zIndex: i === 2 ? 10 : 5 - Math.abs(i - 2),
+                  transform: `rotate(${(i - 2) * 8}deg) scale(${i === 2 ? 1.15 : 0.9})`,
+                }}
+                whileHover={{ scale: 1.2, zIndex: 15, rotate: 0 }}
+              />
+            ))}
+          </div>
+        </div>
+
+        <p className="text-white/60 text-sm tracking-[0.25em] uppercase mb-6">
+          Over 80 dive sites · One bottle
+        </p>
+
+        <FishyButton href="/stickers" variant="1">
+          EXPLORE STICKERS
+        </FishyButton>
+      </LampSpotlight>
+
       {/* ============ LIFESTYLE + 3-STEP JOURNEY ============ */}
       <section className="bg-white px-4 md:px-8 py-16 md:py-20">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Lifestyle photo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -605,7 +691,6 @@ export default function SurfaceTankPage() {
             />
           </motion.div>
 
-          {/* 3-step journey */}
           <div>
             <p className="text-xs tracking-[0.3em] font-medium mb-3" style={{ color: COLORS.surfaceTeal }}>
               YOUR DIVE PASSPORT
@@ -645,101 +730,9 @@ export default function SurfaceTankPage() {
         </div>
       </section>
 
-      {/* ============ STICKER FAN UPSELL ============ */}
-      <section className="px-4 md:px-8 py-14 md:py-16" style={{ backgroundColor: COLORS.cream }}>
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-xs tracking-[0.3em] font-medium mb-3" style={{ color: COLORS.surfaceTeal }}>
-            COLLECT YOUR ADVENTURES
-          </p>
-          <h3 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: COLORS.deepWater }}>
-            Over 80 dive sites. One bottle.
-          </h3>
-          <div className="relative h-28 flex items-center justify-center mb-7">
-            <div className="flex -space-x-3">
-              {STICKER_FAN_IMAGES.map((sticker, i) => (
-                <motion.img
-                  key={i}
-                  src={sticker.image}
-                  alt={sticker.name}
-                  className="w-20 h-20 object-contain drop-shadow-lg"
-                  style={{
-                    zIndex: i === 2 ? 10 : 5 - Math.abs(i - 2),
-                    transform: `rotate(${(i - 2) * 8}deg) scale(${i === 2 ? 1.15 : 0.9})`,
-                  }}
-                  whileHover={{ scale: 1.2, zIndex: 15, rotate: 0 }}
-                />
-              ))}
-            </div>
-          </div>
-          <FishyButton href="/stickers" variant="1">
-            EXPLORE STICKERS
-          </FishyButton>
-        </div>
-      </section>
-
-      {/* ============ GIFT SET BUNDLE ============ */}
-      <section className="px-4 md:px-8 py-12 md:py-14 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-2xl p-6 md:p-10 grid md:grid-cols-[1fr_auto] gap-6 items-center"
-            style={{
-              background: `linear-gradient(135deg, ${COLORS.deepWater} 0%, ${COLORS.midDepth} 100%)`,
-              boxShadow: `0 10px 40px ${COLORS.midDepth}30`,
-            }}
-          >
-            <div>
-              <div className="flex items-center gap-2 mb-3">
-                <span
-                  className="text-[10px] tracking-[0.2em] font-bold uppercase px-2 py-1 rounded-full"
-                  style={{ backgroundColor: COLORS.highlight, color: COLORS.abyss }}
-                >
-                  Gift Set
-                </span>
-                <span className="text-xs font-medium" style={{ color: COLORS.highlight }}>
-                  Save {formatPrice(10.05)}
-                </span>
-              </div>
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-1.5">
-                The Diver&rsquo;s Gift Set
-              </h3>
-              <p className="text-white/70 text-sm md:text-base mb-4">
-                Surface Tank + Dive Journal — the complete pair for your next trip.
-              </p>
-              <div className="flex items-baseline gap-2">
-                <span className="text-white/40 text-sm line-through">{formatPrice(68)}</span>
-                <span className="text-2xl md:text-3xl font-bold" style={{ color: COLORS.highlight }}>
-                  {formatPrice(57.95)}
-                </span>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={handleAddGiftSet}
-              disabled={!currentVariant.inStock}
-              className="px-7 py-3.5 rounded-xl text-sm font-semibold tracking-wider uppercase transition-all"
-              style={{
-                backgroundColor: currentVariant.inStock ? COLORS.highlight : 'rgba(255,255,255,0.2)',
-                color: currentVariant.inStock ? COLORS.abyss : 'white',
-                cursor: currentVariant.inStock ? 'pointer' : 'not-allowed',
-                opacity: currentVariant.inStock ? 1 : 0.6,
-              }}
-            >
-              Add Gift Set
-            </button>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ============ DETAILS / SPECS ============ */}
+      {/* ============ DETAILS / SPECS — heading removed, sits between journey and FAQ ============ */}
       <section className="px-4 md:px-8 py-12 md:py-14" style={{ backgroundColor: COLORS.cream }}>
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center" style={{ color: COLORS.deepWater }}>
-            <WhisperText text="The fine print." wordDelay={0.18} duration={1.2} />
-          </h2>
           <div className="bg-white rounded-2xl border" style={{ borderColor: '#E6EEF2' }}>
             <div className="px-5 md:px-6">
               <CollapsibleSection title="Product Info." defaultOpen={true}>
@@ -783,7 +776,7 @@ export default function SurfaceTankPage() {
         </div>
       </section>
 
-      {/* ============ FAQ (kept at the bottom) ============ */}
+      {/* ============ FAQ ============ */}
       <section className="bg-white px-4 md:px-8 py-16 md:py-20">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
@@ -805,7 +798,6 @@ export default function SurfaceTankPage() {
       <RecentlyViewed excludeId={product.id} variant="light" />
       <Footer />
 
-      {/* JSON-LD FAQPage structured data — preserved for SEO / answer engines */}
       {product.faqs && product.faqs.length > 0 && (
         <script
           type="application/ld+json"

@@ -33,7 +33,7 @@ export const PRODUCTS = {
     ],
     features: [
       {
-        icon: '/icons/Vaccum_Insulation.svg',
+        icon: '/icons/Vacuum_Insulation.svg',
         title: 'Double Wall',
         subtitle: 'Vacuum Sealed'
       },
