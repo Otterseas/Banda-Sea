@@ -83,12 +83,12 @@ export default function StickerGlobe({
           const lat = (m.location[0] * Math.PI) / 180;
           const lng = (m.location[1] * Math.PI) / 180;
 
-          // Marker on unit sphere with phi rotation around Y-axis. Cobe uses
-          // a left-handed orientation where increasing phi rotates the globe
-          // east-to-west; subtracting phi from lng matches that direction.
-          let x = Math.cos(lat) * Math.sin(lng - phi);
+          // Marker on unit sphere with phi rotation around Y-axis. Cobe spins
+          // such that increasing phi sweeps the globe so eastern hemispheres
+          // rotate INTO view from the right; adding phi to lng matches that.
+          let x = Math.cos(lat) * Math.sin(lng + phi);
           let y = Math.sin(lat);
-          let z = Math.cos(lat) * Math.cos(lng - phi);
+          let z = Math.cos(lat) * Math.cos(lng + phi);
 
           // Tilt around X-axis by theta.
           const yt = y * cosTheta - z * sinTheta;

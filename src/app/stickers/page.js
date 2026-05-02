@@ -292,10 +292,15 @@ export default function StickersPage() {
         </div>
       </section>
 
-      {/* ============ REGION TABS — gooey filter, with a connector strip
-            that drops out of the active tab into the sticker panel below */}
+      {/* ============ REGION TABS + STICKER PANEL — single section, both
+            inside ONE goo container so the active tab can melt into the panel.
+            The white sticker grid sits inside a teal 'sleeve' (8px padding of
+            solid surfaceTeal). The sleeve and the active tab share the same
+            fill colour, and their bounding boxes are inside the goo filter's
+            blur radius — the metaball composite then fuses them into one
+            connected shape. */}
       <section
-        className="px-4 md:px-8 pt-10 md:pt-12 pb-0"
+        className="px-4 md:px-8 pt-10 md:pt-12 pb-12 md:pb-16"
         style={{ backgroundColor: COLORS.cream }}
       >
         <div className="max-w-6xl mx-auto">
@@ -306,13 +311,10 @@ export default function StickersPage() {
             CHOOSE YOUR REGION
           </p>
 
-          {/* Goo container — pills + a horizontal connector strip share the
-              same surfaceTeal fill, so the active tab visually melts down into
-              the strip via the metaball filter. */}
           <div className="relative" style={{ filter: 'url(#goo-tabs)' }}>
             <div
               ref={regionNavRef}
-              className="flex flex-wrap justify-center pb-1"
+              className="flex flex-wrap justify-center"
             >
               {REGIONS.map((region) => {
                 const isActive = activeTab === region;
@@ -337,31 +339,20 @@ export default function StickersPage() {
               })}
             </div>
 
-            {/* Connector strip — sits just below the tab row at the same fill
-                colour so the goo filter merges it with the active tab. Visually
-                this is the top edge of the sticker panel. */}
+            {/* Teal sleeve wrapping the white sticker panel. The sleeve's top
+                edge sits just below the active tab so goo merges them. */}
             <div
-              className="mx-auto h-3 max-w-3xl rounded-t-2xl"
-              style={{ backgroundColor: COLORS.surfaceTeal, opacity: 0.55 }}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ============ STICKER GRID — internal scroll, panel connected to tabs above ============ */}
-      <section
-        className="px-4 md:px-8 py-10 md:py-14"
-        style={{ backgroundColor: COLORS.cream }}
-      >
-        <div
-          className="max-w-6xl mx-auto bg-white rounded-2xl border-2 px-4 md:px-6 pt-5 pb-6 md:pb-8 -mt-4"
-          style={{ borderColor: `${COLORS.surfaceTeal}55` }}
-        >
-          <div className="flex items-center justify-end mb-4">
-            <div className="text-sm font-medium" style={{ color: COLORS.midDepth }}>
-              {activeStickers.length} stickers in {activeTab}
-            </div>
-          </div>
+              className="rounded-2xl mx-auto -mt-1.5"
+              style={{ backgroundColor: COLORS.surfaceTeal, padding: '8px' }}
+            >
+              <div
+                className="bg-white rounded-xl px-4 md:px-6 pt-5 pb-6 md:pb-7"
+              >
+                <div className="flex items-center justify-end mb-4">
+                  <div className="text-sm font-medium" style={{ color: COLORS.midDepth }}>
+                    {activeStickers.length} stickers in {activeTab}
+                  </div>
+                </div>
 
           {/* Scrollable grid */}
           <div
@@ -489,6 +480,12 @@ export default function StickersPage() {
               })}
             </AnimatePresence>
           </div>
+              </div>
+              {/* /white panel */}
+            </div>
+            {/* /teal sleeve */}
+          </div>
+          {/* /goo filter container */}
         </div>
       </section>
 
