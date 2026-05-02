@@ -381,7 +381,7 @@ export default function LogPagesPage() {
               />
             </motion.div>
 
-            <div className="relative mt-auto pt-3 mb-10 md:mb-12 shrink-0">
+            <div className="relative mt-auto pt-3 mb-20 md:mb-24 shrink-0">
               <button
                 type="button"
                 onClick={() => setThumbStartIndex((i) => Math.max(0, i - 1))}
@@ -536,62 +536,63 @@ export default function LogPagesPage() {
               </span>
             </div>
 
-            <div className="mb-3">
+            <div className="mb-6">
               <FishyButton onClick={handleAddToCart} variant="1">
                 ADD TO CART
               </FishyButton>
             </div>
 
-            {/* Pairs Well With card — small, fits into the buy-box width.
-                Moved here from the bottom of the column so the cross-link to
-                the journal sits right alongside the cart action. */}
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="mb-5 rounded-xl p-3 grid grid-cols-[auto_1fr_auto] gap-3 items-center border"
-              style={{
-                borderColor: `${COLORS.surfaceTeal}40`,
-                backgroundColor: 'white',
-              }}
-            >
-              <Link
-                href={JOURNAL_LINK}
-                className="block w-12 h-12 rounded-lg overflow-hidden flex-shrink-0"
-                style={{ backgroundColor: COLORS.cream }}
-                aria-label="View The Dive Journal"
+            <TrustBadges variant="light" size="sm" />
+
+            {/* Pairs Well With card — pushed to the bottom of the column so it
+                lines up horizontally with the gallery thumbnail row on the left. */}
+            <div className="mt-auto pt-6">
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="rounded-xl p-3 grid grid-cols-[auto_1fr_auto] gap-3 items-center border"
+                style={{
+                  borderColor: `${COLORS.surfaceTeal}40`,
+                  backgroundColor: 'white',
+                }}
               >
-                <img
-                  src="/images/products/The-dive-journal-product-shot.jpg"
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-              </Link>
-              <div className="min-w-0">
-                <p
-                  className="text-[10px] tracking-[0.2em] font-bold uppercase mb-0.5"
-                  style={{ color: COLORS.surfaceTeal }}
-                >
-                  Pairs Well With
-                </p>
                 <Link
                   href={JOURNAL_LINK}
-                  className="text-sm font-semibold hover:underline truncate block"
-                  style={{ color: COLORS.deepWater }}
+                  className="block w-12 h-12 rounded-lg overflow-hidden flex-shrink-0"
+                  style={{ backgroundColor: COLORS.cream }}
+                  aria-label="View The Dive Journal"
                 >
-                  The Dive Journal
+                  <img
+                    src="/images/products/The-dive-journal-product-shot.jpg"
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
                 </Link>
-              </div>
-              <Link
-                href={JOURNAL_LINK}
-                className="text-[10px] font-semibold tracking-[0.15em] uppercase px-3 py-2 rounded-lg whitespace-nowrap transition-colors hover:bg-gray-50"
-                style={{ borderColor: COLORS.surfaceTeal, color: COLORS.surfaceTeal, border: '1px solid' }}
-              >
-                View
-              </Link>
-            </motion.div>
-
-            <TrustBadges variant="light" size="sm" />
+                <div className="min-w-0">
+                  <p
+                    className="text-[10px] tracking-[0.2em] font-bold uppercase mb-0.5"
+                    style={{ color: COLORS.surfaceTeal }}
+                  >
+                    Pairs Well With
+                  </p>
+                  <Link
+                    href={JOURNAL_LINK}
+                    className="text-sm font-semibold hover:underline truncate block"
+                    style={{ color: COLORS.deepWater }}
+                  >
+                    The Dive Journal
+                  </Link>
+                </div>
+                <Link
+                  href={JOURNAL_LINK}
+                  className="text-[10px] font-semibold tracking-[0.15em] uppercase px-3 py-2 rounded-lg whitespace-nowrap transition-colors hover:bg-gray-50"
+                  style={{ borderColor: COLORS.surfaceTeal, color: COLORS.surfaceTeal, border: '1px solid' }}
+                >
+                  View
+                </Link>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
