@@ -335,13 +335,13 @@ export default function StickersPage() {
         </div>
       </section>
 
-      {/* ============ REGION TABS + STICKER PANEL — single section, both
-            inside ONE goo container so the active tab can melt into the panel.
-            The white sticker grid sits inside a teal 'sleeve' (8px padding of
-            solid surfaceTeal). The sleeve and the active tab share the same
-            fill colour, and their bounding boxes are inside the goo filter's
-            blur radius — the metaball composite then fuses them into one
-            connected shape. */}
+      {/* ============ REGION TABS + STICKER PANEL ============
+            Simple gooey tab nav above a clean white panel. All tabs share
+            the same teal fill at FULL opacity so the goo filter doesn't
+            clip them out (the alpha-threshold colour matrix would zero out
+            anything below ~0.47 alpha). Active state is shown by a colour
+            shift to the brand deepWater rather than by opacity, so adjacent
+            inactive pills stay visible and merge into the goo ribbon. */}
       <section
         className="px-4 md:px-8 pt-10 md:pt-12 pb-12 md:pb-16"
         style={{ backgroundColor: COLORS.cream }}
@@ -354,7 +354,8 @@ export default function StickersPage() {
             CHOOSE YOUR REGION
           </p>
 
-          <div className="relative" style={{ filter: 'url(#goo-tabs)' }}>
+          {/* Goo tabs */}
+          <div className="relative mb-5" style={{ filter: 'url(#goo-tabs)' }}>
             <div
               ref={regionNavRef}
               className="flex flex-wrap justify-center"
@@ -366,12 +367,11 @@ export default function StickersPage() {
                     key={region}
                     type="button"
                     onClick={() => setActiveTab(region)}
-                    className="rounded-full px-7 py-4 text-base font-bold transition-all whitespace-nowrap"
+                    className="rounded-full px-6 py-3.5 text-sm md:text-base font-bold transition-all whitespace-nowrap"
                     style={{
-                      backgroundColor: COLORS.surfaceTeal,
+                      backgroundColor: isActive ? COLORS.deepWater : COLORS.surfaceTeal,
                       color: 'white',
-                      opacity: isActive ? 1 : 0.4,
-                      transform: isActive ? 'scale(1.2)' : 'scale(1)',
+                      transform: isActive ? 'scale(1.15)' : 'scale(1)',
                       margin: '5px',
                       letterSpacing: '0.02em',
                       textShadow: isActive ? '0 2px 4px rgba(0,0,0,0.25)' : 'none',
@@ -382,21 +382,15 @@ export default function StickersPage() {
                 );
               })}
             </div>
+          </div>
 
-            {/* Teal sleeve wrapping the white sticker panel. The sleeve's top
-                edge sits just below the active tab so goo merges them. */}
-            <div
-              className="rounded-2xl mx-auto -mt-1.5"
-              style={{ backgroundColor: COLORS.surfaceTeal, padding: '8px' }}
-            >
-              <div
-                className="bg-white rounded-xl px-4 md:px-6 pt-5 pb-6 md:pb-7"
-              >
-                <div className="flex items-center justify-end mb-4">
-                  <div className="text-sm font-medium" style={{ color: COLORS.midDepth }}>
-                    {activeStickers.length} stickers in {activeTab}
-                  </div>
-                </div>
+          {/* Clean white sticker panel — no coloured sleeve. */}
+          <div className="bg-white rounded-2xl px-4 md:px-6 pt-5 pb-6 md:pb-7 shadow-sm">
+            <div className="flex items-center justify-end mb-4">
+              <div className="text-sm font-medium" style={{ color: COLORS.midDepth }}>
+                {activeStickers.length} stickers in {activeTab}
+              </div>
+            </div>
 
           {/* Scrollable grid */}
           <div
@@ -524,12 +518,8 @@ export default function StickersPage() {
               })}
             </AnimatePresence>
           </div>
-              </div>
-              {/* /white panel */}
-            </div>
-            {/* /teal sleeve */}
           </div>
-          {/* /goo filter container */}
+          {/* /white sticker panel */}
         </div>
       </section>
 
