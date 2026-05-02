@@ -494,14 +494,14 @@ export default function SurfaceTankPage() {
       {/* ============ HERO ============ */}
       <section className="bg-white px-4 md:px-8 pt-8 md:pt-12 pb-12 md:pb-16">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-14">
-          {/* Image gallery */}
-          <div>
+          {/* Image gallery — flex column matched to right column height. Top aligns with tagline (pt matches right column), thumbnails anchored at the bottom alongside the gift set. */}
+          <div className="flex flex-col h-full pt-3 md:pt-5">
             <motion.div
               key={activeImage.src}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="aspect-[5/4] w-full rounded-2xl overflow-hidden border"
+              className="flex-1 min-h-[320px] w-full rounded-2xl overflow-hidden border"
               style={{ borderColor: '#E6EEF2', backgroundColor: COLORS.cream }}
             >
               <img
@@ -510,11 +510,11 @@ export default function SurfaceTankPage() {
                 className="w-full h-full"
                 style={{
                   objectFit: activeImage.type === 'product' ? 'contain' : 'cover',
-                  padding: activeImage.type === 'product' ? '12%' : 0,
+                  padding: activeImage.type === 'product' ? '8%' : 0,
                 }}
               />
             </motion.div>
-            <div className="grid grid-cols-4 gap-2 mt-3">
+            <div className="grid grid-cols-4 gap-2 mt-3 shrink-0">
               {galleryImages.map((img, i) => (
                 <button
                   key={img.src}
