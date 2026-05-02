@@ -401,7 +401,7 @@ export default function BoosterPackPage() {
                   className="inline-flex items-center gap-2 text-sm font-semibold"
                   style={{ color: LUNA.highlight }}
                 >
-                  View Product →
+                  Visit Product →
                 </span>
               </div>
             </motion.div>

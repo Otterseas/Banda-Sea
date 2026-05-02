@@ -265,7 +265,7 @@ export default function HomePage() {
       >
         {/* Top Header — full-width white bar */}
         <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-40">
-          <div className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-10 py-4">
+          <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 py-3">
             <Link href="/" className="flex items-center gap-3">
               <img
                 src="/logo.png"
@@ -331,8 +331,39 @@ export default function HomePage() {
           </div>
         </header>
 
-        {/* Hero — Product Selector */}
-        <HomeProductSelector />
+        {/* Brand Tagline — sits above the hero on a white panel */}
+        <section className="w-full bg-white pt-10 md:pt-14 pb-6 md:pb-8 px-4 md:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1
+              className="text-4xl md:text-6xl font-bold leading-[1.1] mb-3"
+              style={{
+                background: `linear-gradient(135deg, ${LUNA.deepWater} 0%, ${LUNA.surfaceTeal} 60%, ${LUNA.midDepth} 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              <WhisperText text="Build your dive story." wordDelay={0.16} duration={1.2} />
+            </h1>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.9 }}
+              className="text-base md:text-lg max-w-2xl mx-auto"
+              style={{ color: LUNA.midDepth }}
+            >
+              Dive stickers, journals, and accessories from the world&rsquo;s best dive sites.
+            </motion.p>
+          </div>
+        </section>
+
+        {/* Hero — Product Selector (padded white container) */}
+        <section className="w-full bg-white pb-12 md:pb-16 px-4 md:px-8">
+          <div className="max-w-7xl mx-auto">
+            <HomeProductSelector />
+          </div>
+        </section>
 
         {/* ===========================================
             ABOUT US SECTION - With Parallax Background
@@ -354,14 +385,8 @@ export default function HomePage() {
             }}
           />
           <div className="max-w-6xl mx-auto relative z-10">
-            {/* Section Header — slow reveal */}
-            <motion.div
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-              className="text-center mb-16"
-            >
+            {/* Section Header — heading reveals first, paragraph and cards cascade after */}
+            <div className="text-center mb-16">
               <h2
                 className="text-4xl md:text-5xl font-bold mb-4"
                 style={{
@@ -371,20 +396,20 @@ export default function HomePage() {
                   backgroundClip: 'text',
                 }}
               >
-                <WhisperText text="About Otterseas" wordDelay={0.18} duration={1.4} />
+                <WhisperText text="About Otterseas" wordDelay={0.2} duration={1.4} />
               </h2>
               <motion.p
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 1.8 }}
                 className="text-white/60 text-lg max-w-2xl mx-auto"
               >
                 Dive deeper into who we are and what drives us to create products for the diving community.
               </motion.p>
-            </motion.div>
+            </div>
 
-            {/* About Cards — slow staggered reveal */}
+            {/* About Cards — cascade in after the heading completes */}
             <div className="grid md:grid-cols-3 gap-8">
               {ABOUT_SECTIONS.map((section, index) => (
                 <motion.div
@@ -393,9 +418,9 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{
-                    duration: 1.4,
+                    duration: 1.2,
                     ease: [0.22, 1, 0.36, 1],
-                    delay: 0.4 + index * 0.5,
+                    delay: 2.4 + index * 0.4,
                   }}
                   className="p-8 rounded-2xl"
                   style={{
@@ -420,15 +445,15 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* CTA — slow reveal, FishyButton for the primary action */}
+            {/* CTA — last in the cascade */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{
-                duration: 1.4,
+                duration: 1.2,
                 ease: [0.22, 1, 0.36, 1],
-                delay: 1.8,
+                delay: 4.0,
               }}
               className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-12"
             >
