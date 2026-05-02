@@ -87,6 +87,22 @@ const PRODUCTS = [
   },
 ];
 
+const IconBadge = ({ children, size = 44 }) => (
+  <div
+    className="flex items-center justify-center rounded-full backdrop-blur-sm"
+    style={{
+      width: size,
+      height: size,
+      backgroundColor: 'rgba(20, 20, 20, 0.7)',
+      border: '1px solid rgba(255, 255, 255, 0.15)',
+      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.35)',
+      color: '#FFFFFF',
+    }}
+  >
+    {children}
+  </div>
+);
+
 export default function HomeProductSelector() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [revealedIndices, setRevealedIndices] = useState([]);
@@ -119,50 +135,45 @@ export default function HomeProductSelector() {
               onMouseEnter={() => setActiveIndex(index)}
               className="relative flex flex-col cursor-pointer overflow-hidden border-r last:border-r-0"
               style={{
-                backgroundImage: `url('${product.image}')`,
-                backgroundSize: 'auto 100%',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: product.bgPosition,
-                backgroundColor: LUNA.abyss,
                 borderColor: `${LUNA.abyss}80`,
                 opacity: isRevealed ? 1 : 0,
                 transform: isRevealed ? 'translateX(0)' : 'translateX(-60px)',
                 flex: isActive ? '7 1 0%' : '1 1 0%',
-                filter: isActive
-                  ? 'grayscale(0) brightness(1)'
-                  : 'grayscale(1) brightness(0.55)',
                 minWidth: '90px',
+                backgroundColor: LUNA.abyss,
                 transition:
-                  'flex-grow 700ms cubic-bezier(0.4, 0, 0.2, 1), filter 700ms ease, opacity 800ms ease, transform 800ms ease',
-                willChange: 'flex-grow, filter, opacity, transform',
+                  'flex-grow 700ms cubic-bezier(0.4, 0, 0.2, 1), opacity 800ms ease, transform 800ms ease',
+                willChange: 'flex-grow, opacity, transform',
               }}
             >
-              {/* Number — top-left, always visible */}
+              {/* Filtered background layer — only this gets grayscaled when collapsed */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: `url('${product.image}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: product.bgPosition,
+                  backgroundRepeat: 'no-repeat',
+                  filter: isActive
+                    ? 'grayscale(0) brightness(1)'
+                    : 'grayscale(1) brightness(0.55)',
+                  transition: 'filter 700ms ease',
+                }}
+              />
+
+              {/* Number — top-left, always visible (above filter) */}
               <div
                 className="absolute top-4 left-4 z-20 font-light text-2xl tracking-wider"
                 style={{
-                  color: isActive ? LUNA.highlight : '#F5EFE6',
+                  color: isActive ? LUNA.highlight : '#FFFFFF',
                   transition: 'color 400ms ease',
-                  textShadow: '0 2px 8px rgba(0,0,0,0.6)',
+                  textShadow: '0 2px 8px rgba(0,0,0,0.7)',
                 }}
               >
                 {product.id}
               </div>
 
-              {/* Product icon — top-right, always visible */}
-              <div
-                className="absolute top-4 right-4 z-20"
-                style={{
-                  color: isActive ? LUNA.highlight : '#F5EFE6',
-                  transition: 'color 400ms ease, opacity 400ms ease',
-                  opacity: 0.92,
-                  filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.55))',
-                }}
-              >
-                <Icon width={26} height={26} />
-              </div>
-
-              {/* Rotated product name — collapsed only */}
+              {/* Rotated product name — collapsed only, white */}
               <div
                 className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
                 style={{
@@ -171,16 +182,31 @@ export default function HomeProductSelector() {
                 }}
               >
                 <span
-                  className="font-bold uppercase tracking-[0.3em] text-base text-[#F5EFE6]"
+                  className="font-bold uppercase tracking-[0.3em] text-base"
                   style={{
                     writingMode: 'vertical-rl',
                     textOrientation: 'mixed',
                     transform: 'rotate(180deg)',
-                    textShadow: '0 2px 8px rgba(0,0,0,0.7)',
+                    color: '#FFFFFF',
+                    textShadow: '0 2px 8px rgba(0,0,0,0.85)',
                   }}
                 >
                   {product.name}
                 </span>
+              </div>
+
+              {/* Icon badge — collapsed: bottom-center; expanded: hidden (lives inside info panel) */}
+              <div
+                className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20"
+                style={{
+                  opacity: isActive ? 0 : 1,
+                  transition: 'opacity 400ms ease',
+                  pointerEvents: isActive ? 'none' : 'auto',
+                }}
+              >
+                <IconBadge size={44}>
+                  <Icon width={22} height={22} />
+                </IconBadge>
               </div>
 
               {/* Bottom info panel — active only */}
@@ -196,16 +222,23 @@ export default function HomeProductSelector() {
                   pointerEvents: isActive ? 'auto' : 'none',
                 }}
               >
-                <p
-                  className="text-xs tracking-[0.25em] font-medium mb-2"
-                  style={{ color: LUNA.highlight }}
-                >
-                  {product.tagline}
-                </p>
-                <h3 className="text-3xl lg:text-4xl font-bold text-[#F5EFE6] mb-3 leading-tight">
-                  {product.name}
-                </h3>
-                <p className="text-sm text-[#F5EFE6]/75 mb-5 max-w-md leading-relaxed">
+                <div className="flex items-start gap-4 mb-3">
+                  <IconBadge size={48}>
+                    <Icon width={24} height={24} />
+                  </IconBadge>
+                  <div className="flex-1 min-w-0 pt-1">
+                    <p
+                      className="text-xs tracking-[0.25em] font-medium mb-1"
+                      style={{ color: LUNA.highlight }}
+                    >
+                      {product.tagline}
+                    </p>
+                    <h3 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
+                      {product.name}
+                    </h3>
+                  </div>
+                </div>
+                <p className="text-sm text-white/75 mb-5 max-w-md leading-relaxed">
                   {product.description}
                 </p>
                 <FishyButton href={product.link} variant="1">
@@ -233,59 +266,61 @@ export default function HomeProductSelector() {
               onClick={() => setActiveIndex(index)}
               className="relative overflow-hidden cursor-pointer"
               style={{
-                backgroundImage: `url('${product.image}')`,
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: product.bgPosition,
                 backgroundColor: LUNA.abyss,
                 height: isActive ? '420px' : '100px',
-                filter: isActive
-                  ? 'grayscale(0) brightness(1)'
-                  : 'grayscale(1) brightness(0.6)',
                 opacity: isRevealed ? 1 : 0,
                 transform: isRevealed ? 'translateY(0)' : 'translateY(20px)',
                 transition:
-                  'height 500ms cubic-bezier(0.4,0,0.2,1), filter 500ms ease, opacity 600ms ease, transform 600ms ease',
+                  'height 500ms cubic-bezier(0.4,0,0.2,1), opacity 600ms ease, transform 600ms ease',
               }}
             >
-              {/* Number — top-left, always visible */}
+              {/* Filtered background */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: `url('${product.image}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: product.bgPosition,
+                  backgroundRepeat: 'no-repeat',
+                  filter: isActive
+                    ? 'grayscale(0) brightness(1)'
+                    : 'grayscale(1) brightness(0.6)',
+                  transition: 'filter 500ms ease',
+                }}
+              />
+
+              {/* Number — top-left */}
               <div
                 className="absolute top-3 left-4 z-10 font-light text-xl"
                 style={{
-                  color: isActive ? LUNA.highlight : '#F5EFE6',
+                  color: isActive ? LUNA.highlight : '#FFFFFF',
                   transition: 'color 300ms ease',
-                  textShadow: '0 2px 6px rgba(0,0,0,0.6)',
+                  textShadow: '0 2px 6px rgba(0,0,0,0.7)',
                 }}
               >
                 {product.id}
               </div>
 
-              {/* Icon — top-right, always visible */}
+              {/* Collapsed name + icon */}
               <div
-                className="absolute top-3 right-4 z-10"
-                style={{
-                  color: isActive ? LUNA.highlight : '#F5EFE6',
-                  filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.55))',
-                  opacity: 0.92,
-                }}
-              >
-                <Icon width={22} height={22} />
-              </div>
-
-              {/* Collapsed name — center-right */}
-              <div
-                className="absolute top-1/2 -translate-y-1/2 right-12 z-10"
+                className="absolute inset-0 flex items-center justify-between px-5 z-10 pointer-events-none"
                 style={{
                   opacity: isActive ? 0 : 1,
                   transition: 'opacity 400ms ease',
                 }}
               >
                 <span
-                  className="font-bold uppercase tracking-[0.25em] text-sm text-[#F5EFE6]"
-                  style={{ textShadow: '0 2px 6px rgba(0,0,0,0.7)' }}
+                  className="font-bold uppercase tracking-[0.25em] text-sm ml-12"
+                  style={{
+                    color: '#FFFFFF',
+                    textShadow: '0 2px 6px rgba(0,0,0,0.85)',
+                  }}
                 >
                   {product.name}
                 </span>
+                <IconBadge size={36}>
+                  <Icon width={18} height={18} />
+                </IconBadge>
               </div>
 
               {/* Active info — bottom panel */}
@@ -299,16 +334,23 @@ export default function HomeProductSelector() {
                   pointerEvents: isActive ? 'auto' : 'none',
                 }}
               >
-                <p
-                  className="text-[10px] tracking-[0.25em] font-medium mb-1"
-                  style={{ color: LUNA.highlight }}
-                >
-                  {product.tagline}
-                </p>
-                <h3 className="text-2xl font-bold text-[#F5EFE6] mb-2 leading-tight">
-                  {product.name}
-                </h3>
-                <p className="text-xs text-[#F5EFE6]/75 mb-3 leading-relaxed line-clamp-2">
+                <div className="flex items-start gap-3 mb-2">
+                  <IconBadge size={40}>
+                    <Icon width={20} height={20} />
+                  </IconBadge>
+                  <div className="flex-1 min-w-0 pt-0.5">
+                    <p
+                      className="text-[10px] tracking-[0.25em] font-medium mb-0.5"
+                      style={{ color: LUNA.highlight }}
+                    >
+                      {product.tagline}
+                    </p>
+                    <h3 className="text-2xl font-bold text-white leading-tight">
+                      {product.name}
+                    </h3>
+                  </div>
+                </div>
+                <p className="text-xs text-white/75 mb-3 leading-relaxed line-clamp-2">
                   {product.description}
                 </p>
                 <Link
@@ -316,7 +358,7 @@ export default function HomeProductSelector() {
                   className="inline-block text-xs font-semibold tracking-[0.15em] px-5 py-3 rounded-xl transition-colors"
                   style={{
                     backgroundColor: LUNA.deepWater,
-                    color: '#F5EFE6',
+                    color: '#FFFFFF',
                   }}
                 >
                   VISIT PRODUCT →
