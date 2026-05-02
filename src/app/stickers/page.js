@@ -108,6 +108,7 @@ const GLOBE_LOCATIONS = [
 export default function StickersPage() {
   const [activeTab, setActiveTab] = useState(REGIONS[0]);
   const [selectedSticker, setSelectedSticker] = useState(null);
+  const [previewBundle, setPreviewBundle] = useState(null);
   const [selectedStock, setSelectedStock] = useState({ loading: false, quantity: null, available: true });
   const [gridStock, setGridStock] = useState({});
   const [animatingItems, setAnimatingItems] = useState(new Set());
@@ -722,51 +723,63 @@ export default function StickersPage() {
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                   whileHover={{ y: -2 }}
-                  className="bg-white rounded-2xl border p-4 flex items-center gap-4"
+                  className="bg-white rounded-2xl border p-4"
                   style={{ borderColor: '#E6EEF2' }}
                 >
-                  {/* Sticker count badge */}
-                  <div
-                    className="flex-shrink-0 w-14 h-14 rounded-xl flex flex-col items-center justify-center"
-                    style={{ backgroundColor: `${COLORS.highlight}33` }}
-                  >
-                    <span className="text-xl font-bold leading-none" style={{ color: COLORS.deepWater }}>
-                      {bundle.stickerCount}
-                    </span>
-                    <span className="text-[9px] tracking-wider uppercase" style={{ color: COLORS.midDepth }}>
-                      Stickers
-                    </span>
-                  </div>
-
-                  {/* Bundle info */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-semibold leading-tight truncate" style={{ color: COLORS.deepWater }}>
-                      {bundle.name}
-                    </h3>
-                    <p className="text-xs text-gray-500 leading-snug line-clamp-1 mt-0.5">
-                      {bundle.description}
-                    </p>
-                    <div className="flex items-baseline gap-2 mt-1.5">
-                      <span className="text-xs text-gray-400 line-through">
-                        {formatPrice(bundle.originalPrice)}
+                  <div className="flex items-center gap-4">
+                    {/* Sticker count badge */}
+                    <div
+                      className="flex-shrink-0 w-14 h-14 rounded-xl flex flex-col items-center justify-center"
+                      style={{ backgroundColor: `${COLORS.highlight}33` }}
+                    >
+                      <span className="text-xl font-bold leading-none" style={{ color: COLORS.deepWater }}>
+                        {bundle.stickerCount}
                       </span>
-                      <span className="text-sm font-bold" style={{ color: COLORS.deepWater }}>
-                        {formatPrice(bundle.price)}
-                      </span>
-                      <span className="text-[10px] font-semibold" style={{ color: COLORS.surfaceTeal }}>
-                        Save {formatPrice(bundle.savings)}
+                      <span className="text-[9px] tracking-wider uppercase" style={{ color: COLORS.midDepth }}>
+                        Stickers
                       </span>
                     </div>
+
+                    {/* Bundle info */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-sm font-semibold leading-tight truncate" style={{ color: COLORS.deepWater }}>
+                        {bundle.name}
+                      </h3>
+                      <p className="text-xs text-gray-500 leading-snug line-clamp-1 mt-0.5">
+                        {bundle.description}
+                      </p>
+                      <div className="flex items-baseline gap-2 mt-1.5">
+                        <span className="text-xs text-gray-400 line-through">
+                          {formatPrice(bundle.originalPrice)}
+                        </span>
+                        <span className="text-sm font-bold" style={{ color: COLORS.deepWater }}>
+                          {formatPrice(bundle.price)}
+                        </span>
+                        <span className="text-[10px] font-semibold" style={{ color: COLORS.surfaceTeal }}>
+                          Save {formatPrice(bundle.savings)}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Add button */}
+                    <button
+                      type="button"
+                      onClick={() => handleAddBundle(bundle)}
+                      className="flex-shrink-0 text-[11px] font-bold tracking-[0.15em] uppercase px-4 py-2.5 rounded-lg transition-colors hover:opacity-90"
+                      style={{ backgroundColor: COLORS.deepWater, color: 'white' }}
+                    >
+                      Add Pack
+                    </button>
                   </div>
 
-                  {/* Add button */}
+                  {/* What's inside trigger — opens the bundle preview modal */}
                   <button
                     type="button"
-                    onClick={() => handleAddBundle(bundle)}
-                    className="flex-shrink-0 text-[11px] font-bold tracking-[0.15em] uppercase px-4 py-2.5 rounded-lg transition-colors hover:opacity-90"
-                    style={{ backgroundColor: COLORS.deepWater, color: 'white' }}
+                    onClick={() => setPreviewBundle(bundle)}
+                    className="mt-3 text-[11px] font-semibold tracking-wider uppercase hover:underline inline-flex items-center gap-1"
+                    style={{ color: COLORS.surfaceTeal }}
                   >
-                    Add Pack
+                    See what&rsquo;s inside →
                   </button>
                 </motion.div>
               ))}
@@ -907,6 +920,122 @@ export default function StickersPage() {
       </section>
 
       <Footer />
+
+      {/* ============ BUNDLE PREVIEW MODAL ============ */}
+      <AnimatePresence>
+        {previewBundle && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setPreviewBundle(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ backgroundColor: 'rgba(2, 56, 89, 0.45)', backdropFilter: 'blur(6px)' }}
+          >
+            <motion.div
+              initial={{ scale: 0.94, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.94, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto relative"
+            >
+              <button
+                type="button"
+                onClick={() => setPreviewBundle(null)}
+                className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-colors hover:bg-gray-100"
+                style={{ color: COLORS.deepWater }}
+                aria-label="Close bundle preview"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+
+              <div className="p-6 md:p-8">
+                <p className="text-xs tracking-[0.25em] font-semibold mb-2" style={{ color: COLORS.surfaceTeal }}>
+                  REGIONAL PACK · {previewBundle.stickerCount} STICKERS
+                </p>
+                <h3 className="text-2xl md:text-3xl font-bold mb-2 leading-tight" style={{ color: COLORS.deepWater }}>
+                  {previewBundle.name}
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed mb-5 max-w-md">
+                  {previewBundle.description}
+                </p>
+
+                {/* Price summary */}
+                <div className="flex items-baseline gap-3 mb-6 flex-wrap">
+                  <span className="text-sm text-gray-400 line-through">
+                    {formatPrice(previewBundle.originalPrice)}
+                  </span>
+                  <span className="text-2xl font-bold" style={{ color: COLORS.deepWater }}>
+                    {formatPrice(previewBundle.price)}
+                  </span>
+                  <span
+                    className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                    style={{ backgroundColor: `${COLORS.highlight}40`, color: COLORS.deepWater }}
+                  >
+                    Save {formatPrice(previewBundle.savings)}
+                  </span>
+                </div>
+
+                {/* Included stickers grid */}
+                <p className="text-xs tracking-[0.25em] font-semibold mb-3" style={{ color: COLORS.surfaceTeal }}>
+                  WHAT&rsquo;S INSIDE
+                </p>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 mb-6">
+                  {previewBundle.stickerIds.map((sid) => {
+                    const sticker = allStickers.find((s) => s.id === sid);
+                    if (!sticker) return null;
+                    return (
+                      <div
+                        key={sid}
+                        className="bg-white rounded-lg border overflow-hidden"
+                        style={{ borderColor: '#E6EEF2' }}
+                      >
+                        <div
+                          className="aspect-square overflow-hidden flex items-center justify-center"
+                          style={{ backgroundColor: COLORS.cream }}
+                        >
+                          {sticker.image ? (
+                            <img
+                              src={sticker.image}
+                              alt={sticker.name}
+                              className="w-full h-full object-contain p-1.5"
+                            />
+                          ) : (
+                            <span className="text-[10px] text-gray-400 text-center px-1">{sticker.name}</span>
+                          )}
+                        </div>
+                        <p
+                          className="text-[10px] font-semibold leading-tight truncate text-center px-1.5 py-1.5"
+                          style={{ color: COLORS.deepWater }}
+                        >
+                          {sticker.name}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleAddBundle(previewBundle);
+                    setPreviewBundle(null);
+                  }}
+                  className="w-full py-3 rounded-xl text-sm font-bold tracking-[0.15em] uppercase transition-colors"
+                  style={{ backgroundColor: COLORS.deepWater, color: 'white' }}
+                >
+                  Add {previewBundle.name} — {formatPrice(previewBundle.price)}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ============ STICKER PREVIEW MODAL ============ */}
       <AnimatePresence>

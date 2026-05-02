@@ -84,10 +84,10 @@ export default function StickerGlobe({
           const lng = (m.location[1] * Math.PI) / 180;
 
           // Marker on the unit sphere with cobe's phi rotation around Y-axis.
-          // Cobe rotates the globe such that increasing phi spins it from
-          // east to west as seen from the camera, so we subtract phi from
-          // lng to match the marker's projected position.
-          let x = Math.cos(lat) * Math.sin(lng - phi);
+          // Cobe's underlying coord system has +X pointing west, so we negate
+          // sin(lng) to mirror the projection back to standard "east is right"
+          // screen coords. Then `lng - phi` matches the rotation direction.
+          let x = -Math.cos(lat) * Math.sin(lng - phi);
           let y = Math.sin(lat);
           let z = Math.cos(lat) * Math.cos(lng - phi);
 
@@ -105,11 +105,11 @@ export default function StickerGlobe({
           // ease in/out rather than popping at the horizon.
           const fade = Math.max(0, Math.min(1, (z - 0.05) * 4));
 
-          // Position the label so its BOTTOM sits ~14px above the marker dot,
-          // leaving the marker visible underneath rather than hidden by the
-          // pill's background.
-          labelEl.style.transform = `translate(calc(${sx}px - 50%), calc(${sy - 14}px - 100%))`;
-          labelEl.style.opacity = String(fade * 0.9);
+          // Centre the label on the marker dot. Tiny upward nudge so the
+          // pill border stays visible above the dot rather than completely
+          // covering it.
+          labelEl.style.transform = `translate(calc(${sx}px - 50%), calc(${sy - 6}px - 50%))`;
+          labelEl.style.opacity = String(fade * 0.92);
         });
 
         animationId = requestAnimationFrame(animate);
