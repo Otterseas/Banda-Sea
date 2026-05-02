@@ -501,7 +501,7 @@ export default function SurfaceTankPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="aspect-square w-full rounded-2xl overflow-hidden border"
+              className="aspect-[5/4] w-full rounded-2xl overflow-hidden border"
               style={{ borderColor: '#E6EEF2', backgroundColor: COLORS.cream }}
             >
               <img
