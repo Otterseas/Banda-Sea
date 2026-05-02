@@ -87,15 +87,15 @@ const PRODUCTS = [
   },
 ];
 
-const IconBadge = ({ children, size = 44 }) => (
+const IconBadge = ({ children, size = 28 }) => (
   <div
-    className="flex items-center justify-center rounded-full backdrop-blur-sm"
+    className="flex items-center justify-center rounded-full"
     style={{
       width: size,
       height: size,
-      backgroundColor: 'rgba(20, 20, 20, 0.7)',
-      border: '1px solid rgba(255, 255, 255, 0.15)',
-      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.35)',
+      backgroundColor: 'transparent',
+      border: '1.5px solid rgba(255, 255, 255, 0.95)',
+      boxShadow: '0 1px 6px rgba(0, 0, 0, 0.45)',
       color: '#FFFFFF',
     }}
   >
@@ -161,9 +161,9 @@ export default function HomeProductSelector() {
                 }}
               />
 
-              {/* Number — top-left, always visible (above filter) */}
+              {/* Number — top-left, aligned with bottom-panel padding so it lines up vertically with the expanded icon */}
               <div
-                className="absolute top-4 left-4 z-20 font-light text-2xl tracking-wider"
+                className="absolute top-4 left-8 z-20 font-light text-2xl tracking-wider"
                 style={{
                   color: isActive ? LUNA.highlight : '#FFFFFF',
                   transition: 'color 400ms ease',
@@ -204,12 +204,12 @@ export default function HomeProductSelector() {
                   pointerEvents: isActive ? 'none' : 'auto',
                 }}
               >
-                <IconBadge size={44}>
-                  <Icon width={22} height={22} />
+                <IconBadge size={28}>
+                  <Icon width={14} height={14} />
                 </IconBadge>
               </div>
 
-              {/* Bottom info panel — active only */}
+              {/* Bottom info panel — active only. Tagline above; icon sits inline with the title so they share a baseline. */}
               <div
                 className="absolute inset-x-0 bottom-0 px-8 pt-16 pb-7 z-20"
                 style={{
@@ -222,21 +222,19 @@ export default function HomeProductSelector() {
                   pointerEvents: isActive ? 'auto' : 'none',
                 }}
               >
-                <div className="flex items-start gap-4 mb-3">
-                  <IconBadge size={48}>
-                    <Icon width={24} height={24} />
+                <p
+                  className="text-xs tracking-[0.25em] font-medium mb-2"
+                  style={{ color: LUNA.highlight }}
+                >
+                  {product.tagline}
+                </p>
+                <div className="flex items-center gap-3 mb-3">
+                  <IconBadge size={28}>
+                    <Icon width={14} height={14} />
                   </IconBadge>
-                  <div className="flex-1 min-w-0 pt-1">
-                    <p
-                      className="text-xs tracking-[0.25em] font-medium mb-1"
-                      style={{ color: LUNA.highlight }}
-                    >
-                      {product.tagline}
-                    </p>
-                    <h3 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
-                      {product.name}
-                    </h3>
-                  </div>
+                  <h3 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
+                    {product.name}
+                  </h3>
                 </div>
                 <p className="text-sm text-white/75 mb-5 max-w-md leading-relaxed">
                   {product.description}
@@ -318,12 +316,12 @@ export default function HomeProductSelector() {
                 >
                   {product.name}
                 </span>
-                <IconBadge size={36}>
-                  <Icon width={18} height={18} />
+                <IconBadge size={24}>
+                  <Icon width={12} height={12} />
                 </IconBadge>
               </div>
 
-              {/* Active info — bottom panel */}
+              {/* Active info — bottom panel. Tagline above; icon inline with title. */}
               <div
                 className="absolute inset-x-0 bottom-0 px-5 pt-12 pb-5 z-10"
                 style={{
@@ -334,21 +332,19 @@ export default function HomeProductSelector() {
                   pointerEvents: isActive ? 'auto' : 'none',
                 }}
               >
-                <div className="flex items-start gap-3 mb-2">
-                  <IconBadge size={40}>
-                    <Icon width={20} height={20} />
+                <p
+                  className="text-[10px] tracking-[0.25em] font-medium mb-1"
+                  style={{ color: LUNA.highlight }}
+                >
+                  {product.tagline}
+                </p>
+                <div className="flex items-center gap-2 mb-2">
+                  <IconBadge size={24}>
+                    <Icon width={12} height={12} />
                   </IconBadge>
-                  <div className="flex-1 min-w-0 pt-0.5">
-                    <p
-                      className="text-[10px] tracking-[0.25em] font-medium mb-0.5"
-                      style={{ color: LUNA.highlight }}
-                    >
-                      {product.tagline}
-                    </p>
-                    <h3 className="text-2xl font-bold text-white leading-tight">
-                      {product.name}
-                    </h3>
-                  </div>
+                  <h3 className="text-2xl font-bold text-white leading-tight">
+                    {product.name}
+                  </h3>
                 </div>
                 <p className="text-xs text-white/75 mb-3 leading-relaxed line-clamp-2">
                   {product.description}
