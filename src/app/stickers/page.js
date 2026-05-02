@@ -22,6 +22,20 @@ const COLORS = {
   bone: '#F5EFE6',
 };
 
+// Per-region gradient — each region tab gets a slightly different blue mix
+// so the closed-panel ribbon has a visible progression instead of one flat
+// colour. All stay inside the brand palette.
+const REGION_GRADIENTS = {
+  'UK/Europe':         'linear-gradient(160deg, #5BAFC8 0%, #226183 50%, #03304F 100%)',
+  'USA/Canada':        'linear-gradient(160deg, #6CC0D6 0%, #2C7898 50%, #053D5F 100%)',
+  'South East Asia':   'linear-gradient(160deg, #74CCDB 0%, #348AA8 50%, #064B68 100%)',
+  'Caribbean':         'linear-gradient(160deg, #5FD3DD 0%, #2C97AB 50%, #045A77 100%)',
+  'Indian Ocean':      'linear-gradient(160deg, #4FC0DC 0%, #2884AE 50%, #044768 100%)',
+  'Pacific & Oceania': 'linear-gradient(160deg, #4798C7 0%, #1F5E97 50%, #022E5C 100%)',
+  'Latin America':     'linear-gradient(160deg, #3D85B6 0%, #1A4F86 50%, #022448 100%)',
+  'Expeditions':       'linear-gradient(160deg, #345578 0%, #122F54 50%, #001434 100%)',
+};
+
 // Customers Also Love — same shape as on the product pages. Quick-Add wired
 // for the two products with known default Shopify variant IDs.
 const RELATED_PRODUCTS = [
@@ -342,7 +356,8 @@ export default function StickersPage() {
                     minWidth: '78px',
                     background: isActive
                       ? COLORS.bone
-                      : `linear-gradient(160deg, ${COLORS.surfaceTeal} 0%, ${COLORS.midDepth} 50%, ${COLORS.deepWater} 100%)`,
+                      : REGION_GRADIENTS[region] ||
+                        `linear-gradient(160deg, ${COLORS.surfaceTeal} 0%, ${COLORS.midDepth} 50%, ${COLORS.deepWater} 100%)`,
                     transition:
                       'flex-grow 700ms cubic-bezier(0.4,0,0.2,1), background 600ms ease',
                   }}
@@ -400,8 +415,9 @@ export default function StickersPage() {
                         {stickers.length} stickers
                       </span>
                     </div>
+                    <div className="relative flex-1 min-h-0">
                     <div
-                      className="grid grid-cols-3 lg:grid-cols-4 gap-3 overflow-y-auto pr-1 flex-1"
+                      className="grid grid-cols-3 lg:grid-cols-4 gap-3 overflow-y-auto pr-1 h-full"
                       style={{
                         scrollbarWidth: 'thin',
                         scrollbarColor: `${COLORS.surfaceTeal}80 transparent`,
@@ -466,7 +482,6 @@ export default function StickersPage() {
                               <h4 className="text-xs font-semibold leading-tight truncate" style={{ color: COLORS.deepWater }}>
                                 {sticker.name}
                               </h4>
-                              <p className="text-[10px] text-gray-500 truncate">{sticker.country}</p>
                               <div className="mt-2 flex items-center justify-between gap-1">
                                 <span className="text-[11px] font-bold" style={{ color: COLORS.deepWater }}>
                                   {formatPrice(pricePerItem)}
@@ -503,6 +518,35 @@ export default function StickersPage() {
                         );
                       })}
                     </div>
+                    {/* Scroll-down indicator — shown when the region has more
+                        stickers than typically fit in the panel without scroll. */}
+                    {stickers.length > 9 && (
+                      <>
+                        <div
+                          className="absolute bottom-0 left-0 right-1 h-10 pointer-events-none"
+                          style={{
+                            background: `linear-gradient(to top, ${COLORS.bone} 10%, transparent)`,
+                          }}
+                        />
+                        <motion.div
+                          aria-hidden="true"
+                          animate={{ y: [0, 4, 0] }}
+                          transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+                          className="absolute bottom-2 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full flex items-center justify-center pointer-events-none"
+                          style={{
+                            backgroundColor: COLORS.deepWater,
+                            color: 'white',
+                            boxShadow: `0 4px 12px ${COLORS.deepWater}40`,
+                          }}
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M6 9l6 6 6-6" />
+                          </svg>
+                        </motion.div>
+                      </>
+                    )}
+                    </div>
+                    {/* /scroll wrapper */}
                   </div>
                 </div>
               );
@@ -522,7 +566,8 @@ export default function StickersPage() {
                   style={{
                     background: isActive
                       ? COLORS.bone
-                      : `linear-gradient(160deg, ${COLORS.surfaceTeal} 0%, ${COLORS.midDepth} 50%, ${COLORS.deepWater} 100%)`,
+                      : REGION_GRADIENTS[region] ||
+                        `linear-gradient(160deg, ${COLORS.surfaceTeal} 0%, ${COLORS.midDepth} 50%, ${COLORS.deepWater} 100%)`,
                     transition: 'background 400ms ease',
                   }}
                 >
