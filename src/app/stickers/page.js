@@ -48,16 +48,18 @@ const GLOBE_LOCATIONS = [
 // =============== reusable bits ===============
 
 // SVG metaball/goo filter — defined once, applied via filter: url(#goo-tabs).
+// Matches the staging GooeyFilter component: stdDeviation 10 + the 19 / -9
+// alpha-threshold colour matrix that creates the metaball merge.
 function GooeyFilterSvg() {
   return (
     <svg className="absolute h-0 w-0 pointer-events-none" aria-hidden="true">
       <defs>
         <filter id="goo-tabs">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blur" />
           <feColorMatrix
             in="blur"
             type="matrix"
-            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
             result="goo"
           />
           <feComposite in="SourceGraphic" in2="goo" operator="atop" />
@@ -303,11 +305,14 @@ export default function StickersPage() {
             CHOOSE YOUR REGION
           </p>
 
-          {/* Goo container — adjacent and active-scaled tabs merge into a wavy
-              ribbon thanks to the SVG filter applied here. */}
+          {/* Goo container — every tab uses the same surfaceTeal fill so the
+              goo filter can actually merge their edges into one ribbon.
+              Inactive tabs sit at lower opacity; the active tab swells to
+              1.18x and bulges out of the ribbon. gap-0 so the pill edges
+              touch and the metaball blur has something to combine. */}
           <div
             ref={regionNavRef}
-            className="flex flex-wrap justify-center gap-1.5 px-4"
+            className="flex flex-wrap justify-center"
             style={{ filter: 'url(#goo-tabs)' }}
           >
             {REGIONS.map((region) => {
@@ -317,14 +322,14 @@ export default function StickersPage() {
                   key={region}
                   type="button"
                   onClick={() => setActiveTab(region)}
-                  className="rounded-full px-5 py-3 text-sm font-semibold transition-all"
+                  className="rounded-full px-5 py-3 text-sm font-semibold transition-all whitespace-nowrap"
                   style={{
-                    backgroundColor: isActive ? COLORS.surfaceTeal : 'white',
-                    color: isActive ? 'white' : COLORS.deepWater,
-                    boxShadow: isActive
-                      ? `0 6px 20px ${COLORS.surfaceTeal}40`
-                      : `0 2px 8px ${COLORS.deepWater}10`,
-                    transform: isActive ? 'scale(1.08)' : 'scale(1)',
+                    backgroundColor: COLORS.surfaceTeal,
+                    color: 'white',
+                    opacity: isActive ? 1 : 0.55,
+                    transform: isActive ? 'scale(1.18)' : 'scale(1)',
+                    margin: '4px',
+                    textShadow: isActive ? '0 1px 2px rgba(0,0,0,0.18)' : 'none',
                   }}
                 >
                   {region}

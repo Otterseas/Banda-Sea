@@ -4,19 +4,19 @@ import { useEffect, useRef } from 'react';
 import createGlobe from 'cobe';
 
 /**
- * Lightweight cobe-powered globe used as a background flourish on the
- * stickers page. Auto-rotates, shows static dive-site markers as cyan
- * dots, and renders at the supplied opacity so it doesn't dominate the
- * surrounding hero copy.
+ * Cobe-powered globe used as a hero flourish on the stickers page.
  *
- * Anchor-positioned labels (the staging GlobeInteractive feature) are
- * intentionally NOT used here — they only work in Chromium and the dive
- * site list works better as a separate copy block.
+ * Mirrors the staging GlobeInteractive config — mapBrightness 10, white base,
+ * deep-blue markers — and drives the rotation via an explicit RAF loop +
+ * globe.update({phi}) (the onRender approach was unreliable here).
+ *
+ * Anchor-positioned labels (Chromium-only) are intentionally omitted; the dive
+ * site list is shown as plain copy beside the globe.
  */
 export default function StickerGlobe({
   markers = [],
-  opacity = 0.55,
-  speed = 0.0035,
+  opacity = 0.7,
+  speed = 0.005,
   className = '',
 }) {
   const canvasRef = useRef(null);
@@ -39,21 +39,19 @@ export default function StickerGlobe({
         phi: 0,
         theta: 0.25,
         dark: 0,
-        diffuse: 1.4,
+        diffuse: 1.5,
         mapSamples: 16000,
-        mapBrightness: 7,
-        baseColor: [0.96, 0.96, 0.94],
-        markerColor: [0.33, 0.67, 0.75], // surfaceTeal
-        glowColor: [0.83, 0.92, 0.95],
-        opacity: 0.95,
+        mapBrightness: 10,
+        baseColor: [1, 1, 1],
+        markerColor: [0.1, 0.2, 0.45],
+        glowColor: [0.94, 0.93, 0.91],
+        markerElevation: 0,
         markers: markers.map((m) => ({ location: m.location, size: 0.045 })),
-        onRender: (state) => {
-          state.phi = phi;
-          phi += speed;
-        },
       });
 
       const animate = () => {
+        phi += speed;
+        if (globe) globe.update({ phi, theta: 0.25 });
         animationId = requestAnimationFrame(animate);
       };
       animate();
