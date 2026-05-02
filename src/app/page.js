@@ -7,8 +7,8 @@ import CurrencySwitcher from '@/components/CurrencySwitcher';
 import HomeProductSelector from '@/components/HomeProductSelector';
 import FishyButton from '@/components/FishyButton';
 import WhisperText from '@/components/WhisperText';
-import { ReviewsSection } from '@/components/Reviews';
-import { getFeaturedReviews } from '@/data/reviews';
+import TestimonialColumns from '@/components/TestimonialColumns';
+import { REVIEWS } from '@/data/reviews';
 import { SOCIAL_LINKS, SHOPIFY_BLOG_URL } from '@/config/urls';
 
 // ===========================================
@@ -481,14 +481,13 @@ export default function HomePage() {
         </section>
 
         {/* ===========================================
-            CUSTOMER REVIEWS SECTION
+            CUSTOMER REVIEWS — 3-column scrolling Etsy testimonials
             =========================================== */}
-        <ReviewsSection
-          reviews={getFeaturedReviews(6)}
-          title={<WhisperText text="What Divers Say" wordDelay={0.18} duration={1.4} />}
-          subtitle="TRUSTED BY THE COMMUNITY"
-          variant="light"
-          showAllLink={true}
+        <TestimonialColumns
+          reviews={REVIEWS}
+          heading="What divers say."
+          eyebrow="Reviewed on Etsy"
+          subtext="Verified five-star reviews from divers across the Otterseas Etsy shop."
         />
 
         {/* ===========================================

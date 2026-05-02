@@ -13,6 +13,7 @@ import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 import { getReviewsByProduct } from '@/data/reviews';
 import FishyButton from '@/components/FishyButton';
 import WhisperText from '@/components/WhisperText';
+import TestimonialColumns from '@/components/TestimonialColumns';
 
 const COLORS = {
   highlight: '#A7EBF2',
@@ -267,59 +268,6 @@ function FAQItem({ question, answer }) {
   );
 }
 
-// Renders a row of yellow-amber stars at integer rating count.
-function StarRow({ rating, size = 14 }) {
-  return (
-    <div className="flex items-center gap-0.5">
-      {Array.from({ length: rating }).map((_, i) => (
-        <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="#F59E0B">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
-
-function ReviewCard({ review }) {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.02, y: -4 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-      className="p-5 md:p-6 rounded-2xl border bg-white shadow-sm w-full max-w-xs"
-      style={{ borderColor: '#E6EEF2' }}
-    >
-      <StarRow rating={review.rating} />
-      <p className="text-sm text-gray-600 leading-relaxed mt-3 mb-4">{review.message}</p>
-      <p className="text-sm font-semibold" style={{ color: COLORS.deepWater }}>
-        {review.reviewer}
-      </p>
-      <p className="text-xs text-gray-500 mt-0.5">
-        {review.date} · Verified Etsy
-      </p>
-    </motion.div>
-  );
-}
-
-function ReviewsColumn({ reviews, duration = 18, className = '' }) {
-  return (
-    <div className={className}>
-      <motion.ul
-        animate={{ translateY: '-50%' }}
-        transition={{ duration, repeat: Infinity, ease: 'linear', repeatType: 'loop' }}
-        className="flex flex-col gap-5 list-none m-0 p-0"
-      >
-        {[...Array(2)].map((_, dup) =>
-          reviews.map((r, i) => (
-            <li key={`${dup}-${r.id}-${i}`} className="list-none">
-              <ReviewCard review={r} />
-            </li>
-          ))
-        )}
-      </motion.ul>
-    </div>
-  );
-}
-
 // =============== main component ===============
 
 export default function DiveJournalPage() {
@@ -340,12 +288,6 @@ export default function DiveJournalPage() {
   const currentBundle = BUNDLE_OPTIONS.find((b) => b.id === selectedBundle);
 
   const reviews = getReviewsByProduct(SLUG);
-  const reviewsCol1 = reviews.slice(0, Math.ceil(reviews.length / 3));
-  const reviewsCol2 = reviews.slice(
-    Math.ceil(reviews.length / 3),
-    Math.ceil((reviews.length * 2) / 3)
-  );
-  const reviewsCol3 = reviews.slice(Math.ceil((reviews.length * 2) / 3));
 
   useEffect(() => {
     addToRecentlyViewed({
@@ -755,38 +697,12 @@ export default function DiveJournalPage() {
       </section>
 
       {/* ============ CUSTOMER REVIEWS — 3-column scrolling testimonials ============ */}
-      <section className="bg-white px-4 md:px-8 py-16 md:py-20 overflow-hidden">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10 md:mb-12">
-            <div className="inline-flex items-center gap-2 mb-3 px-4 py-1 rounded-full text-[10px] font-semibold tracking-[0.25em] uppercase" style={{ backgroundColor: `${COLORS.surfaceTeal}15`, color: COLORS.surfaceTeal }}>
-              <StarRow rating={5} size={11} />
-              <span>Reviewed on Etsy</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: COLORS.deepWater }}>
-              <WhisperText text="What divers say." wordDelay={0.18} duration={1.2} />
-            </h2>
-            <p className="text-gray-500 text-base max-w-md mx-auto">
-              Verified five-star reviews from divers who&rsquo;ve been logging trips with the journal.
-            </p>
-          </div>
-
-          <div
-            className="flex justify-center gap-5 max-h-[640px] overflow-hidden"
-            role="region"
-            aria-label="Customer reviews"
-            style={{
-              maskImage:
-                'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
-              WebkitMaskImage:
-                'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
-            }}
-          >
-            <ReviewsColumn reviews={reviewsCol1} duration={22} />
-            <ReviewsColumn reviews={reviewsCol2} duration={28} className="hidden md:block" />
-            <ReviewsColumn reviews={reviewsCol3} duration={25} className="hidden lg:block" />
-          </div>
-        </div>
-      </section>
+      <TestimonialColumns
+        reviews={reviews}
+        heading="What divers say."
+        eyebrow="Reviewed on Etsy"
+        subtext="Verified five-star reviews from divers who've been logging trips with the journal."
+      />
 
       {/* ============ CUSTOMERS ALSO LOVE ============ */}
       <section className="px-4 md:px-8 py-14 md:py-16" style={{ backgroundColor: COLORS.cream }}>
