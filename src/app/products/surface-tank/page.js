@@ -45,30 +45,45 @@ const GALLERY_IMAGES = [
   },
 ];
 
+// Related products. quickAdd === null means variant selection is required (sticker
+// site / creature type) so the 'Add to Cart' button routes to the product page
+// instead of dropping a guessed default into the cart.
 const RELATED_PRODUCTS = [
   {
     name: 'The Dive Journal',
     href: '/products/dive-journal',
     image: '/images/products/The-dive-journal-product-shot.jpg',
     priceLabel: '£28',
+    quickAdd: {
+      shopifyVariantId: '49658874331402',
+      name: 'The Dive Journal',
+      price: 28.0,
+    },
   },
   {
     name: 'Logbook Booster Pack',
     href: '/products/logbook-booster-pack',
     image: '/images/products/The-log-pages-in-binder.jpg',
-    priceLabel: '£15',
+    priceLabel: 'From £12',
+    quickAdd: {
+      shopifyVariantId: '49872531325194',
+      name: 'Logbook Booster Pack',
+      price: 12.0,
+    },
   },
   {
     name: 'Location Stickers',
     href: '/stickers',
     image: '/images/products/Location-stickers-close-up.jpg',
     priceLabel: 'From £1.75',
+    quickAdd: null,
   },
   {
     name: 'Crochet Creatures',
     href: '/products/crochet-creatures',
     image: '/images/products/Purple-nudis-product-shot.png',
-    priceLabel: 'From £15',
+    priceLabel: 'From £17.50',
+    quickAdd: null,
   },
 ];
 
@@ -888,13 +903,34 @@ export default function SurfaceTankPage() {
                     >
                       View Product
                     </Link>
-                    <Link
-                      href={rp.href}
-                      className="block text-center text-[11px] font-semibold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors border"
-                      style={{ borderColor: COLORS.surfaceTeal, color: COLORS.surfaceTeal, backgroundColor: 'white' }}
-                    >
-                      Add to Cart
-                    </Link>
+                    {rp.quickAdd ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          addToCart({
+                            id: rp.quickAdd.shopifyVariantId,
+                            shopifyVariantId: rp.quickAdd.shopifyVariantId,
+                            name: rp.quickAdd.name,
+                            price: rp.quickAdd.price,
+                            image: rp.image,
+                            type: 'product',
+                          });
+                          openDrawer();
+                        }}
+                        className="block w-full text-center text-[11px] font-semibold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors border hover:bg-gray-50"
+                        style={{ borderColor: COLORS.surfaceTeal, color: COLORS.surfaceTeal, backgroundColor: 'white' }}
+                      >
+                        Add to Cart
+                      </button>
+                    ) : (
+                      <Link
+                        href={rp.href}
+                        className="block text-center text-[11px] font-semibold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors border hover:bg-gray-50"
+                        style={{ borderColor: COLORS.surfaceTeal, color: COLORS.surfaceTeal, backgroundColor: 'white' }}
+                      >
+                        Choose Options
+                      </Link>
+                    )}
                   </div>
                 </div>
               </motion.div>
