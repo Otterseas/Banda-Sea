@@ -494,14 +494,14 @@ export default function SurfaceTankPage() {
       {/* ============ HERO ============ */}
       <section className="bg-white px-4 md:px-8 pt-8 md:pt-12 pb-12 md:pb-16">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-14">
-          {/* Image gallery — fixed-frame card. Top padding matches the right column so the card top aligns with MEMORIES THAT STICK; the bottle image adapts to the card via object-contain. */}
-          <div className="pt-3 md:pt-5">
+          {/* Image gallery — flex column with the gallery at a FIXED aspect ratio (so it doesn't stretch like before) and thumbnails pushed to the bottom of the column to line up with the gift-set card on the right. */}
+          <div className="flex flex-col h-full pt-3 md:pt-5">
             <motion.div
               key={activeImage.src}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="aspect-[5/4] w-full rounded-2xl overflow-hidden border"
+              className="aspect-[5/4] w-full rounded-2xl overflow-hidden border shrink-0"
               style={{ borderColor: '#E6EEF2', backgroundColor: COLORS.cream }}
             >
               <img
@@ -514,7 +514,7 @@ export default function SurfaceTankPage() {
                 }}
               />
             </motion.div>
-            <div className="grid grid-cols-4 gap-2 mt-3">
+            <div className="grid grid-cols-4 gap-2 mt-auto pt-3 shrink-0">
               {galleryImages.map((img, i) => (
                 <button
                   key={img.src}
