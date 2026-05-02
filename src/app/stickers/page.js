@@ -350,7 +350,7 @@ export default function StickersPage() {
                   key={region}
                   onClick={() => setActiveTab(region)}
                   onMouseEnter={() => setActiveTab(region)}
-                  className="relative flex flex-col cursor-pointer overflow-hidden"
+                  className="region-panel relative flex flex-col cursor-pointer overflow-hidden"
                   style={{
                     flex: isActive ? '7 1 0%' : '1 1 0%',
                     minWidth: '78px',
@@ -417,7 +417,7 @@ export default function StickersPage() {
                     </div>
                     <div className="relative flex-1 min-h-0">
                     <div
-                      className="grid grid-cols-3 lg:grid-cols-4 gap-3 overflow-y-auto pr-1 h-full"
+                      className="sticker-grid grid grid-cols-3 lg:grid-cols-4 gap-3 overflow-y-auto pr-1 h-full content-start auto-rows-min items-start"
                       style={{
                         scrollbarWidth: 'thin',
                         scrollbarColor: `${COLORS.surfaceTeal}80 transparent`,
@@ -518,31 +518,39 @@ export default function StickersPage() {
                         );
                       })}
                     </div>
-                    {/* Scroll-down indicator — shown when the region has more
-                        stickers than typically fit in the panel without scroll. */}
+                    {/* Scroll-down indicator — clickable, scrolls the grid by
+                        roughly one row each press. Shown when the region has
+                        more stickers than typically fit without scrolling. */}
                     {stickers.length > 9 && (
                       <>
                         <div
-                          className="absolute bottom-0 left-0 right-1 h-10 pointer-events-none"
+                          className="absolute bottom-0 left-0 right-1 h-12 pointer-events-none"
                           style={{
-                            background: `linear-gradient(to top, ${COLORS.bone} 10%, transparent)`,
+                            background: `linear-gradient(to top, ${COLORS.bone} 25%, transparent)`,
                           }}
                         />
-                        <motion.div
-                          aria-hidden="true"
+                        <motion.button
+                          type="button"
+                          onClick={(e) => {
+                            const grid = e.currentTarget
+                              .closest('.region-panel')
+                              ?.querySelector('.sticker-grid');
+                            if (grid) grid.scrollBy({ top: 220, behavior: 'smooth' });
+                          }}
+                          aria-label="Scroll for more stickers"
                           animate={{ y: [0, 4, 0] }}
                           transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
-                          className="absolute bottom-2 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full flex items-center justify-center pointer-events-none"
+                          className="absolute bottom-2 left-1/2 -translate-x-1/2 w-9 h-9 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform"
                           style={{
                             backgroundColor: COLORS.deepWater,
                             color: 'white',
-                            boxShadow: `0 4px 12px ${COLORS.deepWater}40`,
+                            boxShadow: `0 4px 14px ${COLORS.deepWater}50`,
                           }}
                         >
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M6 9l6 6 6-6" />
                           </svg>
-                        </motion.div>
+                        </motion.button>
                       </>
                     )}
                     </div>
