@@ -196,7 +196,7 @@ function LampSpotlight({ children }) {
   const ease = [0.22, 1, 0.36, 1];
   return (
     <section
-      className="relative flex flex-col items-center justify-center overflow-hidden pt-44 md:pt-56 pb-16 md:pb-20 px-6"
+      className="relative flex flex-col items-center justify-center overflow-hidden pt-44 md:pt-56 pb-8 md:pb-10 px-6"
       style={{ backgroundColor: COLORS.abyss }}
     >
       <div className="relative flex w-full flex-1 scale-y-125 items-center justify-center isolate z-0 mb-4">
@@ -298,7 +298,7 @@ function LampSpotlight({ children }) {
         />
       </div>
 
-      <div className="relative z-50 flex -translate-y-32 md:-translate-y-44 flex-col items-center px-5 max-w-3xl">
+      <div className="relative z-50 flex -translate-y-20 md:-translate-y-28 flex-col items-center px-5 max-w-3xl">
         {children}
       </div>
     </section>
@@ -492,7 +492,7 @@ export default function SurfaceTankPage() {
       <Header variant="light" currentPath={`/products/${SLUG}`} />
 
       {/* ============ HERO ============ */}
-      <section className="bg-white px-4 md:px-8 pt-10 md:pt-14 pb-12 md:pb-16">
+      <section className="bg-white px-4 md:px-8 pt-5 md:pt-7 pb-12 md:pb-16">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-14">
           {/* Image gallery */}
           <div>
