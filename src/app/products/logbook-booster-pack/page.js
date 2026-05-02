@@ -10,7 +10,7 @@ import Footer from '@/components/Footer';
 import TrustBadges from '@/components/TrustBadges';
 import RecentlyViewed from '@/components/RecentlyViewed';
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
-import { getReviewsByProduct } from '@/data/reviews';
+import { REVIEWS } from '@/data/reviews';
 import FishyButton from '@/components/FishyButton';
 import WhisperText from '@/components/WhisperText';
 import TestimonialColumns from '@/components/TestimonialColumns';
@@ -75,12 +75,13 @@ const QUANTITY_OPTIONS = [
   },
 ];
 
+// Marine Safari spread is intentionally NOT included — that lives only in
+// the Dive Journal binder, not in the booster pack.
 const GALLERY_IMAGES = [
   { src: '/images/products/Log-book-sheets.jpg', alt: 'Log Pages laid out' },
   { src: '/images/products/The-log-pages-in-binder.jpg', alt: 'Log pages inside the journal binder' },
   { src: '/images/products/The-log-pages-notes.jpg', alt: 'Detailed log page notes' },
   { src: '/images/products/The-dive-journal-notes.jpg', alt: "Diver'gram and detailed dive notes" },
-  { src: '/images/products/The-dive-journal-marine-pages.jpg', alt: 'Marine animal spread' },
   {
     src: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Logs.jpg?v=1743749112&width=823',
     alt: 'Dive logs',
@@ -111,11 +112,11 @@ const FEATURE_CARDS = [
     image: '/images/products/The-log-pages-notes.jpg',
   },
   {
-    title: 'Marine Life Prompts',
-    subtitle: 'WILDLIFE TRACKING',
+    title: 'Plan Each Dive',
+    subtitle: 'STRUCTURED PROMPTS',
     description:
-      'Dedicated space to log every species you spot, the conditions you saw them in, and the moments worth remembering.',
-    image: '/images/products/The-dive-journal-marine-pages.jpg',
+      'Site, depth, visibility, conditions and gear — every field you actually want to record, in one focused layout.',
+    image: '/images/products/The-dive-journal-notes.jpg',
   },
   {
     title: 'Slots Straight In',
@@ -129,7 +130,7 @@ const FEATURE_CARDS = [
 const INCLUSIONS = [
   '30 full-colour log pages — one full dive per page',
   "Custom Diver'gram diagram on every page",
-  'Prompts for site, conditions, marine life, and notes',
+  'Structured prompts for site, depth, conditions, gear and notes',
   'A5 size, drilled for the Dive Journal ring binder',
   'Identical paper stock and artwork to the original journal pages',
   'Loose pages — slot them in and you’re ready for the next dive',
@@ -314,10 +315,12 @@ export default function LogPagesPage() {
   const activeImage = GALLERY_IMAGES[selectedImageIndex];
   const currentOption = QUANTITY_OPTIONS.find((o) => o.id === selectedQty) || QUANTITY_OPTIONS[0];
 
-  // Use Dive Journal reviews as social proof — they all reference the journal
-  // family this product belongs to, and many specifically mention the ability
-  // to add extra pages.
-  const reviews = getReviewsByProduct('dive-journal');
+  // Pull only Etsy reviews that specifically mention the log pages / refill /
+  // booster aspect — drops generic 'great journal' reviews so what's shown
+  // here is genuinely about the pages this page sells.
+  const LOG_PAGES_RX =
+    /log\s*pages?|log\s*book|logbook|refill|booster|extra\s+pages|more\s+pages|add\s+pages|run\s+out|pages?\s+(once|when|run|fill)/i;
+  const reviews = REVIEWS.filter((r) => LOG_PAGES_RX.test(r.message));
 
   useEffect(() => {
     addToRecentlyViewed({
@@ -732,7 +735,7 @@ export default function LogPagesPage() {
         reviews={reviews}
         heading="What divers say."
         eyebrow="Reviewed on Etsy"
-        subtext="Verified five-star reviews from divers who've been logging trips with the journal — and the booster packs that keep it going."
+        subtext="Verified Etsy reviews from divers who specifically called out the log pages and refills."
       />
 
       {/* ============ CUSTOMERS ALSO LOVE ============ */}
