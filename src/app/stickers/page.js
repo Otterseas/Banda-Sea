@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { STICKERS, REGIONS, BASE_PRICE, getAllStickers } from '@/data/stickers';
+import { LOCATION_BUNDLES } from '@/data/bundles';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
@@ -219,6 +220,18 @@ export default function StickersPage() {
     if (direction === 'next') newIdx = idx < activeStickers.length - 1 ? idx + 1 : 0;
     else newIdx = idx > 0 ? idx - 1 : activeStickers.length - 1;
     setSelectedSticker(activeStickers[newIdx]);
+  };
+
+  const handleAddBundle = (bundle) => {
+    addToCart({
+      id: bundle.shopifyVariantId,
+      shopifyVariantId: bundle.shopifyVariantId,
+      name: bundle.name,
+      price: bundle.price,
+      type: 'product',
+      image: null,
+    });
+    if (openCart) openCart();
   };
 
   const handleSuggestionSubmit = async (e) => {
@@ -676,50 +689,140 @@ export default function StickersPage() {
         </div>
       </section>
 
-      {/* ============ SUGGEST A LOCATION ============ */}
+      {/* ============ BUNDLE PACKS + SUGGEST A LOCATION ============
+            Two columns: curated regional bundle packs on the left, the
+            suggest-a-location form on the right. Stack on mobile. */}
       <section className="px-4 md:px-8 py-14 md:py-16" style={{ backgroundColor: COLORS.cream }}>
-        <div className="max-w-2xl mx-auto text-center">
-          <p className="text-xs tracking-[0.3em] font-semibold mb-2" style={{ color: COLORS.surfaceTeal }}>
-            DON&rsquo;T SEE YOUR DIVE?
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: COLORS.deepWater }}>
-            <WhisperText text="Suggest a location." wordDelay={0.16} duration={1.0} />
-          </h2>
-          <p className="text-gray-600 text-base mb-6 max-w-lg mx-auto">
-            New stickers are added regularly. Tell us where you&rsquo;ve been diving and we&rsquo;ll add it to the queue.
-          </p>
-
-          <form
-            onSubmit={handleSuggestionSubmit}
-            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-          >
-            <input
-              type="text"
-              value={locationSuggestion}
-              onChange={(e) => setLocationSuggestion(e.target.value)}
-              placeholder="e.g. Cocos Island, Costa Rica"
-              required
-              disabled={suggestionSubmitting || suggestionSubmitted}
-              className="flex-1 px-4 py-3 rounded-xl text-sm border focus:outline-none focus:ring-2 transition-all disabled:opacity-50"
-              style={{
-                borderColor: '#E6EEF2',
-                color: COLORS.deepWater,
-                backgroundColor: 'white',
-              }}
-            />
-            <button
-              type="submit"
-              disabled={suggestionSubmitting || suggestionSubmitted}
-              className="px-6 py-3 rounded-xl text-sm font-semibold tracking-wider uppercase transition-all disabled:opacity-50"
-              style={{ backgroundColor: COLORS.deepWater, color: 'white' }}
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 lg:gap-14 items-start">
+          {/* LEFT — bundle packs */}
+          <div>
+            <p
+              className="text-xs tracking-[0.3em] font-semibold mb-2"
+              style={{ color: COLORS.surfaceTeal }}
             >
-              {suggestionSubmitted
-                ? '✓ Sent'
-                : suggestionSubmitting
-                ? 'Sending…'
-                : 'Submit'}
-            </button>
-          </form>
+              REGIONAL PACKS
+            </p>
+            <h2
+              className="text-3xl md:text-4xl font-bold mb-3"
+              style={{ color: COLORS.deepWater }}
+            >
+              <WhisperText text="Save with curated packs." wordDelay={0.14} duration={1.0} />
+            </h2>
+            <p className="text-gray-600 text-base mb-6 max-w-md">
+              Hand-picked bundles for the regions divers visit most. Each pack is a
+              ready-made set at a deeper discount than buying individually.
+            </p>
+
+            <div className="space-y-3">
+              {LOCATION_BUNDLES.map((bundle) => (
+                <motion.div
+                  key={bundle.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ y: -2 }}
+                  className="bg-white rounded-2xl border p-4 flex items-center gap-4"
+                  style={{ borderColor: '#E6EEF2' }}
+                >
+                  {/* Sticker count badge */}
+                  <div
+                    className="flex-shrink-0 w-14 h-14 rounded-xl flex flex-col items-center justify-center"
+                    style={{ backgroundColor: `${COLORS.highlight}33` }}
+                  >
+                    <span className="text-xl font-bold leading-none" style={{ color: COLORS.deepWater }}>
+                      {bundle.stickerCount}
+                    </span>
+                    <span className="text-[9px] tracking-wider uppercase" style={{ color: COLORS.midDepth }}>
+                      Stickers
+                    </span>
+                  </div>
+
+                  {/* Bundle info */}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-semibold leading-tight truncate" style={{ color: COLORS.deepWater }}>
+                      {bundle.name}
+                    </h3>
+                    <p className="text-xs text-gray-500 leading-snug line-clamp-1 mt-0.5">
+                      {bundle.description}
+                    </p>
+                    <div className="flex items-baseline gap-2 mt-1.5">
+                      <span className="text-xs text-gray-400 line-through">
+                        {formatPrice(bundle.originalPrice)}
+                      </span>
+                      <span className="text-sm font-bold" style={{ color: COLORS.deepWater }}>
+                        {formatPrice(bundle.price)}
+                      </span>
+                      <span className="text-[10px] font-semibold" style={{ color: COLORS.surfaceTeal }}>
+                        Save {formatPrice(bundle.savings)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Add button */}
+                  <button
+                    type="button"
+                    onClick={() => handleAddBundle(bundle)}
+                    className="flex-shrink-0 text-[11px] font-bold tracking-[0.15em] uppercase px-4 py-2.5 rounded-lg transition-colors hover:opacity-90"
+                    style={{ backgroundColor: COLORS.deepWater, color: 'white' }}
+                  >
+                    Add Pack
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT — suggest a location */}
+          <div>
+            <p
+              className="text-xs tracking-[0.3em] font-semibold mb-2"
+              style={{ color: COLORS.surfaceTeal }}
+            >
+              DON&rsquo;T SEE YOUR DIVE?
+            </p>
+            <h2
+              className="text-3xl md:text-4xl font-bold mb-3"
+              style={{ color: COLORS.deepWater }}
+            >
+              <WhisperText text="Suggest a location." wordDelay={0.16} duration={1.0} />
+            </h2>
+            <p className="text-gray-600 text-base mb-6 max-w-md">
+              New stickers are added regularly. Tell us where you&rsquo;ve been diving and we&rsquo;ll add it to the queue.
+            </p>
+
+            <form
+              onSubmit={handleSuggestionSubmit}
+              className="flex flex-col sm:flex-row gap-3"
+            >
+              <input
+                type="text"
+                value={locationSuggestion}
+                onChange={(e) => setLocationSuggestion(e.target.value)}
+                placeholder="e.g. Cocos Island, Costa Rica"
+                required
+                disabled={suggestionSubmitting || suggestionSubmitted}
+                className="flex-1 px-4 py-3 rounded-xl text-sm border focus:outline-none focus:ring-2 transition-all disabled:opacity-50"
+                style={{
+                  borderColor: '#E6EEF2',
+                  color: COLORS.deepWater,
+                  backgroundColor: 'white',
+                }}
+              />
+              <button
+                type="submit"
+                disabled={suggestionSubmitting || suggestionSubmitted}
+                className="px-6 py-3 rounded-xl text-sm font-semibold tracking-wider uppercase transition-all disabled:opacity-50"
+                style={{ backgroundColor: COLORS.deepWater, color: 'white' }}
+              >
+                {suggestionSubmitted
+                  ? '✓ Sent'
+                  : suggestionSubmitting
+                  ? 'Sending…'
+                  : 'Submit'}
+              </button>
+            </form>
+          </div>
         </div>
       </section>
 
