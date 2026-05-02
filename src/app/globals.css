@@ -108,12 +108,12 @@ html, body {
 .fishy-btn--1,
 .fishy-btn--2,
 .fishy-btn--3 {
-  --color_1: #1a3d4a;   /* deep wave */
-  --color_2: #2d5663;
-  --color_3: #456e7d;
-  --color_4: #B5C766;   /* chartreuse — front wave accent */
-  --color_5: #0E1418;   /* ink — base bg */
-  --color_6: #0A2A3B;   /* hover bg */
+  --color_1: #023859;   /* deepWater — back wave */
+  --color_2: #26658C;   /* midDepth */
+  --color_3: #54ACBF;   /* surfaceTeal */
+  --color_4: #A7EBF2;   /* highlight — front wave accent */
+  --color_5: #011C40;   /* abyss — base bg */
+  --color_6: #023859;   /* deepWater — hover bg */
 }
 
 .fishy-btn {
@@ -217,7 +217,7 @@ html, body {
   animation: fishy-wave-4 linear 3s infinite alternate;
 }
 
-/* Fish — appears once on scroll-reveal (not on hover) */
+/* Fish — swims across once on hover (replays on each hover) */
 .fishy-btn__fish {
   position: absolute;
   z-index: 4;
@@ -230,7 +230,8 @@ html, body {
   pointer-events: none;
   clip-path: path('M34.53,16.03c5.88-1.55,11.58,.46,16.58-2.77-8.2-.76-6.29-2.68-9.51-3.84,.25-2.73-4.57-5.35-3.07-9.43-4.36,3.06-2.05,8.99-6.07,13.57,0,0-17.91,9.39-25.74,22.9-2.04-2.67-3.76-8.1-5.1-9.25,1.19,5.05-.05,9.67,1.84,15.88-.03,.08-7.85,22.39,.12,30.85,3.05,3.24,15.5-12.58,18.03-25.6,5.49-4.79,6.56-9.79,10.27-13.88-1.67,.35-5.57,3.99-8.6,5.46,3.5-14.8,8.58-20.9,11.25-23.9Z');
 }
-.fishy-btn.is-revealed .fishy-btn__fish {
+.fishy-btn:hover .fishy-btn__fish,
+.fishy-btn:focus-visible .fishy-btn__fish {
   animation: fishy-swim ease 2.3s forwards;
   opacity: 1;
 }
@@ -302,5 +303,6 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
   .fishy-btn__wave::before,
   .fishy-btn__wave::after { animation: none !important; }
-  .fishy-btn.is-revealed .fishy-btn__fish { animation: none; opacity: 0; }
+  .fishy-btn:hover .fishy-btn__fish,
+  .fishy-btn:focus-visible .fishy-btn__fish { animation: none; opacity: 0; }
 }

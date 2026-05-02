@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import CurrencySwitcher from '@/components/CurrencySwitcher';
 import HomeProductSelector from '@/components/HomeProductSelector';
 import FishyButton from '@/components/FishyButton';
+import WhisperText from '@/components/WhisperText';
 import { ReviewsSection } from '@/components/Reviews';
 import { getFeaturedReviews } from '@/data/reviews';
 import { SOCIAL_LINKS, SHOPIFY_BLOG_URL } from '@/config/urls';
@@ -262,74 +263,76 @@ export default function HomePage() {
         className="min-h-screen w-full"
         style={{ fontFamily: "'Montserrat', sans-serif" }}
       >
-        {/* Hero — Top Header + Product Selector */}
-        <div className="relative w-full">
-          {/* Top Header (overlays selector) */}
-          <header className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-10 py-5">
+        {/* Top Header — full-width white bar */}
+        <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-40">
+          <div className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-10 py-4">
             <Link href="/" className="flex items-center gap-3">
               <img
                 src="/logo.png"
                 alt="Otterseas"
                 className="w-10 h-10 rounded-xl object-contain"
               />
-              <span className="text-xl font-medium tracking-tight text-[#F5EFE6]">
+              <span
+                className="text-xl font-medium tracking-tight"
+                style={{ color: LUNA.deepWater }}
+              >
                 Otterseas
               </span>
             </Link>
 
-            <div className="flex items-center gap-3">
-              <CurrencySwitcher variant="dark" />
+            <div className="flex items-center gap-3 relative">
+              <CurrencySwitcher variant="light" />
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex flex-col gap-1.5 p-2 hover:bg-white/10 rounded-lg transition-colors"
+                className="flex flex-col gap-1.5 p-2 hover:bg-gray-100 rounded-lg transition-colors"
                 aria-label="Open menu"
               >
-                <span className="w-7 h-0.5 bg-[#F5EFE6]" />
-                <span className="w-7 h-0.5 bg-[#F5EFE6]" />
-                <span className="w-7 h-0.5 bg-[#F5EFE6]" />
+                <span className="w-7 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
+                <span className="w-7 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
+                <span className="w-7 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
               </button>
-            </div>
-          </header>
 
-          {/* Dropdown Menu */}
-          <AnimatePresence>
-            {isMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute top-20 right-6 md:right-10 w-56 bg-[#0A2A3B] rounded-xl shadow-2xl border border-[#B5C766]/20 overflow-hidden z-50"
-              >
-                {[
-                  { href: '/', label: 'Home', accent: true },
-                  { href: '/products', label: 'All Products' },
-                  { href: '/products/surface-tank', label: 'Surface Tank' },
-                  { href: '/products/dive-journal', label: 'Dive Journal' },
-                  { href: '/products/logbook-booster-pack', label: 'Booster Pack' },
-                  { href: '/stickers', label: 'Location Stickers' },
-                  { href: '/products/fun-stickers', label: 'Fun Stickers' },
-                  { href: '/products/crochet-creatures', label: 'Crochet Creatures' },
-                ].map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="block px-5 py-3 hover:bg-[#1a3d4a] transition-colors text-sm"
-                    style={{
-                      color: item.accent ? '#B5C766' : '#F5EFE6',
-                      fontWeight: item.accent ? 500 : 400,
-                    }}
-                    onClick={() => setIsMenuOpen(false)}
+              {/* Dropdown Menu */}
+              <AnimatePresence>
+                {isMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute top-full right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
                   >
-                    {item.label}
-                  </Link>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
+                    {[
+                      { href: '/', label: 'Home', accent: true },
+                      { href: '/products', label: 'All Products' },
+                      { href: '/products/surface-tank', label: 'Surface Tank' },
+                      { href: '/products/dive-journal', label: 'Dive Journal' },
+                      { href: '/products/logbook-booster-pack', label: 'Booster Pack' },
+                      { href: '/stickers', label: 'Location Stickers' },
+                      { href: '/products/fun-stickers', label: 'Fun Stickers' },
+                      { href: '/products/crochet-creatures', label: 'Crochet Creatures' },
+                    ].map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
+                        style={{
+                          color: item.accent ? LUNA.surfaceTeal : LUNA.deepWater,
+                          fontWeight: item.accent ? 500 : 400,
+                        }}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </header>
 
-          {/* Product Selector */}
-          <HomeProductSelector />
-        </div>
+        {/* Hero — Product Selector */}
+        <HomeProductSelector />
 
         {/* ===========================================
             ABOUT US SECTION - With Parallax Background
@@ -368,7 +371,7 @@ export default function HomePage() {
                   backgroundClip: 'text',
                 }}
               >
-                About Otterseas
+                <WhisperText text="About Otterseas" wordDelay={0.18} duration={1.4} />
               </h2>
               <motion.p
                 initial={{ opacity: 0, y: 30 }}
@@ -455,9 +458,9 @@ export default function HomePage() {
         {/* ===========================================
             CUSTOMER REVIEWS SECTION
             =========================================== */}
-        <ReviewsSection 
+        <ReviewsSection
           reviews={getFeaturedReviews(6)}
-          title="What Divers Say"
+          title={<WhisperText text="What Divers Say" wordDelay={0.18} duration={1.4} />}
           subtitle="TRUSTED BY THE COMMUNITY"
           variant="light"
           showAllLink={true}

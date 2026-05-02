@@ -4,6 +4,14 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import FishyButton from './FishyButton';
 
+const LUNA = {
+  highlight: '#A7EBF2',
+  surfaceTeal: '#54ACBF',
+  midDepth: '#26658C',
+  deepWater: '#023859',
+  abyss: '#011C40',
+};
+
 const PRODUCTS = [
   {
     id: '01',
@@ -59,7 +67,10 @@ export default function HomeProductSelector() {
   return (
     <>
       {/* Desktop — horizontal expandable selector */}
-      <div className="hidden md:flex w-full h-[600px] lg:h-[680px] items-stretch overflow-hidden bg-[#0E1418]">
+      <div
+        className="hidden md:flex w-full h-[600px] lg:h-[680px] items-stretch overflow-hidden"
+        style={{ backgroundColor: LUNA.abyss }}
+      >
         {PRODUCTS.map((product, index) => {
           const isActive = activeIndex === index;
           const isRevealed = revealedIndices.includes(index);
@@ -69,11 +80,12 @@ export default function HomeProductSelector() {
               key={product.id}
               onClick={() => setActiveIndex(index)}
               onMouseEnter={() => setActiveIndex(index)}
-              className="relative flex flex-col cursor-pointer overflow-hidden border-r border-[#0E1418]/50 last:border-r-0"
+              className="relative flex flex-col cursor-pointer overflow-hidden border-r last:border-r-0"
               style={{
                 backgroundImage: `url('${product.image}')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
+                borderColor: `${LUNA.abyss}80`,
                 opacity: isRevealed ? 1 : 0,
                 transform: isRevealed ? 'translateX(0)' : 'translateX(-60px)',
                 flex: isActive ? '7 1 0%' : '1 1 0%',
@@ -86,12 +98,13 @@ export default function HomeProductSelector() {
                 willChange: 'flex-grow, filter, opacity, transform',
               }}
             >
-              {/* Number — top */}
+              {/* Number — top center, only when collapsed */}
               <div
                 className="absolute top-5 left-1/2 -translate-x-1/2 z-20 font-light text-3xl tracking-wider"
                 style={{
-                  color: isActive ? '#B5C766' : '#F5EFE6',
-                  transition: 'color 500ms ease',
+                  color: '#F5EFE6',
+                  opacity: isActive ? 0 : 1,
+                  transition: 'opacity 400ms ease',
                   textShadow: '0 2px 8px rgba(0,0,0,0.6)',
                 }}
               >
@@ -119,12 +132,12 @@ export default function HomeProductSelector() {
                 </span>
               </div>
 
-              {/* Bottom info panel — active only */}
+              {/* Bottom info panel — active only. Number lives here, left-aligned with text. */}
               <div
                 className="absolute inset-x-0 bottom-0 px-8 pt-20 pb-8 z-20"
                 style={{
                   background:
-                    'linear-gradient(180deg, transparent 0%, rgba(14,20,24,0.85) 50%, rgba(14,20,24,0.95) 100%)',
+                    'linear-gradient(180deg, transparent 0%, rgba(1,28,64,0.85) 50%, rgba(1,28,64,0.95) 100%)',
                   opacity: isActive ? 1 : 0,
                   transform: isActive ? 'translateY(0)' : 'translateY(20px)',
                   transition:
@@ -132,9 +145,15 @@ export default function HomeProductSelector() {
                   pointerEvents: isActive ? 'auto' : 'none',
                 }}
               >
+                <div
+                  className="font-light text-2xl mb-3 tracking-wider"
+                  style={{ color: LUNA.highlight }}
+                >
+                  {product.id}
+                </div>
                 <p
                   className="text-xs tracking-[0.25em] font-medium mb-2"
-                  style={{ color: '#B5C766' }}
+                  style={{ color: LUNA.highlight }}
                 >
                   {product.tagline}
                 </p>
@@ -154,7 +173,10 @@ export default function HomeProductSelector() {
       </div>
 
       {/* Mobile — vertical stacked cards */}
-      <div className="md:hidden flex flex-col gap-3 p-4 bg-[#0E1418]">
+      <div
+        className="md:hidden flex flex-col gap-3 p-4"
+        style={{ backgroundColor: LUNA.abyss }}
+      >
         {PRODUCTS.map((product, index) => {
           const isActive = activeIndex === index;
           const isRevealed = revealedIndices.includes(index);
@@ -168,7 +190,7 @@ export default function HomeProductSelector() {
                 backgroundImage: `url('${product.image}')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                height: isActive ? '420px' : '110px',
+                height: isActive ? '440px' : '110px',
                 filter: isActive
                   ? 'grayscale(0) brightness(1)'
                   : 'grayscale(1) brightness(0.6)',
@@ -178,16 +200,20 @@ export default function HomeProductSelector() {
                   'height 500ms cubic-bezier(0.4,0,0.2,1), filter 500ms ease, opacity 600ms ease, transform 600ms ease',
               }}
             >
+              {/* Collapsed number — top left */}
               <div
                 className="absolute top-3 left-4 font-light text-xl z-10"
                 style={{
-                  color: isActive ? '#B5C766' : '#F5EFE6',
+                  color: '#F5EFE6',
+                  opacity: isActive ? 0 : 1,
+                  transition: 'opacity 300ms ease',
                   textShadow: '0 2px 6px rgba(0,0,0,0.6)',
                 }}
               >
                 {product.id}
               </div>
 
+              {/* Collapsed name — right side */}
               <div
                 className="absolute top-1/2 -translate-y-1/2 right-5 z-10"
                 style={{
@@ -203,19 +229,26 @@ export default function HomeProductSelector() {
                 </span>
               </div>
 
+              {/* Active info — bottom panel with number left-aligned above text */}
               <div
                 className="absolute inset-x-0 bottom-0 px-5 pt-12 pb-5 z-10"
                 style={{
                   background:
-                    'linear-gradient(180deg, transparent 0%, rgba(14,20,24,0.9) 50%, rgba(14,20,24,0.96) 100%)',
+                    'linear-gradient(180deg, transparent 0%, rgba(1,28,64,0.9) 50%, rgba(1,28,64,0.96) 100%)',
                   opacity: isActive ? 1 : 0,
                   transition: 'opacity 400ms ease 200ms',
                   pointerEvents: isActive ? 'auto' : 'none',
                 }}
               >
+                <div
+                  className="font-light text-lg mb-2 tracking-wider"
+                  style={{ color: LUNA.highlight }}
+                >
+                  {product.id}
+                </div>
                 <p
                   className="text-[10px] tracking-[0.25em] font-medium mb-1"
-                  style={{ color: '#B5C766' }}
+                  style={{ color: LUNA.highlight }}
                 >
                   {product.tagline}
                 </p>
@@ -227,7 +260,11 @@ export default function HomeProductSelector() {
                 </p>
                 <Link
                   href={product.link}
-                  className="inline-block text-xs font-semibold tracking-[0.15em] px-5 py-3 bg-[#0A2A3B] text-[#F5EFE6] hover:bg-[#1a3d4a] transition-colors"
+                  className="inline-block text-xs font-semibold tracking-[0.15em] px-5 py-3 transition-colors"
+                  style={{
+                    backgroundColor: LUNA.deepWater,
+                    color: '#F5EFE6',
+                  }}
                 >
                   VISIT PRODUCT →
                 </Link>

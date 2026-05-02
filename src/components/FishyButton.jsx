@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import Link from 'next/link';
 
 const FishyButton = forwardRef(function FishyButton(
@@ -17,44 +17,7 @@ const FishyButton = forwardRef(function FishyButton(
   },
   forwardedRef
 ) {
-  const localRef = useRef(null);
-  const [revealed, setRevealed] = useState(false);
-
-  const setRefs = (node) => {
-    localRef.current = node;
-    if (typeof forwardedRef === 'function') forwardedRef(node);
-    else if (forwardedRef) forwardedRef.current = node;
-  };
-
-  useEffect(() => {
-    const node = localRef.current;
-    if (!node) return;
-
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) {
-      setRevealed(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setRevealed(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.5 }
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
-  const classes = [
-    'fishy-btn',
-    `fishy-btn--${variant}`,
-    revealed ? 'is-revealed' : '',
-    className,
-  ]
+  const classes = ['fishy-btn', `fishy-btn--${variant}`, className]
     .filter(Boolean)
     .join(' ');
 
@@ -74,7 +37,7 @@ const FishyButton = forwardRef(function FishyButton(
     if (isExternal) {
       return (
         <a
-          ref={setRefs}
+          ref={forwardedRef}
           href={href}
           target={target}
           rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
@@ -86,7 +49,7 @@ const FishyButton = forwardRef(function FishyButton(
       );
     }
     return (
-      <Link href={href} ref={setRefs} className={classes} {...props}>
+      <Link href={href} ref={forwardedRef} className={classes} {...props}>
         {inner}
       </Link>
     );
@@ -94,7 +57,7 @@ const FishyButton = forwardRef(function FishyButton(
 
   return (
     <button
-      ref={setRefs}
+      ref={forwardedRef}
       type={type}
       onClick={onClick}
       className={classes}
