@@ -292,10 +292,11 @@ export default function StickersPage() {
         </div>
       </section>
 
-      {/* ============ REGION TABS — gooey filter ============ */}
+      {/* ============ REGION TABS — gooey filter, with a connector strip
+            that drops out of the active tab into the sticker panel below */}
       <section
-        className="px-4 md:px-8 py-10 md:py-12 sticky top-0 z-20"
-        style={{ backgroundColor: COLORS.cream, borderBottom: `1px solid ${COLORS.surfaceTeal}20` }}
+        className="px-4 md:px-8 pt-10 md:pt-12 pb-0"
+        style={{ backgroundColor: COLORS.cream }}
       >
         <div className="max-w-6xl mx-auto">
           <p
@@ -305,55 +306,60 @@ export default function StickersPage() {
             CHOOSE YOUR REGION
           </p>
 
-          {/* Goo container — every tab uses the same surfaceTeal fill so the
-              goo filter can actually merge their edges into one ribbon.
-              Inactive tabs sit at lower opacity; the active tab swells to
-              1.18x and bulges out of the ribbon. gap-0 so the pill edges
-              touch and the metaball blur has something to combine. */}
-          <div
-            ref={regionNavRef}
-            className="flex flex-wrap justify-center"
-            style={{ filter: 'url(#goo-tabs)' }}
-          >
-            {REGIONS.map((region) => {
-              const isActive = activeTab === region;
-              return (
-                <button
-                  key={region}
-                  type="button"
-                  onClick={() => setActiveTab(region)}
-                  className="rounded-full px-5 py-3 text-sm font-semibold transition-all whitespace-nowrap"
-                  style={{
-                    backgroundColor: COLORS.surfaceTeal,
-                    color: 'white',
-                    opacity: isActive ? 1 : 0.55,
-                    transform: isActive ? 'scale(1.18)' : 'scale(1)',
-                    margin: '4px',
-                    textShadow: isActive ? '0 1px 2px rgba(0,0,0,0.18)' : 'none',
-                  }}
-                >
-                  {region}
-                </button>
-              );
-            })}
+          {/* Goo container — pills + a horizontal connector strip share the
+              same surfaceTeal fill, so the active tab visually melts down into
+              the strip via the metaball filter. */}
+          <div className="relative" style={{ filter: 'url(#goo-tabs)' }}>
+            <div
+              ref={regionNavRef}
+              className="flex flex-wrap justify-center pb-1"
+            >
+              {REGIONS.map((region) => {
+                const isActive = activeTab === region;
+                return (
+                  <button
+                    key={region}
+                    type="button"
+                    onClick={() => setActiveTab(region)}
+                    className="rounded-full px-5 py-3 text-sm font-semibold transition-all whitespace-nowrap"
+                    style={{
+                      backgroundColor: COLORS.surfaceTeal,
+                      color: 'white',
+                      opacity: isActive ? 1 : 0.55,
+                      transform: isActive ? 'scale(1.18)' : 'scale(1)',
+                      margin: '4px',
+                      textShadow: isActive ? '0 1px 2px rgba(0,0,0,0.18)' : 'none',
+                    }}
+                  >
+                    {region}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Connector strip — sits just below the tab row at the same fill
+                colour so the goo filter merges it with the active tab. Visually
+                this is the top edge of the sticker panel. */}
+            <div
+              className="mx-auto h-3 max-w-3xl rounded-t-2xl"
+              style={{ backgroundColor: COLORS.surfaceTeal, opacity: 0.55 }}
+            />
           </div>
         </div>
       </section>
 
-      {/* ============ STICKER GRID — internal scroll ============ */}
-      <section className="bg-white px-4 md:px-8 py-12 md:py-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-end justify-between mb-6">
-            <div>
-              <p className="text-xs tracking-[0.3em] font-semibold mb-1" style={{ color: COLORS.surfaceTeal }}>
-                REGION
-              </p>
-              <h2 className="text-3xl md:text-4xl font-bold" style={{ color: COLORS.deepWater }}>
-                <WhisperText text={activeTab} wordDelay={0.16} duration={1.0} />
-              </h2>
-            </div>
+      {/* ============ STICKER GRID — internal scroll, panel connected to tabs above ============ */}
+      <section
+        className="px-4 md:px-8 py-10 md:py-14"
+        style={{ backgroundColor: COLORS.cream }}
+      >
+        <div
+          className="max-w-6xl mx-auto bg-white rounded-2xl border-2 px-4 md:px-6 pt-5 pb-6 md:pb-8 -mt-4"
+          style={{ borderColor: `${COLORS.surfaceTeal}55` }}
+        >
+          <div className="flex items-center justify-end mb-4">
             <div className="text-sm font-medium" style={{ color: COLORS.midDepth }}>
-              {activeStickers.length} stickers
+              {activeStickers.length} stickers in {activeTab}
             </div>
           </div>
 
