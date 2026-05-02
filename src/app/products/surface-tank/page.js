@@ -45,6 +45,33 @@ const GALLERY_IMAGES = [
   },
 ];
 
+const RELATED_PRODUCTS = [
+  {
+    name: 'The Dive Journal',
+    href: '/products/dive-journal',
+    image: '/images/products/The-dive-journal-product-shot.jpg',
+    priceLabel: '£28',
+  },
+  {
+    name: 'Logbook Booster Pack',
+    href: '/products/logbook-booster-pack',
+    image: '/images/products/The-log-pages-in-binder.jpg',
+    priceLabel: '£15',
+  },
+  {
+    name: 'Location Stickers',
+    href: '/stickers',
+    image: '/images/products/Location-stickers-close-up.jpg',
+    priceLabel: 'From £1.75',
+  },
+  {
+    name: 'Crochet Creatures',
+    href: '/products/crochet-creatures',
+    image: '/images/products/Purple-nudis-product-shot.png',
+    priceLabel: 'From £15',
+  },
+];
+
 const STICKER_FAN_IMAGES = [
   { name: 'Palau', image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Palau-sticker.png?v=1769313149&width=713' },
   { name: 'Anilao', image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Anilao-sticker.png?v=1769261005&width=990' },
@@ -96,7 +123,7 @@ function GiftSetMini({ formatPrice, currentVariant, onAdd }) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-      className="rounded-xl p-4 grid grid-cols-[1fr_auto] gap-3 items-center mt-5"
+      className="rounded-xl p-4 grid grid-cols-[1fr_auto] gap-3 items-center"
       style={{
         background: `linear-gradient(135deg, ${COLORS.deepWater} 0%, ${COLORS.midDepth} 100%)`,
         boxShadow: `0 6px 20px ${COLORS.midDepth}30`,
@@ -154,20 +181,20 @@ function LampSpotlight({ children }) {
   const ease = [0.22, 1, 0.36, 1];
   return (
     <section
-      className="relative flex flex-col items-center justify-center overflow-hidden py-32 md:py-40 px-6"
+      className="relative flex flex-col items-center justify-center overflow-hidden pt-44 md:pt-56 pb-16 md:pb-20 px-6"
       style={{ backgroundColor: COLORS.abyss }}
     >
       <div className="relative flex w-full flex-1 scale-y-125 items-center justify-center isolate z-0 mb-4">
-        {/* Left cone */}
+        {/* Left cone — widened to spread light closer to the light bar's full reach */}
         <motion.div
           initial={{ opacity: 0.35, width: '15rem' }}
-          whileInView={{ opacity: 1, width: '32rem' }}
+          whileInView={{ opacity: 1, width: '50rem' }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 1.8, ease }}
           style={{
             backgroundImage: `conic-gradient(from 70deg at center top, ${COLORS.surfaceTeal}, transparent, transparent)`,
           }}
-          className="absolute inset-auto right-1/2 h-56 overflow-visible w-[32rem] text-white"
+          className="absolute inset-auto right-1/2 h-56 overflow-visible w-[50rem] text-white"
         >
           <div
             className="absolute w-[100%] left-0 h-40 bottom-0 z-20"
@@ -186,16 +213,16 @@ function LampSpotlight({ children }) {
             }}
           />
         </motion.div>
-        {/* Right cone */}
+        {/* Right cone — widened to match */}
         <motion.div
           initial={{ opacity: 0.35, width: '15rem' }}
-          whileInView={{ opacity: 1, width: '32rem' }}
+          whileInView={{ opacity: 1, width: '50rem' }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 1.8, ease }}
           style={{
             backgroundImage: `conic-gradient(from 290deg at center top, transparent, transparent, ${COLORS.surfaceTeal})`,
           }}
-          className="absolute inset-auto left-1/2 h-56 w-[32rem] text-white"
+          className="absolute inset-auto left-1/2 h-56 w-[50rem] text-white"
         >
           <div
             className="absolute w-40 h-[100%] right-0 bottom-0 z-20"
@@ -451,7 +478,7 @@ export default function SurfaceTankPage() {
 
       {/* ============ HERO ============ */}
       <section className="bg-white px-4 md:px-8 pt-10 md:pt-14 pb-12 md:pb-16">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-14 items-start">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-14">
           {/* Image gallery */}
           <div>
             <motion.div
@@ -500,9 +527,9 @@ export default function SurfaceTankPage() {
           </div>
 
           {/* Buy box */}
-          <div className="flex flex-col">
+          <div className="flex flex-col h-full pt-3 md:pt-5">
             <p
-              className="text-xs tracking-[0.25em] font-medium mb-3"
+              className="text-sm tracking-[0.28em] font-medium mb-4"
               style={{ color: COLORS.surfaceTeal }}
             >
               {product.tagline}
@@ -562,7 +589,7 @@ export default function SurfaceTankPage() {
 
             {/* Price + stock */}
             <div className="flex items-center gap-4 mb-5">
-              <span className="text-3xl md:text-4xl font-bold" style={{ color: COLORS.deepWater }}>
+              <span className="text-xl md:text-2xl font-bold" style={{ color: COLORS.deepWater }}>
                 {formatPrice(product.price)}
               </span>
               {!stock.loading && isLowStock && <StockBadge quantity={stock.quantity} />}
@@ -596,26 +623,25 @@ export default function SurfaceTankPage() {
 
             <TrustBadges variant="light" size="sm" />
 
-            {/* Compact gift set — sits under trust badges in the right column */}
-            <GiftSetMini
-              formatPrice={formatPrice}
-              currentVariant={currentVariant}
-              onAdd={handleAddGiftSet}
-            />
+            {/* Compact gift set — pushed to bottom of column to align with the thumbnail row on the left */}
+            <div className="mt-auto pt-6">
+              <GiftSetMini
+                formatPrice={formatPrice}
+                currentVariant={currentVariant}
+                onAdd={handleAddGiftSet}
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ============ FEATURE GRID — moved up, immediately under the hero ============ */}
-      <section className="px-4 md:px-8 py-16 md:py-20" style={{ backgroundColor: COLORS.cream }}>
+      {/* ============ FEATURE GRID — tight banner, single label heading ============ */}
+      <section className="px-4 md:px-8 py-8 md:py-10" style={{ backgroundColor: COLORS.cream }}>
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10 md:mb-14">
-            <p className="text-xs tracking-[0.3em] font-medium mb-2" style={{ color: COLORS.surfaceTeal }}>
-              BUILT FOR DIVERS
+          <div className="text-center mb-6 md:mb-8">
+            <p className="text-base md:text-lg tracking-[0.3em] font-semibold" style={{ color: COLORS.surfaceTeal }}>
+              DESIGNED FOR DIVERS
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: COLORS.deepWater }}>
-              <WhisperText text="Every detail engineered." wordDelay={0.15} duration={1.1} />
-            </h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
             {product.features.map((feature, i) => (
@@ -631,10 +657,11 @@ export default function SurfaceTankPage() {
         </div>
       </section>
 
-      {/* ============ COMBINED LAMP STORY + STICKER FAN — single CTA ============ */}
+      {/* ============ COMBINED LAMP STORY + STICKER FAN — staged reveal ============ */}
       <LampSpotlight>
+        {/* Phase 1 — label + heading reveal alongside the light bar */}
         <p
-          className="text-xs tracking-[0.3em] font-medium mb-3"
+          className="text-base md:text-lg tracking-[0.3em] font-semibold mb-4"
           style={{ color: COLORS.highlight }}
         >
           MORE THAN A WATER BOTTLE
@@ -642,36 +669,62 @@ export default function SurfaceTankPage() {
         <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-5 text-white">
           <WhisperText text={product.story.headline} wordDelay={0.18} duration={1.4} />
         </h2>
-        <p className="text-white/80 text-base md:text-lg leading-relaxed mb-8 max-w-xl mx-auto">
-          {product.story.intro}
-        </p>
 
-        {/* Sticker fan inside the lamp section */}
-        <div className="relative h-28 flex items-center justify-center mb-8">
+        {/* Phase 2 — paragraph fades in after heading + light bar resolve (~2.4s) */}
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, delay: 2.4, ease: [0.22, 1, 0.36, 1] }}
+          className="text-white/80 text-base md:text-lg leading-relaxed mb-8 max-w-xl mx-auto"
+        >
+          {product.story.intro}
+        </motion.p>
+
+        {/* Phase 3 — sticker fan, 25% bigger, fades in staggered after paragraph */}
+        <div className="relative h-32 flex items-center justify-center mb-6">
           <div className="flex -space-x-3">
             {STICKER_FAN_IMAGES.map((sticker, i) => (
               <motion.img
                 key={i}
                 src={sticker.image}
                 alt={sticker.name}
-                className="w-20 h-20 object-contain drop-shadow-2xl"
+                className="w-[6.25rem] h-[6.25rem] object-contain drop-shadow-2xl"
                 style={{
                   zIndex: i === 2 ? 10 : 5 - Math.abs(i - 2),
                   transform: `rotate(${(i - 2) * 8}deg) scale(${i === 2 ? 1.15 : 0.9})`,
                 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.5, delay: 3.2 + i * 0.1, ease: 'easeOut' }}
                 whileHover={{ scale: 1.2, zIndex: 15, rotate: 0 }}
               />
             ))}
           </div>
         </div>
 
-        <p className="text-white/60 text-sm tracking-[0.25em] uppercase mb-6">
+        {/* Phase 4 — supporting line + CTA */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 3.9, ease: 'easeOut' }}
+          className="text-white/60 text-sm tracking-[0.25em] uppercase mb-5"
+        >
           Over 80 dive sites · One bottle
-        </p>
+        </motion.p>
 
-        <FishyButton href="/stickers" variant="1">
-          EXPLORE STICKERS
-        </FishyButton>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 4.1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <FishyButton href="/stickers" variant="1">
+            EXPLORE STICKERS
+          </FishyButton>
+        </motion.div>
       </LampSpotlight>
 
       {/* ============ LIFESTYLE + 3-STEP JOURNEY ============ */}
@@ -726,6 +779,21 @@ export default function SurfaceTankPage() {
                 </motion.div>
               ))}
             </div>
+
+            {/* CTA — drives back to add-to-cart, with a fallback if out of stock */}
+            <div className="mt-10">
+              {isOutOfStock ? (
+                <NotifyMeButton
+                  productName={`${product.name} - ${currentVariant.name}`}
+                  variantId={currentVariant.shopifyVariantId}
+                  variant="light"
+                />
+              ) : (
+                <FishyButton onClick={handleAddToCart} variant="1">
+                  ADD TO CART
+                </FishyButton>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -772,6 +840,65 @@ export default function SurfaceTankPage() {
                 <p>{product.compliance.content}</p>
               </CollapsibleSection>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ CUSTOMERS ALSO LOVE — 4 related product cards ============ */}
+      <section className="bg-white px-4 md:px-8 py-14 md:py-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8 md:mb-10">
+            <p className="text-base md:text-lg tracking-[0.3em] font-semibold" style={{ color: COLORS.surfaceTeal }}>
+              CUSTOMERS ALSO LOVE
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+            {RELATED_PRODUCTS.map((rp, i) => (
+              <motion.div
+                key={rp.href}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-2xl overflow-hidden border transition-shadow hover:shadow-md flex flex-col"
+                style={{ borderColor: '#E6EEF2' }}
+              >
+                <Link href={rp.href} className="block overflow-hidden" style={{ backgroundColor: COLORS.cream }}>
+                  <div className="aspect-square overflow-hidden">
+                    <img
+                      src={rp.image}
+                      alt={rp.name}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                  </div>
+                </Link>
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="font-semibold text-base leading-tight mb-1" style={{ color: COLORS.deepWater }}>
+                    {rp.name}
+                  </h3>
+                  <p className="text-sm font-medium mb-3" style={{ color: COLORS.surfaceTeal }}>
+                    {rp.priceLabel}
+                  </p>
+                  <div className="mt-auto flex flex-col gap-2">
+                    <Link
+                      href={rp.href}
+                      className="block text-center text-[11px] font-semibold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors"
+                      style={{ backgroundColor: COLORS.deepWater, color: 'white' }}
+                    >
+                      View Product
+                    </Link>
+                    <Link
+                      href={rp.href}
+                      className="block text-center text-[11px] font-semibold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors border"
+                      style={{ borderColor: COLORS.surfaceTeal, color: COLORS.surfaceTeal, backgroundColor: 'white' }}
+                    >
+                      Add to Cart
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
