@@ -9,9 +9,7 @@ import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
-import { REVIEWS } from '@/data/reviews';
 import WhisperText from '@/components/WhisperText';
-import TestimonialColumns from '@/components/TestimonialColumns';
 import StickerGlobe from '@/components/StickerGlobe';
 
 const COLORS = {
@@ -23,6 +21,51 @@ const COLORS = {
   cream: '#FAF7F1',
   bone: '#F5EFE6',
 };
+
+// Customers Also Love — same shape as on the product pages. Quick-Add wired
+// for the two products with known default Shopify variant IDs.
+const RELATED_PRODUCTS = [
+  {
+    name: 'The Surface Tank',
+    href: '/products/surface-tank',
+    image: '/images/products/The-surface-tank-sunset.jpg',
+    priceLabel: '£40',
+    quickAdd: {
+      shopifyVariantId: '52453682807050',
+      name: 'The Surface Tank - Deep Ocean',
+      price: 40.0,
+    },
+  },
+  {
+    name: 'The Dive Journal',
+    href: '/products/dive-journal',
+    image: '/images/products/The-dive-journal-product-shot.jpg',
+    priceLabel: 'From £28',
+    quickAdd: {
+      shopifyVariantId: '49658874331402',
+      name: 'The Dive Journal',
+      price: 28.0,
+    },
+  },
+  {
+    name: 'Log Pages',
+    href: '/products/logbook-booster-pack',
+    image: '/images/products/The-log-pages-notes.jpg',
+    priceLabel: 'From £12',
+    quickAdd: {
+      shopifyVariantId: '49872531325194',
+      name: 'Log Pages (Booster Pack)',
+      price: 12.0,
+    },
+  },
+  {
+    name: 'Crochet Creatures',
+    href: '/products/crochet-creatures',
+    image: '/images/products/Purple-nudis-product-shot.png',
+    priceLabel: 'From £17.50',
+    quickAdd: null,
+  },
+];
 
 // Curated dive site coordinates — used as markers on the rotating globe in
 // the hero. A subset of the full sticker catalogue, picked to give good
@@ -323,14 +366,15 @@ export default function StickersPage() {
                     key={region}
                     type="button"
                     onClick={() => setActiveTab(region)}
-                    className="rounded-full px-5 py-3 text-sm font-semibold transition-all whitespace-nowrap"
+                    className="rounded-full px-7 py-4 text-base font-bold transition-all whitespace-nowrap"
                     style={{
                       backgroundColor: COLORS.surfaceTeal,
                       color: 'white',
-                      opacity: isActive ? 1 : 0.55,
-                      transform: isActive ? 'scale(1.18)' : 'scale(1)',
-                      margin: '4px',
-                      textShadow: isActive ? '0 1px 2px rgba(0,0,0,0.18)' : 'none',
+                      opacity: isActive ? 1 : 0.4,
+                      transform: isActive ? 'scale(1.2)' : 'scale(1)',
+                      margin: '5px',
+                      letterSpacing: '0.02em',
+                      textShadow: isActive ? '0 2px 4px rgba(0,0,0,0.25)' : 'none',
                     }}
                   >
                     {region}
@@ -536,13 +580,85 @@ export default function StickersPage() {
         </div>
       </section>
 
-      {/* ============ REVIEWS ============ */}
-      <TestimonialColumns
-        reviews={REVIEWS}
-        heading="What divers say."
-        eyebrow="Reviewed on Etsy"
-        subtext="Verified five-star reviews from divers across the Otterseas Etsy shop."
-      />
+      {/* ============ CUSTOMERS ALSO LOVE ============ */}
+      <section className="bg-white px-4 md:px-8 py-14 md:py-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8 md:mb-10">
+            <p className="text-base md:text-lg tracking-[0.3em] font-semibold" style={{ color: COLORS.surfaceTeal }}>
+              CUSTOMERS ALSO LOVE
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+            {RELATED_PRODUCTS.map((rp, i) => (
+              <motion.div
+                key={rp.href}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-2xl overflow-hidden border transition-shadow hover:shadow-md flex flex-col"
+                style={{ borderColor: '#E6EEF2' }}
+              >
+                <Link href={rp.href} className="block overflow-hidden" style={{ backgroundColor: COLORS.cream }}>
+                  <div className="aspect-square overflow-hidden">
+                    <img
+                      src={rp.image}
+                      alt={rp.name}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                  </div>
+                </Link>
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="font-semibold text-base leading-tight mb-1" style={{ color: COLORS.deepWater }}>
+                    {rp.name}
+                  </h3>
+                  <p className="text-sm font-medium mb-3" style={{ color: COLORS.surfaceTeal }}>
+                    {rp.priceLabel}
+                  </p>
+                  <div className="mt-auto flex flex-col gap-2">
+                    <Link
+                      href={rp.href}
+                      className="block text-center text-[11px] font-semibold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors"
+                      style={{ backgroundColor: COLORS.deepWater, color: 'white' }}
+                    >
+                      View Product
+                    </Link>
+                    {rp.quickAdd ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          addToCart({
+                            id: rp.quickAdd.shopifyVariantId,
+                            shopifyVariantId: rp.quickAdd.shopifyVariantId,
+                            name: rp.quickAdd.name,
+                            price: rp.quickAdd.price,
+                            image: rp.image,
+                            type: 'product',
+                          });
+                          if (openCart) openCart();
+                        }}
+                        className="block w-full text-center text-[11px] font-semibold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors border hover:bg-gray-50"
+                        style={{ borderColor: COLORS.surfaceTeal, color: COLORS.surfaceTeal, backgroundColor: 'white' }}
+                      >
+                        Add to Cart
+                      </button>
+                    ) : (
+                      <Link
+                        href={rp.href}
+                        className="block text-center text-[11px] font-semibold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors border hover:bg-gray-50"
+                        style={{ borderColor: COLORS.surfaceTeal, color: COLORS.surfaceTeal, backgroundColor: 'white' }}
+                      >
+                        Choose Options
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <Footer />
 

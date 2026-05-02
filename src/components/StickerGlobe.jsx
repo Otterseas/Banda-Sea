@@ -83,12 +83,13 @@ export default function StickerGlobe({
           const lat = (m.location[0] * Math.PI) / 180;
           const lng = (m.location[1] * Math.PI) / 180;
 
-          // Marker on unit sphere with phi rotation around Y-axis. Cobe spins
-          // such that increasing phi sweeps the globe so eastern hemispheres
-          // rotate INTO view from the right; adding phi to lng matches that.
-          let x = Math.cos(lat) * Math.sin(lng + phi);
+          // Marker on the unit sphere with cobe's phi rotation around Y-axis.
+          // Cobe rotates the globe such that increasing phi spins it from
+          // east to west as seen from the camera, so we subtract phi from
+          // lng to match the marker's projected position.
+          let x = Math.cos(lat) * Math.sin(lng - phi);
           let y = Math.sin(lat);
-          let z = Math.cos(lat) * Math.cos(lng + phi);
+          let z = Math.cos(lat) * Math.cos(lng - phi);
 
           // Tilt around X-axis by theta.
           const yt = y * cosTheta - z * sinTheta;
@@ -104,11 +105,11 @@ export default function StickerGlobe({
           // ease in/out rather than popping at the horizon.
           const fade = Math.max(0, Math.min(1, (z - 0.05) * 4));
 
-          labelEl.style.transform = `translate(calc(${sx}px - 50%), calc(${sy}px - 50%))`;
+          // Position the label so its BOTTOM sits ~14px above the marker dot,
+          // leaving the marker visible underneath rather than hidden by the
+          // pill's background.
+          labelEl.style.transform = `translate(calc(${sx}px - 50%), calc(${sy - 14}px - 100%))`;
           labelEl.style.opacity = String(fade * 0.9);
-          // Mark the back-of-globe labels as inert so they don't intercept
-          // pointer events when transparent.
-          labelEl.style.pointerEvents = fade > 0.2 ? 'none' : 'none';
         });
 
         animationId = requestAnimationFrame(animate);
