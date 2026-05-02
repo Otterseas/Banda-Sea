@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { STICKERS, REGIONS, BASE_PRICE, getAllStickers } from '@/data/stickers';
@@ -88,30 +88,6 @@ const GLOBE_LOCATIONS = [
   { id: 'anilao', name: 'Anilao', location: [13.76, 120.93] },
 ];
 
-// =============== reusable bits ===============
-
-// SVG metaball/goo filter — defined once, applied via filter: url(#goo-tabs).
-// Matches the staging GooeyFilter component: stdDeviation 10 + the 19 / -9
-// alpha-threshold colour matrix that creates the metaball merge.
-function GooeyFilterSvg() {
-  return (
-    <svg className="absolute h-0 w-0 pointer-events-none" aria-hidden="true">
-      <defs>
-        <filter id="goo-tabs">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blur" />
-          <feColorMatrix
-            in="blur"
-            type="matrix"
-            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
-            result="goo"
-          />
-          <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-        </filter>
-      </defs>
-    </svg>
-  );
-}
-
 // =============== main component ===============
 
 export default function StickersPage() {
@@ -126,8 +102,6 @@ export default function StickersPage() {
   const [suggestionSubmitted, setSuggestionSubmitted] = useState(false);
   const [suggestionSubmitting, setSuggestionSubmitting] = useState(false);
 
-  const stickerGridRef = useRef(null);
-  const regionNavRef = useRef(null);
 
   const {
     cartItems,
@@ -258,8 +232,6 @@ export default function StickersPage() {
       className="min-h-screen w-full"
       style={{ fontFamily: 'Montserrat, sans-serif', backgroundColor: COLORS.cream }}
     >
-      <GooeyFilterSvg />
-
       {/* Free shipping banner */}
       <div
         className="w-full py-2 text-center text-sm font-medium"
@@ -335,191 +307,319 @@ export default function StickersPage() {
         </div>
       </section>
 
-      {/* ============ REGION TABS + STICKER PANEL ============
-            Simple gooey tab nav above a clean white panel. All tabs share
-            the same teal fill at FULL opacity so the goo filter doesn't
-            clip them out (the alpha-threshold colour matrix would zero out
-            anything below ~0.47 alpha). Active state is shown by a colour
-            shift to the brand deepWater rather than by opacity, so adjacent
-            inactive pills stay visible and merge into the goo ribbon. */}
+      {/* ============ REGION SELECTOR — InteractiveSelector pattern ============
+            8 horizontal panels (one per region). Inactive panels show a deep
+            blue gradient with the region name rotated 90°; click/hover to
+            expand and the panel beige-up to reveal the full sticker grid for
+            that region (internal scroll handles the longer regions). Mobile
+            falls back to a vertical accordion of the same content. */}
       <section
         className="px-4 md:px-8 pt-10 md:pt-12 pb-12 md:pb-16"
         style={{ backgroundColor: COLORS.cream }}
       >
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <p
-            className="text-center text-xs tracking-[0.3em] font-semibold mb-5"
+            className="text-center text-xs tracking-[0.3em] font-semibold mb-6"
             style={{ color: COLORS.surfaceTeal }}
           >
             CHOOSE YOUR REGION
           </p>
 
-          {/* Goo tabs */}
-          <div className="relative mb-5" style={{ filter: 'url(#goo-tabs)' }}>
-            <div
-              ref={regionNavRef}
-              className="flex flex-wrap justify-center"
-            >
-              {REGIONS.map((region) => {
-                const isActive = activeTab === region;
-                return (
-                  <button
-                    key={region}
-                    type="button"
-                    onClick={() => setActiveTab(region)}
-                    className="rounded-full px-6 py-3.5 text-sm md:text-base font-bold transition-all whitespace-nowrap"
+          {/* Desktop — horizontal expandable panels */}
+          <div className="hidden md:flex w-full h-[600px] lg:h-[640px] items-stretch gap-1 rounded-2xl overflow-hidden shadow-sm">
+            {REGIONS.map((region, idx) => {
+              const isActive = activeTab === region;
+              const stickers = STICKERS[region] || [];
+              const num = String(idx + 1).padStart(2, '0');
+              return (
+                <div
+                  key={region}
+                  onClick={() => setActiveTab(region)}
+                  onMouseEnter={() => setActiveTab(region)}
+                  className="relative flex flex-col cursor-pointer overflow-hidden"
+                  style={{
+                    flex: isActive ? '7 1 0%' : '1 1 0%',
+                    minWidth: '78px',
+                    background: isActive
+                      ? COLORS.bone
+                      : `linear-gradient(160deg, ${COLORS.surfaceTeal} 0%, ${COLORS.midDepth} 50%, ${COLORS.deepWater} 100%)`,
+                    transition:
+                      'flex-grow 700ms cubic-bezier(0.4,0,0.2,1), background 600ms ease',
+                  }}
+                >
+                  {/* Number — top-left, switches colour with state */}
+                  <div
+                    className="absolute top-4 left-4 z-20 font-light text-2xl tracking-wider"
                     style={{
-                      backgroundColor: isActive ? COLORS.deepWater : COLORS.surfaceTeal,
-                      color: 'white',
-                      transform: isActive ? 'scale(1.15)' : 'scale(1)',
-                      margin: '5px',
-                      letterSpacing: '0.02em',
-                      textShadow: isActive ? '0 2px 4px rgba(0,0,0,0.25)' : 'none',
+                      color: isActive ? COLORS.deepWater : 'white',
+                      transition: 'color 400ms ease',
+                      textShadow: isActive ? 'none' : '0 2px 8px rgba(0,0,0,0.4)',
                     }}
                   >
-                    {region}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+                    {num}
+                  </div>
 
-          {/* Clean white sticker panel — no coloured sleeve. */}
-          <div className="bg-white rounded-2xl px-4 md:px-6 pt-5 pb-6 md:pb-7 shadow-sm">
-            <div className="flex items-center justify-end mb-4">
-              <div className="text-sm font-medium" style={{ color: COLORS.midDepth }}>
-                {activeStickers.length} stickers in {activeTab}
-              </div>
-            </div>
-
-          {/* Scrollable grid */}
-          <div
-            ref={stickerGridRef}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-5 overflow-y-auto pr-1"
-            style={{
-              maxHeight: 'calc(2 * (260px + 20px))',
-              scrollbarWidth: 'thin',
-              scrollbarColor: `${COLORS.surfaceTeal}80 transparent`,
-            }}
-          >
-            <AnimatePresence mode="popLayout">
-              {activeStickers.map((sticker, i) => {
-                const inCart = isInCart(sticker.id);
-                const quantity = getItemQuantity(sticker.id);
-                const outOfStock = isStickerOutOfStock(sticker);
-                const animating = animatingItems.has(sticker.id);
-
-                return (
-                  <motion.div
-                    key={sticker.id}
-                    layout
-                    initial={{ opacity: 0, y: 14 }}
-                    animate={{ opacity: 1, y: 0, scale: animating ? 1.04 : 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                      duration: 0.5,
-                      delay: i * 0.04,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    whileHover={{ y: -4 }}
-                    className="bg-white rounded-2xl border overflow-hidden flex flex-col relative"
+                  {/* Rotated region name — collapsed only */}
+                  <div
+                    className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
                     style={{
-                      borderColor: inCart ? COLORS.surfaceTeal : '#E6EEF2',
-                      boxShadow: inCart
-                        ? `0 8px 24px ${COLORS.surfaceTeal}25`
-                        : `0 2px 10px ${COLORS.deepWater}08`,
-                      opacity: outOfStock ? 0.65 : 1,
+                      opacity: isActive ? 0 : 1,
+                      transition: 'opacity 500ms ease',
                     }}
                   >
-                    {outOfStock && (
-                      <span
-                        className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider z-10"
-                        style={{ backgroundColor: COLORS.midDepth, color: 'white' }}
-                      >
-                        Out
-                      </span>
-                    )}
-                    {quantity > 0 && !outOfStock && (
-                      <span
-                        className="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold z-10"
-                        style={{
-                          backgroundColor: COLORS.surfaceTeal,
-                          color: 'white',
-                          boxShadow: `0 4px 12px ${COLORS.surfaceTeal}40`,
-                        }}
-                      >
-                        {quantity}
-                      </span>
-                    )}
-
-                    <button
-                      type="button"
-                      className="aspect-square overflow-hidden cursor-pointer"
-                      style={{ backgroundColor: COLORS.cream }}
-                      onClick={() => handleOpenPreview(sticker)}
-                      aria-label={`Preview ${sticker.name} sticker`}
+                    <span
+                      className="font-bold uppercase tracking-[0.3em] text-base text-white whitespace-nowrap"
+                      style={{
+                        writingMode: 'vertical-rl',
+                        textOrientation: 'mixed',
+                        transform: 'rotate(180deg)',
+                        textShadow: '0 2px 10px rgba(0,0,0,0.45)',
+                      }}
                     >
-                      {sticker.image ? (
-                        <img
-                          src={sticker.image}
-                          alt={sticker.name}
-                          className="w-full h-full object-contain p-3 transition-transform duration-300 hover:scale-105"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">
-                          {sticker.name}
-                        </div>
-                      )}
-                    </button>
+                      {region}
+                    </span>
+                  </div>
 
-                    <div className="p-3 flex flex-col flex-1">
+                  {/* Active region — sticker grid */}
+                  <div
+                    className="absolute inset-0 flex flex-col px-6 lg:px-8 pt-14 pb-5 z-20"
+                    style={{
+                      opacity: isActive ? 1 : 0,
+                      transition: 'opacity 500ms ease 220ms',
+                      pointerEvents: isActive ? 'auto' : 'none',
+                    }}
+                  >
+                    <div className="flex items-end justify-between mb-4 flex-shrink-0">
                       <h3
-                        className="text-sm font-semibold leading-tight truncate"
+                        className="text-2xl lg:text-3xl font-bold leading-tight"
                         style={{ color: COLORS.deepWater }}
                       >
-                        {sticker.name}
+                        {region}
                       </h3>
-                      <p className="text-xs text-gray-500 truncate">{sticker.country}</p>
-
-                      <div className="mt-3 flex items-center justify-between gap-2">
-                        <span className="text-sm font-bold" style={{ color: COLORS.deepWater }}>
-                          {formatPrice(pricePerItem)}
-                        </span>
-                        {outOfStock ? (
-                          <button
-                            type="button"
-                            onClick={() => handleOpenPreview(sticker)}
-                            className="text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1.5 rounded-md"
-                            style={{
-                              backgroundColor: 'transparent',
-                              color: COLORS.midDepth,
-                              border: `1px solid ${COLORS.midDepth}40`,
-                            }}
-                          >
-                            Notify Me
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={(e) => handleAddToCart(sticker, e)}
-                            className="text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1.5 rounded-md transition-colors"
-                            style={{
-                              backgroundColor: inCart ? COLORS.surfaceTeal : COLORS.deepWater,
-                              color: 'white',
-                            }}
-                          >
-                            {inCart ? '+ Add' : 'Add'}
-                          </button>
-                        )}
-                      </div>
+                      <span className="text-xs tracking-wider font-medium" style={{ color: COLORS.midDepth }}>
+                        {stickers.length} stickers
+                      </span>
                     </div>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
+                    <div
+                      className="grid grid-cols-3 lg:grid-cols-4 gap-3 overflow-y-auto pr-1 flex-1"
+                      style={{
+                        scrollbarWidth: 'thin',
+                        scrollbarColor: `${COLORS.surfaceTeal}80 transparent`,
+                      }}
+                    >
+                      {stickers.map((sticker) => {
+                        const inCart = isInCart(sticker.id);
+                        const quantity = getItemQuantity(sticker.id);
+                        const outOfStock = isStickerOutOfStock(sticker);
+                        return (
+                          <div
+                            key={sticker.id}
+                            className="bg-white rounded-xl border overflow-hidden flex flex-col relative"
+                            style={{
+                              borderColor: inCart ? COLORS.surfaceTeal : '#E6EEF2',
+                              boxShadow: inCart
+                                ? `0 4px 14px ${COLORS.surfaceTeal}25`
+                                : `0 1px 6px ${COLORS.deepWater}08`,
+                              opacity: outOfStock ? 0.65 : 1,
+                            }}
+                          >
+                            {outOfStock && (
+                              <span
+                                className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider z-10"
+                                style={{ backgroundColor: COLORS.midDepth, color: 'white' }}
+                              >
+                                Out
+                              </span>
+                            )}
+                            {quantity > 0 && !outOfStock && (
+                              <span
+                                className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold z-10"
+                                style={{
+                                  backgroundColor: COLORS.surfaceTeal,
+                                  color: 'white',
+                                  boxShadow: `0 2px 6px ${COLORS.surfaceTeal}50`,
+                                }}
+                              >
+                                {quantity}
+                              </span>
+                            )}
+                            <button
+                              type="button"
+                              className="aspect-square overflow-hidden cursor-pointer"
+                              style={{ backgroundColor: COLORS.cream }}
+                              onClick={() => handleOpenPreview(sticker)}
+                              aria-label={`Preview ${sticker.name} sticker`}
+                            >
+                              {sticker.image ? (
+                                <img
+                                  src={sticker.image}
+                                  alt={sticker.name}
+                                  className="w-full h-full object-contain p-2 transition-transform duration-300 hover:scale-105"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400 p-2 text-center">
+                                  {sticker.name}
+                                </div>
+                              )}
+                            </button>
+                            <div className="p-2.5 flex flex-col flex-1">
+                              <h4 className="text-xs font-semibold leading-tight truncate" style={{ color: COLORS.deepWater }}>
+                                {sticker.name}
+                              </h4>
+                              <p className="text-[10px] text-gray-500 truncate">{sticker.country}</p>
+                              <div className="mt-2 flex items-center justify-between gap-1">
+                                <span className="text-[11px] font-bold" style={{ color: COLORS.deepWater }}>
+                                  {formatPrice(pricePerItem)}
+                                </span>
+                                {outOfStock ? (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleOpenPreview(sticker)}
+                                    className="text-[9px] font-semibold tracking-wider uppercase px-2 py-1 rounded"
+                                    style={{
+                                      backgroundColor: 'transparent',
+                                      color: COLORS.midDepth,
+                                      border: `1px solid ${COLORS.midDepth}40`,
+                                    }}
+                                  >
+                                    Notify
+                                  </button>
+                                ) : (
+                                  <button
+                                    type="button"
+                                    onClick={(e) => handleAddToCart(sticker, e)}
+                                    className="text-[9px] font-bold tracking-wider uppercase px-2.5 py-1 rounded transition-colors"
+                                    style={{
+                                      backgroundColor: inCart ? COLORS.surfaceTeal : COLORS.deepWater,
+                                      color: 'white',
+                                    }}
+                                  >
+                                    {inCart ? '+' : 'Add'}
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
+
+          {/* Mobile — vertical accordion */}
+          <div className="md:hidden flex flex-col gap-2 rounded-2xl overflow-hidden">
+            {REGIONS.map((region, idx) => {
+              const isActive = activeTab === region;
+              const stickers = STICKERS[region] || [];
+              const num = String(idx + 1).padStart(2, '0');
+              return (
+                <div
+                  key={region}
+                  className="overflow-hidden rounded-xl"
+                  style={{
+                    background: isActive
+                      ? COLORS.bone
+                      : `linear-gradient(160deg, ${COLORS.surfaceTeal} 0%, ${COLORS.midDepth} 50%, ${COLORS.deepWater} 100%)`,
+                    transition: 'background 400ms ease',
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab(isActive ? null : region)}
+                    className="w-full px-4 py-4 flex items-center justify-between text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span
+                        className="font-light text-base"
+                        style={{ color: isActive ? COLORS.deepWater : 'white' }}
+                      >
+                        {num}
+                      </span>
+                      <span
+                        className="font-bold uppercase tracking-wider text-sm"
+                        style={{ color: isActive ? COLORS.deepWater : 'white' }}
+                      >
+                        {region}
+                      </span>
+                    </div>
+                    <span
+                      className="text-xs tracking-wider"
+                      style={{ color: isActive ? COLORS.midDepth : 'white' }}
+                    >
+                      {stickers.length}
+                    </span>
+                  </button>
+                  {isActive && (
+                    <div
+                      className="px-4 pb-4 grid grid-cols-3 gap-2 max-h-[420px] overflow-y-auto"
+                      style={{ scrollbarWidth: 'thin' }}
+                    >
+                      {stickers.map((sticker) => {
+                        const inCart = isInCart(sticker.id);
+                        const outOfStock = isStickerOutOfStock(sticker);
+                        const quantity = getItemQuantity(sticker.id);
+                        return (
+                          <div
+                            key={sticker.id}
+                            className="bg-white rounded-lg border overflow-hidden flex flex-col relative"
+                            style={{
+                              borderColor: inCart ? COLORS.surfaceTeal : '#E6EEF2',
+                              opacity: outOfStock ? 0.65 : 1,
+                            }}
+                          >
+                            {quantity > 0 && !outOfStock && (
+                              <span
+                                className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-bold z-10"
+                                style={{ backgroundColor: COLORS.surfaceTeal, color: 'white' }}
+                              >
+                                {quantity}
+                              </span>
+                            )}
+                            <button
+                              type="button"
+                              className="aspect-square overflow-hidden cursor-pointer"
+                              style={{ backgroundColor: COLORS.cream }}
+                              onClick={() => handleOpenPreview(sticker)}
+                            >
+                              {sticker.image && (
+                                <img src={sticker.image} alt={sticker.name} className="w-full h-full object-contain p-1.5" />
+                              )}
+                            </button>
+                            <div className="p-1.5">
+                              <p className="text-[10px] font-semibold truncate" style={{ color: COLORS.deepWater }}>
+                                {sticker.name}
+                              </p>
+                              <div className="mt-1 flex items-center justify-between gap-1">
+                                <span className="text-[9px] font-bold" style={{ color: COLORS.deepWater }}>
+                                  {formatPrice(pricePerItem)}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => handleAddToCart(sticker, e)}
+                                  disabled={outOfStock}
+                                  className="text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded"
+                                  style={{
+                                    backgroundColor: inCart ? COLORS.surfaceTeal : COLORS.deepWater,
+                                    color: 'white',
+                                    opacity: outOfStock ? 0.4 : 1,
+                                  }}
+                                >
+                                  {outOfStock ? '—' : inCart ? '+' : 'Add'}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
-          {/* /white sticker panel */}
         </div>
       </section>
 
