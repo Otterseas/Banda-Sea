@@ -1,4 +1,5 @@
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
 import { CartProvider } from '@/context/CartContext';
 import { CurrencyProvider } from '@/context/CurrencyContext';
 import CartDrawer from '@/components/CartDrawer';
@@ -60,6 +61,7 @@ export default function RootLayout({ children }) {
             <CookieConsent />
           </CartProvider>
         </CurrencyProvider>
+        <Analytics />
       </body>
     </html>
   );
