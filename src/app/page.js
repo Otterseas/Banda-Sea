@@ -306,7 +306,7 @@ export default function HomePage() {
                       { href: '/products', label: 'All Products' },
                       { href: '/products/surface-tank', label: 'Surface Tank' },
                       { href: '/products/dive-journal', label: 'Dive Journal' },
-                      { href: '/products/logbook-booster-pack', label: 'Booster Pack' },
+                      { href: '/products/logbook-booster-pack', label: 'Log Pages' },
                       { href: '/stickers', label: 'Location Stickers' },
                       { href: '/products/fun-stickers', label: 'Fun Stickers' },
                       { href: '/products/crochet-creatures', label: 'Crochet Creatures' },
@@ -680,7 +680,7 @@ export default function HomePage() {
                   Dive Journal
                 </Link>
                 <Link href="/products/logbook-booster-pack" className="text-white/50 hover:text-white text-sm transition-colors">
-                  Booster Pack
+                  Log Pages
                 </Link>
                 <Link href="/stickers" className="text-white/50 hover:text-white text-sm transition-colors">
                   Location Stickers

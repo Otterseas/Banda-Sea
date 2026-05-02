@@ -24,7 +24,7 @@ const NAV_LINKS = [
   { href: '/stickers', label: 'Sticker Collection' },
   { href: '/products/surface-tank', label: 'Surface Tank' },
   { href: '/products/dive-journal', label: 'Dive Journal' },
-  { href: '/products/logbook-booster-pack', label: 'Booster Pack' },
+  { href: '/products/logbook-booster-pack', label: 'Log Pages' },
   { href: '/products/fun-stickers', label: 'Fun Stickers' },
   { href: '/products/crochet-creatures', label: 'Crochet Creatures' },
   { href: '/blogs', label: 'Blogs' },

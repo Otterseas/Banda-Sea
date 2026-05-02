@@ -47,8 +47,8 @@ const PRODUCT_ROWS = [
       },
       {
         id: 'booster-pack',
-        name: 'Logbook Booster Pack',
-        tagline: 'Keep Your Adventures Going',
+        name: 'Log Pages',
+        tagline: 'Booster Pack For The Dive Journal',
         description: '30 additional full-colour dive log pages',
         price: 12.00,
         image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Logs.jpg?v=1743749112&width=600',

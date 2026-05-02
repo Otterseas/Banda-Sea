@@ -61,13 +61,13 @@ const RELATED_PRODUCTS = [
     },
   },
   {
-    name: 'Logbook Booster Pack',
+    name: 'Log Pages',
     href: '/products/logbook-booster-pack',
     image: '/images/products/The-log-pages-in-binder.jpg',
     priceLabel: 'From £12',
     quickAdd: {
       shopifyVariantId: '49872531325194',
-      name: 'Logbook Booster Pack',
+      name: 'Log Pages (Booster Pack)',
       price: 12.0,
     },
   },

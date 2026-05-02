@@ -149,13 +149,13 @@ const RELATED_PRODUCTS = [
     },
   },
   {
-    name: 'Logbook Booster Pack',
+    name: 'Log Pages',
     href: '/products/logbook-booster-pack',
     image: '/images/products/The-log-pages-notes.jpg',
     priceLabel: 'From £12',
     quickAdd: {
       shopifyVariantId: '49872531325194',
-      name: 'Logbook Booster Pack',
+      name: 'Log Pages (Booster Pack)',
       price: 12.0,
     },
   },
@@ -521,7 +521,7 @@ export default function DiveJournalPage() {
                 className="text-xs tracking-wider hover:underline"
                 style={{ color: COLORS.surfaceTeal }}
               >
-                View Booster Pack details →
+                View Log Pages (Booster Pack) →
               </Link>
             </div>
           </div>
@@ -678,7 +678,7 @@ export default function DiveJournalPage() {
                 NEED MORE PAGES?
               </p>
               <p className="text-sm text-gray-700 leading-relaxed mb-2">
-                Refill with our Logbook Booster Pack — 30 extra full-colour log pages that slot straight into the same binder. Add one or two to your bundle, or pick them up later.
+                Refill with extra Log Pages — 30 more full-colour log pages per pack that slot straight into the same binder. Add one or two to your bundle, or pick them up later.
               </p>
               <Link
                 href={BOOSTER_PACK_LINK}
