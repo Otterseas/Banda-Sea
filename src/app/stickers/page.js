@@ -9,6 +9,7 @@ import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import RecentlyViewed from '@/components/RecentlyViewed';
 import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
 import WhisperText from '@/components/WhisperText';
 import StickerGlobe from '@/components/StickerGlobe';
@@ -1047,6 +1048,7 @@ export default function StickersPage() {
         </div>
       </section>
 
+      <RecentlyViewed variant="light" />
       <Footer />
 
       {/* ============ BUNDLE PREVIEW MODAL ============ */}

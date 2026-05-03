@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import RecentlyViewed from '@/components/RecentlyViewed';
 import WhisperText from '@/components/WhisperText';
 
 const COLORS = {
@@ -286,6 +287,7 @@ export default function ProductsPage() {
         </div>
       </section>
 
+      <RecentlyViewed variant="light" />
       <Footer />
     </div>
   );

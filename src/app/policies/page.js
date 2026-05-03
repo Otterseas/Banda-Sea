@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import RecentlyViewed from '@/components/RecentlyViewed';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -376,6 +377,8 @@ export default function PoliciesPage() {
 
         </div>
       </main>
+
+      <RecentlyViewed variant="light" />
 
       {/* Footer */}
       <Footer />

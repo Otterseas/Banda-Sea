@@ -303,31 +303,26 @@ const STORY_SECTIONS = [
     ),
     image: '/images/products/Octopus-crochet-web.jpg',
     aspect: 'aspect-[4/3]',
-    // Portrait source (1600×2133). object-cover would fill width and only
-    // crop vertically, so 'left justified' has no visible effect. We render
-    // the image at 250% height, anchored top-left, then nudge it up so the
-    // visible 4:3 window covers source x=0-71% and y=15-55% — the octopus
-    // head, body and tentacles, with the right side of the frame trimmed.
-    imageStyle: {
-      position: 'absolute',
-      width: 'auto',
-      height: '250%',
-      left: 0,
-      top: '-37.5%',
-    },
+    // Portrait source cropped to landscape — only vertical position is
+    // honoured. 22% keeps the octopus head + body + tentacles framed.
+    objectPosition: '50% 22%',
   },
 ];
 
 // Photos that scroll in an infinite horizontal band beneath the Custom Orders
 // callout. Order is mixed so adjacent images don't share a colour palette.
+// Mix of local crochet shots and Shopify-hosted product photos.
 const GALLERY_IMAGES = [
   '/images/products/Crochet-nudis-table-shot.png',
   '/images/products/Blue-orange-crochet-nudi.jpg',
-  '/images/products/Octopus-crochet.jpg',
+  'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=900',
+  '/images/products/Octopus-crochet-web.jpg',
   '/images/products/Crochet-nudis-red-purple.png',
+  'https://38a44d-4c.myshopify.com/cdn/shop/files/20260202_132328_c68439a2-7680-4fbd-9fed-a0057b12f707.jpg?v=1770010704&width=900',
   '/images/products/black-green-nudis-product-shot.png',
   '/images/products/Black-white-crochet-nudi.jpg',
   '/images/products/Crochet-nudis-hero-image.png',
+  'https://38a44d-4c.myshopify.com/cdn/shop/files/20260202_132348_b89869bc-a6a8-4b05-8d55-de1473481338.jpg?v=1770010707&width=900',
   '/images/products/Purple-nudis-product-shot.png',
   '/images/products/Crochet-octopus.png',
   '/images/products/Red-purple-nudis.png',
@@ -800,16 +795,12 @@ export default function CrochetCreaturesPage() {
                   }`}
                   style={{ backgroundColor: COLORS.cream }}
                 >
-                  {story.imageStyle ? (
-                    <img src={story.image} alt={story.title} style={story.imageStyle} />
-                  ) : (
-                    <img
-                      src={story.image}
-                      alt={story.title}
-                      className="w-full h-full object-cover"
-                      style={{ objectPosition: story.objectPosition || 'center' }}
-                    />
-                  )}
+                  <img
+                    src={story.image}
+                    alt={story.title}
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: story.objectPosition || 'center' }}
+                  />
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -839,7 +830,7 @@ export default function CrochetCreaturesPage() {
       </section>
 
       {/* ============ PRODUCT CAROUSELS ============ */}
-      <section className="px-4 md:px-8 py-12 md:py-16" style={{ backgroundColor: COLORS.cream }}>
+      <section className="px-4 md:px-8 pt-12 md:pt-16 pb-4 md:pb-6" style={{ backgroundColor: COLORS.cream }}>
         <div className="max-w-6xl mx-auto">
           <ProductCarousel
             title="Nudibranchs."
@@ -859,7 +850,7 @@ export default function CrochetCreaturesPage() {
       </section>
 
       {/* ============ CUSTOM ORDER CALLOUT + INFINITE-SCROLL GALLERY ============ */}
-      <section className="py-14 md:py-20" style={{ backgroundColor: COLORS.cream }}>
+      <section className="pt-6 md:pt-8 pb-14 md:pb-20" style={{ backgroundColor: COLORS.cream }}>
         <div className="max-w-3xl mx-auto px-4 md:px-8 text-center mb-10 md:mb-14">
           <p
             className="text-xs tracking-[0.3em] font-semibold mb-3"

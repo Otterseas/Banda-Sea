@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import RecentlyViewed from '@/components/RecentlyViewed';
 import { SHOPIFY_BLOG_URL, SOCIAL_LINKS } from '@/config/urls';
 
 // ===========================================
@@ -641,6 +642,8 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section>
+
+      <RecentlyViewed variant="dark" />
 
       {/* ==================== FOOTER ==================== */}
       <Footer />

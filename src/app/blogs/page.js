@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import RecentlyViewed from '@/components/RecentlyViewed';
 import { SHOPIFY_BLOG_URL } from '@/config/urls';
 
 // Luna Color Palette
@@ -380,6 +381,8 @@ export default function BlogsPage() {
           </Link>
         </div>
       </section>
+
+      <RecentlyViewed variant="light" />
 
       {/* Footer */}
       <Footer />

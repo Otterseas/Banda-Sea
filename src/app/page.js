@@ -8,6 +8,7 @@ import HomeProductSelector from '@/components/HomeProductSelector';
 import FishyButton from '@/components/FishyButton';
 import WhisperText from '@/components/WhisperText';
 import TestimonialColumns from '@/components/TestimonialColumns';
+import RecentlyViewed from '@/components/RecentlyViewed';
 import { REVIEWS } from '@/data/reviews';
 import { SOCIAL_LINKS, SHOPIFY_BLOG_URL } from '@/config/urls';
 
@@ -651,10 +652,12 @@ export default function HomePage() {
           </div>
         </section>
 
+        <RecentlyViewed variant="dark" />
+
         {/* ===========================================
             FULL FOOTER - With All Navigation
             =========================================== */}
-        <footer 
+        <footer
           className="w-full py-12 px-8"
           style={{ backgroundColor: LUNA.abyss }}
         >
