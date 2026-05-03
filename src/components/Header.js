@@ -48,8 +48,12 @@ function LimelightNav({ items, activeHref, isDark }) {
     const limelight = limelightRef.current;
     const activeItem = itemRefs.current[activeIndex];
     if (limelight && activeItem) {
-      const newLeft =
-        activeItem.offsetLeft + activeItem.offsetWidth / 2 - limelight.offsetWidth / 2;
+      // Match the bar to the active link's width (minus a small inset) so it
+      // visually underlines/overlines the whole word rather than sitting as a
+      // tiny dot in the middle.
+      const barWidth = Math.max(40, activeItem.offsetWidth - 14);
+      const newLeft = activeItem.offsetLeft + activeItem.offsetWidth / 2 - barWidth / 2;
+      limelight.style.width = `${barWidth}px`;
       limelight.style.left = `${newLeft}px`;
       if (!isReady) {
         const t = setTimeout(() => setIsReady(true), 60);
@@ -79,10 +83,10 @@ function LimelightNav({ items, activeHref, isDark }) {
             href={item.href}
             ref={(el) => (itemRefs.current[i] = el)}
             onClick={() => setActiveIndex(i)}
-            className="relative z-20 flex h-full items-center justify-center px-3 text-[11px] font-semibold tracking-[0.18em] uppercase whitespace-nowrap transition-opacity"
+            className="relative z-20 flex h-full items-center justify-center px-3 text-[11px] font-semibold tracking-[0.18em] uppercase whitespace-nowrap transition-opacity hover:opacity-70"
             style={{
               color: textColor,
-              opacity: isActive ? 1 : 0.55,
+              opacity: isActive ? 1 : 0.32,
             }}
           >
             {item.label}
@@ -93,11 +97,12 @@ function LimelightNav({ items, activeHref, isDark }) {
       {/* The limelight bar + downward trapezoid glow. */}
       <div
         ref={limelightRef}
-        className={`absolute top-0 z-10 w-10 h-[3px] rounded-full pointer-events-none ${
-          isReady ? 'transition-[left] duration-500 ease-in-out' : ''
+        className={`absolute top-0 z-10 h-[3px] rounded-full pointer-events-none ${
+          isReady ? 'transition-[left,width] duration-500 ease-in-out' : ''
         }`}
         style={{
           left: '-999px',
+          width: '40px',
           background: limelightGradient,
           boxShadow: `0 0 16px ${COLORS.pink}80, 0 0 32px ${COLORS.pink}40`,
         }}

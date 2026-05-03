@@ -396,7 +396,7 @@ export default function HomePage() {
                   backgroundClip: 'text',
                 }}
               >
-                <WhisperText text="About Otterseas" wordDelay={0.2} duration={1.4} />
+                <WhisperText text="About Otterseas" wordDelay={0.12} duration={0.8} />
               </h2>
               <motion.p
                 initial={{ opacity: 0, y: 30 }}
