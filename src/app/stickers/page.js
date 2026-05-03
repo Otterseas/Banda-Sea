@@ -228,6 +228,18 @@ export default function StickersPage() {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const handleAddSurfaceTank = () => {
+    addToCart({
+      id: '52453682807050',
+      shopifyVariantId: '52453682807050',
+      name: 'The Surface Tank - Deep Ocean',
+      price: 40.0,
+      type: 'product',
+      image: '/images/products/The-surface-tank-sunset.jpg',
+    });
+    if (openCart) openCart();
+  };
+
   const handleAddBundle = (bundle) => {
     addToCart({
       id: bundle.shopifyVariantId,
@@ -326,26 +338,6 @@ export default function StickersPage() {
               <span>· 11–20 · {formatPrice(1.75)} each</span>
               <span>· 21+ · {formatPrice(1.25)} each</span>
             </div>
-
-            {/* Scroll-down anchor — jumps to the region tabs below. Matches
-                the cyan → pink → deep-water heading gradient. */}
-            <motion.button
-              type="button"
-              onClick={handleScrollToTabs}
-              aria-label="Jump to region selector"
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-              className="mt-10 inline-flex items-center justify-center w-12 h-12 rounded-full cursor-pointer hover:scale-110 transition-transform"
-              style={{
-                background: `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, #FF6B9D 50%, ${COLORS.deepWater} 100%)`,
-                color: 'white',
-                boxShadow: '0 6px 20px rgba(255, 107, 157, 0.35)',
-              }}
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6 9l6 6 6-6" />
-              </svg>
-            </motion.button>
           </div>
 
           {/* Right: rotating globe (faded) */}
@@ -357,6 +349,28 @@ export default function StickersPage() {
               80+ dive sites · 8 regions
             </p>
           </div>
+        </div>
+
+        {/* Hero scroll-down anchor — bottom-centre, matches the cyan → pink →
+            deep-water heading gradient. Smooth-scrolls to the region tabs. */}
+        <div className="flex justify-center mt-10 md:mt-12">
+          <motion.button
+            type="button"
+            onClick={handleScrollToTabs}
+            aria-label="Jump to region selector"
+            animate={{ y: [0, 5, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+            className="inline-flex items-center justify-center w-12 h-12 rounded-full cursor-pointer hover:scale-110 transition-transform"
+            style={{
+              background: `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, #FF6B9D 50%, ${COLORS.deepWater} 100%)`,
+              color: 'white',
+              boxShadow: '0 6px 20px rgba(255, 107, 157, 0.35)',
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </motion.button>
         </div>
       </section>
 
@@ -717,11 +731,13 @@ export default function StickersPage() {
         </div>
       </section>
 
-      {/* ============ BUNDLE PACKS + SUGGEST A LOCATION ============
-            Two columns: curated regional bundle packs on the left, the
-            suggest-a-location form on the right. Stack on mobile. */}
+      {/* ============ BUNDLE PACKS + SURFACE TANK + SUGGEST A LOCATION ============
+            Top row: bundle packs (left) and Surface Tank cross-promo (right) in
+            a 2-col grid. Suggestion form pushed below the row, centred. Mobile
+            stacks the row. */}
       <section className="px-4 md:px-8 py-14 md:py-16" style={{ backgroundColor: COLORS.cream }}>
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 lg:gap-14 items-start">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-10 lg:gap-14 items-start mb-12 md:mb-14">
           {/* LEFT — bundle packs */}
           <div>
             <p
@@ -813,8 +829,93 @@ export default function StickersPage() {
             </div>
           </div>
 
-          {/* RIGHT — suggest a location */}
+          {/* RIGHT — Surface Tank cross-promo */}
           <div>
+            <p
+              className="text-xs tracking-[0.3em] font-semibold mb-2"
+              style={{ color: COLORS.surfaceTeal }}
+            >
+              STICK YOUR STORY
+            </p>
+            <h2
+              className="text-3xl md:text-4xl font-bold mb-3"
+              style={{ color: COLORS.deepWater }}
+            >
+              <WhisperText text="Pair with The Surface Tank." wordDelay={0.14} duration={1.0} />
+            </h2>
+            <p className="text-gray-600 text-base mb-6 max-w-md">
+              Our premium 40oz vacuum-sealed bottle — a blank canvas with mask-shaped slots
+              for up to 20 stickers. Build your dive map on the bottle that goes everywhere.
+            </p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="bg-white rounded-2xl border overflow-hidden flex"
+              style={{ borderColor: '#E6EEF2' }}
+            >
+              <Link
+                href="/products/surface-tank"
+                className="block w-32 sm:w-36 flex-shrink-0 overflow-hidden"
+                style={{ backgroundColor: COLORS.cream }}
+                aria-label="View The Surface Tank"
+              >
+                <div className="aspect-square">
+                  <img
+                    src="/images/products/The-surface-tank-sunset.jpg"
+                    alt="The Surface Tank"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+              </Link>
+              <div className="flex-1 min-w-0 p-4 flex flex-col">
+                <p
+                  className="text-[10px] tracking-[0.2em] font-bold uppercase mb-0.5"
+                  style={{ color: COLORS.surfaceTeal }}
+                >
+                  Memories That Stick
+                </p>
+                <h3 className="text-base font-semibold leading-tight mb-1" style={{ color: COLORS.deepWater }}>
+                  The Surface Tank
+                </h3>
+                <p className="text-xs text-gray-500 leading-snug mb-3">
+                  40oz · Pro Stainless · Diver&rsquo;s passport
+                </p>
+                <div className="flex items-baseline gap-2 mb-3">
+                  <span className="text-lg font-bold" style={{ color: COLORS.deepWater }}>
+                    {formatPrice(40)}
+                  </span>
+                </div>
+                <div className="mt-auto flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={handleAddSurfaceTank}
+                    className="text-[11px] font-bold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors hover:opacity-90"
+                    style={{ backgroundColor: COLORS.deepWater, color: 'white' }}
+                  >
+                    Add to Cart
+                  </button>
+                  <Link
+                    href="/products/surface-tank"
+                    className="block text-center text-[11px] font-bold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors border hover:bg-gray-50"
+                    style={{ borderColor: COLORS.surfaceTeal, color: COLORS.surfaceTeal }}
+                  >
+                    View Product
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+          </div>
+          {/* /grid */}
+
+          {/* BELOW — suggest a location, centred under both columns */}
+          <div
+            className="max-w-2xl mx-auto text-center pt-10 md:pt-12 border-t"
+            style={{ borderColor: `${COLORS.surfaceTeal}30` }}
+          >
             <p
               className="text-xs tracking-[0.3em] font-semibold mb-2"
               style={{ color: COLORS.surfaceTeal }}
@@ -827,13 +928,13 @@ export default function StickersPage() {
             >
               <WhisperText text="Suggest a location." wordDelay={0.16} duration={1.0} />
             </h2>
-            <p className="text-gray-600 text-base mb-6 max-w-md">
+            <p className="text-gray-600 text-base mb-6 max-w-lg mx-auto">
               New stickers are added regularly. Tell us where you&rsquo;ve been diving and we&rsquo;ll add it to the queue.
             </p>
 
             <form
               onSubmit={handleSuggestionSubmit}
-              className="flex flex-col sm:flex-row gap-3"
+              className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
             >
               <input
                 type="text"
