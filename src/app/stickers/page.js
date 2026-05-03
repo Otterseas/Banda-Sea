@@ -409,6 +409,24 @@ export default function StickersPage() {
                     </span>
                   </div>
 
+                  {/* Subtle drop-down chevron on closed panels — hints that
+                      stickers are inside, just below this title strip. */}
+                  <motion.div
+                    aria-hidden="true"
+                    animate={{ y: [0, 3, 0] }}
+                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                    className="absolute bottom-3 left-1/2 -translate-x-1/2 pointer-events-none z-10"
+                    style={{
+                      opacity: isActive ? 0 : 0.55,
+                      transition: 'opacity 500ms ease',
+                      color: 'white',
+                    }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </motion.div>
+
                   {/* Active region — sticker grid */}
                   <div
                     className="absolute inset-0 flex flex-col px-6 lg:px-8 pt-14 pb-5 z-20"
