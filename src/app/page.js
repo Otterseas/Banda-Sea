@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import CurrencySwitcher from '@/components/CurrencySwitcher';
+import Header from '@/components/Header';
 import HomeProductSelector from '@/components/HomeProductSelector';
 import FishyButton from '@/components/FishyButton';
 import WhisperText from '@/components/WhisperText';
@@ -217,7 +217,6 @@ function LoadingScreen({ onComplete }) {
 // ===========================================
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [blogPosts, setBlogPosts] = useState([]);
   const [isBlogLoading, setIsBlogLoading] = useState(true);
 
@@ -264,76 +263,13 @@ export default function HomePage() {
         className="min-h-screen w-full"
         style={{ fontFamily: "'Montserrat', sans-serif" }}
       >
-        {/* Top Header — full-width white bar */}
-        <header className="w-full bg-white border-b border-gray-100 relative z-30">
-          <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 py-3">
-            <Link href="/" className="flex items-center gap-3">
-              <img
-                src="/logo.png"
-                alt="Otterseas"
-                className="w-10 h-10 rounded-xl object-contain"
-              />
-              <span
-                className="text-xl font-medium tracking-tight"
-                style={{ color: LUNA.deepWater }}
-              >
-                Otterseas
-              </span>
-            </Link>
+        {/* Universal Header — same component used across the site, with the
+            limelight nav on lg+ and a hamburger drawer on mobile. */}
+        <Header variant="light" currentPath="/" hideOnScroll={false} />
 
-            <div className="flex items-center gap-3 relative">
-              <CurrencySwitcher variant="light" />
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex flex-col gap-1.5 p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                aria-label="Open menu"
-              >
-                <span className="w-7 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-                <span className="w-7 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-                <span className="w-7 h-0.5" style={{ backgroundColor: LUNA.deepWater }} />
-              </button>
-
-              {/* Dropdown Menu */}
-              <AnimatePresence>
-                {isMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
-                  >
-                    {[
-                      { href: '/', label: 'Home', accent: true },
-                      { href: '/products', label: 'All Products' },
-                      { href: '/products/surface-tank', label: 'Surface Tank' },
-                      { href: '/products/dive-journal', label: 'Dive Journal' },
-                      { href: '/products/logbook-booster-pack', label: 'Log Pages' },
-                      { href: '/stickers', label: 'Location Stickers' },
-                      { href: '/products/fun-stickers', label: 'Fun Stickers' },
-                      { href: '/products/crochet-creatures', label: 'Crochet Creatures' },
-                    ].map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className="block px-5 py-3 hover:bg-gray-50 transition-colors text-sm"
-                        style={{
-                          color: item.accent ? LUNA.surfaceTeal : LUNA.deepWater,
-                          fontWeight: item.accent ? 500 : 400,
-                        }}
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-        </header>
-
-        {/* Brand Tagline — sits above the hero on a white panel */}
-        <section className="w-full bg-white pt-10 md:pt-14 pb-6 md:pb-8 px-4 md:px-8">
+        {/* Brand Tagline — sits above the hero on a white panel. Top
+            padding accounts for the now-fixed header. */}
+        <section className="w-full bg-white pt-24 md:pt-28 pb-6 md:pb-8 px-4 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h1
               className="text-4xl md:text-6xl font-bold leading-[1.1] mb-3"
@@ -700,7 +636,7 @@ export default function HomePage() {
               </nav>
 
               <p className="text-white/40 text-sm">
-                © 2025 Otterseas
+                © 2026 Otterseas
               </p>
             </div>
           </div>

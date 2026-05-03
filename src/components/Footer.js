@@ -12,14 +12,18 @@ const LUNA = {
   abyss: '#011C40',
 };
 
-// Footer Navigation Links
+// Footer Navigation Links — matches the desktop nav order, with About,
+// Blog and All Products tucked at the ends as supporting links.
 const FOOTER_NAV = [
-  { href: '/products', label: 'All Products' },
-  { href: '/products/surface-tank', label: 'Surface Tank' },
   { href: '/products/dive-journal', label: 'Dive Journal' },
+  { href: '/products/surface-tank', label: 'Surface Tank' },
   { href: '/stickers', label: 'Location Stickers' },
+  { href: '/products/logbook-booster-pack', label: 'Log Pages' },
   { href: '/products/fun-stickers', label: 'Fun Stickers' },
   { href: '/products/crochet-creatures', label: 'Crochet Creatures' },
+  { href: '/products', label: 'All Products' },
+  { href: '/about', label: 'About' },
+  { href: '/blogs', label: 'Blog' },
 ];
 
 // Legal Links
@@ -56,7 +60,7 @@ export default function Footer({ compact = false }) {
 
             <div className="flex items-center gap-6">
               <p className="text-white/40 text-sm">
-                © 2025 Otterseas
+                © 2026 Otterseas
               </p>
               {LEGAL_LINKS.map((link) => (
                 <Link
@@ -136,7 +140,7 @@ export default function Footer({ compact = false }) {
           {/* Bottom Row: Copyright + Legal + Social */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-white/40 text-sm">
-              © 2025 Otterseas. Dive deeper, collect memories.
+              © 2026 Otterseas. Dive deeper, collect memories.
             </p>
 
             <div className="flex gap-6">

@@ -99,21 +99,19 @@ export default function AboutPage() {
   return (
     <div
       className="min-h-screen w-full"
-      style={{ fontFamily: 'Montserrat, sans-serif' }}
+      style={{ fontFamily: 'Montserrat, sans-serif', backgroundColor: '#FAF7F1' }}
     >
       {/* ==================== HEADER ==================== */}
-      <Header variant="dark" currentPath="/about" />
+      <Header variant="light" currentPath="/about" />
 
       {/* ==================== HERO SECTION ==================== */}
       <section
-        className="relative min-h-[70vh] flex items-center justify-center pt-20"
-        style={{
-          background: `linear-gradient(180deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 50%, ${LUNA.abyss} 100%)`
-        }}
+        className="relative min-h-[70vh] flex items-center justify-center pt-24"
+        style={{ backgroundColor: 'white' }}
       >
-        {/* Background Image Overlay */}
+        {/* Background Image Overlay — soft, light wash */}
         <div
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-15"
           style={{
             backgroundImage: 'url(https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/DSC05580_copy.jpg?v=1736924733&width=990)',
             backgroundSize: 'cover',
@@ -125,8 +123,8 @@ export default function AboutPage() {
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-sm font-medium tracking-widest mb-4 block"
-            style={{ color: LUNA.highlight }}
+            className="text-sm font-semibold tracking-[0.28em] mb-4 block"
+            style={{ color: '#FF6B9D' }}
           >
             ABOUT OTTERSEAS
           </motion.span>
@@ -135,7 +133,13 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl font-bold text-white mb-6"
+            className="text-4xl md:text-6xl font-extrabold mb-6 leading-[1.05]"
+            style={{
+              background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, #FF6B9D 50%, ${LUNA.deepWater} 100%)`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
           >
             Born From The Deep
           </motion.h1>
@@ -144,7 +148,8 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-white/70 leading-relaxed"
+            className="text-xl leading-relaxed"
+            style={{ color: LUNA.midDepth }}
           >
             A passion for diving. A love for memories. A mission to help divers
             around the world celebrate their underwater adventures.
@@ -162,11 +167,11 @@ export default function AboutPage() {
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
             className="w-6 h-10 rounded-full border-2 flex items-start justify-center p-2"
-            style={{ borderColor: LUNA.highlight }}
+            style={{ borderColor: LUNA.surfaceTeal }}
           >
             <div
               className="w-1.5 h-3 rounded-full"
-              style={{ backgroundColor: LUNA.highlight }}
+              style={{ backgroundColor: LUNA.surfaceTeal }}
             />
           </motion.div>
         </motion.div>
@@ -251,30 +256,28 @@ export default function AboutPage() {
           backgroundAttachment: 'fixed',
         }}
       >
+        {/* Light overlay so the underwater image still reads but the text
+            sits on a soft veil instead of a dark wash. */}
         <div
           className="absolute inset-0"
-          style={{ backgroundColor: `${LUNA.abyss}80` }}
+          style={{ backgroundColor: 'rgba(250, 247, 241, 0.78)' }}
         />
         <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
           <motion.blockquote
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-2xl md:text-3xl font-light text-white italic leading-relaxed"
+            className="text-2xl md:text-3xl font-light italic leading-relaxed"
+            style={{ color: LUNA.deepWater }}
           >
-            "Every dive tells a story. Our products help you remember, share,
-            and celebrate those stories for years to come."
+            &ldquo;Every dive tells a story. Our products help you remember, share,
+            and celebrate those stories for years to come.&rdquo;
           </motion.blockquote>
         </div>
       </section>
 
       {/* ==================== MISSION & VALUES ==================== */}
-      <section
-        className="py-20 px-6"
-        style={{
-          background: `linear-gradient(180deg, ${LUNA.abyss} 0%, ${LUNA.deepWater} 100%)`
-        }}
-      >
+      <section className="py-20 px-6" style={{ backgroundColor: '#FAF7F1' }}>
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -283,12 +286,12 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <span
-              className="text-sm font-medium tracking-widest mb-4 block"
-              style={{ color: LUNA.highlight }}
+              className="text-sm font-semibold tracking-[0.28em] mb-4 block"
+              style={{ color: '#FF6B9D' }}
             >
               WHAT DRIVES US
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
+            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: LUNA.deepWater }}>
               Our Mission
             </h2>
           </motion.div>
@@ -317,16 +320,12 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="p-8 rounded-2xl text-center"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  backdropFilter: 'blur(10px)',
-                  border: `1px solid ${LUNA.highlight}20`,
-                }}
+                className="p-8 rounded-2xl text-center bg-white border"
+                style={{ borderColor: '#E6EEF2', boxShadow: `0 6px 20px ${LUNA.deepWater}10` }}
               >
                 <span className="text-4xl mb-4 block">{item.icon}</span>
-                <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-                <p className="text-white/60 text-sm leading-relaxed">{item.content}</p>
+                <h3 className="text-xl font-bold mb-3" style={{ color: LUNA.deepWater }}>{item.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{item.content}</p>
               </motion.div>
             ))}
           </div>
@@ -545,12 +544,7 @@ export default function AboutPage() {
       </section>
 
       {/* ==================== BLOG & COMMUNITY ==================== */}
-      <section
-        className="py-20 px-6"
-        style={{
-          background: `linear-gradient(180deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 100%)`
-        }}
-      >
+      <section className="py-20 px-6" style={{ backgroundColor: 'white' }}>
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -558,15 +552,23 @@ export default function AboutPage() {
             viewport={{ once: true }}
           >
             <span
-              className="text-sm font-medium tracking-widest mb-4 block"
-              style={{ color: LUNA.highlight }}
+              className="text-sm font-semibold tracking-[0.28em] mb-4 block"
+              style={{ color: '#FF6B9D' }}
             >
               JOIN THE COMMUNITY
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            <h2
+              className="text-3xl md:text-4xl font-bold mb-6"
+              style={{
+                background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, #FF6B9D 50%, ${LUNA.deepWater} 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
               Dive Deeper With Us
             </h2>
-            <p className="text-white/70 text-lg mb-10 max-w-2xl mx-auto">
+            <p className="text-lg mb-10 max-w-2xl mx-auto" style={{ color: LUNA.midDepth }}>
               Follow our adventures, get dive tips, and connect with fellow
               ocean enthusiasts from around the world.
             </p>
@@ -583,9 +585,9 @@ export default function AboutPage() {
               href="/blogs"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105"
               style={{
-                background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
+                backgroundColor: LUNA.deepWater,
                 color: 'white',
-                boxShadow: `0 10px 30px ${LUNA.abyss}50`,
+                boxShadow: `0 8px 24px ${LUNA.deepWater}30`,
               }}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -596,12 +598,10 @@ export default function AboutPage() {
             </Link>
             <Link
               href="/stickers"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105 bg-white border-2"
               style={{
-                background: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)',
-                border: `2px solid ${LUNA.highlight}`,
-                color: 'white',
+                borderColor: LUNA.surfaceTeal,
+                color: LUNA.surfaceTeal,
               }}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -620,7 +620,7 @@ export default function AboutPage() {
             transition={{ delay: 0.2 }}
             className="mt-10"
           >
-            <p className="text-white/50 text-sm mb-4">
+            <p className="text-sm mb-4" style={{ color: LUNA.midDepth }}>
               Follow us on social media for daily dive inspiration
             </p>
             <a
@@ -643,7 +643,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <RecentlyViewed variant="dark" />
+      <RecentlyViewed variant="light" />
 
       {/* ==================== FOOTER ==================== */}
       <Footer />
