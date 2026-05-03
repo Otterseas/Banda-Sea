@@ -280,13 +280,13 @@ export default function HomePage() {
                 backgroundClip: 'text',
               }}
             >
-              <WhisperText text="Build your dive story." wordDelay={0.4} duration={2.0} />
+              <WhisperText text="Build your dive story." wordDelay={0.16} duration={2.0} />
             </h1>
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 3.4 }}
+              transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 2.5 }}
               className="text-base md:text-lg max-w-2xl mx-auto"
               style={{ color: LUNA.midDepth }}
             >
