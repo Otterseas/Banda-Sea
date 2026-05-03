@@ -301,11 +301,12 @@ const STORY_SECTIONS = [
         small, personal reminder of the dives that meant the most.
       </>
     ),
-    image: '/images/products/Octopus-crochet.jpg',
+    image: '/images/products/Octopus-crochet-web.jpg',
     aspect: 'aspect-[4/3]',
-    // Anchor the crop toward center-left / bottom-left so the octopus's
-    // body and tentacles stay framed when the image is cropped to 4:3.
-    objectPosition: '20% 70%',
+    // Source is portrait (1600×2133); cropped to 4:3 landscape, only vertical
+    // positioning has effect. 22% keeps the octopus head + body + tentacles
+    // framed, which sit roughly 15-55% down the original image.
+    objectPosition: '50% 22%',
   },
 ];
 
@@ -822,24 +823,6 @@ export default function CrochetCreaturesPage() {
               </div>
             );
           })}
-        </div>
-      </section>
-
-      {/* ============ COMING SOON BANNER ============ */}
-      <section className="px-4 md:px-8 py-8" style={{ backgroundColor: COLORS.cream }}>
-        <div className="max-w-4xl mx-auto text-center">
-          <p
-            className="text-[10px] tracking-[0.35em] font-bold uppercase mb-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
-            style={{ backgroundColor: `${COLORS.pink}1F`, color: COLORS.pink }}
-          >
-            <span>•</span>
-            All creatures coming soon
-            <span>•</span>
-          </p>
-          <p className="text-sm md:text-base text-gray-600 max-w-xl mx-auto">
-            Each one is made by hand, so there&rsquo;s a queue. Tap any creature to be notified the
-            moment it&rsquo;s ready.
-          </p>
         </div>
       </section>
 
