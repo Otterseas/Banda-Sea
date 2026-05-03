@@ -244,31 +244,84 @@ const ALL_PRODUCTS = [
   },
 ];
 
-// Story narrative — preserved content, paired with local images.
+// Story narrative — content is rich JSX so we can highlight the key
+// 'handmade / custom / time-it-takes' phrases in pink.
+const Highlight = ({ children }) => (
+  <span className="font-semibold" style={{ color: '#FF6B9D' }}>
+    {children}
+  </span>
+);
+
 const STORY_SECTIONS = [
   {
     id: 'born-from-reef',
     title: 'Born from the reef.',
     eyebrow: 'THE CRAFT',
-    content:
-      "Every creature in our collection is designed and handcrafted by a very talented artist, who creates each pattern from scratch — no templates, no kits, just pure creativity. Inspired by the animals we've encountered underwater, from the psychedelic swirls of a nudibranch, the grumpy pout of a frogfish, the delicate curl of a pygmy seahorse. It's original artwork you can hold in your hand.",
+    content: (
+      <>
+        Every creature in our collection is{' '}
+        <Highlight>designed and handcrafted by a single artist</Highlight>, who
+        draws each pattern from scratch — no templates, no kits, just pure
+        creativity. Inspired by the animals we&rsquo;ve encountered underwater,
+        from the psychedelic swirls of a nudibranch, the grumpy pout of a
+        frogfish, the delicate curl of a pygmy seahorse. It&rsquo;s{' '}
+        <Highlight>original artwork you can hold in your hand</Highlight>.
+      </>
+    ),
     image: '/images/products/Crochet-nudis-hero-image.png',
+    aspect: 'aspect-[4/3]',
   },
   {
     id: 'every-stitch',
     title: 'Every stitch tells a story.',
-    eyebrow: 'THE TIME',
-    content:
-      "Each creature is crocheted by hand using 100% cotton yarn. There are no machines, no patterns, no shortcuts. A single nudibranch takes 3–4 hours. A fish or seahorse takes 5–6. Our baby mobiles take 15–20 hours of dedicated work. That's why no two are ever exactly the same — and why each one is so uniquely special.",
-    image: '/images/products/black-white-nudis-product-shot.png',
+    eyebrow: 'THE TIME IT TAKES',
+    content: (
+      <>
+        Each creature is crocheted by hand using <Highlight>100% cotton yarn</Highlight>.{' '}
+        <Highlight>No machines, no patterns, no shortcuts</Highlight>. A single
+        nudibranch takes <Highlight>3–4 hours</Highlight>. A fish or seahorse
+        takes <Highlight>5–6 hours</Highlight>. That&rsquo;s why no two are ever
+        exactly the same — and why each one is{' '}
+        <Highlight>so uniquely special</Highlight>.
+      </>
+    ),
+    image: '/images/products/Crochet-nudis-red-purple.png',
+    aspect: 'aspect-[4/3]',
   },
   {
     id: 'made-to-be-loved',
     title: 'Made to be loved.',
-    eyebrow: 'TO TRAVEL WITH YOU',
-    content:
-      "Whether it's a keychain clipped to your dive bag, a frogfish hanging from your rearview mirror, or a nudibranch keeping watch on your desk — these creatures are designed to travel with you. And for the littlest ocean lovers, our baby mobiles bring the underwater world into the nursery.",
+    eyebrow: 'BUILT TO TRAVEL WITH YOU',
+    content: (
+      <>
+        Whether it&rsquo;s a keychain clipped to your dive bag, a frogfish
+        hanging from your rearview mirror, or a nudibranch keeping watch on your
+        desk — these creatures are{' '}
+        <Highlight>designed to travel with you</Highlight>. Each one becomes a
+        small, personal reminder of the dives that meant the most.
+      </>
+    ),
     image: '/images/products/Crochet-octopus.png',
+    // Row 3 uses a square frame to fit the full octopus, with a wider text column.
+    aspect: 'aspect-square',
+    wideText: true,
+  },
+];
+
+// Three product photos for the stacked-cards gallery beside the Custom Orders
+// callout. Hover over the front card to fan them out left/right.
+const GALLERY_CARDS = [
+  {
+    image: '/images/products/Crochet-nudis-table-shot.png',
+    label: 'The Family',
+  },
+  {
+    image: '/images/products/Blue-orange-crochet-nudi.jpg',
+    label: 'Hand-Picked Colours',
+  },
+  {
+    image: '/images/products/Black-white-crochet-nudi.jpg',
+    label: 'No Two Alike',
   },
 ];
 
@@ -597,6 +650,90 @@ function ProductModal({ product, isOpen, onClose, formatPrice }) {
   );
 }
 
+// =============== Stacked-cards gallery ===============
+// Three product photos stacked. Hovering the front card fans the back two
+// out left and right with a slight rotation. Front card stays in place.
+function StackedCardsGallery({ cards }) {
+  const [hovering, setHovering] = useState(false);
+  const limited = cards.slice(0, 3);
+
+  return (
+    <div className="relative w-full flex items-center justify-center min-h-[420px] md:min-h-[460px]">
+      <div
+        className="relative"
+        style={{ width: 320, height: 400 }}
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
+      >
+        {limited.map((card, i) => {
+          const isFront = i === 0;
+          let xOffset = 0;
+          let rotation = 0;
+          if (i === 1) {
+            xOffset = -42;
+            rotation = -5;
+          } else if (i === 2) {
+            xOffset = 42;
+            rotation = 5;
+          }
+          return (
+            <motion.div
+              key={card.image}
+              className="absolute inset-0"
+              initial={{ x: 0, rotate: 0 }}
+              animate={{
+                x: hovering ? xOffset : 0,
+                rotate: hovering ? rotation : 0,
+              }}
+              transition={{
+                duration: 0.4,
+                ease: 'easeInOut',
+                delay: hovering ? i * 0.08 : 0,
+                type: 'spring',
+                stiffness: 220,
+                damping: 22,
+              }}
+              style={{ zIndex: isFront ? 10 : 5 - i }}
+            >
+              <div
+                className="w-full h-full overflow-hidden bg-white rounded-2xl shadow-lg border"
+                style={{
+                  borderColor: '#E6EEF2',
+                  boxShadow: isFront
+                    ? '0 16px 40px rgba(2, 56, 89, 0.18)'
+                    : '0 8px 24px rgba(2, 56, 89, 0.12)',
+                }}
+              >
+                <div
+                  className="relative h-72 rounded-xl overflow-hidden mx-2 mt-2"
+                  style={{ backgroundColor: COLORS.cream }}
+                >
+                  <img
+                    src={card.image}
+                    alt={card.label}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="px-4 py-4">
+                  <p
+                    className="text-[10px] tracking-[0.25em] font-bold uppercase"
+                    style={{ color: COLORS.pink }}
+                  >
+                    {card.label}
+                  </p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Hover to flip through the family.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // =============== Main page ===============
 
 export default function CrochetCreaturesPage() {
@@ -664,17 +801,22 @@ export default function CrochetCreaturesPage() {
         <div className="max-w-6xl mx-auto space-y-16 md:space-y-24">
           {STORY_SECTIONS.map((story, idx) => {
             const imageLeft = idx % 2 === 0;
+            // Row 3 uses a wider text column + tighter image column so the
+            // square octopus shot can show in full without cropping.
+            const gridCols = story.wideText
+              ? 'md:grid-cols-[2fr_3fr]'
+              : 'md:grid-cols-2';
             return (
               <div
                 key={story.id}
-                className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center"
+                className={`grid ${gridCols} gap-10 lg:gap-14 items-center`}
               >
                 <motion.div
                   initial={{ opacity: 0, x: imageLeft ? -24 : 24 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                  className={`aspect-[4/3] rounded-2xl overflow-hidden ${
+                  className={`${story.aspect || 'aspect-[4/3]'} rounded-2xl overflow-hidden ${
                     imageLeft ? 'order-1' : 'md:order-2 order-1'
                   }`}
                   style={{ backgroundColor: COLORS.cream }}
@@ -682,7 +824,10 @@ export default function CrochetCreaturesPage() {
                   <img
                     src={story.image}
                     alt={story.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full"
+                    style={{
+                      objectFit: story.aspect === 'aspect-square' ? 'contain' : 'cover',
+                    }}
                   />
                 </motion.div>
                 <motion.div
@@ -709,6 +854,55 @@ export default function CrochetCreaturesPage() {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* ============ STACKED-CARDS GALLERY + CUSTOM ORDER CALLOUT ============ */}
+      <section className="px-4 md:px-8 py-14 md:py-20" style={{ backgroundColor: COLORS.cream }}>
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {/* Left — stacked cards (hover to fan out) */}
+          <StackedCardsGallery cards={GALLERY_CARDS} />
+
+          {/* Right — custom order callout */}
+          <div>
+            <p
+              className="text-xs tracking-[0.3em] font-semibold mb-3"
+              style={{ color: COLORS.pink }}
+            >
+              CUSTOM ORDERS WELCOME
+            </p>
+            <h2
+              className="text-3xl md:text-4xl font-bold leading-tight mb-4"
+              style={{
+                background: `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, ${COLORS.pink} 50%, ${COLORS.deepWater} 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              <WhisperText text="Got a creature in mind?" wordDelay={0.16} duration={1.0} />
+            </h2>
+            <p className="text-gray-600 text-base leading-relaxed mb-6 max-w-md">
+              Specific colours to match your <Highlight>dive gear</Highlight>? A
+              bespoke piece for a <Highlight>baby shower</Highlight>? A creature
+              we haven&rsquo;t made yet? Drop us a line and we&rsquo;ll create
+              <Highlight> something special</Highlight> together.
+            </p>
+            <a
+              href="mailto:info@otterseas.com?subject=Custom%20Crochet%20Order"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold tracking-[0.15em] uppercase transition-all hover:scale-105"
+              style={{
+                backgroundColor: COLORS.deepWater,
+                color: 'white',
+                boxShadow: `0 6px 20px ${COLORS.deepWater}30`,
+              }}
+            >
+              Request Custom Order
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -747,54 +941,6 @@ export default function CrochetCreaturesPage() {
             onProductClick={setSelectedProduct}
             formatPrice={formatPrice}
           />
-          <ProductCarousel
-            title="Baby Mobiles."
-            subtitle="A handcrafted underwater world for the smallest ocean lovers."
-            products={babyMobiles}
-            onProductClick={setSelectedProduct}
-            formatPrice={formatPrice}
-          />
-        </div>
-      </section>
-
-      {/* ============ CUSTOM ORDER CALLOUT ============ */}
-      <section className="bg-white px-4 md:px-8 py-14 md:py-20">
-        <div className="max-w-3xl mx-auto text-center">
-          <p
-            className="text-sm tracking-[0.28em] font-semibold mb-3"
-            style={{ color: COLORS.pink }}
-          >
-            CUSTOM ORDERS WELCOME
-          </p>
-          <h2
-            className="text-3xl md:text-5xl font-bold leading-tight mb-4"
-            style={{
-              background: `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, ${COLORS.pink} 50%, ${COLORS.deepWater} 100%)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
-          >
-            <WhisperText text="Got a creature in mind?" wordDelay={0.16} duration={1.1} />
-          </h2>
-          <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-6 max-w-2xl mx-auto">
-            Specific colours to match your dive gear? A bespoke mobile for a baby shower? A creature
-            we haven&rsquo;t made yet? Drop us a line and we&rsquo;ll create something special together.
-          </p>
-          <a
-            href="mailto:info@otterseas.com?subject=Custom%20Crochet%20Order"
-            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-bold tracking-[0.15em] uppercase transition-all hover:scale-105"
-            style={{
-              backgroundColor: COLORS.deepWater,
-              color: 'white',
-              boxShadow: `0 8px 24px ${COLORS.deepWater}30`,
-            }}
-          >
-            Request Custom Order
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
         </div>
       </section>
 
