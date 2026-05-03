@@ -18,23 +18,25 @@ const COLORS = {
 };
 
 // Tight labels so all the categories fit along the top nav at lg+ widths.
-// Home is omitted — the logo in the corner already routes to '/'.
+// Home is omitted — the logo in the corner already routes to '/'. Shop and
+// Blog moved to the mobile drawer to keep the desktop bar focused on the
+// six core product pages.
 const NAV_LINKS = [
-  { href: '/products', label: 'Shop' },
-  { href: '/stickers', label: 'Stickers' },
-  { href: '/products/surface-tank', label: 'Surface Tank' },
   { href: '/products/dive-journal', label: 'Dive Journal' },
+  { href: '/products/surface-tank', label: 'Surface Tank' },
+  { href: '/stickers', label: 'Stickers' },
   { href: '/products/logbook-booster-pack', label: 'Log Pages' },
   { href: '/products/fun-stickers', label: 'Fun Stickers' },
   { href: '/products/crochet-creatures', label: 'Crochet' },
-  { href: '/blogs', label: 'Blog' },
 ];
 
-// Mobile hamburger menu adds Home back (handy on small screens) plus Policies
-// (too long to keep in the desktop bar without crowding it).
+// Mobile hamburger menu adds Home, Shop, Blog and Policies back — there's
+// room for them on small screens.
 const MOBILE_MENU_LINKS = [
   { href: '/', label: 'Home' },
+  { href: '/products', label: 'Shop' },
   ...NAV_LINKS,
+  { href: '/blogs', label: 'Blog' },
   { href: '/policies', label: 'Policies' },
 ];
 
