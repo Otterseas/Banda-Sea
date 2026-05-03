@@ -1,35 +1,39 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
+import { NotifyMeButton } from '@/components/NotifyMe';
+import RecentlyViewed from '@/components/RecentlyViewed';
+import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
+import WhisperText from '@/components/WhisperText';
 
-// ===========================================
-// LUNA COLOR PALETTE
-// ===========================================
-const LUNA = {
+const COLORS = {
   highlight: '#A7EBF2',
   surfaceTeal: '#54ACBF',
   midDepth: '#26658C',
   deepWater: '#023859',
   abyss: '#011C40',
+  pink: '#FF6B9D',
+  cream: '#FAF7F1',
 };
 
-// ===========================================
-// PRODUCT DATA WITH DETAILS FOR MODALS
-// ===========================================
+const SLUG = 'crochet-creatures';
+
+// All product data preserved verbatim from the previous version (names,
+// categories, prices, descriptions, productInfo, comingSoon flags, variant
+// IDs). Images swapped to local crochet photos where there's a good match.
 const ALL_PRODUCTS = [
   // Nudibranchs
   {
     id: 'nudi-spanish-dancer',
     name: 'Spanish Dancer',
     category: 'Nudibranchs',
-    price: 17.50,
+    price: 17.5,
     timeToMake: '3-4 hours',
     description: 'Inspired by the graceful Spanish Dancer nudibranch, known for its flowing crimson form.',
     productInfo: [
@@ -38,9 +42,7 @@ const ALL_PRODUCTS = [
       'Includes keychain/bag charm attachment',
       'Each one unique - slight variations in colour and shape',
     ],
-    images: [
-      'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=600',
-    ],
+    images: ['/images/products/Red-purple-nudis.png'],
     shopifyVariantId: 'nudi-spanish-dancer-001',
     uses: 'Keychain, bag charm, desk companion',
     comingSoon: true,
@@ -49,7 +51,7 @@ const ALL_PRODUCTS = [
     id: 'nudi-chromodoris',
     name: 'Chromodoris',
     category: 'Nudibranchs',
-    price: 17.50,
+    price: 17.5,
     timeToMake: '3-4 hours',
     description: 'Based on the vibrant Chromodoris species with their striking colour patterns.',
     productInfo: [
@@ -58,9 +60,7 @@ const ALL_PRODUCTS = [
       'Includes keychain/bag charm attachment',
       'Each one unique - slight variations in colour and shape',
     ],
-    images: [
-      'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=600',
-    ],
+    images: ['/images/products/Blue-orange-crochet-nudi.jpg'],
     shopifyVariantId: 'nudi-chromodoris-001',
     uses: 'Keychain, bag charm, desk companion',
     comingSoon: true,
@@ -69,7 +69,7 @@ const ALL_PRODUCTS = [
     id: 'nudi-nembrotha',
     name: 'Nembrotha',
     category: 'Nudibranchs',
-    price: 17.50,
+    price: 17.5,
     timeToMake: '3-4 hours',
     description: 'Capturing the bold colours of the Nembrotha nudibranch family.',
     productInfo: [
@@ -78,9 +78,7 @@ const ALL_PRODUCTS = [
       'Includes keychain/bag charm attachment',
       'Each one unique - slight variations in colour and shape',
     ],
-    images: [
-      'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=600',
-    ],
+    images: ['/images/products/black-green-nudis-product-shot.png'],
     shopifyVariantId: 'nudi-nembrotha-001',
     uses: 'Keychain, bag charm, desk companion',
     comingSoon: true,
@@ -89,7 +87,7 @@ const ALL_PRODUCTS = [
     id: 'nudi-phyllidia',
     name: 'Phyllidia',
     category: 'Nudibranchs',
-    price: 17.50,
+    price: 17.5,
     timeToMake: '3-4 hours',
     description: 'The striking Phyllidia with its distinctive bumpy texture and bold patterns.',
     productInfo: [
@@ -98,9 +96,7 @@ const ALL_PRODUCTS = [
       'Includes keychain/bag charm attachment',
       'Each one unique - slight variations in colour and shape',
     ],
-    images: [
-      'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=600',
-    ],
+    images: ['/images/products/Crochet-nudis-black-white.png'],
     shopifyVariantId: 'nudi-phyllidia-001',
     uses: 'Keychain, bag charm, desk companion',
     comingSoon: true,
@@ -109,7 +105,7 @@ const ALL_PRODUCTS = [
     id: 'nudi-flabellina',
     name: 'Flabellina',
     category: 'Nudibranchs',
-    price: 17.50,
+    price: 17.5,
     timeToMake: '3-4 hours',
     description: 'The delicate Flabellina with its feathery cerata and vibrant purple hues.',
     productInfo: [
@@ -118,9 +114,7 @@ const ALL_PRODUCTS = [
       'Includes keychain/bag charm attachment',
       'Each one unique - slight variations in colour and shape',
     ],
-    images: [
-      'https://38a44d-4c.myshopify.com/cdn/shop/files/Crochet_Nudibranchs.jpg?v=1770010608&width=600',
-    ],
+    images: ['/images/products/Purple-nudis-product-shot.png'],
     shopifyVariantId: 'nudi-flabellina-001',
     uses: 'Keychain, bag charm, desk companion',
     comingSoon: true,
@@ -130,7 +124,7 @@ const ALL_PRODUCTS = [
     id: 'fish-cowfish',
     name: 'Longhorn Cowfish',
     category: 'Fish & Friends',
-    price: 25.00,
+    price: 25.0,
     timeToMake: '5-6 hours',
     description: 'The adorable Longhorn Cowfish with its distinctive horns and boxy shape.',
     productInfo: [
@@ -151,7 +145,7 @@ const ALL_PRODUCTS = [
     id: 'fish-frogfish',
     name: 'Hairy Frogfish',
     category: 'Fish & Friends',
-    price: 25.00,
+    price: 25.0,
     timeToMake: '5-6 hours',
     description: 'The quirky Hairy Frogfish, master of camouflage and patience.',
     productInfo: [
@@ -171,7 +165,7 @@ const ALL_PRODUCTS = [
     id: 'fish-seahorse',
     name: 'Pygmy Seahorse',
     category: 'Fish & Friends',
-    price: 25.00,
+    price: 25.0,
     timeToMake: '5-6 hours',
     description: 'The delicate Pygmy Seahorse, tiny guardian of the coral fans.',
     productInfo: [
@@ -191,7 +185,7 @@ const ALL_PRODUCTS = [
     id: 'fish-mandarin',
     name: 'Mandarin Fish',
     category: 'Fish & Friends',
-    price: 25.00,
+    price: 25.0,
     timeToMake: '5-6 hours',
     description: 'The psychedelic Mandarin Fish with its swirling patterns of blue and orange.',
     productInfo: [
@@ -211,7 +205,7 @@ const ALL_PRODUCTS = [
     id: 'fish-boxfish',
     name: 'Yellow Boxfish',
     category: 'Fish & Friends',
-    price: 25.00,
+    price: 25.0,
     timeToMake: '5-6 hours',
     description: 'The cheerful Yellow Boxfish, a tiny cube of sunshine on the reef.',
     productInfo: [
@@ -232,9 +226,10 @@ const ALL_PRODUCTS = [
     id: 'mobile-ocean',
     name: 'Ocean Explorer Mobile',
     category: 'Baby Mobiles',
-    price: 105.00,
+    price: 105.0,
     timeToMake: '15-20 hours',
-    description: 'A stunning handmade baby mobile featuring a collection of miniature ocean creatures, perfect as a nursery centrepiece.',
+    description:
+      'A stunning handmade baby mobile featuring a collection of miniature ocean creatures, perfect as a nursery centrepiece.',
     productInfo: [
       'Handmade with 100% cotton yarn',
       'Approximately 30cm diameter',
@@ -242,215 +237,215 @@ const ALL_PRODUCTS = [
       'Features 5-6 miniature sea creatures',
       'Each one unique - slight variations in colour and shape',
     ],
-    images: [
-      'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/IMG-20260109-WA0009.jpg?v=1770010474&width=990',
-    ],
+    images: ['/images/products/Crochet-nudis-table-shot.png'],
     shopifyVariantId: 'mobile-ocean-001',
-    uses: 'Nursery centrepiece, baby shower gift, children\'s room decor',
+    uses: "Nursery centrepiece, baby shower gift, children's room decor",
     comingSoon: true,
   },
 ];
 
-// ===========================================
-// STORY SECTIONS - Left Panel Content
-// ===========================================
+// Story narrative — preserved content, paired with local images.
 const STORY_SECTIONS = [
   {
     id: 'born-from-reef',
-    title: 'Born From The Reef',
-    content: 'Every creature in our collection is designed and handcrafted by a very talented artist, who creates each pattern from scratch — no templates, no kits, just pure creativity.\n\nInspired by the animals we\'ve encountered underwater, from the psychedelic swirls of a nudibranch, the grumpy pout of a frogfish, the delicate curl of a pygmy seahorse. It\'s original artwork you can hold in your hand.',
-    image: 'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/IMG_20260202_130533_587.jpg?v=1770009456&width=990',
+    title: 'Born from the reef.',
+    eyebrow: 'THE CRAFT',
+    content:
+      "Every creature in our collection is designed and handcrafted by a very talented artist, who creates each pattern from scratch — no templates, no kits, just pure creativity. Inspired by the animals we've encountered underwater, from the psychedelic swirls of a nudibranch, the grumpy pout of a frogfish, the delicate curl of a pygmy seahorse. It's original artwork you can hold in your hand.",
+    image: '/images/products/Crochet-nudis-hero-image.png',
   },
   {
     id: 'every-stitch',
-    title: 'Every Stitch Tells a Story',
-    content: 'Each creature is crocheted by hand using 100% cotton yarn. There are no machines, no patterns, no shortcuts. A single nudibranch takes 3–4 hours. A fish or seahorse takes 5–6. Our baby mobiles take 15–20 hours of dedicated work.\n\nThat\'s why no two are ever exactly the same — and why each one is so uniquely special!',
-    image: 'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/20260202_132348_b89869bc-a6a8-4b05-8d55-de1473481338.jpg?v=1770010707&width=990',
+    title: 'Every stitch tells a story.',
+    eyebrow: 'THE TIME',
+    content:
+      "Each creature is crocheted by hand using 100% cotton yarn. There are no machines, no patterns, no shortcuts. A single nudibranch takes 3–4 hours. A fish or seahorse takes 5–6. Our baby mobiles take 15–20 hours of dedicated work. That's why no two are ever exactly the same — and why each one is so uniquely special.",
+    image: '/images/products/black-white-nudis-product-shot.png',
   },
   {
     id: 'made-to-be-loved',
-    title: '',
-    content: 'Whether it\'s a keychain clipped to your dive bag, a frogfish hanging from your rearview mirror, or a nudibranch keeping watch on your desk — these creatures are designed to travel with you. And for the littlest ocean lovers, our baby mobiles bring the underwater world into the nursery.',
-    image: 'https://fy3d04d7fsncz1uz-82591088906.shopifypreview.com/cdn/shop/files/IMG-20260109-WA0009.jpg?v=1770010474&width=990',
-  },
-  {
-    id: 'custom-orders',
-    title: 'Custom Orders Welcome',
-    content: 'Got a favourite creature we haven\'t made yet? Specific colours to match your dive gear? A bespoke mobile for a baby shower? We love a challenge. Drop us a line and let\'s create something special together.',
-    cta: {
-      text: 'Request Custom Order',
-      email: 'info@otterseas.com',
-    },
+    title: 'Made to be loved.',
+    eyebrow: 'TO TRAVEL WITH YOU',
+    content:
+      "Whether it's a keychain clipped to your dive bag, a frogfish hanging from your rearview mirror, or a nudibranch keeping watch on your desk — these creatures are designed to travel with you. And for the littlest ocean lovers, our baby mobiles bring the underwater world into the nursery.",
+    image: '/images/products/Crochet-octopus.png',
   },
 ];
 
-// ===========================================
-// PRODUCT CARD COMPONENT - With Coming Soon
-// ===========================================
-function ProductCard({ product, onClick, formatPrice }) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const isComingSoon = product.comingSoon;
+const RELATED_PRODUCTS = [
+  {
+    name: 'The Surface Tank',
+    href: '/products/surface-tank',
+    image: '/images/products/The-surface-tank-sunset.jpg',
+    priceLabel: '£40',
+    quickAdd: {
+      shopifyVariantId: '52453682807050',
+      name: 'The Surface Tank - Deep Ocean',
+      price: 40.0,
+    },
+  },
+  {
+    name: 'The Dive Journal',
+    href: '/products/dive-journal',
+    image: '/images/products/The-dive-journal-product-shot.jpg',
+    priceLabel: 'From £28',
+    quickAdd: {
+      shopifyVariantId: '49658874331402',
+      name: 'The Dive Journal',
+      price: 28.0,
+    },
+  },
+  {
+    name: 'Location Stickers',
+    href: '/stickers',
+    image: '/images/products/Location-stickers-close-up.jpg',
+    priceLabel: 'From £1.75',
+    quickAdd: null,
+  },
+  {
+    name: 'Fun Stickers',
+    href: '/products/fun-stickers',
+    image:
+      'https://38a44d-4c.myshopify.com/cdn/shop/files/PostDiveHairDontCare-MarketingImage.jpg?v=1746535285&width=600',
+    priceLabel: 'From £3.50',
+    quickAdd: null,
+  },
+];
 
-  const nextImage = (e) => {
-    e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
-  };
+// =============== Product card ===============
 
-  const prevImage = (e) => {
-    e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
-  };
-
+function ProductCard({ product, formatPrice, onPreview, index }) {
   return (
     <motion.div
-      className="flex-shrink-0 w-48 cursor-pointer"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -4 }}
-      onClick={() => onClick?.(product)}
+      onClick={onPreview}
+      className="flex-shrink-0 w-44 md:w-48 cursor-pointer"
     >
-      {/* Image */}
-      <div 
-        className="aspect-square rounded-xl overflow-hidden mb-2 relative group"
-        style={{ 
-          border: `2px solid ${LUNA.highlight}30`,
-        }}
+      <div
+        className="aspect-square rounded-xl overflow-hidden mb-2.5 relative bg-white border"
+        style={{ borderColor: '#E6EEF2' }}
       >
-        <img 
-          src={product.images[currentImageIndex]} 
+        <img
+          src={product.images[0]}
           alt={product.name}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
         />
-        
-        {/* Coming Soon Overlay */}
-        {isComingSoon && (
-          <div 
-            className="absolute inset-0 flex items-center justify-center transition-opacity duration-300"
-            style={{ backgroundColor: `${LUNA.abyss}70` }}
+        {product.comingSoon && (
+          <div
+            className="absolute inset-0 flex items-center justify-center backdrop-blur-[1px]"
+            style={{ backgroundColor: 'rgba(2, 56, 89, 0.35)' }}
           >
-            <span className="text-white text-xs font-medium px-4 py-1.5 rounded-full border border-white/50 backdrop-blur-sm">
+            <span
+              className="text-[10px] font-bold tracking-[0.25em] uppercase px-3 py-1.5 rounded-full"
+              style={{ backgroundColor: COLORS.pink, color: 'white', boxShadow: `0 4px 14px ${COLORS.pink}50` }}
+            >
               Coming Soon
             </span>
           </div>
         )}
-
-        {/* Image navigation - only show if multiple images */}
-        {product.images.length > 1 && (
-          <>
-            <button
-              onClick={prevImage}
-              className="absolute left-1 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={LUNA.deepWater} strokeWidth="2">
-                <path d="M15 18l-6-6 6-6"/>
-              </svg>
-            </button>
-            <button
-              onClick={nextImage}
-              className="absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={LUNA.deepWater} strokeWidth="2">
-                <path d="M9 18l6-6-6-6"/>
-              </svg>
-            </button>
-          </>
-        )}
       </div>
-      
-      {/* Info */}
-      <h4 
-        className="text-sm font-semibold truncate"
-        style={{ color: LUNA.deepWater }}
-      >
+      <h4 className="text-sm font-semibold leading-tight truncate" style={{ color: COLORS.deepWater }}>
         {product.name}
       </h4>
-      <p className="text-sm font-bold" style={{ color: LUNA.surfaceTeal }}>
-        {formatPrice(product.price)}
-      </p>
-      {product.timeToMake && (
-        <p className="text-xs text-gray-400">{product.timeToMake}</p>
-      )}
+      <div className="flex items-baseline gap-2 mt-0.5">
+        <p className="text-sm font-bold" style={{ color: COLORS.deepWater }}>
+          {formatPrice(product.price)}
+        </p>
+        {product.timeToMake && (
+          <p className="text-[10px] tracking-wider uppercase" style={{ color: COLORS.midDepth }}>
+            · {product.timeToMake}
+          </p>
+        )}
+      </div>
     </motion.div>
   );
 }
 
-// ===========================================
-// PRODUCT CAROUSEL COMPONENT
-// ===========================================
+// =============== Carousel ===============
+
 function ProductCarousel({ title, subtitle, products, onProductClick, formatPrice }) {
   const scrollRef = useRef(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(true);
 
   const checkScroll = () => {
     const el = scrollRef.current;
     if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 0);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+    setCanPrev(el.scrollLeft > 5);
+    setCanNext(el.scrollLeft < el.scrollWidth - el.clientWidth - 5);
   };
 
   useEffect(() => {
     checkScroll();
     const el = scrollRef.current;
-    if (el) el.addEventListener('scroll', checkScroll);
-    return () => el?.removeEventListener('scroll', checkScroll);
+    if (el) el.addEventListener('scroll', checkScroll, { passive: true });
+    window.addEventListener('resize', checkScroll);
+    return () => {
+      if (el) el.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('resize', checkScroll);
+    };
   }, []);
 
   const scroll = (direction) => {
     const el = scrollRef.current;
-    if (!el) return;
-    el.scrollBy({ left: direction * 220, behavior: 'smooth' });
+    if (el) el.scrollBy({ left: direction * 220, behavior: 'smooth' });
   };
 
   return (
-    <div className="mb-10">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-1">
-        <h3 className="text-lg font-bold" style={{ color: LUNA.deepWater }}>
-          {title}
-        </h3>
-        <div className="flex gap-1">
+    <div className="mb-10 md:mb-14">
+      <div className="flex items-end justify-between mb-2">
+        <div>
+          <p className="text-[11px] tracking-[0.25em] font-semibold mb-1" style={{ color: COLORS.pink }}>
+            COLLECTION
+          </p>
+          <h3 className="text-2xl md:text-3xl font-bold" style={{ color: COLORS.deepWater }}>
+            <WhisperText text={title} wordDelay={0.14} duration={0.9} />
+          </h3>
+          {subtitle && <p className="text-xs text-gray-500 mt-1.5">{subtitle}</p>}
+        </div>
+        <div className="flex gap-2">
           <button
+            type="button"
             onClick={() => scroll(-1)}
-            disabled={!canScrollLeft}
-            className="w-7 h-7 rounded-full flex items-center justify-center transition-all"
-            style={{ 
-              backgroundColor: canScrollLeft ? `${LUNA.surfaceTeal}20` : 'transparent',
-              color: canScrollLeft ? LUNA.surfaceTeal : '#D1D5DB',
-            }}
+            disabled={!canPrev}
+            aria-label="Previous"
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed bg-white border hover:scale-105"
+            style={{ borderColor: `${COLORS.surfaceTeal}40`, color: COLORS.deepWater }}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M15 18l-6-6 6-6"/>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+              <path d="M15 18l-6-6 6-6" />
             </svg>
           </button>
           <button
+            type="button"
             onClick={() => scroll(1)}
-            disabled={!canScrollRight}
-            className="w-7 h-7 rounded-full flex items-center justify-center transition-all"
-            style={{ 
-              backgroundColor: canScrollRight ? `${LUNA.surfaceTeal}20` : 'transparent',
-              color: canScrollRight ? LUNA.surfaceTeal : '#D1D5DB',
-            }}
+            disabled={!canNext}
+            aria-label="Next"
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed bg-white border hover:scale-105"
+            style={{ borderColor: `${COLORS.surfaceTeal}40`, color: COLORS.deepWater }}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 18l6-6-6-6"/>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+              <path d="M9 18l6-6-6-6" />
             </svg>
           </button>
         </div>
       </div>
-      {subtitle && (
-        <p className="text-xs text-gray-500 mb-4">{subtitle}</p>
-      )}
 
-      {/* Scrollable Row */}
-      <div 
+      <div
         ref={scrollRef}
         className="flex gap-4 overflow-x-auto pb-2 hide-scrollbar"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {products.map((product) => (
+        {products.map((p, i) => (
           <ProductCard
-            key={product.id}
-            product={product}
-            onClick={onProductClick}
+            key={p.id}
+            product={p}
+            index={i}
+            onPreview={() => onProductClick(p)}
             formatPrice={formatPrice}
           />
         ))}
@@ -459,495 +454,439 @@ function ProductCarousel({ title, subtitle, products, onProductClick, formatPric
   );
 }
 
-// ===========================================
-// PRODUCT MODAL COMPONENT
-// ===========================================
+// =============== Modal ===============
+
 function ProductModal({ product, isOpen, onClose, formatPrice }) {
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [stock, setStock] = useState({ loading: true, quantity: null, available: true });
-  const { addToCart, openCart } = useCart();
+  const [imgIdx, setImgIdx] = useState(0);
 
-  // Fetch stock when product changes
   useEffect(() => {
-    if (!product?.shopifyVariantId || product.comingSoon) {
-      setStock({ loading: false, quantity: null, available: true });
-      return;
-    }
-
-    const fetchStock = async () => {
-      try {
-        const response = await fetch(`/api/stock?ids=${product.shopifyVariantId}&_t=${Date.now()}`, { cache: 'no-store' });
-        const data = await response.json();
-        if (data[product.shopifyVariantId]) {
-          setStock({
-            loading: false,
-            quantity: data[product.shopifyVariantId].quantity,
-            available: data[product.shopifyVariantId].available && !data[product.shopifyVariantId].outOfStock,
-          });
-        } else {
-          setStock({ loading: false, quantity: null, available: true });
-        }
-      } catch (error) {
-        setStock({ loading: false, quantity: null, available: true });
-      }
-    };
-    fetchStock();
-  }, [product?.shopifyVariantId, product?.comingSoon]);
+    if (product) setImgIdx(0);
+  }, [product?.id]);
 
   if (!product) return null;
-
-  const isComingSoon = product.comingSoon;
-  const isOutOfStock = !stock.available || stock.quantity === 0;
-  const isLowStock = stock.quantity !== null && stock.quantity > 0 && stock.quantity <= 3;
-
-  const handleAddToCart = () => {
-    if (isComingSoon || isOutOfStock) return;
-    addToCart({
-      id: product.shopifyVariantId,
-      shopifyVariantId: product.shopifyVariantId,
-      name: product.name,
-      price: product.price,
-      image: product.images[0],
-      type: 'product',
-    });
-    if (openCart) openCart();
-    onClose();
-  };
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
-          {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          onClick={onClose}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ backgroundColor: 'rgba(2, 56, 89, 0.45)', backdropFilter: 'blur(6px)' }}
+        >
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
-            onClick={onClose}
-          />
-
-          {/* Modal Container */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="bg-white rounded-2xl overflow-hidden max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl relative"
-              onClick={(e) => e.stopPropagation()}
+            initial={{ scale: 0.94, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.94, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto relative grid md:grid-cols-2"
+          >
+            <button
+              type="button"
+              onClick={onClose}
+              className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-100"
+              style={{ color: COLORS.deepWater }}
+              aria-label="Close"
             >
-              {/* Close Button */}
-              <button
-                onClick={onClose}
-                className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center hover:bg-white transition-colors shadow-md"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2">
-                  <path d="M18 6L6 18M6 6l12 12"/>
-                </svg>
-              </button>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
 
-              {/* Image */}
-              <div className="aspect-square overflow-hidden relative">
-                <img 
-                  src={product.images[activeImageIndex]} 
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
-                
-                {/* Coming Soon Overlay on Modal */}
-                {isComingSoon && (
-                  <div 
-                    className="absolute inset-0 flex items-center justify-center"
-                    style={{ backgroundColor: `${LUNA.abyss}60` }}
+            <div className="aspect-square md:aspect-auto md:min-h-[440px] relative" style={{ backgroundColor: COLORS.cream }}>
+              <img src={product.images[imgIdx]} alt={product.name} className="w-full h-full object-cover" />
+              {product.images.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setImgIdx((i) => (i - 1 + product.images.length) % product.images.length)}
+                    aria-label="Previous"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/95 flex items-center justify-center shadow"
                   >
-                    <span className="text-white text-sm font-medium px-6 py-2 rounded-full border border-white/50 backdrop-blur-sm">
-                      Coming Soon
-                    </span>
-                  </div>
-                )}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={COLORS.deepWater} strokeWidth="2.2">
+                      <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setImgIdx((i) => (i + 1) % product.images.length)}
+                    aria-label="Next"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/95 flex items-center justify-center shadow"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={COLORS.deepWater} strokeWidth="2.2">
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
+                </>
+              )}
+            </div>
 
-                {/* Image dots */}
-                {product.images.length > 1 && (
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                    {product.images.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setActiveImageIndex(index)}
-                        className="w-2 h-2 rounded-full transition-all"
-                        style={{ 
-                          backgroundColor: activeImageIndex === index ? LUNA.surfaceTeal : 'rgba(255,255,255,0.8)',
-                          boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
+            <div className="p-6 md:p-7 flex flex-col">
+              <p
+                className="text-[11px] tracking-[0.25em] font-semibold mb-2"
+                style={{ color: COLORS.pink }}
+              >
+                {product.category.toUpperCase()}
+              </p>
+              <h3 className="text-2xl md:text-3xl font-bold leading-tight mb-3" style={{ color: COLORS.deepWater }}>
+                {product.name}
+              </h3>
+              <div className="flex items-baseline gap-3 mb-5">
+                <span className="text-2xl font-bold" style={{ color: COLORS.deepWater }}>
+                  {formatPrice(product.price)}
+                </span>
+                <span className="text-xs tracking-wider uppercase" style={{ color: COLORS.midDepth }}>
+                  · {product.timeToMake}
+                </span>
               </div>
 
-              {/* Content */}
-              <div className="p-6">
-                <h2 className="text-2xl font-bold mb-1" style={{ color: LUNA.deepWater }}>
-                  {product.name}
-                </h2>
-                <p className="text-xs text-gray-400 mb-3">{product.category} • {product.timeToMake}</p>
-                
-                <p className="text-xl font-bold mb-4" style={{ color: LUNA.surfaceTeal }}>
-                  {formatPrice(product.price)}
-                </p>
+              <p className="text-sm text-gray-600 leading-relaxed mb-5">{product.description}</p>
 
-                <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                  {product.description}
-                </p>
+              <ul className="space-y-1.5 mb-5">
+                {product.productInfo.map((info, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                    <span style={{ color: COLORS.surfaceTeal }}>•</span>
+                    {info}
+                  </li>
+                ))}
+              </ul>
 
-                {/* Uses */}
-                {product.uses && (
-                  <div className="mb-4">
-                    <p className="text-xs font-semibold text-gray-500 mb-1">PERFECT FOR</p>
-                    <p className="text-sm text-gray-600">{product.uses}</p>
-                  </div>
-                )}
+              {product.uses && (
+                <p className="text-xs text-gray-500 italic mb-6">Perfect for: {product.uses}</p>
+              )}
 
-                {/* Product Info */}
-                <div className="mb-6">
-                  <p className="text-xs font-semibold text-gray-500 mb-2">PRODUCT INFO</p>
-                  <ul className="space-y-1">
-                    {product.productInfo.map((info, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                        <span style={{ color: LUNA.surfaceTeal }}>•</span>
-                        {info}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Stock Badge */}
-                {!isComingSoon && !stock.loading && isLowStock && (
-                  <div className="flex justify-end mb-2">
-                    <StockBadge quantity={stock.quantity} />
-                  </div>
-                )}
-
-                {/* Button */}
-                {isComingSoon ? (
+              {product.comingSoon ? (
+                <div className="mt-auto">
                   <div
-                    className="w-full py-3 rounded-xl text-sm font-semibold text-center"
-                    style={{
-                      backgroundColor: `${LUNA.deepWater}10`,
-                      color: LUNA.midDepth,
-                      border: `2px solid ${LUNA.midDepth}30`,
-                    }}
+                    className="rounded-xl p-4 mb-3 border"
+                    style={{ borderColor: `${COLORS.pink}30`, backgroundColor: `${COLORS.pink}10` }}
                   >
-                    Coming Soon
+                    <p className="text-xs tracking-[0.25em] font-bold uppercase mb-1" style={{ color: COLORS.pink }}>
+                      Coming Soon
+                    </p>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Each piece is handmade — there&rsquo;s a queue. Sign up below to be notified
+                      the moment {product.name} is available.
+                    </p>
                   </div>
-                ) : stock.loading ? (
-                  <button
-                    disabled
-                    className="w-full py-3 rounded-xl text-sm font-semibold opacity-50"
-                    style={{
-                      backgroundColor: `${LUNA.deepWater}10`,
-                      color: LUNA.midDepth,
-                      border: `2px solid ${LUNA.midDepth}30`,
-                    }}
-                  >
-                    Checking availability...
-                  </button>
-                ) : isOutOfStock ? (
                   <NotifyMeButton
                     productName={product.name}
                     variantId={product.shopifyVariantId}
                     variant="light"
                   />
-                ) : (
-                  <motion.button
-                    onClick={handleAddToCart}
-                    className="w-full py-3 rounded-xl text-sm font-semibold transition-all"
-                    style={{
-                      background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                      color: 'white',
-                    }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Add to Cart
-                  </motion.button>
-                )}
-              </div>
-            </motion.div>
-          </div>
-        </>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  className="mt-auto w-full py-3 rounded-xl text-sm font-bold tracking-[0.15em] uppercase"
+                  style={{ backgroundColor: COLORS.deepWater, color: 'white' }}
+                >
+                  Add to Cart
+                </button>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
       )}
     </AnimatePresence>
   );
 }
 
-// ===========================================
-// MAIN PAGE COMPONENT
-// ===========================================
-export default function CrochetCreaturesPage() {
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const { formatPrice } = useCurrency();
+// =============== Main page ===============
 
-  // Group products by category
-  const nudibranchs = ALL_PRODUCTS.filter(p => p.category === 'Nudibranchs');
-  const fishFriends = ALL_PRODUCTS.filter(p => p.category === 'Fish & Friends');
-  const babyMobiles = ALL_PRODUCTS.filter(p => p.category === 'Baby Mobiles');
+export default function CrochetCreaturesPage() {
+  const { formatPrice } = useCurrency();
+  const { addToCart, openCart } = useCart();
+  const { addToRecentlyViewed } = useRecentlyViewed();
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  useEffect(() => {
+    addToRecentlyViewed({
+      id: SLUG,
+      name: 'Crochet Creatures',
+      slug: SLUG,
+      image: '/images/products/Crochet-nudis-hero-image.png',
+      price: 17.5,
+      type: 'product',
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const nudibranchs = ALL_PRODUCTS.filter((p) => p.category === 'Nudibranchs');
+  const fishFriends = ALL_PRODUCTS.filter((p) => p.category === 'Fish & Friends');
+  const babyMobiles = ALL_PRODUCTS.filter((p) => p.category === 'Baby Mobiles');
+
+  const openSideCart = () => {
+    if (openCart) openCart();
+  };
 
   return (
-    <div 
-      className="min-h-screen w-full bg-white"
-      style={{ fontFamily: 'Montserrat, sans-serif' }}
+    <div
+      className="min-h-screen w-full"
+      style={{ fontFamily: 'Montserrat, sans-serif', backgroundColor: COLORS.cream }}
     >
-      {/* ==================== HEADER - SHARED COMPONENT ==================== */}
-      <Header variant="light" currentPath="/products/crochet-creatures" />
+      <Header variant="light" currentPath={`/products/${SLUG}`} />
 
-      {/* ==================== SPLIT PANEL LAYOUT ==================== */}
-      <div className="flex flex-col lg:flex-row pt-14 lg:h-[calc(100vh-56px)]">
+      {/* ============ HERO ============ */}
+      <section className="bg-white px-4 md:px-8 pt-10 md:pt-14 pb-12 md:pb-14">
+        <div className="max-w-4xl mx-auto text-center">
+          <p
+            className="text-sm tracking-[0.28em] font-semibold mb-4"
+            style={{ color: COLORS.pink }}
+          >
+            HANDMADE WITH LOVE
+          </p>
+          <h1
+            className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] mb-5"
+            style={{
+              background: `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, ${COLORS.pink} 50%, ${COLORS.deepWater} 100%)`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            <WhisperText text="Crochet creatures." wordDelay={0.22} duration={1.3} />
+          </h1>
+          <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+            From a single artist&rsquo;s hands to your dive bag, your desk or the nursery — original
+            crochet sea creatures, designed and made one stitch at a time.
+          </p>
+        </div>
+      </section>
 
-        {/* LEFT PANEL - Story (scrollable independently) */}
-        <div
-          className="w-full lg:w-1/2 overflow-y-auto lg:h-full"
-          style={{
-            background: `linear-gradient(180deg, white 0%, ${LUNA.highlight}08 100%)`,
-          }}
-        >
-          <div className="p-8 lg:p-12">
-            {/* Hero */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-12"
-            >
-              <span className="text-xs font-medium tracking-widest" style={{ color: LUNA.surfaceTeal }}>
-                HANDCRAFTED WITH LOVE
-              </span>
-              <h1 
-                className="text-3xl lg:text-4xl font-bold mt-2 mb-4"
-                style={{ color: LUNA.deepWater }}
+      {/* ============ STORY SECTIONS — alternating image/text rows ============ */}
+      <section className="bg-white px-4 md:px-8 py-14 md:py-20">
+        <div className="max-w-6xl mx-auto space-y-16 md:space-y-24">
+          {STORY_SECTIONS.map((story, idx) => {
+            const imageLeft = idx % 2 === 0;
+            return (
+              <div
+                key={story.id}
+                className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center"
               >
-                Crochet Creatures
-              </h1>
-              <p className="text-gray-600 leading-relaxed">
-                Unique, handmade marine animals crafted with care. Each piece takes hours of dedicated 
-                handwork – and no two are ever exactly alike.
-              </p>
-            </motion.div>
-
-            {/* Story Sections */}
-            {STORY_SECTIONS.map((section, index) => {
-              // Alternate image alignment: even = right, odd = left
-              const imageAlign = index % 2 === 0 ? 'right' : 'left';
-
-              return (
                 <motion.div
-                  key={section.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-100px' }}
-                  transition={{ duration: 0.6, ease: 'easeOut' }}
-                  className="mb-10 overflow-hidden"
+                  initial={{ opacity: 0, x: imageLeft ? -24 : 24 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                  className={`aspect-[4/3] rounded-2xl overflow-hidden ${
+                    imageLeft ? 'order-1' : 'md:order-2 order-1'
+                  }`}
+                  style={{ backgroundColor: COLORS.cream }}
                 >
-                  {section.title && (
-                    <motion.h2
-                      initial={{ opacity: 0, x: imageAlign === 'left' ? 20 : -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: 0.1 }}
-                      className="text-xl font-bold mb-3"
-                      style={{ color: LUNA.deepWater }}
-                    >
-                      {section.title}
-                    </motion.h2>
-                  )}
-
-                  <div className="text-gray-600 text-sm leading-relaxed">
-                    {/* Floating image with text wrap */}
-                    {section.image && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                        className={`${imageAlign === 'right' ? 'float-right ml-4' : 'float-left mr-4'} mb-3 w-1/2 max-w-[270px]`}
-                      >
-                        <div
-                          className="rounded-xl overflow-hidden"
-                          style={{ boxShadow: `0 8px 30px ${LUNA.deepWater}15` }}
-                        >
-                          <img
-                            src={section.image}
-                            alt={section.title || 'Story image'}
-                            className="w-full h-auto"
-                          />
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {/* Text content */}
-                    {section.content.split('\n\n').map((paragraph, pIndex) => (
-                      <p key={pIndex} className={pIndex > 0 ? 'mt-4' : ''}>
-                        {paragraph}
-                      </p>
-                    ))}
-
-                    {/* Clear float */}
-                    <div className="clear-both" />
-                  </div>
-
-                  {section.cta && (
-                    <motion.a
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: 0.3 }}
-                      href={`mailto:${section.cta.email}`}
-                      className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all hover:scale-105"
-                      style={{
-                        background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                        color: 'white',
-                      }}
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                        <polyline points="22,6 12,13 2,6"/>
-                      </svg>
-                      {section.cta.text}
-                    </motion.a>
-                  )}
+                  <img
+                    src={story.image}
+                    alt={story.title}
+                    className="w-full h-full object-cover"
+                  />
                 </motion.div>
-              );
-            })}
-
-            {/* Time Summary */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="p-6 rounded-xl mb-8"
-              style={{
-                background: `linear-gradient(135deg, ${LUNA.highlight}20 0%, ${LUNA.surfaceTeal}10 100%)`,
-                border: `1px solid ${LUNA.highlight}40`,
-              }}
-            >
-              <h3 className="font-bold mb-2" style={{ color: LUNA.deepWater }}>
-                Time & Love In Every Stitch
-              </h3>
-              <p className="text-sm text-gray-600 mb-4 italic">
-                Our pricing reflects the time, skill, and love poured into each handmade piece.
-              </p>
-              <div className="space-y-2 text-sm text-gray-600">
-                <p className="flex items-center gap-2">
-                  <span style={{ color: LUNA.surfaceTeal }}>•</span>
-                  <strong>Nudibranchs:</strong> 3-4 hours each
-                </p>
-                <p className="flex items-center gap-2">
-                  <span style={{ color: LUNA.surfaceTeal }}>•</span>
-                  <strong>Fish & Friends:</strong> 5-6 hours each
-                </p>
-                <p className="flex items-center gap-2">
-                  <span style={{ color: LUNA.surfaceTeal }}>•</span>
-                  <strong>Baby Mobiles:</strong> 15-20 hours each
-                </p>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                  className={imageLeft ? 'order-2' : 'md:order-1 order-2'}
+                >
+                  <p
+                    className="text-xs tracking-[0.3em] font-semibold mb-3"
+                    style={{ color: COLORS.pink }}
+                  >
+                    {story.eyebrow}
+                  </p>
+                  <h2
+                    className="text-3xl md:text-4xl font-bold leading-tight mb-4"
+                    style={{ color: COLORS.deepWater }}
+                  >
+                    <WhisperText text={story.title} wordDelay={0.16} duration={1.0} />
+                  </h2>
+                  <p className="text-gray-600 text-base leading-relaxed">{story.content}</p>
+                </motion.div>
               </div>
-            </motion.div>
-          </div>
+            );
+          })}
         </div>
+      </section>
 
-        {/* RIGHT PANEL - Products (scrollable independently) */}
-        <div
-          className="w-full lg:w-1/2 overflow-y-auto lg:h-full border-l border-gray-100"
-          style={{ background: 'white' }}
-        >
-          <div className="p-6 lg:p-8">
-            {/* Coming Soon Banner */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mb-8 p-4 rounded-xl text-center"
-              style={{ 
-                background: `linear-gradient(135deg, ${LUNA.highlight}15 0%, ${LUNA.surfaceTeal}15 100%)`,
-                border: `1px solid ${LUNA.highlight}30`,
-              }}
-            >
-              <span className="text-xl mb-1 block">🧶</span>
-              <h3 className="font-semibold text-sm mb-1" style={{ color: LUNA.deepWater }}>
-                Products Coming Soon
-              </h3>
-              <p className="text-gray-500 text-xs">
-                Our creatures are being lovingly crafted. Check back soon or request a custom order!
-              </p>
-            </motion.div>
+      {/* ============ COMING SOON BANNER ============ */}
+      <section className="px-4 md:px-8 py-8" style={{ backgroundColor: COLORS.cream }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <p
+            className="text-[10px] tracking-[0.35em] font-bold uppercase mb-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
+            style={{ backgroundColor: `${COLORS.pink}1F`, color: COLORS.pink }}
+          >
+            <span>•</span>
+            All creatures coming soon
+            <span>•</span>
+          </p>
+          <p className="text-sm md:text-base text-gray-600 max-w-xl mx-auto">
+            Each one is made by hand, so there&rsquo;s a queue. Tap any creature to be notified the
+            moment it&rsquo;s ready.
+          </p>
+        </div>
+      </section>
 
-            {/* Nudibranchs Carousel */}
-            <ProductCarousel
-              title="Nudibranchs"
-              subtitle={`${formatPrice(17.50)} each • Perfect as keychains, bag charms, desk companions`}
-              products={nudibranchs}
-              onProductClick={(product) => setSelectedProduct(product)}
-              formatPrice={formatPrice}
-            />
+      {/* ============ PRODUCT CAROUSELS ============ */}
+      <section className="px-4 md:px-8 py-12 md:py-16" style={{ backgroundColor: COLORS.cream }}>
+        <div className="max-w-6xl mx-auto">
+          <ProductCarousel
+            title="Nudibranchs."
+            subtitle="Tiny, vivid, and full of character — the reef's most photogenic critters."
+            products={nudibranchs}
+            onProductClick={setSelectedProduct}
+            formatPrice={formatPrice}
+          />
+          <ProductCarousel
+            title="Fish & Friends."
+            subtitle="Frogfish, seahorses, boxfish and more — quirky companions for every diver."
+            products={fishFriends}
+            onProductClick={setSelectedProduct}
+            formatPrice={formatPrice}
+          />
+          <ProductCarousel
+            title="Baby Mobiles."
+            subtitle="A handcrafted underwater world for the smallest ocean lovers."
+            products={babyMobiles}
+            onProductClick={setSelectedProduct}
+            formatPrice={formatPrice}
+          />
+        </div>
+      </section>
 
-            {/* Fish & Friends Carousel */}
-            <ProductCarousel
-              title="Fish & Friends"
-              subtitle={`${formatPrice(25)} each • Perfect as keychains, bag charms, rearview mirror hangers`}
-              products={fishFriends}
-              onProductClick={(product) => setSelectedProduct(product)}
-              formatPrice={formatPrice}
-            />
+      {/* ============ CUSTOM ORDER CALLOUT ============ */}
+      <section className="bg-white px-4 md:px-8 py-14 md:py-20">
+        <div className="max-w-3xl mx-auto text-center">
+          <p
+            className="text-sm tracking-[0.28em] font-semibold mb-3"
+            style={{ color: COLORS.pink }}
+          >
+            CUSTOM ORDERS WELCOME
+          </p>
+          <h2
+            className="text-3xl md:text-5xl font-bold leading-tight mb-4"
+            style={{
+              background: `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, ${COLORS.pink} 50%, ${COLORS.deepWater} 100%)`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            <WhisperText text="Got a creature in mind?" wordDelay={0.16} duration={1.1} />
+          </h2>
+          <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-6 max-w-2xl mx-auto">
+            Specific colours to match your dive gear? A bespoke mobile for a baby shower? A creature
+            we haven&rsquo;t made yet? Drop us a line and we&rsquo;ll create something special together.
+          </p>
+          <a
+            href="mailto:info@otterseas.com?subject=Custom%20Crochet%20Order"
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-bold tracking-[0.15em] uppercase transition-all hover:scale-105"
+            style={{
+              backgroundColor: COLORS.deepWater,
+              color: 'white',
+              boxShadow: `0 8px 24px ${COLORS.deepWater}30`,
+            }}
+          >
+            Request Custom Order
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </section>
 
-            {/* Baby Mobiles */}
-            <ProductCarousel
-              title="Baby Mobiles"
-              subtitle={`${formatPrice(105)} each • Perfect as nursery centrepiece, baby shower gift`}
-              products={babyMobiles}
-              onProductClick={(product) => setSelectedProduct(product)}
-              formatPrice={formatPrice}
-            />
-
-            {/* Custom Orders CTA */}
-            <div 
-              className="mt-8 p-6 rounded-xl text-center"
-              style={{ 
-                background: `linear-gradient(135deg, ${LUNA.highlight}15 0%, ${LUNA.surfaceTeal}10 100%)`,
-                border: `1px solid ${LUNA.highlight}30`,
-              }}
-            >
-              <h3 className="font-bold mb-2" style={{ color: LUNA.deepWater }}>
-                Looking for Something Special?
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                We love creating custom pieces – your favourite creature, specific colours, or a bespoke mobile.
-              </p>
-              <a
-                href="mailto:info@otterseas.com"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all hover:scale-105"
-                style={{
-                  background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.midDepth} 100%)`,
-                  color: 'white',
-                }}
+      {/* ============ CUSTOMERS ALSO LOVE ============ */}
+      <section className="px-4 md:px-8 py-14 md:py-16" style={{ backgroundColor: COLORS.cream }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8 md:mb-10">
+            <p className="text-base md:text-lg tracking-[0.3em] font-semibold" style={{ color: COLORS.surfaceTeal }}>
+              CUSTOMERS ALSO LOVE
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+            {RELATED_PRODUCTS.map((rp, i) => (
+              <motion.div
+                key={rp.href}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-2xl overflow-hidden border transition-shadow hover:shadow-md flex flex-col"
+                style={{ borderColor: '#E6EEF2' }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
-                </svg>
-                Request Custom Order
-              </a>
-            </div>
+                <Link href={rp.href} className="block overflow-hidden" style={{ backgroundColor: COLORS.cream }}>
+                  <div className="aspect-square overflow-hidden">
+                    <img
+                      src={rp.image}
+                      alt={rp.name}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                  </div>
+                </Link>
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="font-semibold text-base leading-tight mb-1" style={{ color: COLORS.deepWater }}>
+                    {rp.name}
+                  </h3>
+                  <p className="text-sm font-medium mb-3" style={{ color: COLORS.surfaceTeal }}>
+                    {rp.priceLabel}
+                  </p>
+                  <div className="mt-auto flex flex-col gap-2">
+                    <Link
+                      href={rp.href}
+                      className="block text-center text-[11px] font-semibold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors"
+                      style={{ backgroundColor: COLORS.deepWater, color: 'white' }}
+                    >
+                      View Product
+                    </Link>
+                    {rp.quickAdd ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          addToCart({
+                            id: rp.quickAdd.shopifyVariantId,
+                            shopifyVariantId: rp.quickAdd.shopifyVariantId,
+                            name: rp.quickAdd.name,
+                            price: rp.quickAdd.price,
+                            image: rp.image,
+                            type: 'product',
+                          });
+                          openSideCart();
+                        }}
+                        className="block w-full text-center text-[11px] font-semibold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors border hover:bg-gray-50"
+                        style={{ borderColor: COLORS.surfaceTeal, color: COLORS.surfaceTeal, backgroundColor: 'white' }}
+                      >
+                        Add to Cart
+                      </button>
+                    ) : (
+                      <Link
+                        href={rp.href}
+                        className="block text-center text-[11px] font-semibold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors border hover:bg-gray-50"
+                        style={{ borderColor: COLORS.surfaceTeal, color: COLORS.surfaceTeal, backgroundColor: 'white' }}
+                      >
+                        Choose Options
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Product Modal */}
-      <ProductModal 
+      <RecentlyViewed excludeId={SLUG} variant="light" />
+      <Footer />
+
+      <ProductModal
         product={selectedProduct}
         isOpen={!!selectedProduct}
         onClose={() => setSelectedProduct(null)}
         formatPrice={formatPrice}
       />
-
-      {/* ==================== FOOTER - SHARED COMPONENT ==================== */}
-      <Footer compact />
     </div>
   );
 }
