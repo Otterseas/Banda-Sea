@@ -470,12 +470,6 @@ export default function FunStickersPage() {
       {/* ============ HERO ============ */}
       <section className="bg-white px-4 md:px-8 pt-10 md:pt-14 pb-12 md:pb-14">
         <div className="max-w-4xl mx-auto text-center">
-          <p
-            className="text-sm tracking-[0.28em] font-semibold mb-4"
-            style={{ color: COLORS.pink }}
-          >
-            JUST FOR FUN
-          </p>
           <h1
             className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] mb-5"
             style={{
@@ -485,7 +479,7 @@ export default function FunStickersPage() {
               backgroundClip: 'text',
             }}
           >
-            <WhisperText text="Don't take diving too seriously." wordDelay={0.18} duration={1.3} />
+            <WhisperText text="Just for fun." wordDelay={0.22} duration={1.3} />
           </h1>
           <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-2 max-w-2xl mx-auto">
             Lighthearted vinyl stickers for divers who like to laugh at the surface. Slap them on
