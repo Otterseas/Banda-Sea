@@ -130,83 +130,119 @@ const ABOUT_SECTIONS = [
 
 // ===========================================
 // LOADING SCREEN COMPONENT
+// Cream backdrop, logo at centre, brand gradient ring sweeping round it
+// as a progress arc. Tagline fades in below.
 // ===========================================
 function LoadingScreen({ onComplete }) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setProgress(prev => {
+      setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer);
-          setTimeout(onComplete, 500);
+          setTimeout(onComplete, 450);
           return 100;
         }
-        return prev + 2;
+        return prev + 2.5;
       });
-    }, 30);
+    }, 28);
 
     return () => clearInterval(timer);
   }, [onComplete]);
 
+  // Ring geometry — radius 64 inside a 160-square viewBox, leaves room
+  // for a 3px stroke without clipping at the corners.
+  const RADIUS = 64;
+  const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+  const dashOffset = CIRCUMFERENCE * (1 - progress / 100);
+
   return (
     <motion.div
       className="fixed inset-0 z-50 flex flex-col items-center justify-center"
-      style={{
-        background: `linear-gradient(180deg, ${LUNA.midDepth} 0%, ${LUNA.deepWater} 50%, ${LUNA.abyss} 100%)`
-      }}
+      style={{ backgroundColor: '#FAF7F1' }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Ocean waves animation */}
-      <div className="absolute inset-0 overflow-hidden">
-        <svg 
-          className="absolute bottom-0 w-full"
-          viewBox="0 0 1440 320" 
-          preserveAspectRatio="none"
-          style={{ height: `${progress}%`, transition: 'height 0.3s ease-out' }}
+      <motion.div
+        className="relative flex items-center justify-center"
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        style={{ width: 160, height: 160 }}
+      >
+        {/* Gradient ring — rotated -90deg so the arc starts at the top. */}
+        <svg
+          width="160"
+          height="160"
+          viewBox="0 0 160 160"
+          className="absolute inset-0 -rotate-90"
         >
           <defs>
-            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor={LUNA.highlight} stopOpacity="0.3" />
-              <stop offset="100%" stopColor={LUNA.surfaceTeal} stopOpacity="0.1" />
+            <linearGradient id="otterseas-ring" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor={LUNA.surfaceTeal} />
+              <stop offset="50%" stopColor="#FF6B9D" />
+              <stop offset="100%" stopColor={LUNA.deepWater} />
             </linearGradient>
           </defs>
-          <motion.path
-            fill="url(#waveGradient)"
-            animate={{
-              d: [
-                "M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,208C960,213,1056,171,1152,149.3C1248,128,1344,128,1392,128L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
-                "M0,192L48,181.3C96,171,192,149,288,160C384,171,480,213,576,218.7C672,224,768,192,864,176C960,160,1056,160,1152,176C1248,192,1344,224,1392,240L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
-              ]
-            }}
-            transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+
+          {/* Faint track */}
+          <circle
+            cx="80"
+            cy="80"
+            r={RADIUS}
+            fill="none"
+            stroke="#E6EEF2"
+            strokeWidth="3"
+          />
+
+          {/* Animated progress arc */}
+          <circle
+            cx="80"
+            cy="80"
+            r={RADIUS}
+            fill="none"
+            stroke="url(#otterseas-ring)"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeDasharray={CIRCUMFERENCE}
+            strokeDashoffset={dashOffset}
+            style={{ transition: 'stroke-dashoffset 0.28s ease-out' }}
           />
         </svg>
-      </div>
 
-      {/* Logo and text */}
-      <motion.div
-        className="relative z-10 flex flex-col items-center"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-      >
+        {/* Logo nested inside the ring */}
         <img
           src="/logo.png"
           alt="Otterseas"
-          className="w-20 h-20 rounded-2xl mb-4"
+          className="w-20 h-20 rounded-2xl object-contain"
         />
-        <h1 className="text-3xl font-bold text-white mb-2">Otterseas</h1>
-        <p className="text-white/60 text-sm mb-8">Dive deeper, collect memories</p>
-        
-        {/* Progress bar */}
-        <div className="w-48 h-1 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
-          <motion.div
-            className="h-full rounded-full"
-            style={{ backgroundColor: LUNA.highlight, width: `${progress}%` }}
-          />
-        </div>
+      </motion.div>
+
+      {/* Wordmark + tagline */}
+      <motion.div
+        className="mt-8 flex flex-col items-center"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <h1
+          className="text-2xl md:text-3xl font-extrabold tracking-tight"
+          style={{
+            background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, #FF6B9D 50%, ${LUNA.deepWater} 100%)`,
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}
+        >
+          Otterseas
+        </h1>
+        <p
+          className="text-xs md:text-sm tracking-[0.28em] uppercase mt-2 font-semibold"
+          style={{ color: LUNA.midDepth }}
+        >
+          Dive deeper, collect memories
+        </p>
       </motion.div>
     </motion.div>
   );
