@@ -223,6 +223,11 @@ export default function StickersPage() {
     setSelectedSticker(activeStickers[newIdx]);
   };
 
+  const handleScrollToTabs = () => {
+    const el = document.getElementById('region-tabs');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const handleAddBundle = (bundle) => {
     addToCart({
       id: bundle.shopifyVariantId,
@@ -321,6 +326,26 @@ export default function StickersPage() {
               <span>· 11–20 · {formatPrice(1.75)} each</span>
               <span>· 21+ · {formatPrice(1.25)} each</span>
             </div>
+
+            {/* Scroll-down anchor — jumps to the region tabs below. Matches
+                the cyan → pink → deep-water heading gradient. */}
+            <motion.button
+              type="button"
+              onClick={handleScrollToTabs}
+              aria-label="Jump to region selector"
+              animate={{ y: [0, 5, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+              className="mt-10 inline-flex items-center justify-center w-12 h-12 rounded-full cursor-pointer hover:scale-110 transition-transform"
+              style={{
+                background: `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, #FF6B9D 50%, ${COLORS.deepWater} 100%)`,
+                color: 'white',
+                boxShadow: '0 6px 20px rgba(255, 107, 157, 0.35)',
+              }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </motion.button>
           </div>
 
           {/* Right: rotating globe (faded) */}
@@ -342,7 +367,8 @@ export default function StickersPage() {
             that region (internal scroll handles the longer regions). Mobile
             falls back to a vertical accordion of the same content. */}
       <section
-        className="px-4 md:px-8 pt-10 md:pt-12 pb-12 md:pb-16"
+        id="region-tabs"
+        className="px-4 md:px-8 pt-10 md:pt-12 pb-12 md:pb-16 scroll-mt-4"
         style={{ backgroundColor: COLORS.cream }}
       >
         <div className="max-w-7xl mx-auto">
@@ -409,23 +435,6 @@ export default function StickersPage() {
                     </span>
                   </div>
 
-                  {/* Subtle drop-down chevron on closed panels — hints that
-                      stickers are inside, just below this title strip. */}
-                  <motion.div
-                    aria-hidden="true"
-                    animate={{ y: [0, 3, 0] }}
-                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                    className="absolute bottom-3 left-1/2 -translate-x-1/2 pointer-events-none z-10"
-                    style={{
-                      opacity: isActive ? 0 : 0.55,
-                      transition: 'opacity 500ms ease',
-                      color: 'white',
-                    }}
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M6 9l6 6 6-6" />
-                    </svg>
-                  </motion.div>
 
                   {/* Active region — sticker grid */}
                   <div
