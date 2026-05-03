@@ -314,11 +314,15 @@ const STORY_SECTIONS = [
 const GALLERY_IMAGES = [
   '/images/products/Crochet-nudis-table-shot.png',
   '/images/products/Blue-orange-crochet-nudi.jpg',
+  '/images/products/Octopus-crochet.jpg',
   '/images/products/Crochet-nudis-red-purple.png',
+  '/images/products/black-green-nudis-product-shot.png',
   '/images/products/Black-white-crochet-nudi.jpg',
   '/images/products/Crochet-nudis-hero-image.png',
   '/images/products/Purple-nudis-product-shot.png',
+  '/images/products/Crochet-octopus.png',
   '/images/products/Red-purple-nudis.png',
+  '/images/products/black-white-nudis-product-shot.png',
   '/images/products/Crochet-nudis-black-white.png',
 ];
 
@@ -662,9 +666,12 @@ function InfiniteScrollGallery({ images }) {
           100% { transform: translateX(-50%); }
         }
         .crochet-gallery-track {
-          animation: crochet-gallery-scroll 50s linear infinite;
+          animation: crochet-gallery-scroll 70s linear infinite;
+          will-change: transform;
         }
-        .crochet-gallery-track:hover {
+        /* Pause from the wrapper so the mask layer doesn't swallow the
+           hover state away from the animated track. */
+        .crochet-gallery-wrapper:hover .crochet-gallery-track {
           animation-play-state: paused;
         }
         .crochet-gallery-mask {
@@ -679,7 +686,7 @@ function InfiniteScrollGallery({ images }) {
           box-shadow: 0 18px 40px rgba(2, 56, 89, 0.18);
         }
       `}</style>
-      <div className="crochet-gallery-mask w-full overflow-hidden">
+      <div className="crochet-gallery-wrapper crochet-gallery-mask w-full overflow-hidden">
         <div className="crochet-gallery-track flex gap-5 md:gap-6 w-max">
           {duplicated.map((src, i) => (
             <div
@@ -818,6 +825,44 @@ export default function CrochetCreaturesPage() {
         </div>
       </section>
 
+      {/* ============ COMING SOON BANNER ============ */}
+      <section className="px-4 md:px-8 py-8" style={{ backgroundColor: COLORS.cream }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <p
+            className="text-[10px] tracking-[0.35em] font-bold uppercase mb-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
+            style={{ backgroundColor: `${COLORS.pink}1F`, color: COLORS.pink }}
+          >
+            <span>•</span>
+            All creatures coming soon
+            <span>•</span>
+          </p>
+          <p className="text-sm md:text-base text-gray-600 max-w-xl mx-auto">
+            Each one is made by hand, so there&rsquo;s a queue. Tap any creature to be notified the
+            moment it&rsquo;s ready.
+          </p>
+        </div>
+      </section>
+
+      {/* ============ PRODUCT CAROUSELS ============ */}
+      <section className="px-4 md:px-8 py-12 md:py-16" style={{ backgroundColor: COLORS.cream }}>
+        <div className="max-w-6xl mx-auto">
+          <ProductCarousel
+            title="Nudibranchs."
+            subtitle="Tiny, vivid, and full of character — the reef's most photogenic critters."
+            products={nudibranchs}
+            onProductClick={setSelectedProduct}
+            formatPrice={formatPrice}
+          />
+          <ProductCarousel
+            title="Fish & Friends."
+            subtitle="Frogfish, seahorses, boxfish and more — quirky companions for every diver."
+            products={fishFriends}
+            onProductClick={setSelectedProduct}
+            formatPrice={formatPrice}
+          />
+        </div>
+      </section>
+
       {/* ============ CUSTOM ORDER CALLOUT + INFINITE-SCROLL GALLERY ============ */}
       <section className="py-14 md:py-20" style={{ backgroundColor: COLORS.cream }}>
         <div className="max-w-3xl mx-auto px-4 md:px-8 text-center mb-10 md:mb-14">
@@ -862,44 +907,6 @@ export default function CrochetCreaturesPage() {
 
         {/* Full-width infinite-scroll photo band */}
         <InfiniteScrollGallery images={GALLERY_IMAGES} />
-      </section>
-
-      {/* ============ COMING SOON BANNER ============ */}
-      <section className="px-4 md:px-8 py-8" style={{ backgroundColor: COLORS.cream }}>
-        <div className="max-w-4xl mx-auto text-center">
-          <p
-            className="text-[10px] tracking-[0.35em] font-bold uppercase mb-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
-            style={{ backgroundColor: `${COLORS.pink}1F`, color: COLORS.pink }}
-          >
-            <span>•</span>
-            All creatures coming soon
-            <span>•</span>
-          </p>
-          <p className="text-sm md:text-base text-gray-600 max-w-xl mx-auto">
-            Each one is made by hand, so there&rsquo;s a queue. Tap any creature to be notified the
-            moment it&rsquo;s ready.
-          </p>
-        </div>
-      </section>
-
-      {/* ============ PRODUCT CAROUSELS ============ */}
-      <section className="px-4 md:px-8 py-12 md:py-16" style={{ backgroundColor: COLORS.cream }}>
-        <div className="max-w-6xl mx-auto">
-          <ProductCarousel
-            title="Nudibranchs."
-            subtitle="Tiny, vivid, and full of character — the reef's most photogenic critters."
-            products={nudibranchs}
-            onProductClick={setSelectedProduct}
-            formatPrice={formatPrice}
-          />
-          <ProductCarousel
-            title="Fish & Friends."
-            subtitle="Frogfish, seahorses, boxfish and more — quirky companions for every diver."
-            products={fishFriends}
-            onProductClick={setSelectedProduct}
-            formatPrice={formatPrice}
-          />
-        </div>
       </section>
 
       {/* ============ CUSTOMERS ALSO LOVE ============ */}
