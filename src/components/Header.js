@@ -18,8 +18,8 @@ const COLORS = {
 };
 
 // Tight labels so all the categories fit along the top nav at lg+ widths.
+// Home is omitted — the logo in the corner already routes to '/'.
 const NAV_LINKS = [
-  { href: '/', label: 'Home' },
   { href: '/products', label: 'Shop' },
   { href: '/stickers', label: 'Stickers' },
   { href: '/products/surface-tank', label: 'Surface Tank' },
@@ -30,9 +30,13 @@ const NAV_LINKS = [
   { href: '/blogs', label: 'Blog' },
 ];
 
-// Mobile hamburger menu shows the same items + 'Policies' (which is too long to
-// keep in the desktop bar without crowding it).
-const MOBILE_MENU_LINKS = [...NAV_LINKS, { href: '/policies', label: 'Policies' }];
+// Mobile hamburger menu adds Home back (handy on small screens) plus Policies
+// (too long to keep in the desktop bar without crowding it).
+const MOBILE_MENU_LINKS = [
+  { href: '/', label: 'Home' },
+  ...NAV_LINKS,
+  { href: '/policies', label: 'Policies' },
+];
 
 // Tracks the active nav link and renders a glowing 'limelight' bar above it
 // that slides between items. The bar + its trapezoidal glow use the cyan →
