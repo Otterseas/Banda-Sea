@@ -303,10 +303,18 @@ const STORY_SECTIONS = [
     ),
     image: '/images/products/Octopus-crochet-web.jpg',
     aspect: 'aspect-[4/3]',
-    // Source is portrait (1600×2133); cropped to 4:3 landscape, only vertical
-    // positioning has effect. 22% keeps the octopus head + body + tentacles
-    // framed, which sit roughly 15-55% down the original image.
-    objectPosition: '50% 22%',
+    // Portrait source (1600×2133). object-cover would fill width and only
+    // crop vertically, so 'left justified' has no visible effect. We render
+    // the image at 250% height, anchored top-left, then nudge it up so the
+    // visible 4:3 window covers source x=0-71% and y=15-55% — the octopus
+    // head, body and tentacles, with the right side of the frame trimmed.
+    imageStyle: {
+      position: 'absolute',
+      width: 'auto',
+      height: '250%',
+      left: 0,
+      top: '-37.5%',
+    },
   },
 ];
 
@@ -787,17 +795,21 @@ export default function CrochetCreaturesPage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                  className={`${story.aspect || 'aspect-[4/3]'} rounded-2xl overflow-hidden ${
+                  className={`${story.aspect || 'aspect-[4/3]'} rounded-2xl overflow-hidden relative ${
                     imageLeft ? 'order-1' : 'md:order-2 order-1'
                   }`}
                   style={{ backgroundColor: COLORS.cream }}
                 >
-                  <img
-                    src={story.image}
-                    alt={story.title}
-                    className="w-full h-full object-cover"
-                    style={{ objectPosition: story.objectPosition || 'center' }}
-                  />
+                  {story.imageStyle ? (
+                    <img src={story.image} alt={story.title} style={story.imageStyle} />
+                  ) : (
+                    <img
+                      src={story.image}
+                      alt={story.title}
+                      className="w-full h-full object-cover"
+                      style={{ objectPosition: story.objectPosition || 'center' }}
+                    />
+                  )}
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
