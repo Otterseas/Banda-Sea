@@ -302,27 +302,24 @@ const STORY_SECTIONS = [
       </>
     ),
     image: '/images/products/Crochet-octopus.png',
-    // Row 3 uses a square frame to fit the full octopus, with a wider text column.
-    aspect: 'aspect-square',
-    wideText: true,
+    aspect: 'aspect-[4/3]',
+    // Anchor the crop toward center-left / bottom-left so the octopus's
+    // body and tentacles stay framed when the image is cropped to 4:3.
+    objectPosition: '20% 70%',
   },
 ];
 
-// Three product photos for the stacked-cards gallery beside the Custom Orders
-// callout. Hover over the front card to fan them out left/right.
-const GALLERY_CARDS = [
-  {
-    image: '/images/products/Crochet-nudis-table-shot.png',
-    label: 'The Family',
-  },
-  {
-    image: '/images/products/Blue-orange-crochet-nudi.jpg',
-    label: 'Hand-Picked Colours',
-  },
-  {
-    image: '/images/products/Black-white-crochet-nudi.jpg',
-    label: 'No Two Alike',
-  },
+// Photos that scroll in an infinite horizontal band beneath the Custom Orders
+// callout. Order is mixed so adjacent images don't share a colour palette.
+const GALLERY_IMAGES = [
+  '/images/products/Crochet-nudis-table-shot.png',
+  '/images/products/Blue-orange-crochet-nudi.jpg',
+  '/images/products/Crochet-nudis-red-purple.png',
+  '/images/products/Black-white-crochet-nudi.jpg',
+  '/images/products/Crochet-nudis-hero-image.png',
+  '/images/products/Purple-nudis-product-shot.png',
+  '/images/products/Red-purple-nudis.png',
+  '/images/products/Crochet-nudis-black-white.png',
 ];
 
 const RELATED_PRODUCTS = [
@@ -650,85 +647,56 @@ function ProductModal({ product, isOpen, onClose, formatPrice }) {
   );
 }
 
-// =============== Stacked-cards gallery ===============
-// Three product photos stacked. Hovering the front card fans the back two
-// out left and right with a slight rotation. Front card stays in place.
-function StackedCardsGallery({ cards }) {
-  const [hovering, setHovering] = useState(false);
-  const limited = cards.slice(0, 3);
+// =============== Infinite-scroll gallery ===============
+// Continuously scrolls a row of product photos. The track is doubled so the
+// loop wraps seamlessly at -50% translation. Edges fade via mask-image so
+// images don't pop on/off against the cream background.
+function InfiniteScrollGallery({ images }) {
+  const duplicated = [...images, ...images];
 
   return (
-    <div className="relative w-full flex items-center justify-center min-h-[420px] md:min-h-[460px]">
-      <div
-        className="relative"
-        style={{ width: 320, height: 400 }}
-        onMouseEnter={() => setHovering(true)}
-        onMouseLeave={() => setHovering(false)}
-      >
-        {limited.map((card, i) => {
-          const isFront = i === 0;
-          let xOffset = 0;
-          let rotation = 0;
-          if (i === 1) {
-            xOffset = -42;
-            rotation = -5;
-          } else if (i === 2) {
-            xOffset = 42;
-            rotation = 5;
-          }
-          return (
-            <motion.div
-              key={card.image}
-              className="absolute inset-0"
-              initial={{ x: 0, rotate: 0 }}
-              animate={{
-                x: hovering ? xOffset : 0,
-                rotate: hovering ? rotation : 0,
-              }}
-              transition={{
-                duration: 0.4,
-                ease: 'easeInOut',
-                delay: hovering ? i * 0.08 : 0,
-                type: 'spring',
-                stiffness: 220,
-                damping: 22,
-              }}
-              style={{ zIndex: isFront ? 10 : 5 - i }}
+    <div className="w-full">
+      <style>{`
+        @keyframes crochet-gallery-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .crochet-gallery-track {
+          animation: crochet-gallery-scroll 50s linear infinite;
+        }
+        .crochet-gallery-track:hover {
+          animation-play-state: paused;
+        }
+        .crochet-gallery-mask {
+          -webkit-mask: linear-gradient(90deg, transparent 0%, black 7%, black 93%, transparent 100%);
+          mask: linear-gradient(90deg, transparent 0%, black 7%, black 93%, transparent 100%);
+        }
+        .crochet-gallery-card {
+          transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .crochet-gallery-card:hover {
+          transform: translateY(-4px) scale(1.02);
+          box-shadow: 0 18px 40px rgba(2, 56, 89, 0.18);
+        }
+      `}</style>
+      <div className="crochet-gallery-mask w-full overflow-hidden">
+        <div className="crochet-gallery-track flex gap-5 md:gap-6 w-max">
+          {duplicated.map((src, i) => (
+            <div
+              key={i}
+              className="crochet-gallery-card flex-shrink-0 w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-2xl overflow-hidden bg-white border shadow-md"
+              style={{ borderColor: '#E6EEF2' }}
             >
-              <div
-                className="w-full h-full overflow-hidden bg-white rounded-2xl shadow-lg border"
-                style={{
-                  borderColor: '#E6EEF2',
-                  boxShadow: isFront
-                    ? '0 16px 40px rgba(2, 56, 89, 0.18)'
-                    : '0 8px 24px rgba(2, 56, 89, 0.12)',
-                }}
-              >
-                <div
-                  className="relative h-72 rounded-xl overflow-hidden mx-2 mt-2"
-                  style={{ backgroundColor: COLORS.cream }}
-                >
-                  <img
-                    src={card.image}
-                    alt={card.label}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="px-4 py-4">
-                  <p
-                    className="text-[10px] tracking-[0.25em] font-bold uppercase"
-                    style={{ color: COLORS.pink }}
-                  >
-                    {card.label}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Hover to flip through the family.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
+              <img
+                src={src}
+                alt=""
+                className="w-full h-full object-cover"
+                loading="lazy"
+                draggable={false}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -801,15 +769,10 @@ export default function CrochetCreaturesPage() {
         <div className="max-w-6xl mx-auto space-y-16 md:space-y-24">
           {STORY_SECTIONS.map((story, idx) => {
             const imageLeft = idx % 2 === 0;
-            // Row 3 uses a wider text column + tighter image column so the
-            // square octopus shot can show in full without cropping.
-            const gridCols = story.wideText
-              ? 'md:grid-cols-[2fr_3fr]'
-              : 'md:grid-cols-2';
             return (
               <div
                 key={story.id}
-                className={`grid ${gridCols} gap-10 lg:gap-14 items-center`}
+                className="grid md:grid-cols-2 gap-10 lg:gap-14 items-center"
               >
                 <motion.div
                   initial={{ opacity: 0, x: imageLeft ? -24 : 24 }}
@@ -824,10 +787,8 @@ export default function CrochetCreaturesPage() {
                   <img
                     src={story.image}
                     alt={story.title}
-                    className="w-full h-full"
-                    style={{
-                      objectFit: story.aspect === 'aspect-square' ? 'contain' : 'cover',
-                    }}
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: story.objectPosition || 'center' }}
                   />
                 </motion.div>
                 <motion.div
@@ -857,53 +818,50 @@ export default function CrochetCreaturesPage() {
         </div>
       </section>
 
-      {/* ============ STACKED-CARDS GALLERY + CUSTOM ORDER CALLOUT ============ */}
-      <section className="px-4 md:px-8 py-14 md:py-20" style={{ backgroundColor: COLORS.cream }}>
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Left — stacked cards (hover to fan out) */}
-          <StackedCardsGallery cards={GALLERY_CARDS} />
-
-          {/* Right — custom order callout */}
-          <div>
-            <p
-              className="text-xs tracking-[0.3em] font-semibold mb-3"
-              style={{ color: COLORS.pink }}
-            >
-              CUSTOM ORDERS WELCOME
-            </p>
-            <h2
-              className="text-3xl md:text-4xl font-bold leading-tight mb-4"
-              style={{
-                background: `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, ${COLORS.pink} 50%, ${COLORS.deepWater} 100%)`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              <WhisperText text="Got a creature in mind?" wordDelay={0.16} duration={1.0} />
-            </h2>
-            <p className="text-gray-600 text-base leading-relaxed mb-6 max-w-md">
-              Specific colours to match your <Highlight>dive gear</Highlight>? A
-              bespoke piece for a <Highlight>baby shower</Highlight>? A creature
-              we haven&rsquo;t made yet? Drop us a line and we&rsquo;ll create
-              <Highlight> something special</Highlight> together.
-            </p>
-            <a
-              href="mailto:info@otterseas.com?subject=Custom%20Crochet%20Order"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold tracking-[0.15em] uppercase transition-all hover:scale-105"
-              style={{
-                backgroundColor: COLORS.deepWater,
-                color: 'white',
-                boxShadow: `0 6px 20px ${COLORS.deepWater}30`,
-              }}
-            >
-              Request Custom Order
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
+      {/* ============ CUSTOM ORDER CALLOUT + INFINITE-SCROLL GALLERY ============ */}
+      <section className="py-14 md:py-20" style={{ backgroundColor: COLORS.cream }}>
+        <div className="max-w-3xl mx-auto px-4 md:px-8 text-center mb-10 md:mb-14">
+          <p
+            className="text-xs tracking-[0.3em] font-semibold mb-3"
+            style={{ color: COLORS.pink }}
+          >
+            CUSTOM ORDERS WELCOME
+          </p>
+          <h2
+            className="text-3xl md:text-4xl font-bold leading-tight mb-4"
+            style={{
+              background: `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, ${COLORS.pink} 50%, ${COLORS.deepWater} 100%)`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            <WhisperText text="Got a creature in mind?" wordDelay={0.16} duration={1.0} />
+          </h2>
+          <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-7 max-w-xl mx-auto">
+            Specific colours to match your <Highlight>dive gear</Highlight>? A
+            bespoke piece for a <Highlight>baby shower</Highlight>? A creature
+            we haven&rsquo;t made yet? Drop us a line and we&rsquo;ll create
+            <Highlight> something special</Highlight> together.
+          </p>
+          <a
+            href="mailto:info@otterseas.com?subject=Custom%20Crochet%20Order"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold tracking-[0.15em] uppercase transition-all hover:scale-105"
+            style={{
+              backgroundColor: COLORS.deepWater,
+              color: 'white',
+              boxShadow: `0 6px 20px ${COLORS.deepWater}30`,
+            }}
+          >
+            Request Custom Order
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
         </div>
+
+        {/* Full-width infinite-scroll photo band */}
+        <InfiniteScrollGallery images={GALLERY_IMAGES} />
       </section>
 
       {/* ============ COMING SOON BANNER ============ */}
