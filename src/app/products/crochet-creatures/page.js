@@ -301,7 +301,7 @@ const STORY_SECTIONS = [
         small, personal reminder of the dives that meant the most.
       </>
     ),
-    image: '/images/products/Crochet-octopus.png',
+    image: '/images/products/Octopus-crochet.jpg',
     aspect: 'aspect-[4/3]',
     // Anchor the crop toward center-left / bottom-left so the octopus's
     // body and tentacles stay framed when the image is cropped to 4:3.
