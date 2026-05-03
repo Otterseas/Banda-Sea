@@ -209,7 +209,10 @@ export default function StickersPage() {
         return next;
       });
     }, 300);
-    addToCart({ ...sticker, type: 'location-sticker', price: BASE_PRICE });
+    addToCart(
+      { ...sticker, type: 'location-sticker', price: BASE_PRICE },
+      { openDrawer: false }
+    );
   };
 
   const handleOpenPreview = (sticker) => setSelectedSticker(sticker);
@@ -505,11 +508,11 @@ export default function StickersPage() {
                             )}
                             {quantity > 0 && !outOfStock && (
                               <span
-                                className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold z-10"
+                                className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold z-20"
                                 style={{
                                   backgroundColor: COLORS.surfaceTeal,
                                   color: 'white',
-                                  boxShadow: `0 2px 6px ${COLORS.surfaceTeal}50`,
+                                  boxShadow: `0 2px 6px ${COLORS.surfaceTeal}50, 0 0 0 2px white`,
                                 }}
                               >
                                 {quantity}
