@@ -609,28 +609,30 @@ export default function CartDrawer() {
                         </div>
                       </div>
 
-                      {/* Upsell Product Tabs - Multiple smaller cards (only in-stock items) */}
+                      {/* Upsell Product Tabs — 2-up on narrow phones (each
+                          card stays readable), 3-up at sm+. Cards above the
+                          first two flow onto a second row at small sizes. */}
                       {availableUpsells.length > 0 && (
-                      <div className="mt-2 flex gap-2">
+                      <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-2">
                         {availableUpsells.map((product) => (
                           <div
                             key={product.id}
-                            className="flex-1 p-2 rounded-lg flex flex-col items-center text-center bg-white border"
+                            className="p-2 rounded-lg flex flex-col items-center text-center bg-white border"
                             style={{ borderColor: LUNA.border }}
                           >
                             {product.image && (
                               <div
-                                className="w-10 h-10 rounded-lg overflow-hidden mb-1"
+                                className="w-11 h-11 rounded-lg overflow-hidden mb-1.5"
                                 style={{ backgroundColor: LUNA.cream }}
                               >
                                 <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                               </div>
                             )}
-                            <p className="text-[10px] font-semibold truncate w-full" style={{ color: LUNA.deepWater }}>{product.name}</p>
-                            <p style={{ color: LUNA.pink }} className="text-[10px] font-bold mb-1">{formatPrice(product.price)}</p>
+                            <p className="text-[11px] font-semibold truncate w-full" style={{ color: LUNA.deepWater }}>{product.name}</p>
+                            <p style={{ color: LUNA.pink }} className="text-[11px] font-bold mb-1.5">{formatPrice(product.price)}</p>
                             <button
                               onClick={() => addToCart(product)}
-                              className="w-full py-1 rounded text-[9px] font-bold tracking-wide uppercase transition-all hover:scale-105"
+                              className="w-full py-1.5 rounded text-[10px] font-bold tracking-wide uppercase transition-all hover:scale-105"
                               style={{
                                 backgroundColor: LUNA.deepWater,
                                 color: 'white',
