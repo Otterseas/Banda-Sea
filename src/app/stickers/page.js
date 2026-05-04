@@ -244,44 +244,41 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice, updateQuantit
           })}
         </div>
 
-        {/* Tier markers — clearly differentiated when reached. Reached tiers
-            get a solid pink fill + white text + glow; unreached stays muted. */}
+        {/* Tier markers — when reached, the box keeps its white fill and
+            visible text but gets a cyan->pink gradient border + soft glow.
+            Unreached tiers stay on a quiet white card with a faint border. */}
         <div className="grid grid-cols-3 gap-2 md:gap-3 mt-4">
           {TIERS.map((tier) => {
             const reached = count >= tier.at;
             return (
               <div
                 key={tier.at}
-                className="rounded-lg px-3 py-2 flex flex-col items-center text-center transition-all border"
+                className="rounded-lg p-[1.5px] transition-all"
                 style={{
                   background: reached
                     ? `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, ${COLORS.pink} 100%)`
-                    : 'white',
-                  borderColor: reached ? COLORS.pink : '#E6EEF2',
-                  boxShadow: reached ? `0 6px 20px ${COLORS.pink}40` : 'none',
+                    : '#E6EEF2',
+                  boxShadow: reached ? `0 6px 20px ${COLORS.pink}30` : 'none',
                   transform: reached ? 'scale(1.02)' : 'none',
                 }}
               >
-                <p
-                  className="text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-1"
-                  style={{ color: reached ? 'white' : COLORS.midDepth }}
-                >
-                  {reached && (
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20 6L9 17l-5-5" />
-                    </svg>
-                  )}
-                  {tier.at}+
-                </p>
-                <p className="text-sm font-bold mt-0.5" style={{ color: reached ? 'white' : COLORS.deepWater }}>
-                  {formatPrice(tier.price)}
-                  <span
-                    className="text-[10px] font-medium"
-                    style={{ color: reached ? 'rgba(255,255,255,0.85)' : '#9CA3AF' }}
+                <div className="rounded-[6px] bg-white px-3 py-2 flex flex-col items-center text-center">
+                  <p
+                    className="text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-1"
+                    style={{ color: reached ? COLORS.pink : COLORS.midDepth }}
                   >
-                    {' '}/each
-                  </span>
-                </p>
+                    {reached && (
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 6L9 17l-5-5" />
+                      </svg>
+                    )}
+                    {tier.at}+
+                  </p>
+                  <p className="text-sm font-bold mt-0.5" style={{ color: COLORS.deepWater }}>
+                    {formatPrice(tier.price)}
+                    <span className="text-[10px] font-medium text-gray-500"> /each</span>
+                  </p>
+                </div>
               </div>
             );
           })}
