@@ -34,8 +34,10 @@ export function CartProvider({ children }) {
     localStorage.setItem('otterseas-cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // Add item to cart
-  const addToCart = useCallback((item) => {
+  // Add item to cart. Pass { openDrawer: false } to skip the auto-open
+  // (used for location stickers where users typically click many in a row).
+  const addToCart = useCallback((item, options = {}) => {
+    const { openDrawer = true } = options;
     const id = item.id || item.shopifyVariantId;
     setCartItems(prev => ({
       ...prev,
@@ -44,7 +46,7 @@ export function CartProvider({ children }) {
         quantity: (prev[id]?.quantity || 0) + 1,
       },
     }));
-    setIsDrawerOpen(true);
+    if (openDrawer) setIsDrawerOpen(true);
   }, []);
 
   // Remove item from cart

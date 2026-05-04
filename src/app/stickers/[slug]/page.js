@@ -5,6 +5,8 @@ import { getStickerBySlug, BASE_PRICE, STICKERS, REGIONS } from '@/data/stickers
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import RecentlyViewed from '@/components/RecentlyViewed';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -359,46 +361,8 @@ export default function StickerPage() {
         </div>
       </section>
 
-      {/* ==================== FOOTER ==================== */}
-      <footer 
-        className="w-full py-12 px-8"
-        style={{ backgroundColor: LUNA.abyss }}
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <img
-                src="/logo.png"
-                alt="Otterseas"
-                className="w-10 h-10 rounded-xl object-contain"
-              />
-              <span className="text-lg font-medium text-white">Otterseas</span>
-            </div>
-            
-            <nav className="flex flex-wrap justify-center gap-6">
-              <Link href="/products" className="text-white/50 hover:text-white text-sm transition-colors">
-                All Products
-              </Link>
-              <Link href="/products/surface-tank" className="text-white/50 hover:text-white text-sm transition-colors">
-                Surface Tank
-              </Link>
-              <Link href="/products/dive-journal" className="text-white/50 hover:text-white text-sm transition-colors">
-                Dive Journal
-              </Link>
-              <Link href="/products/logbook-booster-pack" className="text-white/50 hover:text-white text-sm transition-colors">
-                Booster Pack
-              </Link>
-              <Link href="/stickers" className="text-white/50 hover:text-white text-sm transition-colors">
-                Stickers
-              </Link>
-            </nav>
-
-            <p className="text-white/40 text-sm">
-              © 2025 Otterseas
-            </p>
-          </div>
-        </div>
-      </footer>
+      <RecentlyViewed variant="light" />
+      <Footer />
     </div>
   );
 }

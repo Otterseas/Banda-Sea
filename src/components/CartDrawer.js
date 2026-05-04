@@ -9,13 +9,16 @@ import { usePathname } from 'next/navigation';
 import { SHOPIFY_CHECKOUT_URL } from '@/config/urls';
 import { TrustBadgesInline } from './TrustBadges';
 
-// Luna color palette
+// Luna color palette + the lighter accents used across the UI overhaul.
 const LUNA = {
   highlight: '#A7EBF2',
   surfaceTeal: '#54ACBF',
   midDepth: '#26658C',
   deepWater: '#023859',
   abyss: '#011C40',
+  pink: '#FF6B9D',
+  cream: '#FAF7F1',
+  border: '#E6EEF2',
 };
 
 // ===========================================
@@ -261,30 +264,32 @@ export default function CartDrawer() {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 20 }}
-        className="flex items-center gap-3 p-3 rounded-xl"
-        style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
+        className="flex items-center gap-2.5 p-2.5 rounded-xl border"
+        style={{ backgroundColor: 'white', borderColor: LUNA.border }}
       >
         {/* Image */}
-        <div 
-          className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0"
-          style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+        <div
+          className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0"
+          style={{ backgroundColor: LUNA.cream }}
         >
           {image && (
             <img src={image} alt={item.name} className="w-full h-full object-cover" />
           )}
         </div>
-        
+
         {/* Info */}
         <div className="flex-1 min-w-0">
-          <p className="text-white text-sm font-medium truncate">{item.name}</p>
+          <p className="text-sm font-semibold truncate" style={{ color: LUNA.deepWater }}>
+            {item.name}
+          </p>
           {item.region && (
-            <p className="text-white/40 text-xs">{item.region}</p>
+            <p className="text-xs" style={{ color: LUNA.midDepth }}>{item.region}</p>
           )}
-          <p className="text-white/60 text-xs">
+          <p className="text-xs text-gray-500">
             {formatPrice(item.price || 0)} each
           </p>
         </div>
-        
+
         {/* Quantity Controls */}
         {showQuantityControls && (
           <div className="flex items-center gap-1">
@@ -297,7 +302,7 @@ export default function CartDrawer() {
                 <path d="M5 12h14"/>
               </svg>
             </button>
-            <span className="w-8 text-center text-white text-sm font-bold">
+            <span className="w-8 text-center text-sm font-bold" style={{ color: LUNA.deepWater }}>
               {item.quantity}
             </span>
             <button
@@ -325,9 +330,10 @@ export default function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeDrawer}
-            className="fixed inset-0 bg-black/50 z-40"
+            className="fixed inset-0 z-40"
+            style={{ backgroundColor: 'rgba(2, 56, 89, 0.35)', backdropFilter: 'blur(4px)' }}
           />
-          
+
           {/* Drawer */}
           <motion.div
             initial={{ x: '100%' }}
@@ -335,58 +341,65 @@ export default function CartDrawer() {
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className="fixed right-0 top-0 h-full w-full max-w-md z-50 flex flex-col"
-            style={{ background: `linear-gradient(180deg, ${LUNA.abyss} 0%, ${LUNA.deepWater} 100%)` }}
+            style={{ background: `linear-gradient(180deg, white 0%, ${LUNA.cream} 100%)` }}
           >
             {/* Header */}
-            <div 
-              className="flex-shrink-0 p-6 flex items-center justify-between"
-              style={{ borderBottom: `1px solid ${LUNA.highlight}20` }}
+            <div
+              className="flex-shrink-0 px-5 py-4 flex items-center justify-between"
+              style={{ borderBottom: `1px solid ${LUNA.border}` }}
             >
               <div>
-                <h2 className="text-xl font-light text-white" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                <p
+                  className="text-[10px] tracking-[0.28em] font-bold uppercase"
+                  style={{ color: LUNA.pink }}
+                >
                   Your Collection
-                </h2>
-                <p className="text-white/50 text-sm mt-1">
-                  {totalItems} item{totalItems !== 1 ? 's' : ''} selected
                 </p>
+                <h2
+                  className="text-lg font-bold mt-0.5"
+                  style={{ color: LUNA.deepWater, fontFamily: 'Montserrat, sans-serif' }}
+                >
+                  {totalItems} item{totalItems !== 1 ? 's' : ''} selected
+                </h2>
               </div>
-              
+
               <button
                 onClick={closeDrawer}
-                className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-white/10"
+                className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-gray-100"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={LUNA.deepWater} strokeWidth="2">
                   <path d="M18 6L6 18M6 6l12 12"/>
                 </svg>
               </button>
             </div>
 
-            {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-4" style={{ scrollbarWidth: 'none' }}>
+            {/* Cart Items — min-height so the items list stays visible even
+                when the footer features expand (tier card, shipping bar, upsells). */}
+            <div className="flex-1 overflow-y-auto p-4 min-h-[180px]" style={{ scrollbarWidth: 'none' }}>
               {totalItems === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center px-4">
-                  <div 
+                  <div
                     className="w-20 h-20 rounded-2xl flex items-center justify-center mb-4"
-                    style={{ 
-                      background: `linear-gradient(135deg, ${LUNA.highlight}20 0%, ${LUNA.highlight}10 100%)`,
-                      border: `2px dashed ${LUNA.highlight}30`
+                    style={{
+                      background: `linear-gradient(135deg, ${LUNA.pink}1A 0%, ${LUNA.surfaceTeal}1A 100%)`,
+                      border: `2px dashed ${LUNA.pink}50`
                     }}
                   >
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={LUNA.highlight} strokeWidth="1.5" opacity="0.7">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={LUNA.pink} strokeWidth="1.5" opacity="0.85">
                       <circle cx="12" cy="12" r="10"/>
                       <path d="M8 12h8M12 8v8"/>
                     </svg>
                   </div>
-                  <p className="text-white/50 text-sm font-medium">Your collection is empty</p>
-                  <p className="text-white/30 text-xs mt-1">Add items to get started</p>
+                  <p className="text-sm font-semibold" style={{ color: LUNA.deepWater }}>Your collection is empty</p>
+                  <p className="text-xs text-gray-500 mt-1">Add items to get started</p>
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {/* Products Section */}
                   {products.length > 0 && (
                     <div>
-                      <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider mb-3">Products</h3>
-                      <div className="space-y-2">
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.18em] mb-2" style={{ color: LUNA.midDepth }}>Products</h3>
+                      <div className="space-y-1.5">
                         {products.map(item => renderCartItem(item))}
                       </div>
                     </div>
@@ -395,13 +408,16 @@ export default function CartDrawer() {
                   {/* Location Stickers Section */}
                   {locationStickers.length > 0 && (
                     <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider">Location Stickers</h3>
-                        <span className="text-xs px-2 py-1 rounded-full" style={{ backgroundColor: `${LUNA.surfaceTeal}30`, color: LUNA.highlight }}>
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-[10px] font-bold uppercase tracking-[0.18em]" style={{ color: LUNA.midDepth }}>Location Stickers</h3>
+                        <span
+                          className="text-[10px] font-bold tracking-wide px-2 py-0.5 rounded-full"
+                          style={{ backgroundColor: `${LUNA.pink}1F`, color: LUNA.pink }}
+                        >
                           {locationStickerTier}
                         </span>
                       </div>
-                      <div className="space-y-2">
+                      <div className="space-y-1.5">
                         {locationStickers.map(item => renderCartItem(item))}
                       </div>
                     </div>
@@ -410,8 +426,8 @@ export default function CartDrawer() {
                   {/* Fun Stickers Section */}
                   {funStickers.length > 0 && (
                     <div>
-                      <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider mb-3">Fun Stickers</h3>
-                      <div className="space-y-2">
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.18em] mb-2" style={{ color: LUNA.midDepth }}>Fun Stickers</h3>
+                      <div className="space-y-1.5">
                         {funStickers.map(item => renderCartItem(item))}
                       </div>
                     </div>
@@ -421,128 +437,125 @@ export default function CartDrawer() {
             </div>
 
             {/* Footer */}
-            <div 
-              className="flex-shrink-0 p-4"
-              style={{ 
-                background: `linear-gradient(180deg, transparent 0%, ${LUNA.highlight}10 100%)`,
-                borderTop: `1px solid ${LUNA.highlight}20`
+            <div
+              className="flex-shrink-0 px-4 py-3"
+              style={{
+                background: `linear-gradient(180deg, ${LUNA.cream} 0%, white 100%)`,
+                borderTop: `1px solid ${LUNA.border}`
               }}
             >
-              {/* Location Sticker Pricing Tier Info */}
+              {/* Location Sticker Pricing Tier Info — compact card */}
               {locationStickerCount > 0 && (
-                <div 
-                  className="mb-4 p-4 rounded-xl"
-                  style={{ 
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                <div
+                  className="mb-3 p-2.5 rounded-lg border"
+                  style={{
+                    backgroundColor: 'white',
+                    borderColor: LUNA.border,
                   }}
                 >
-                  <div className="flex justify-between text-xs mb-2">
-                    <span className="text-white/60 font-medium">
-                      {locationStickerCount < minOrder 
-                        ? `Add ${minOrder - locationStickerCount} more stickers to checkout`
+                  <div className="flex justify-between text-[11px] mb-1.5">
+                    <span className="font-medium" style={{ color: LUNA.midDepth }}>
+                      {locationStickerCount < minOrder
+                        ? `Add ${minOrder - locationStickerCount} more to checkout`
                         : locationStickerCount < 10
-                          ? `Add ${10 - locationStickerCount} more for ${formatPrice(1.75)}/each!`
+                          ? `Add ${10 - locationStickerCount} more · ${formatPrice(1.75)}/each!`
                           : locationStickerCount < 15
-                            ? `Add ${15 - locationStickerCount} more for ${formatPrice(1.50)}/each!`
+                            ? `Add ${15 - locationStickerCount} more · ${formatPrice(1.50)}/each!`
                             : '🎉 Best price unlocked!'
                       }
                     </span>
-                    <span className="font-bold" style={{ color: LUNA.highlight }}>
+                    <span className="font-bold" style={{ color: LUNA.pink }}>
                       {formatPrice(locationStickerPricePerItem)}/each
                     </span>
                   </div>
-                  
+
                   {/* Progress Bar - 3 tiers: 5, 10, 15+ */}
-                  <div className="flex gap-1 mb-2">
-                    {/* Tier 1: 0-5 (unlocks £2.00) */}
-                    <div className="flex-1 h-2.5 rounded-full overflow-hidden bg-white/10">
-                      <div 
+                  <div className="flex gap-1 mb-1">
+                    <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
+                      <div
                         className="h-full rounded-full transition-all duration-500"
-                        style={{ 
+                        style={{
                           width: `${Math.min(100, (locationStickerCount / 5) * 100)}%`,
-                          backgroundColor: locationStickerCount >= 5 ? LUNA.midDepth : LUNA.midDepth
+                          backgroundColor: LUNA.midDepth
                         }}
                       />
                     </div>
-                    {/* Tier 2: 5-10 (unlocks £1.75) */}
-                    <div className="flex-1 h-2.5 rounded-full overflow-hidden bg-white/10">
-                      <div 
+                    <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
+                      <div
                         className="h-full rounded-full transition-all duration-500"
-                        style={{ 
+                        style={{
                           width: `${Math.min(100, Math.max(0, (locationStickerCount - 5) / 5) * 100)}%`,
-                          backgroundColor: locationStickerCount >= 10 ? LUNA.surfaceTeal : LUNA.surfaceTeal
+                          backgroundColor: LUNA.surfaceTeal
                         }}
                       />
                     </div>
-                    {/* Tier 3: 10-15+ (unlocks £1.50) */}
-                    <div className="flex-1 h-2.5 rounded-full overflow-hidden bg-white/10">
-                      <div 
+                    <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
+                      <div
                         className="h-full rounded-full transition-all duration-500"
-                        style={{ 
+                        style={{
                           width: `${Math.min(100, Math.max(0, (locationStickerCount - 10) / 5) * 100)}%`,
-                          backgroundColor: locationStickerCount >= 15 ? LUNA.highlight : LUNA.highlight
+                          backgroundColor: LUNA.pink
                         }}
                       />
                     </div>
                   </div>
-                  
-                  {/* Tier labels */}
-                  <div className="flex justify-between text-xs font-medium">
-                    <span className={locationStickerCount >= 5 ? 'text-white/80' : 'text-white/40'}>
-                      5 {locationStickerCount >= 5 && '✓'}
+
+                  <div className="flex justify-between text-[10px] font-semibold">
+                    <span style={{ color: locationStickerCount >= 5 ? LUNA.deepWater : '#9CA3AF' }}>
+                      5 · {formatPrice(2.0)} {locationStickerCount >= 5 && '✓'}
                     </span>
-                    <span className={locationStickerCount >= 10 ? 'text-white/80' : 'text-white/40'}>
-                      10 {locationStickerCount >= 10 && '✓'}
+                    <span style={{ color: locationStickerCount >= 10 ? LUNA.deepWater : '#9CA3AF' }}>
+                      10 · {formatPrice(1.75)} {locationStickerCount >= 10 && '✓'}
                     </span>
-                    <span className={locationStickerCount >= 15 ? 'text-white/80' : 'text-white/40'}>
-                      15+ {locationStickerCount >= 15 && '✓'}
+                    <span style={{ color: locationStickerCount >= 15 ? LUNA.deepWater : '#9CA3AF' }}>
+                      15 · {formatPrice(1.5)} {locationStickerCount >= 15 && '✓'}
                     </span>
-                  </div>
-                  
-                  {/* Price per tier */}
-                  <div className="flex justify-between text-[10px] text-white/30 mt-0.5">
-                    <span>{formatPrice(2.00)}</span>
-                    <span>{formatPrice(1.75)}</span>
-                    <span>{formatPrice(1.50)}</span>
                   </div>
                 </div>
               )}
 
               {/* Price Summary */}
-              <div className="space-y-1 mb-4">
+              <div className="space-y-0.5 mb-2">
                 {productCount > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-white/60">Products ({productCount})</span>
-                    <span className="text-white">{formatPrice(productTotal)}</span>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-500">Products ({productCount})</span>
+                    <span style={{ color: LUNA.deepWater }}>{formatPrice(productTotal)}</span>
                   </div>
                 )}
                 {locationStickerCount > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-white/60">
-                      Location Stickers ({locationStickerCount} × {formatPrice(locationStickerPricePerItem)})
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-500">
+                      Stickers ({locationStickerCount} × {formatPrice(locationStickerPricePerItem)})
                     </span>
-                    <span className="text-white">{formatPrice(locationStickerTotal)}</span>
+                    <span style={{ color: LUNA.deepWater }}>{formatPrice(locationStickerTotal)}</span>
                   </div>
                 )}
                 {funStickerCount > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-white/60">Fun Stickers ({funStickerCount})</span>
-                    <span className="text-white">{formatPrice(funStickerTotal)}</span>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-500">Fun Stickers ({funStickerCount})</span>
+                    <span style={{ color: LUNA.deepWater }}>{formatPrice(funStickerTotal)}</span>
                   </div>
                 )}
                 {locationStickerSavings > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-green-400">Volume Savings ({locationStickerDiscount}% off)</span>
-                    <span className="text-green-400">-{formatPrice(locationStickerSavings)}</span>
+                  <div className="flex justify-between text-xs font-semibold">
+                    <span style={{ color: '#10B981' }}>Volume Savings ({locationStickerDiscount}% off)</span>
+                    <span style={{ color: '#10B981' }}>-{formatPrice(locationStickerSavings)}</span>
                   </div>
                 )}
               </div>
 
               {/* Total */}
               <div className="flex justify-between items-baseline mb-2">
-                <span className="text-white/60 text-sm font-medium">Total</span>
-                <span className="text-3xl font-light" style={{ color: LUNA.highlight }}>
+                <span className="text-xs font-semibold" style={{ color: LUNA.midDepth }}>Total</span>
+                <span
+                  className="text-2xl font-bold"
+                  style={{
+                    background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.pink} 50%, ${LUNA.deepWater} 100%)`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
                   {formatPrice(totalPrice)}
                 </span>
               </div>
@@ -556,58 +569,62 @@ export default function CartDrawer() {
 
                 if (gap <= 0) {
                   return (
-                    <div className="flex items-center gap-2 mb-4 p-2 rounded-lg" style={{ backgroundColor: 'rgba(74, 222, 128, 0.1)' }}>
-                      <span className="text-green-400 text-lg">🚚</span>
-                      <span className="text-green-400 text-xs font-medium">FREE {regionLabel} shipping unlocked!</span>
+                    <div
+                      className="flex items-center gap-2 mb-3 px-2 py-1.5 rounded-lg"
+                      style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)' }}
+                    >
+                      <span className="text-base">🚚</span>
+                      <span className="text-[11px] font-semibold" style={{ color: '#059669' }}>
+                        FREE {regionLabel} shipping unlocked!
+                      </span>
                     </div>
                   );
                 } else if (totalPrice > 0) {
                   return (
-                    <div className="mb-4">
+                    <div className="mb-3">
                       {/* Progress bar */}
-                      <div className="p-2 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)' }}>
+                      <div className="px-2 py-1.5 rounded-lg border" style={{ backgroundColor: LUNA.cream, borderColor: LUNA.border }}>
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-white/50 text-xs">🚚 Free {regionLabel} shipping</span>
-                          <span className="text-white/50 text-xs">{formatPrice(gap)} away</span>
+                          <span className="text-[11px] font-medium" style={{ color: LUNA.midDepth }}>🚚 Free {regionLabel} shipping</span>
+                          <span className="text-[11px] font-semibold" style={{ color: LUNA.deepWater }}>{formatPrice(gap)} away</span>
                         </div>
-                        <div className="h-1.5 rounded-full overflow-hidden bg-white/10">
+                        <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
                           <div
                             className="h-full rounded-full transition-all duration-500"
                             style={{
                               width: `${progress}%`,
-                              backgroundColor: LUNA.surfaceTeal,
+                              background: `linear-gradient(90deg, ${LUNA.surfaceTeal} 0%, ${LUNA.pink} 100%)`,
                             }}
                           />
                         </div>
                       </div>
 
-                      {/* Upsell Product Tabs - Multiple smaller cards (only in-stock items) */}
+                      {/* Upsell Product Tabs — 2-up on narrow phones (each
+                          card stays readable), 3-up at sm+. Cards above the
+                          first two flow onto a second row at small sizes. */}
                       {availableUpsells.length > 0 && (
-                      <div className="mt-2 flex gap-2">
+                      <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-2">
                         {availableUpsells.map((product) => (
                           <div
                             key={product.id}
-                            className="flex-1 p-2 rounded-lg flex flex-col items-center text-center"
-                            style={{
-                              backgroundColor: 'rgba(167, 235, 242, 0.06)',
-                              border: `1px solid ${LUNA.highlight}20`,
-                            }}
+                            className="p-2 rounded-lg flex flex-col items-center text-center bg-white border"
+                            style={{ borderColor: LUNA.border }}
                           >
                             {product.image && (
                               <div
-                                className="w-10 h-10 rounded-lg overflow-hidden mb-1"
-                                style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                                className="w-11 h-11 rounded-lg overflow-hidden mb-1.5"
+                                style={{ backgroundColor: LUNA.cream }}
                               >
                                 <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                               </div>
                             )}
-                            <p className="text-white/70 text-[10px] font-medium truncate w-full">{product.name}</p>
-                            <p style={{ color: LUNA.highlight }} className="text-[10px] font-semibold mb-1">{formatPrice(product.price)}</p>
+                            <p className="text-[11px] font-semibold truncate w-full" style={{ color: LUNA.deepWater }}>{product.name}</p>
+                            <p style={{ color: LUNA.pink }} className="text-[11px] font-bold mb-1.5">{formatPrice(product.price)}</p>
                             <button
                               onClick={() => addToCart(product)}
-                              className="w-full py-1 rounded text-[9px] font-semibold transition-all hover:scale-105"
+                              className="w-full py-1.5 rounded text-[10px] font-bold tracking-wide uppercase transition-all hover:scale-105"
                               style={{
-                                backgroundColor: LUNA.surfaceTeal,
+                                backgroundColor: LUNA.deepWater,
                                 color: 'white',
                               }}
                             >
@@ -624,38 +641,34 @@ export default function CartDrawer() {
               })()}
 
               {/* Trust Badges */}
-              <div className="mb-4">
-                <TrustBadgesInline variant="dark" />
+              <div className="mb-2.5">
+                <TrustBadgesInline variant="light" />
               </div>
 
               {/* Checkout Button */}
               <button
                 onClick={handleCheckout}
                 disabled={!canCheckout}
-                className="w-full py-4 rounded-xl text-sm font-semibold transition-all hover:scale-[1.02]"
-                style={{ 
-                  background: canCheckout 
-                    ? 'rgba(255, 255, 255, 0.1)'
-                    : 'rgba(255, 255, 255, 0.05)',
-                  backdropFilter: 'blur(10px)',
-                  border: canCheckout ? `2px solid ${LUNA.highlight}` : '2px solid rgba(255,255,255,0.1)',
-                  color: canCheckout ? 'white' : 'rgba(255, 255, 255, 0.3)',
+                className="w-full py-3 rounded-xl text-sm font-bold tracking-[0.15em] uppercase transition-all hover:scale-[1.02]"
+                style={{
+                  backgroundColor: canCheckout ? LUNA.deepWater : '#E5E7EB',
+                  color: canCheckout ? 'white' : '#9CA3AF',
                   cursor: canCheckout ? 'pointer' : 'not-allowed',
-                  boxShadow: canCheckout ? `0 0 30px ${LUNA.highlight}30` : 'none'
+                  boxShadow: canCheckout ? `0 8px 24px ${LUNA.deepWater}30` : 'none',
                 }}
               >
-                {canCheckout 
-                  ? 'Proceed to Checkout →' 
+                {canCheckout
+                  ? 'Proceed to Checkout →'
                   : locationStickerCount > 0 && locationStickerCount < minOrder
                     ? `Add ${minOrder - locationStickerCount} more location stickers`
                     : 'Add items to continue'
                 }
               </button>
-              
+
               {/* Discount Code Info */}
               {canCheckout && getDiscountCode() && (
-                <p className="text-center text-white/40 text-xs mt-2">
-                  Discount code {getDiscountCode()} will be applied at checkout
+                <p className="text-center text-[11px] mt-1.5" style={{ color: LUNA.midDepth }}>
+                  Discount <span className="font-bold" style={{ color: LUNA.pink }}>{getDiscountCode()}</span> applied at checkout
                 </p>
               )}
             </div>
