@@ -316,13 +316,13 @@ export default function HomePage() {
                 backgroundClip: 'text',
               }}
             >
-              <WhisperText text="Build your dive story." wordDelay={0.16} duration={2.0} />
+              <WhisperText text="Build your dive story." wordDelay={0.18} duration={1.2} />
             </h1>
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 2.5 }}
+              transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1], delay: 2.0 }}
               className="text-base md:text-lg max-w-2xl mx-auto"
               style={{ color: LUNA.midDepth }}
             >
@@ -369,13 +369,13 @@ export default function HomePage() {
                   backgroundClip: 'text',
                 }}
               >
-                <WhisperText text="About Otterseas" wordDelay={0.12} duration={0.8} />
+                <WhisperText text="About Otterseas" wordDelay={0.18} duration={1.0} />
               </h2>
               <motion.p
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 1.8 }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 1.4 }}
                 className="text-white/60 text-lg max-w-2xl mx-auto"
               >
                 Dive deeper into who we are and what drives us to create products for the diving community.
@@ -391,9 +391,9 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{
-                    duration: 1.2,
+                    duration: 0.9,
                     ease: [0.22, 1, 0.36, 1],
-                    delay: 2.4 + index * 0.4,
+                    delay: 1.8 + index * 0.15,
                   }}
                   className="p-8 rounded-2xl"
                   style={{
@@ -424,9 +424,9 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{
-                duration: 1.2,
+                duration: 0.9,
                 ease: [0.22, 1, 0.36, 1],
-                delay: 4.0,
+                delay: 2.6,
               }}
               className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-12"
             >

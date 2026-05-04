@@ -23,9 +23,9 @@ const COLORS = {
 // six core product pages.
 const NAV_LINKS = [
   { href: '/products/dive-journal', label: 'Dive Journal' },
+  { href: '/products/logbook-booster-pack', label: 'Log Pages' },
   { href: '/products/surface-tank', label: 'Surface Tank' },
   { href: '/stickers', label: 'Stickers' },
-  { href: '/products/logbook-booster-pack', label: 'Log Pages' },
   { href: '/products/fun-stickers', label: 'Fun Stickers' },
   { href: '/products/crochet-creatures', label: 'Crochet' },
 ];

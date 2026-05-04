@@ -766,7 +766,7 @@ export default function CrochetCreaturesPage() {
               backgroundClip: 'text',
             }}
           >
-            <WhisperText text="Crochet creatures." wordDelay={0.22} duration={1.3} />
+            <WhisperText text="Crochet creatures." wordDelay={0.18} duration={1.2} />
           </h1>
           <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
             From a single artist&rsquo;s hands to your dive bag, your desk or the nursery — original

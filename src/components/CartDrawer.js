@@ -264,12 +264,12 @@ export default function CartDrawer() {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 20 }}
-        className="flex items-center gap-3 p-3 rounded-xl border"
+        className="flex items-center gap-2.5 p-2.5 rounded-xl border"
         style={{ backgroundColor: 'white', borderColor: LUNA.border }}
       >
         {/* Image */}
         <div
-          className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0"
+          className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0"
           style={{ backgroundColor: LUNA.cream }}
         >
           {image && (
@@ -345,7 +345,7 @@ export default function CartDrawer() {
           >
             {/* Header */}
             <div
-              className="flex-shrink-0 p-6 flex items-center justify-between"
+              className="flex-shrink-0 px-5 py-4 flex items-center justify-between"
               style={{ borderBottom: `1px solid ${LUNA.border}` }}
             >
               <div>
@@ -356,7 +356,7 @@ export default function CartDrawer() {
                   Your Collection
                 </p>
                 <h2
-                  className="text-xl font-bold mt-0.5"
+                  className="text-lg font-bold mt-0.5"
                   style={{ color: LUNA.deepWater, fontFamily: 'Montserrat, sans-serif' }}
                 >
                   {totalItems} item{totalItems !== 1 ? 's' : ''} selected
@@ -365,16 +365,17 @@ export default function CartDrawer() {
 
               <button
                 onClick={closeDrawer}
-                className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-gray-100"
+                className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-gray-100"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={LUNA.deepWater} strokeWidth="2">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={LUNA.deepWater} strokeWidth="2">
                   <path d="M18 6L6 18M6 6l12 12"/>
                 </svg>
               </button>
             </div>
 
-            {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-4" style={{ scrollbarWidth: 'none' }}>
+            {/* Cart Items — min-height so the items list stays visible even
+                when the footer features expand (tier card, shipping bar, upsells). */}
+            <div className="flex-1 overflow-y-auto p-4 min-h-[180px]" style={{ scrollbarWidth: 'none' }}>
               {totalItems === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center px-4">
                   <div
@@ -393,12 +394,12 @@ export default function CartDrawer() {
                   <p className="text-xs text-gray-500 mt-1">Add items to get started</p>
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {/* Products Section */}
                   {products.length > 0 && (
                     <div>
-                      <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] mb-3" style={{ color: LUNA.midDepth }}>Products</h3>
-                      <div className="space-y-2">
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.18em] mb-2" style={{ color: LUNA.midDepth }}>Products</h3>
+                      <div className="space-y-1.5">
                         {products.map(item => renderCartItem(item))}
                       </div>
                     </div>
@@ -407,16 +408,16 @@ export default function CartDrawer() {
                   {/* Location Stickers Section */}
                   {locationStickers.length > 0 && (
                     <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: LUNA.midDepth }}>Location Stickers</h3>
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-[10px] font-bold uppercase tracking-[0.18em]" style={{ color: LUNA.midDepth }}>Location Stickers</h3>
                         <span
-                          className="text-[10px] font-bold tracking-wide px-2 py-1 rounded-full"
+                          className="text-[10px] font-bold tracking-wide px-2 py-0.5 rounded-full"
                           style={{ backgroundColor: `${LUNA.pink}1F`, color: LUNA.pink }}
                         >
                           {locationStickerTier}
                         </span>
                       </div>
-                      <div className="space-y-2">
+                      <div className="space-y-1.5">
                         {locationStickers.map(item => renderCartItem(item))}
                       </div>
                     </div>
@@ -425,8 +426,8 @@ export default function CartDrawer() {
                   {/* Fun Stickers Section */}
                   {funStickers.length > 0 && (
                     <div>
-                      <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] mb-3" style={{ color: LUNA.midDepth }}>Fun Stickers</h3>
-                      <div className="space-y-2">
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.18em] mb-2" style={{ color: LUNA.midDepth }}>Fun Stickers</h3>
+                      <div className="space-y-1.5">
                         {funStickers.map(item => renderCartItem(item))}
                       </div>
                     </div>
@@ -437,29 +438,29 @@ export default function CartDrawer() {
 
             {/* Footer */}
             <div
-              className="flex-shrink-0 p-4"
+              className="flex-shrink-0 px-4 py-3"
               style={{
                 background: `linear-gradient(180deg, ${LUNA.cream} 0%, white 100%)`,
                 borderTop: `1px solid ${LUNA.border}`
               }}
             >
-              {/* Location Sticker Pricing Tier Info */}
+              {/* Location Sticker Pricing Tier Info — compact card */}
               {locationStickerCount > 0 && (
                 <div
-                  className="mb-4 p-4 rounded-xl border"
+                  className="mb-3 p-2.5 rounded-lg border"
                   style={{
                     backgroundColor: 'white',
                     borderColor: LUNA.border,
                   }}
                 >
-                  <div className="flex justify-between text-xs mb-2">
+                  <div className="flex justify-between text-[11px] mb-1.5">
                     <span className="font-medium" style={{ color: LUNA.midDepth }}>
                       {locationStickerCount < minOrder
-                        ? `Add ${minOrder - locationStickerCount} more stickers to checkout`
+                        ? `Add ${minOrder - locationStickerCount} more to checkout`
                         : locationStickerCount < 10
-                          ? `Add ${10 - locationStickerCount} more for ${formatPrice(1.75)}/each!`
+                          ? `Add ${10 - locationStickerCount} more · ${formatPrice(1.75)}/each!`
                           : locationStickerCount < 15
-                            ? `Add ${15 - locationStickerCount} more for ${formatPrice(1.50)}/each!`
+                            ? `Add ${15 - locationStickerCount} more · ${formatPrice(1.50)}/each!`
                             : '🎉 Best price unlocked!'
                       }
                     </span>
@@ -469,9 +470,8 @@ export default function CartDrawer() {
                   </div>
 
                   {/* Progress Bar - 3 tiers: 5, 10, 15+ */}
-                  <div className="flex gap-1 mb-2">
-                    {/* Tier 1: 0-5 (unlocks £2.00) */}
-                    <div className="flex-1 h-2.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
+                  <div className="flex gap-1 mb-1">
+                    <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
                       <div
                         className="h-full rounded-full transition-all duration-500"
                         style={{
@@ -480,8 +480,7 @@ export default function CartDrawer() {
                         }}
                       />
                     </div>
-                    {/* Tier 2: 5-10 (unlocks £1.75) */}
-                    <div className="flex-1 h-2.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
+                    <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
                       <div
                         className="h-full rounded-full transition-all duration-500"
                         style={{
@@ -490,8 +489,7 @@ export default function CartDrawer() {
                         }}
                       />
                     </div>
-                    {/* Tier 3: 10-15+ (unlocks £1.50) */}
-                    <div className="flex-1 h-2.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
+                    <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
                       <div
                         className="h-full rounded-full transition-all duration-500"
                         style={{
@@ -502,52 +500,44 @@ export default function CartDrawer() {
                     </div>
                   </div>
 
-                  {/* Tier labels */}
-                  <div className="flex justify-between text-xs font-semibold">
+                  <div className="flex justify-between text-[10px] font-semibold">
                     <span style={{ color: locationStickerCount >= 5 ? LUNA.deepWater : '#9CA3AF' }}>
-                      5 {locationStickerCount >= 5 && '✓'}
+                      5 · {formatPrice(2.0)} {locationStickerCount >= 5 && '✓'}
                     </span>
                     <span style={{ color: locationStickerCount >= 10 ? LUNA.deepWater : '#9CA3AF' }}>
-                      10 {locationStickerCount >= 10 && '✓'}
+                      10 · {formatPrice(1.75)} {locationStickerCount >= 10 && '✓'}
                     </span>
                     <span style={{ color: locationStickerCount >= 15 ? LUNA.deepWater : '#9CA3AF' }}>
-                      15+ {locationStickerCount >= 15 && '✓'}
+                      15 · {formatPrice(1.5)} {locationStickerCount >= 15 && '✓'}
                     </span>
-                  </div>
-
-                  {/* Price per tier */}
-                  <div className="flex justify-between text-[10px] text-gray-400 mt-0.5">
-                    <span>{formatPrice(2.00)}</span>
-                    <span>{formatPrice(1.75)}</span>
-                    <span>{formatPrice(1.50)}</span>
                   </div>
                 </div>
               )}
 
               {/* Price Summary */}
-              <div className="space-y-1 mb-4">
+              <div className="space-y-0.5 mb-2">
                 {productCount > 0 && (
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-xs">
                     <span className="text-gray-500">Products ({productCount})</span>
                     <span style={{ color: LUNA.deepWater }}>{formatPrice(productTotal)}</span>
                   </div>
                 )}
                 {locationStickerCount > 0 && (
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-xs">
                     <span className="text-gray-500">
-                      Location Stickers ({locationStickerCount} × {formatPrice(locationStickerPricePerItem)})
+                      Stickers ({locationStickerCount} × {formatPrice(locationStickerPricePerItem)})
                     </span>
                     <span style={{ color: LUNA.deepWater }}>{formatPrice(locationStickerTotal)}</span>
                   </div>
                 )}
                 {funStickerCount > 0 && (
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-xs">
                     <span className="text-gray-500">Fun Stickers ({funStickerCount})</span>
                     <span style={{ color: LUNA.deepWater }}>{formatPrice(funStickerTotal)}</span>
                   </div>
                 )}
                 {locationStickerSavings > 0 && (
-                  <div className="flex justify-between text-sm font-semibold">
+                  <div className="flex justify-between text-xs font-semibold">
                     <span style={{ color: '#10B981' }}>Volume Savings ({locationStickerDiscount}% off)</span>
                     <span style={{ color: '#10B981' }}>-{formatPrice(locationStickerSavings)}</span>
                   </div>
@@ -556,9 +546,9 @@ export default function CartDrawer() {
 
               {/* Total */}
               <div className="flex justify-between items-baseline mb-2">
-                <span className="text-sm font-semibold" style={{ color: LUNA.midDepth }}>Total</span>
+                <span className="text-xs font-semibold" style={{ color: LUNA.midDepth }}>Total</span>
                 <span
-                  className="text-3xl font-bold"
+                  className="text-2xl font-bold"
                   style={{
                     background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, ${LUNA.pink} 50%, ${LUNA.deepWater} 100%)`,
                     WebkitBackgroundClip: 'text',
@@ -580,23 +570,23 @@ export default function CartDrawer() {
                 if (gap <= 0) {
                   return (
                     <div
-                      className="flex items-center gap-2 mb-4 p-2 rounded-lg"
+                      className="flex items-center gap-2 mb-3 px-2 py-1.5 rounded-lg"
                       style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)' }}
                     >
-                      <span className="text-lg">🚚</span>
-                      <span className="text-xs font-semibold" style={{ color: '#059669' }}>
+                      <span className="text-base">🚚</span>
+                      <span className="text-[11px] font-semibold" style={{ color: '#059669' }}>
                         FREE {regionLabel} shipping unlocked!
                       </span>
                     </div>
                   );
                 } else if (totalPrice > 0) {
                   return (
-                    <div className="mb-4">
+                    <div className="mb-3">
                       {/* Progress bar */}
-                      <div className="p-2 rounded-lg border" style={{ backgroundColor: LUNA.cream, borderColor: LUNA.border }}>
+                      <div className="px-2 py-1.5 rounded-lg border" style={{ backgroundColor: LUNA.cream, borderColor: LUNA.border }}>
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-xs font-medium" style={{ color: LUNA.midDepth }}>🚚 Free {regionLabel} shipping</span>
-                          <span className="text-xs font-semibold" style={{ color: LUNA.deepWater }}>{formatPrice(gap)} away</span>
+                          <span className="text-[11px] font-medium" style={{ color: LUNA.midDepth }}>🚚 Free {regionLabel} shipping</span>
+                          <span className="text-[11px] font-semibold" style={{ color: LUNA.deepWater }}>{formatPrice(gap)} away</span>
                         </div>
                         <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
                           <div
@@ -651,7 +641,7 @@ export default function CartDrawer() {
               })()}
 
               {/* Trust Badges */}
-              <div className="mb-4">
+              <div className="mb-2.5">
                 <TrustBadgesInline variant="light" />
               </div>
 
@@ -659,7 +649,7 @@ export default function CartDrawer() {
               <button
                 onClick={handleCheckout}
                 disabled={!canCheckout}
-                className="w-full py-4 rounded-xl text-sm font-bold tracking-[0.15em] uppercase transition-all hover:scale-[1.02]"
+                className="w-full py-3 rounded-xl text-sm font-bold tracking-[0.15em] uppercase transition-all hover:scale-[1.02]"
                 style={{
                   backgroundColor: canCheckout ? LUNA.deepWater : '#E5E7EB',
                   color: canCheckout ? 'white' : '#9CA3AF',
@@ -677,8 +667,8 @@ export default function CartDrawer() {
 
               {/* Discount Code Info */}
               {canCheckout && getDiscountCode() && (
-                <p className="text-center text-xs mt-2" style={{ color: LUNA.midDepth }}>
-                  Discount code <span className="font-bold" style={{ color: LUNA.pink }}>{getDiscountCode()}</span> will be applied at checkout
+                <p className="text-center text-[11px] mt-1.5" style={{ color: LUNA.midDepth }}>
+                  Discount <span className="font-bold" style={{ color: LUNA.pink }}>{getDiscountCode()}</span> applied at checkout
                 </p>
               )}
             </div>

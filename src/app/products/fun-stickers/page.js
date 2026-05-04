@@ -479,7 +479,7 @@ export default function FunStickersPage() {
               backgroundClip: 'text',
             }}
           >
-            <WhisperText text="Just for fun." wordDelay={0.22} duration={1.3} />
+            <WhisperText text="Just for fun." wordDelay={0.18} duration={1.2} />
           </h1>
           <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-2 max-w-2xl mx-auto">
             Lighthearted vinyl stickers for divers who like to laugh at the surface. Slap them on

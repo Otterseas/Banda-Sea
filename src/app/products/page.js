@@ -197,7 +197,7 @@ export default function ProductsPage() {
               backgroundClip: 'text',
             }}
           >
-            <WhisperText text="Our Collections." wordDelay={0.2} duration={1.3} />
+            <WhisperText text="Our Collections." wordDelay={0.18} duration={1.2} />
           </h1>
           <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
             Everything you need to capture, document and celebrate your underwater adventures.

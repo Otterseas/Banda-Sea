@@ -104,6 +104,159 @@ const GLOBE_LOCATIONS = [
   { id: 'anilao', name: 'Anilao', location: [13.76, 120.93] },
 ];
 
+// =============== Collection tracker ===============
+// Shows the location stickers currently in the cart as a slot grid above the
+// region selector. 10 slots per row; empty slots are faded boxes that fill
+// up left-to-right as the user adds stickers. Tier markers below the grid
+// highlight as the user crosses 5 / 10 / 15.
+function CollectionTracker({ cartItems, pricePerItem, formatPrice }) {
+  // Expand cart entries into per-unit slots so a cart with 3 of "Bali"
+  // shows three Bali thumbnails instead of one.
+  const slots = [];
+  for (const item of Object.values(cartItems)) {
+    if (item.type !== 'location-sticker') continue;
+    for (let i = 0; i < (item.quantity || 0); i++) {
+      slots.push(item);
+    }
+  }
+  const count = slots.length;
+
+  // Tier breakpoints from src/utils/stickerPricing.js — keep in sync.
+  const TIERS = [
+    { at: 5, price: 2.0 },
+    { at: 10, price: 1.75 },
+    { at: 15, price: 1.5 },
+  ];
+
+  // Always show enough slots to keep all three thresholds visible.
+  // Round up to the next multiple of 10 once the cart goes past 15.
+  const minSlots = 20;
+  const totalSlotsShown = Math.max(minSlots, Math.ceil((count + 1) / 10) * 10);
+  const empty = Math.max(0, totalSlotsShown - count);
+  const fullPrice = count * 2.5;
+  const currentTotal = count * pricePerItem;
+  const savings = fullPrice - currentTotal;
+
+  return (
+    <section
+      className="px-4 md:px-8 pt-12 md:pt-16 pb-2"
+      style={{ backgroundColor: COLORS.cream }}
+    >
+      <div className="max-w-5xl mx-auto">
+        <div className="flex items-end justify-between flex-wrap gap-3 mb-4">
+          <div>
+            <p
+              className="text-[10px] tracking-[0.28em] font-bold uppercase mb-1"
+              style={{ color: COLORS.pink }}
+            >
+              Your Collection
+            </p>
+            <h3 className="text-xl md:text-2xl font-bold" style={{ color: COLORS.deepWater }}>
+              {count === 0
+                ? 'Start collecting your dives.'
+                : count === 1
+                ? '1 sticker selected'
+                : `${count} stickers selected`}
+            </h3>
+          </div>
+          <div className="text-right">
+            <p
+              className="text-2xl md:text-3xl font-extrabold leading-none"
+              style={{
+                background: `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, ${COLORS.pink} 50%, ${COLORS.deepWater} 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              {formatPrice(pricePerItem)}
+            </p>
+            <p className="text-[10px] tracking-[0.18em] font-semibold uppercase mt-1" style={{ color: COLORS.midDepth }}>
+              per sticker
+              {savings > 0.01 && (
+                <span className="ml-2 text-green-600 normal-case tracking-normal">
+                  · saving {formatPrice(savings)}
+                </span>
+              )}
+            </p>
+          </div>
+        </div>
+
+        {/* Slot grid — 10 per row, wraps */}
+        <div className="grid grid-cols-10 gap-1.5 md:gap-2">
+          {Array.from({ length: totalSlotsShown }, (_, i) => {
+            const sticker = slots[i];
+            const isFilled = !!sticker;
+            const isThreshold = i + 1 === 5 || i + 1 === 10 || i + 1 === 15;
+            const thresholdReached =
+              (i + 1 === 5 && count >= 5) ||
+              (i + 1 === 10 && count >= 10) ||
+              (i + 1 === 15 && count >= 15);
+            return (
+              <div
+                key={i}
+                className="aspect-square rounded-md md:rounded-lg overflow-hidden flex items-center justify-center transition-all relative"
+                style={{
+                  backgroundColor: isFilled ? 'white' : 'rgba(255, 255, 255, 0.4)',
+                  border: isFilled
+                    ? `1.5px solid ${COLORS.surfaceTeal}`
+                    : isThreshold
+                    ? `1.5px dashed ${thresholdReached ? COLORS.pink : `${COLORS.midDepth}55`}`
+                    : `1px dashed ${COLORS.midDepth}30`,
+                  boxShadow: isFilled ? `0 2px 6px ${COLORS.surfaceTeal}25` : 'none',
+                }}
+              >
+                {isFilled && sticker.image ? (
+                  <img
+                    src={sticker.image}
+                    alt={sticker.name}
+                    className="w-full h-full object-contain p-0.5"
+                  />
+                ) : (
+                  <span
+                    className="text-[9px] md:text-[10px] font-semibold tracking-tight"
+                    style={{ color: `${COLORS.midDepth}80` }}
+                  >
+                    {i + 1}
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Tier markers */}
+        <div className="grid grid-cols-3 gap-2 md:gap-3 mt-4">
+          {TIERS.map((tier) => {
+            const reached = count >= tier.at;
+            return (
+              <div
+                key={tier.at}
+                className="rounded-lg px-3 py-2 flex flex-col items-center text-center transition-all border"
+                style={{
+                  backgroundColor: reached ? `${COLORS.pink}10` : 'white',
+                  borderColor: reached ? `${COLORS.pink}66` : '#E6EEF2',
+                }}
+              >
+                <p
+                  className="text-[10px] tracking-[0.2em] uppercase font-bold"
+                  style={{ color: reached ? COLORS.pink : COLORS.midDepth }}
+                >
+                  {tier.at}+ {reached && '✓'}
+                </p>
+                <p className="text-sm font-bold mt-0.5" style={{ color: COLORS.deepWater }}>
+                  {formatPrice(tier.price)}
+                  <span className="text-[10px] font-medium text-gray-500"> /each</span>
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // =============== main component ===============
 
 export default function StickersPage() {
@@ -127,6 +280,7 @@ export default function StickersPage() {
     pricingTier,
     addToCart,
     openCart,
+    updateQuantity,
   } = useCart();
   const { formatPrice } = useCurrency();
 
@@ -311,7 +465,7 @@ export default function StickersPage() {
                 backgroundClip: 'text',
               }}
             >
-              <WhisperText text="Build your dive map." wordDelay={0.18} duration={1.3} />
+              <WhisperText text="Build your dive map." wordDelay={0.18} duration={1.2} />
             </h1>
             <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-6 max-w-md">
               Every sticker marks a memory. Collect the dive sites you’ve conquered, the wrecks
@@ -378,6 +532,13 @@ export default function StickersPage() {
         </div>
       </section>
 
+      {/* ============ COLLECTION TRACKER — slot grid above the region selector ============ */}
+      <CollectionTracker
+        cartItems={cartItems}
+        pricePerItem={pricePerItem}
+        formatPrice={formatPrice}
+      />
+
       {/* ============ REGION SELECTOR — InteractiveSelector pattern ============
             8 horizontal panels (one per region). Inactive panels show a deep
             blue gradient with the region name rotated 90°; click/hover to
@@ -386,7 +547,7 @@ export default function StickersPage() {
             falls back to a vertical accordion of the same content. */}
       <section
         id="region-tabs"
-        className="px-4 md:px-8 pt-10 md:pt-12 pb-12 md:pb-16 scroll-mt-4"
+        className="px-4 md:px-8 pt-6 md:pt-8 pb-12 md:pb-16 scroll-mt-4"
         style={{ backgroundColor: COLORS.cream }}
       >
         <div className="max-w-7xl mx-auto">
@@ -558,17 +719,45 @@ export default function StickersPage() {
                                   >
                                     Notify
                                   </button>
+                                ) : inCart ? (
+                                  <div className="flex items-center gap-1">
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        updateQuantity(sticker.id, -1);
+                                      }}
+                                      className="w-6 h-6 rounded flex items-center justify-center transition-colors"
+                                      style={{ backgroundColor: COLORS.surfaceTeal, color: 'white' }}
+                                      aria-label={`Remove one ${sticker.name}`}
+                                    >
+                                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                                        <path d="M5 12h14" />
+                                      </svg>
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={(e) => handleAddToCart(sticker, e)}
+                                      className="w-6 h-6 rounded flex items-center justify-center transition-colors"
+                                      style={{ backgroundColor: COLORS.surfaceTeal, color: 'white' }}
+                                      aria-label={`Add another ${sticker.name}`}
+                                    >
+                                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                                        <path d="M12 5v14M5 12h14" />
+                                      </svg>
+                                    </button>
+                                  </div>
                                 ) : (
                                   <button
                                     type="button"
                                     onClick={(e) => handleAddToCart(sticker, e)}
                                     className="text-[9px] font-bold tracking-wider uppercase px-2.5 py-1 rounded transition-colors"
                                     style={{
-                                      backgroundColor: inCart ? COLORS.surfaceTeal : COLORS.deepWater,
+                                      backgroundColor: COLORS.deepWater,
                                       color: 'white',
                                     }}
                                   >
-                                    {inCart ? '+' : 'Add'}
+                                    Add
                                   </button>
                                 )}
                               </div>

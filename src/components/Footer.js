@@ -16,9 +16,9 @@ const LUNA = {
 // Blog and All Products tucked at the ends as supporting links.
 const FOOTER_NAV = [
   { href: '/products/dive-journal', label: 'Dive Journal' },
+  { href: '/products/logbook-booster-pack', label: 'Log Pages' },
   { href: '/products/surface-tank', label: 'Surface Tank' },
   { href: '/stickers', label: 'Location Stickers' },
-  { href: '/products/logbook-booster-pack', label: 'Log Pages' },
   { href: '/products/fun-stickers', label: 'Fun Stickers' },
   { href: '/products/crochet-creatures', label: 'Crochet Creatures' },
   { href: '/products', label: 'All Products' },
