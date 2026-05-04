@@ -109,7 +109,7 @@ const GLOBE_LOCATIONS = [
 // region selector. 10 slots per row; empty slots are faded boxes that fill
 // up left-to-right as the user adds stickers. Tier markers below the grid
 // highlight as the user crosses 5 / 10 / 15.
-function CollectionTracker({ cartItems, pricePerItem, formatPrice }) {
+function CollectionTracker({ cartItems, pricePerItem, formatPrice, updateQuantity }) {
   // Expand cart entries into per-unit slots so a cart with 3 of "Bali"
   // shows three Bali thumbnails instead of one.
   const slots = [];
@@ -182,7 +182,7 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice }) {
           </div>
         </div>
 
-        {/* Slot grid — 10 per row, wraps */}
+        {/* Slot grid — 10 per row, wraps. Filled slots get a hover X to remove. */}
         <div className="grid grid-cols-10 gap-1.5 md:gap-2">
           {Array.from({ length: totalSlotsShown }, (_, i) => {
             const sticker = slots[i];
@@ -195,7 +195,7 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice }) {
             return (
               <div
                 key={i}
-                className="aspect-square rounded-md md:rounded-lg overflow-hidden flex items-center justify-center transition-all relative"
+                className="aspect-square rounded-md md:rounded-lg overflow-hidden flex items-center justify-center transition-all relative group"
                 style={{
                   backgroundColor: isFilled ? 'white' : 'rgba(255, 255, 255, 0.4)',
                   border: isFilled
@@ -207,11 +207,30 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice }) {
                 }}
               >
                 {isFilled && sticker.image ? (
-                  <img
-                    src={sticker.image}
-                    alt={sticker.name}
-                    className="w-full h-full object-contain p-0.5"
-                  />
+                  <>
+                    <img
+                      src={sticker.image}
+                      alt={sticker.name}
+                      className="w-full h-full object-contain p-0.5"
+                    />
+                    {/* Remove button — appears on hover, removes one of this sticker. */}
+                    <button
+                      type="button"
+                      onClick={() => updateQuantity(sticker.id, -1)}
+                      className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      style={{ backgroundColor: 'rgba(2, 56, 89, 0.55)' }}
+                      aria-label={`Remove one ${sticker.name}`}
+                    >
+                      <span
+                        className="w-5 h-5 rounded-full flex items-center justify-center"
+                        style={{ backgroundColor: 'white', color: COLORS.deepWater }}
+                      >
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                          <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
+                      </span>
+                    </button>
+                  </>
                 ) : (
                   <span
                     className="text-[9px] md:text-[10px] font-semibold tracking-tight"
@@ -225,7 +244,8 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice }) {
           })}
         </div>
 
-        {/* Tier markers */}
+        {/* Tier markers — clearly differentiated when reached. Reached tiers
+            get a solid pink fill + white text + glow; unreached stays muted. */}
         <div className="grid grid-cols-3 gap-2 md:gap-3 mt-4">
           {TIERS.map((tier) => {
             const reached = count >= tier.at;
@@ -234,19 +254,33 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice }) {
                 key={tier.at}
                 className="rounded-lg px-3 py-2 flex flex-col items-center text-center transition-all border"
                 style={{
-                  backgroundColor: reached ? `${COLORS.pink}10` : 'white',
-                  borderColor: reached ? `${COLORS.pink}66` : '#E6EEF2',
+                  background: reached
+                    ? `linear-gradient(135deg, ${COLORS.surfaceTeal} 0%, ${COLORS.pink} 100%)`
+                    : 'white',
+                  borderColor: reached ? COLORS.pink : '#E6EEF2',
+                  boxShadow: reached ? `0 6px 20px ${COLORS.pink}40` : 'none',
+                  transform: reached ? 'scale(1.02)' : 'none',
                 }}
               >
                 <p
-                  className="text-[10px] tracking-[0.2em] uppercase font-bold"
-                  style={{ color: reached ? COLORS.pink : COLORS.midDepth }}
+                  className="text-[10px] tracking-[0.2em] uppercase font-bold flex items-center gap-1"
+                  style={{ color: reached ? 'white' : COLORS.midDepth }}
                 >
-                  {tier.at}+ {reached && '✓'}
+                  {reached && (
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                  )}
+                  {tier.at}+
                 </p>
-                <p className="text-sm font-bold mt-0.5" style={{ color: COLORS.deepWater }}>
+                <p className="text-sm font-bold mt-0.5" style={{ color: reached ? 'white' : COLORS.deepWater }}>
                   {formatPrice(tier.price)}
-                  <span className="text-[10px] font-medium text-gray-500"> /each</span>
+                  <span
+                    className="text-[10px] font-medium"
+                    style={{ color: reached ? 'rgba(255,255,255,0.85)' : '#9CA3AF' }}
+                  >
+                    {' '}/each
+                  </span>
                 </p>
               </div>
             );
@@ -353,6 +387,18 @@ export default function StickersPage() {
   const isInCart = (id) => cartItems[id]?.quantity > 0;
   const getItemQuantity = (id) => cartItems[id]?.quantity || 0;
 
+  // Count location stickers in cart that belong to a given region — used to
+  // surface a "X selected" badge on collapsed region panels.
+  const getRegionCartCount = (regionName) => {
+    let total = 0;
+    for (const item of Object.values(cartItems)) {
+      if (item.type === 'location-sticker' && item.region === regionName) {
+        total += item.quantity || 0;
+      }
+    }
+    return total;
+  };
+
   const handleAddToCart = (sticker, e) => {
     if (e) e.stopPropagation();
     setAnimatingItems((prev) => new Set(prev).add(sticker.id));
@@ -446,8 +492,8 @@ export default function StickersPage() {
       <Header variant="light" currentPath="/stickers" />
 
       {/* ============ HERO ============ */}
-      <section className="bg-white px-4 md:px-8 pt-10 md:pt-14 pb-12 md:pb-16 overflow-hidden">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <section className="bg-white px-4 md:px-8 pt-8 md:pt-10 pb-8 md:pb-10 overflow-hidden">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 lg:gap-14 items-center">
           {/* Left: copy */}
           <div>
             <p
@@ -467,42 +513,17 @@ export default function StickersPage() {
             >
               <WhisperText text="Build your dive map." wordDelay={0.18} duration={1.2} />
             </h1>
-            <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-6 max-w-md">
-              Every sticker marks a memory. Collect the dive sites you’ve conquered, the wrecks
-              you’ve explored, and the reefs that took your breath away.
+            <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-md">
+              Every sticker marks a memory. Collect the dive sites you&rsquo;ve conquered, the wrecks
+              you&rsquo;ve explored, and the reefs that took your breath away.
             </p>
-
-            {/* Tier pill */}
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-full mb-6 border"
-              style={{
-                borderColor: `${COLORS.surfaceTeal}40`,
-                backgroundColor: `${COLORS.highlight}1F`,
-              }}
-            >
-              <span className="text-xs uppercase tracking-wider font-medium" style={{ color: COLORS.midDepth }}>
-                Your tier
-              </span>
-              <span className="text-sm font-semibold" style={{ color: COLORS.deepWater }}>
-                {pricingTier.tier} · {formatPrice(pricePerItem)}/each
-              </span>
-            </motion.div>
-
-            <div className="flex flex-wrap gap-3 text-xs tracking-wider font-medium" style={{ color: COLORS.midDepth }}>
-              <span>· 1–10 stickers · {formatPrice(2.5)} each</span>
-              <span>· 11–20 · {formatPrice(1.75)} each</span>
-              <span>· 21+ · {formatPrice(1.25)} each</span>
-            </div>
           </div>
 
           {/* Right: rotating globe (faded) */}
           <div className="relative w-full">
             <div className="absolute inset-0 -z-10 rounded-full blur-3xl"
                  style={{ backgroundColor: `${COLORS.highlight}33` }} />
-            <StickerGlobe markers={GLOBE_LOCATIONS} opacity={0.6} className="max-w-[520px] mx-auto" />
+            <StickerGlobe markers={GLOBE_LOCATIONS} opacity={0.6} className="max-w-[460px] mx-auto" />
             <p className="text-center text-xs tracking-[0.25em] uppercase mt-3" style={{ color: COLORS.midDepth }}>
               80+ dive sites · 8 regions
             </p>
@@ -511,7 +532,7 @@ export default function StickersPage() {
 
         {/* Hero scroll-down anchor — bottom-centre, matches the cyan → pink →
             deep-water heading gradient. Smooth-scrolls to the region tabs. */}
-        <div className="flex justify-center mt-10 md:mt-12">
+        <div className="flex justify-center mt-6 md:mt-8">
           <motion.button
             type="button"
             onClick={handleScrollToTabs}
@@ -537,6 +558,7 @@ export default function StickersPage() {
         cartItems={cartItems}
         pricePerItem={pricePerItem}
         formatPrice={formatPrice}
+        updateQuantity={updateQuantity}
       />
 
       {/* ============ REGION SELECTOR — InteractiveSelector pattern ============
@@ -613,6 +635,34 @@ export default function StickersPage() {
                       {region}
                     </span>
                   </div>
+
+                  {/* Collapsed-tab badge — shows how many stickers from this
+                      region are already in the cart. Bottom-centre, hidden
+                      when the panel is the active expanded one. */}
+                  {(() => {
+                    const regionCartCount = getRegionCartCount(region);
+                    if (regionCartCount === 0) return null;
+                    return (
+                      <div
+                        className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1 px-2.5 py-1 rounded-full pointer-events-none whitespace-nowrap"
+                        style={{
+                          backgroundColor: 'white',
+                          color: COLORS.deepWater,
+                          boxShadow: `0 4px 14px rgba(0, 0, 0, 0.25), 0 0 0 1.5px ${COLORS.pink}`,
+                          opacity: isActive ? 0 : 1,
+                          transition: 'opacity 400ms ease',
+                        }}
+                      >
+                        <span
+                          className="w-1.5 h-1.5 rounded-full"
+                          style={{ backgroundColor: COLORS.pink }}
+                        />
+                        <span className="text-[10px] font-bold tracking-wide">
+                          {regionCartCount}
+                        </span>
+                      </div>
+                    );
+                  })()}
 
 
                   {/* Active region — sticker grid */}
@@ -846,12 +896,31 @@ export default function StickersPage() {
                         {region}
                       </span>
                     </div>
-                    <span
-                      className="text-xs tracking-wider"
-                      style={{ color: isActive ? COLORS.midDepth : 'white' }}
-                    >
-                      {stickers.length}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      {(() => {
+                        const regionCartCount = getRegionCartCount(region);
+                        if (regionCartCount === 0) return null;
+                        return (
+                          <span
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide"
+                            style={{
+                              backgroundColor: 'white',
+                              color: COLORS.deepWater,
+                              boxShadow: `0 0 0 1.5px ${COLORS.pink}`,
+                            }}
+                          >
+                            <span className="w-1 h-1 rounded-full" style={{ backgroundColor: COLORS.pink }} />
+                            {regionCartCount}
+                          </span>
+                        );
+                      })()}
+                      <span
+                        className="text-xs tracking-wider"
+                        style={{ color: isActive ? COLORS.midDepth : 'white' }}
+                      >
+                        {stickers.length}
+                      </span>
+                    </div>
                   </button>
                   {isActive && (
                     <div
