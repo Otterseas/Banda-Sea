@@ -468,7 +468,7 @@ export default function FunStickersPage() {
       <Header variant="light" currentPath={`/products/${SLUG}`} />
 
       {/* ============ HERO ============ */}
-      <section className="bg-white px-4 md:px-8 pt-10 md:pt-14 pb-12 md:pb-14">
+      <section className="bg-white px-4 md:px-8 pt-20 md:pt-24 pb-12 md:pb-14">
         <div className="max-w-4xl mx-auto text-center">
           <h1
             className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] mb-5"
