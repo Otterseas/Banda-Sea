@@ -317,6 +317,27 @@ const STORY_SECTIONS = [
     aspect: 'aspect-[4/3]',
   },
   {
+    id: 'pencil-before-yarn',
+    title: 'Pencil before yarn.',
+    eyebrow: 'ON THE DRAWING BOARD',
+    content: (
+      <>
+        Before any stitch, there&rsquo;s a <Highlight>sketch</Highlight>. Body,
+        fins, frill, and colour palette — all worked out on screen long before
+        the yarn comes out. Sometimes it&rsquo;s a single nudibranch. Sometimes
+        it&rsquo;s a whole imagined scene, like our{' '}
+        <Highlight>Under the Sea mobile</Highlight> — eight creatures planned,
+        named, and coloured on one page. Only when the design{' '}
+        <Highlight>feels right</Highlight> do we pick up the hook.
+      </>
+    ),
+    image: '/images/products/crochet-creatures-planning.jpg',
+    aspect: 'aspect-[4/3]',
+    // Source is a portrait iPad shot. Bias upward so the sketch + palette
+    // stay framed when object-cover crops the top/bottom.
+    objectPosition: 'center 35%',
+  },
+  {
     id: 'every-stitch',
     title: 'Every stitch tells a story.',
     eyebrow: 'THE TIME IT TAKES',
