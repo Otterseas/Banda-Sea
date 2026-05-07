@@ -685,12 +685,12 @@ export default function SurfaceTankPage() {
           <WhisperText text={product.story.headline} wordDelay={0.18} duration={1.4} />
         </h2>
 
-        {/* Phase 2 — paragraph fades in after heading + light bar resolve (~2.4s) */}
+        {/* Phase 2 — paragraph fades in over the last words of the headline */}
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.9, delay: 2.4, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.9, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
           className="text-white/80 text-base md:text-lg leading-relaxed mb-8 max-w-xl mx-auto"
         >
           {product.story.intro}
@@ -712,7 +712,7 @@ export default function SurfaceTankPage() {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: 3.2 + i * 0.1, ease: 'easeOut' }}
+                transition={{ duration: 0.5, delay: 2.0 + i * 0.1, ease: 'easeOut' }}
                 whileHover={{ scale: 1.2, zIndex: 15, rotate: 0 }}
               />
             ))}
@@ -724,7 +724,7 @@ export default function SurfaceTankPage() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 3.9, ease: 'easeOut' }}
+          transition={{ duration: 0.6, delay: 2.7, ease: 'easeOut' }}
           className="text-white/60 text-sm tracking-[0.25em] uppercase mb-5"
         >
           Over 80 dive sites · One bottle
@@ -734,7 +734,7 @@ export default function SurfaceTankPage() {
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 4.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, delay: 2.9, ease: [0.22, 1, 0.36, 1] }}
         >
           <FishyButton href="/stickers" variant="1">
             EXPLORE STICKERS
