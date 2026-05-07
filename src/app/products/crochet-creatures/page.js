@@ -43,7 +43,11 @@ const ALL_PRODUCTS = [
       'One-of-a-kind — only 1 in stock',
       'Slight natural variations in colour and shape',
     ],
-    images: ['/images/products/Purple-nudis-product-shot.png'],
+    images: [
+      '/images/products/Purple-nudis-product-shot.png',
+      'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/DL_02469.jpg?v=1778164867',
+      'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/purple-white-nud-01.jpg?v=1778164775',
+    ],
     shopifyVariantId: '53007230468362',
     uses: 'Desk companion, dive bag charm, gift',
     comingSoon: false,
@@ -62,7 +66,11 @@ const ALL_PRODUCTS = [
       'One-of-a-kind — only 1 in stock',
       'Slight natural variations in colour and shape',
     ],
-    images: ['/images/products/black-white-nudis-product-shot.png'],
+    images: [
+      '/images/products/black-white-nudis-product-shot.png',
+      '/images/products/Black-white-crochet-nudi.jpg',
+      'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/Black-white-nudi-04_29805aa4-993f-4253-ac99-4901c3adff93.jpg?v=1778164626',
+    ],
     shopifyVariantId: '53007231648010',
     uses: 'Desk companion, dive bag charm, gift',
     comingSoon: false,
@@ -81,7 +89,11 @@ const ALL_PRODUCTS = [
       'One-of-a-kind — only 1 in stock',
       'Slight natural variations in colour and shape',
     ],
-    images: ['/images/products/Blue-orange-crochet-nudi.jpg'],
+    images: [
+      '/images/products/Blue-orange-crochet-nudi.jpg',
+      '/images/products/Orange-blue-nudi.jpg',
+      'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/orange-blue-nudis-product-shot.png?v=1778163857',
+    ],
     shopifyVariantId: '53007232696586',
     uses: 'Desk companion, dive bag charm, gift',
     comingSoon: false,
@@ -100,7 +112,10 @@ const ALL_PRODUCTS = [
       'One-of-a-kind — only 1 in stock',
       'Slight natural variations in colour and shape',
     ],
-    images: ['/images/products/black-green-nudis-product-shot.png'],
+    images: [
+      '/images/products/black-green-nudis-product-shot.png',
+      'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/green-black-nudi-04.jpg?v=1778164627',
+    ],
     shopifyVariantId: '53007233057034',
     uses: 'Desk companion, dive bag charm, gift',
     comingSoon: false,
@@ -141,7 +156,10 @@ const ALL_PRODUCTS = [
       'One-of-a-kind — only 1 in stock',
       'Slight natural variations in colour and shape',
     ],
-    images: ['/images/products/Red-purple-nudis.png'],
+    images: [
+      '/images/products/Red-purple-nudis.png',
+      'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/Red_1.jpg?v=1778164626',
+    ],
     shopifyVariantId: '53007233679626',
     uses: 'Desk companion, dive bag charm, gift',
     comingSoon: false,
@@ -297,6 +315,27 @@ const STORY_SECTIONS = [
     ),
     image: '/images/products/Crochet-nudis-hero-image.png',
     aspect: 'aspect-[4/3]',
+  },
+  {
+    id: 'pencil-before-yarn',
+    title: 'Pencil before yarn.',
+    eyebrow: 'ON THE DRAWING BOARD',
+    content: (
+      <>
+        Before any stitch, there&rsquo;s a <Highlight>sketch</Highlight>. Body,
+        fins, frill, and colour palette — all worked out on screen long before
+        the yarn comes out. Sometimes it&rsquo;s a single nudibranch. Sometimes
+        it&rsquo;s a whole imagined scene, like our{' '}
+        <Highlight>Under the Sea mobile</Highlight> — eight creatures planned,
+        named, and coloured on one page. Only when the design{' '}
+        <Highlight>feels right</Highlight> do we pick up the hook.
+      </>
+    ),
+    image: '/images/products/crochet-creatures-planning.jpg',
+    aspect: 'aspect-[4/3]',
+    // Source is a portrait iPad shot. Bias upward so the sketch + palette
+    // stay framed when object-cover crops the top/bottom.
+    objectPosition: 'center 35%',
   },
   {
     id: 'every-stitch',
