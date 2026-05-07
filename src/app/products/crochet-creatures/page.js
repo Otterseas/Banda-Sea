@@ -28,96 +28,123 @@ const SLUG = 'crochet-creatures';
 // categories, prices, descriptions, productInfo, comingSoon flags, variant
 // IDs). Images swapped to local crochet photos where there's a good match.
 const ALL_PRODUCTS = [
-  // Nudibranchs
+  // Nudibranchs — one-of-a-kind handmade pieces, only 1 of each in stock
   {
-    id: 'nudi-spanish-dancer',
-    name: 'Spanish Dancer',
+    id: 'nudi-purple-white',
+    name: 'Nudibranch — Purple & White',
     category: 'Nudibranchs',
-    price: 17.5,
+    price: 12.5,
     timeToMake: '3-4 hours',
-    description: 'Inspired by the graceful Spanish Dancer nudibranch, known for its flowing crimson form.',
+    description:
+      'Soft lavender body, snowy white frill, and warm orange rhinophores — a quiet, dreamy little drifter.',
     productInfo: [
       'Handmade with 100% cotton yarn',
       'Approximately 6-8cm in size',
-      'Includes keychain/bag charm attachment',
-      'Each one unique - slight variations in colour and shape',
-    ],
-    images: ['/images/products/Red-purple-nudis.png'],
-    shopifyVariantId: 'nudi-spanish-dancer-001',
-    uses: 'Keychain, bag charm, desk companion',
-    comingSoon: true,
-  },
-  {
-    id: 'nudi-chromodoris',
-    name: 'Chromodoris',
-    category: 'Nudibranchs',
-    price: 17.5,
-    timeToMake: '3-4 hours',
-    description: 'Based on the vibrant Chromodoris species with their striking colour patterns.',
-    productInfo: [
-      'Handmade with 100% cotton yarn',
-      'Approximately 6-8cm in size',
-      'Includes keychain/bag charm attachment',
-      'Each one unique - slight variations in colour and shape',
-    ],
-    images: ['/images/products/Blue-orange-crochet-nudi.jpg'],
-    shopifyVariantId: 'nudi-chromodoris-001',
-    uses: 'Keychain, bag charm, desk companion',
-    comingSoon: true,
-  },
-  {
-    id: 'nudi-nembrotha',
-    name: 'Nembrotha',
-    category: 'Nudibranchs',
-    price: 17.5,
-    timeToMake: '3-4 hours',
-    description: 'Capturing the bold colours of the Nembrotha nudibranch family.',
-    productInfo: [
-      'Handmade with 100% cotton yarn',
-      'Approximately 6-8cm in size',
-      'Includes keychain/bag charm attachment',
-      'Each one unique - slight variations in colour and shape',
-    ],
-    images: ['/images/products/black-green-nudis-product-shot.png'],
-    shopifyVariantId: 'nudi-nembrotha-001',
-    uses: 'Keychain, bag charm, desk companion',
-    comingSoon: true,
-  },
-  {
-    id: 'nudi-phyllidia',
-    name: 'Phyllidia',
-    category: 'Nudibranchs',
-    price: 17.5,
-    timeToMake: '3-4 hours',
-    description: 'The striking Phyllidia with its distinctive bumpy texture and bold patterns.',
-    productInfo: [
-      'Handmade with 100% cotton yarn',
-      'Approximately 6-8cm in size',
-      'Includes keychain/bag charm attachment',
-      'Each one unique - slight variations in colour and shape',
-    ],
-    images: ['/images/products/Crochet-nudis-black-white.png'],
-    shopifyVariantId: 'nudi-phyllidia-001',
-    uses: 'Keychain, bag charm, desk companion',
-    comingSoon: true,
-  },
-  {
-    id: 'nudi-flabellina',
-    name: 'Flabellina',
-    category: 'Nudibranchs',
-    price: 17.5,
-    timeToMake: '3-4 hours',
-    description: 'The delicate Flabellina with its feathery cerata and vibrant purple hues.',
-    productInfo: [
-      'Handmade with 100% cotton yarn',
-      'Approximately 6-8cm in size',
-      'Includes keychain/bag charm attachment',
-      'Each one unique - slight variations in colour and shape',
+      'One-of-a-kind — only 1 in stock',
+      'Slight natural variations in colour and shape',
     ],
     images: ['/images/products/Purple-nudis-product-shot.png'],
-    shopifyVariantId: 'nudi-flabellina-001',
-    uses: 'Keychain, bag charm, desk companion',
-    comingSoon: true,
+    shopifyVariantId: '53007230468362',
+    uses: 'Desk companion, dive bag charm, gift',
+    comingSoon: false,
+  },
+  {
+    id: 'nudi-black-white',
+    name: 'Nudibranch — Black & White',
+    category: 'Nudibranchs',
+    price: 12.5,
+    timeToMake: '3-4 hours',
+    description:
+      'Crisp white body with stark black gills and rhinophores — a pyjama-clad reef explorer.',
+    productInfo: [
+      'Handmade with 100% cotton yarn',
+      'Approximately 6-8cm in size',
+      'One-of-a-kind — only 1 in stock',
+      'Slight natural variations in colour and shape',
+    ],
+    images: ['/images/products/black-white-nudis-product-shot.png'],
+    shopifyVariantId: '53007231648010',
+    uses: 'Desk companion, dive bag charm, gift',
+    comingSoon: false,
+  },
+  {
+    id: 'nudi-orange-blue',
+    name: 'Nudibranch — Orange & Blue',
+    category: 'Nudibranchs',
+    price: 12.5,
+    timeToMake: '3-4 hours',
+    description:
+      'Cool blue-grey body, vivid orange rhinophores, and a sunny yellow frill — bold reef contrast.',
+    productInfo: [
+      'Handmade with 100% cotton yarn',
+      'Approximately 6-8cm in size',
+      'One-of-a-kind — only 1 in stock',
+      'Slight natural variations in colour and shape',
+    ],
+    images: ['/images/products/Blue-orange-crochet-nudi.jpg'],
+    shopifyVariantId: '53007232696586',
+    uses: 'Desk companion, dive bag charm, gift',
+    comingSoon: false,
+  },
+  {
+    id: 'nudi-black-green',
+    name: 'Nudibranch — Black & Green',
+    category: 'Nudibranchs',
+    price: 12.5,
+    timeToMake: '3-4 hours',
+    description:
+      'Inky black body laced with emerald-green frill and detail — a midnight-reef stand-out.',
+    productInfo: [
+      'Handmade with 100% cotton yarn',
+      'Approximately 6-8cm in size',
+      'One-of-a-kind — only 1 in stock',
+      'Slight natural variations in colour and shape',
+    ],
+    images: ['/images/products/black-green-nudis-product-shot.png'],
+    shopifyVariantId: '53007233057034',
+    uses: 'Desk companion, dive bag charm, gift',
+    comingSoon: false,
+  },
+  {
+    id: 'nudi-orange-black',
+    name: 'Nudibranch — Orange & Black',
+    category: 'Nudibranchs',
+    price: 12.5,
+    timeToMake: '3-4 hours',
+    description:
+      'Black-cloaked body shot through with teal stripes and crowned with vivid orange rhinophores — sunset-on-the-reef energy.',
+    productInfo: [
+      'Handmade with 100% cotton yarn',
+      'Approximately 6-8cm in size',
+      'One-of-a-kind — only 1 in stock',
+      'Slight natural variations in colour and shape',
+    ],
+    images: [
+      '/images/products/Black-orange-nudi-product-shot.png',
+      '/images/products/Black-orange-nudi-04.jpg',
+    ],
+    shopifyVariantId: '53007568896266',
+    uses: 'Desk companion, dive bag charm, gift',
+    comingSoon: false,
+  },
+  {
+    id: 'nudi-red-purple',
+    name: 'Nudibranch — Red & Purple',
+    category: 'Nudibranchs',
+    price: 12.5,
+    timeToMake: '3-4 hours',
+    description:
+      'Coral-red body with playful lilac accents and golden rhinophores — full reef-disco vibes.',
+    productInfo: [
+      'Handmade with 100% cotton yarn',
+      'Approximately 6-8cm in size',
+      'One-of-a-kind — only 1 in stock',
+      'Slight natural variations in colour and shape',
+    ],
+    images: ['/images/products/Red-purple-nudis.png'],
+    shopifyVariantId: '53007233679626',
+    uses: 'Desk companion, dive bag charm, gift',
+    comingSoon: false,
   },
   // Fish & Friends
   {
@@ -514,7 +541,7 @@ function ProductCarousel({ title, subtitle, products, onProductClick, formatPric
 
 // =============== Modal ===============
 
-function ProductModal({ product, isOpen, onClose, formatPrice }) {
+function ProductModal({ product, isOpen, onClose, formatPrice, onAddToCart }) {
   const [imgIdx, setImgIdx] = useState(0);
 
   useEffect(() => {
@@ -641,10 +668,14 @@ function ProductModal({ product, isOpen, onClose, formatPrice }) {
               ) : (
                 <button
                   type="button"
-                  className="mt-auto w-full py-3 rounded-xl text-sm font-bold tracking-[0.15em] uppercase"
+                  onClick={() => {
+                    onAddToCart(product);
+                    onClose();
+                  }}
+                  className="mt-auto w-full py-3 rounded-xl text-sm font-bold tracking-[0.15em] uppercase transition-transform hover:scale-[1.02]"
                   style={{ backgroundColor: COLORS.deepWater, color: 'white' }}
                 >
-                  Add to Cart
+                  Add to Cart · {formatPrice(product.price)}
                 </button>
               )}
             </div>
@@ -983,6 +1014,16 @@ export default function CrochetCreaturesPage() {
         isOpen={!!selectedProduct}
         onClose={() => setSelectedProduct(null)}
         formatPrice={formatPrice}
+        onAddToCart={(p) => {
+          addToCart({
+            id: p.shopifyVariantId,
+            shopifyVariantId: p.shopifyVariantId,
+            name: p.name,
+            price: p.price,
+            image: p.images[0],
+            type: 'product',
+          });
+        }}
       />
     </div>
   );
