@@ -112,18 +112,20 @@ const ALL_PRODUCTS = [
     price: 12.5,
     timeToMake: '3-4 hours',
     description:
-      'Black-cloaked body crowned with vivid orange rhinophores — sunset-on-the-reef energy.',
+      'Black-cloaked body shot through with teal stripes and crowned with vivid orange rhinophores — sunset-on-the-reef energy.',
     productInfo: [
       'Handmade with 100% cotton yarn',
       'Approximately 6-8cm in size',
       'One-of-a-kind — only 1 in stock',
       'Slight natural variations in colour and shape',
     ],
-    // Lineup placeholder — solo product photo uploading soon.
-    images: ['/images/products/Crochet-nudis-table-shot.png'],
-    shopifyVariantId: 'nudi-orange-black-001',
+    images: [
+      '/images/products/Black-orange-nudi-product-shot.png',
+      '/images/products/Black-orange-nudi-04.jpg',
+    ],
+    shopifyVariantId: '53007568896266',
     uses: 'Desk companion, dive bag charm, gift',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     id: 'nudi-red-purple',
