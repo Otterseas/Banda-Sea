@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { getProductBySlug } from '@/data/products';
 import { useCart } from '@/context/CartContext';
@@ -378,6 +379,7 @@ function FAQItem({ question, answer }) {
 }
 
 export default function SurfaceTankPage() {
+  const router = useRouter();
   const product = getProductBySlug(SLUG);
   const { addToCart, openDrawer } = useCart();
   const { formatPrice } = useCurrency();
@@ -626,34 +628,10 @@ export default function SurfaceTankPage() {
               )}
             </div>
 
-            {/* Bundle deal callout — sticker bundle promo. Surfaces the deal
-                right next to the buy button so the value prop is unmissable. */}
-            <Link
-              href="/stickers"
-              className="block mb-5 rounded-xl p-3 md:p-3.5 border transition-all hover:scale-[1.01] hover:shadow-md"
-              style={{
-                background: `linear-gradient(135deg, ${COLORS.pink}10 0%, ${COLORS.surfaceTeal}10 100%)`,
-                borderColor: `${COLORS.pink}55`,
-              }}
-            >
-              <div className="flex items-center gap-3">
-                <div className="text-2xl">🎁</div>
-                <div className="flex-1">
-                  <p className="text-[10px] tracking-[0.22em] font-bold uppercase mb-0.5" style={{ color: COLORS.pink }}>
-                    Bundle Deal · Included
-                  </p>
-                  <p className="text-sm font-semibold leading-snug" style={{ color: COLORS.deepWater }}>
-                    Your first <span className="font-bold">8 location stickers free</span> — pick any from 80+ dive sites.
-                  </p>
-                </div>
-                <span className="text-[11px] font-bold tracking-[0.14em] uppercase whitespace-nowrap" style={{ color: COLORS.surfaceTeal }}>
-                  Browse →
-                </span>
-              </div>
-            </Link>
-
-            {/* CTA */}
-            <div className="mb-6">
+            {/* CTA + bundle-deal pill on one row. The pill adds the Surface
+                Tank to cart and routes to /stickers in a single click so the
+                customer lands on the picker with the bottle already secured. */}
+            <div className="mb-6 flex items-center gap-3 flex-wrap">
               {stock.loading ? (
                 <button
                   disabled
@@ -672,6 +650,32 @@ export default function SurfaceTankPage() {
                 <FishyButton onClick={handleAddToCart} variant="1">
                   ADD TO CART
                 </FishyButton>
+              )}
+
+              {!isOutOfStock && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleAddToCart();
+                    router.push('/stickers');
+                  }}
+                  className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border transition-all hover:scale-[1.02] hover:shadow-md text-left"
+                  style={{
+                    background: `linear-gradient(135deg, ${COLORS.pink}12 0%, ${COLORS.surfaceTeal}12 100%)`,
+                    borderColor: `${COLORS.pink}80`,
+                  }}
+                  aria-label="Add Surface Tank to cart and browse location stickers"
+                >
+                  <span className="text-lg">🎁</span>
+                  <span className="flex flex-col leading-tight">
+                    <span className="text-[11px] font-bold" style={{ color: COLORS.deepWater }}>
+                      First 8 stickers free
+                    </span>
+                    <span className="text-[10px] tracking-wide" style={{ color: COLORS.midDepth }}>
+                      80+ locations · Browse →
+                    </span>
+                  </span>
+                </button>
               )}
             </div>
 
