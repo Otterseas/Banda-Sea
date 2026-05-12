@@ -20,30 +20,30 @@ describe('getPricingTier', () => {
     });
   });
 
-  test('returns 9-13 Pack at £1.50 for quantities 9 through 13', () => {
+  test('returns 9-13 Pack at £1.75 for quantities 9 through 13', () => {
     [9, 10, 13].forEach((qty) => {
       const tier = getPricingTier(qty);
-      expect(tier.price).toBe(1.5);
+      expect(tier.price).toBe(1.75);
       expect(tier.tier).toBe('9-13 Pack');
+      expect(tier.discount).toBe(30);
+    });
+  });
+
+  test('returns 14-20 Pack at £1.50 for quantities 14 through 20', () => {
+    [14, 17, 20].forEach((qty) => {
+      const tier = getPricingTier(qty);
+      expect(tier.price).toBe(1.5);
+      expect(tier.tier).toBe('14-20 Pack');
       expect(tier.discount).toBe(40);
     });
   });
 
-  test('returns 14-20 Pack at £1.00 for quantities 14 through 20', () => {
-    [14, 17, 20].forEach((qty) => {
-      const tier = getPricingTier(qty);
-      expect(tier.price).toBe(1.0);
-      expect(tier.tier).toBe('14-20 Pack');
-      expect(tier.discount).toBe(60);
-    });
-  });
-
-  test('returns 21+ Pack at £0.75 for quantities 21+', () => {
+  test('returns 21+ Pack at £1.00 for quantities 21+', () => {
     [21, 50, 100].forEach((qty) => {
       const tier = getPricingTier(qty);
-      expect(tier.price).toBe(0.75);
+      expect(tier.price).toBe(1.0);
       expect(tier.tier).toBe('21+ Pack');
-      expect(tier.discount).toBe(70);
+      expect(tier.discount).toBe(60);
     });
   });
 
@@ -68,22 +68,22 @@ describe('calculateStickerTotal', () => {
     expect(r.savings).toBe(2.5);
   });
 
-  test('drops to £1.50 each at 9 stickers (no bottle)', () => {
+  test('drops to £1.75 each at 9 stickers (no bottle)', () => {
     const r = calculateStickerTotal(10);
-    expect(r.pricePerItem).toBe(1.5);
-    expect(r.total).toBe(15.0);
+    expect(r.pricePerItem).toBe(1.75);
+    expect(r.total).toBe(17.5);
   });
 
-  test('drops to £1.00 each at 14 stickers (no bottle)', () => {
+  test('drops to £1.50 each at 14 stickers (no bottle)', () => {
     const r = calculateStickerTotal(15);
-    expect(r.pricePerItem).toBe(1.0);
-    expect(r.total).toBe(15.0);
+    expect(r.pricePerItem).toBe(1.5);
+    expect(r.total).toBe(22.5);
   });
 
-  test('drops to £0.75 each at 21+ stickers (no bottle)', () => {
+  test('drops to £1.00 each at 21+ stickers (no bottle)', () => {
     const r = calculateStickerTotal(25);
-    expect(r.pricePerItem).toBe(0.75);
-    expect(r.total).toBeCloseTo(18.75, 5);
+    expect(r.pricePerItem).toBe(1.0);
+    expect(r.total).toBeCloseTo(25.0, 5);
   });
 
   test('handles zero quantity', () => {
@@ -182,35 +182,35 @@ describe('calculateStickerTotal with Surface Tank bundle', () => {
     });
   });
 
-  test('9-13 stickers price the extras at £1.50 each', () => {
+  test('9-13 stickers price the extras at £1.75 each', () => {
     const r9 = calculateStickerTotal(9, true);
     expect(r9.paidCount).toBe(1);
-    expect(r9.total).toBe(1.5);
+    expect(r9.total).toBe(1.75);
 
     const r13 = calculateStickerTotal(13, true);
     expect(r13.paidCount).toBe(5);
-    expect(r13.total).toBe(7.5);
+    expect(r13.total).toBeCloseTo(8.75, 5);
   });
 
-  test('14-20 stickers price the extras at £1.00 each', () => {
+  test('14-20 stickers price the extras at £1.50 each', () => {
     const r14 = calculateStickerTotal(14, true);
     expect(r14.paidCount).toBe(6);
-    expect(r14.total).toBeCloseTo(6.0, 5);
+    expect(r14.total).toBeCloseTo(9.0, 5);
 
     const r20 = calculateStickerTotal(20, true);
     expect(r20.paidCount).toBe(12);
-    expect(r20.total).toBeCloseTo(12.0, 5);
+    expect(r20.total).toBeCloseTo(18.0, 5);
   });
 
-  test('21+ stickers price the extras at £0.75 each', () => {
+  test('21+ stickers price the extras at £1.00 each', () => {
     const r21 = calculateStickerTotal(21, true);
     expect(r21.paidCount).toBe(13);
-    expect(r21.total).toBeCloseTo(9.75, 5);
+    expect(r21.total).toBeCloseTo(13.0, 5);
   });
 
   test('without a bottle behaves like the standard tier table', () => {
     const r10 = calculateStickerTotal(10, false);
-    expect(r10.total).toBe(15.0);
+    expect(r10.total).toBe(17.5);
     expect(r10.freeCount).toBe(0);
   });
 });

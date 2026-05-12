@@ -384,9 +384,12 @@ export default function CartDrawer() {
               </button>
             </div>
 
-            {/* Cart Items — min-height so the items list stays visible even
-                when the footer features expand (tier card, shipping bar, upsells). */}
-            <div className="flex-1 overflow-y-auto p-4 min-h-[180px]" style={{ scrollbarWidth: 'none' }}>
+            {/* Combined scrollable area: cart items + footer info. The
+                checkout button below stays pinned at the bottom of the
+                drawer regardless of how much content lives in here. */}
+            <div className="flex-1 overflow-y-auto min-h-0" style={{ scrollbarWidth: 'none' }}>
+              {/* Cart Items */}
+              <div className="p-4 min-h-[180px]">
               {totalItems === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center px-4">
                   <div
@@ -447,9 +450,12 @@ export default function CartDrawer() {
               )}
             </div>
 
-            {/* Footer */}
+            {/* Footer info — bundle banner, tier card, totals, shipping bar,
+                upsells, trust badges. Lives inside the scrollable wrapper so
+                the pinned checkout area below stays glued to the drawer's
+                bottom even when this section grows tall. */}
             <div
-              className="flex-shrink-0 px-4 py-3"
+              className="px-4 py-3"
               style={{
                 background: `linear-gradient(180deg, ${LUNA.cream} 0%, white 100%)`,
                 borderTop: `1px solid ${LUNA.border}`
@@ -501,18 +507,18 @@ export default function CartDrawer() {
                         ? (locationStickerCount < 8
                             ? `${8 - locationStickerCount} free stickers left to add`
                             : locationStickerCount < 14
-                              ? `Add ${14 - locationStickerCount} more · ${formatPrice(1.0)}/each!`
+                              ? `Add ${14 - locationStickerCount} more · ${formatPrice(1.5)}/each!`
                               : locationStickerCount < 21
-                                ? `Add ${21 - locationStickerCount} more · ${formatPrice(0.75)}/each!`
+                                ? `Add ${21 - locationStickerCount} more · ${formatPrice(1.0)}/each!`
                                 : '🎉 Best price unlocked!')
                         : (locationStickerCount < minOrder
                             ? `Add ${minOrder - locationStickerCount} more to checkout`
                             : locationStickerCount < 9
-                              ? `Add ${9 - locationStickerCount} more · ${formatPrice(1.5)}/each!`
+                              ? `Add ${9 - locationStickerCount} more · ${formatPrice(1.75)}/each!`
                               : locationStickerCount < 14
-                                ? `Add ${14 - locationStickerCount} more · ${formatPrice(1.0)}/each!`
+                                ? `Add ${14 - locationStickerCount} more · ${formatPrice(1.5)}/each!`
                                 : locationStickerCount < 21
-                                  ? `Add ${21 - locationStickerCount} more · ${formatPrice(0.75)}/each!`
+                                  ? `Add ${21 - locationStickerCount} more · ${formatPrice(1.0)}/each!`
                                   : '🎉 Best price unlocked!')
                       }
                     </span>
@@ -563,13 +569,13 @@ export default function CartDrawer() {
 
                         <div className="flex justify-between text-[10px] font-semibold">
                           <span style={{ color: locationStickerCount >= t1 ? LUNA.deepWater : '#9CA3AF' }}>
-                            {t1} · {formatPrice(1.5)} {locationStickerCount >= t1 && '✓'}
+                            {t1} · {formatPrice(1.75)} {locationStickerCount >= t1 && '✓'}
                           </span>
                           <span style={{ color: locationStickerCount >= t2 ? LUNA.deepWater : '#9CA3AF' }}>
-                            {t2} · {formatPrice(1.0)} {locationStickerCount >= t2 && '✓'}
+                            {t2} · {formatPrice(1.5)} {locationStickerCount >= t2 && '✓'}
                           </span>
                           <span style={{ color: locationStickerCount >= t3 ? LUNA.deepWater : '#9CA3AF' }}>
-                            {t3} · {formatPrice(0.75)} {locationStickerCount >= t3 && '✓'}
+                            {t3} · {formatPrice(1.0)} {locationStickerCount >= t3 && '✓'}
                           </span>
                         </div>
                       </>
@@ -727,7 +733,22 @@ export default function CartDrawer() {
               <div className="mb-2.5">
                 <TrustBadgesInline variant="light" />
               </div>
+            </div>
+            {/* /Footer info */}
+            </div>
+            {/* /Scrollable area */}
 
+            {/* Pinned action footer — always glued to the bottom of the
+                drawer so the customer never loses sight of the checkout CTA,
+                no matter how many cart items or upsell tabs are showing. */}
+            <div
+              className="flex-shrink-0 px-4 py-3"
+              style={{
+                backgroundColor: 'white',
+                borderTop: `1px solid ${LUNA.border}`,
+                boxShadow: '0 -6px 16px rgba(2, 56, 89, 0.06)',
+              }}
+            >
               {/* Checkout Button */}
               <button
                 onClick={handleCheckout}

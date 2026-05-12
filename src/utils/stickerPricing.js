@@ -10,9 +10,9 @@ export const STICKER_PRICING = {
   MIN_ORDER: 5,
   TIERS: [
     { min: 1, max: 8, price: 2.00, tier: '1-8 Pack', discount: 20 },
-    { min: 9, max: 13, price: 1.50, tier: '9-13 Pack', discount: 40 },
-    { min: 14, max: 20, price: 1.00, tier: '14-20 Pack', discount: 60 },
-    { min: 21, max: Infinity, price: 0.75, tier: '21+ Pack', discount: 70 },
+    { min: 9, max: 13, price: 1.75, tier: '9-13 Pack', discount: 30 },
+    { min: 14, max: 20, price: 1.50, tier: '14-20 Pack', discount: 40 },
+    { min: 21, max: Infinity, price: 1.00, tier: '21+ Pack', discount: 60 },
   ],
   // Bundle tiers apply when the cart contains a Surface Tank. The first 8
   // stickers are included free with the bottle; remaining stickers slide
@@ -20,9 +20,9 @@ export const STICKER_PRICING = {
   BUNDLE_FREE_COUNT: 8,
   BUNDLE_TIERS: [
     { min: 1, max: 8, price: 0.00, paidPrice: 0, tier: 'Bundle · Free', discount: 100 },
-    { min: 9, max: 13, price: 1.50, paidPrice: 1.50, tier: 'Bundle · 9-13', discount: 40 },
-    { min: 14, max: 20, price: 1.00, paidPrice: 1.00, tier: 'Bundle · 14-20', discount: 60 },
-    { min: 21, max: Infinity, price: 0.75, paidPrice: 0.75, tier: 'Bundle · 21+', discount: 70 },
+    { min: 9, max: 13, price: 1.75, paidPrice: 1.75, tier: 'Bundle · 9-13', discount: 30 },
+    { min: 14, max: 20, price: 1.50, paidPrice: 1.50, tier: 'Bundle · 14-20', discount: 40 },
+    { min: 21, max: Infinity, price: 1.00, paidPrice: 1.00, tier: 'Bundle · 21+', discount: 60 },
   ],
 };
 

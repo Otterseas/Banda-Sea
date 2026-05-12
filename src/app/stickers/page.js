@@ -137,9 +137,9 @@ function CollectionTracker({
   // bottle the first 8 stickers are bundle-free; without a bottle the first
   // 8 cost £2.00 each. Tier prices match BUNDLE_TIERS in stickerPricing.js.
   const TIERS = [
-    { at: 9, price: 1.5, label: '9+' },
-    { at: 14, price: 1.0, label: '14+' },
-    { at: 21, price: 0.75, label: '21+' },
+    { at: 9, price: 1.75, label: '9+' },
+    { at: 14, price: 1.5, label: '14+' },
+    { at: 21, price: 1.0, label: '21+' },
   ];
 
   // Always show enough slots to keep all three thresholds visible.

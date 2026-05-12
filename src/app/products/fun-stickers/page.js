@@ -53,7 +53,7 @@ const RELATED_PRODUCTS = [
     name: 'Location Stickers',
     href: '/stickers',
     image: '/images/products/Location-stickers-close-up.jpg',
-    priceLabel: 'From £0.75',
+    priceLabel: 'From £1.00',
     quickAdd: null,
   },
   {
