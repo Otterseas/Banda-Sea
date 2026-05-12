@@ -40,26 +40,27 @@
   .header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    padding-bottom: 10px;
+    align-items: center;
+    padding-bottom: 12px;
     border-bottom: 1.5px solid #023859;
     margin-bottom: 24px;
   }
-  .wordmark {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 800;
-    font-size: 20pt;
-    letter-spacing: 0.18em;
-    color: #023859;
-    text-transform: uppercase;
-  }
-  .wordmark .tag {
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand img {
+    width: 64px;
+    height: 64px;
     display: block;
-    font-size: 7pt;
-    letter-spacing: 0.32em;
-    color: #54ACBF;
-    margin-top: 2px;
-    font-weight: 600;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .brand .tag {
+    font-size: 8pt;
+    letter-spacing: 0.28em;
+    color: #023859;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.4;
+    max-width: 110px;
   }
   .order-meta { text-align: right; font-size: 10pt; color: #555; }
   .order-meta .label {
@@ -80,6 +81,41 @@
     font-weight: 500;
   }
   .thanks strong { font-weight: 700; }
+  .thanks .otter { font-size: 16pt; vertical-align: -2px; }
+
+  /* ---------- Repeat-customer discount banner ---------- */
+  .discount {
+    margin: 18px 0 26px;
+    padding: 14px 18px;
+    border: 1.5px dashed #54ACBF;
+    border-radius: 6px;
+    background: #54ACBF0D;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .discount .icon { font-size: 22pt; line-height: 1; }
+  .discount .body { flex: 1; }
+  .discount .label {
+    font-size: 8pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #54ACBF;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .discount .copy { color: #023859; font-size: 10.5pt; }
+  .discount .code {
+    font-family: 'Courier New', monospace;
+    background: #023859;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 11pt;
+    letter-spacing: 0.12em;
+    margin: 0 2px;
+  }
 
   /* ---------- Two-column meta (Ship to + Order details) ---------- */
   .meta-grid {
@@ -196,9 +232,9 @@
 
   {%- comment -%} ---- Header ---- {%- endcomment -%}
   <div class="header">
-    <div class="wordmark">
-      Otterseas
-      <span class="tag">Memories That Stick</span>
+    <div class="brand">
+      <img src="https://otterseas.com/logo.png" alt="Otterseas">
+      <div class="tag">Made by a diver<br>for divers</div>
     </div>
     <div class="order-meta">
       <div class="row">
@@ -214,7 +250,7 @@
 
   {%- comment -%} ---- Thanks ---- {%- endcomment -%}
   <div class="thanks">
-    Hi <strong>{{ order.customer.first_name | default: "diver" }}</strong>, thanks for your order — everything you need is packed inside.
+    <span class="otter">🦦</span> Hi <strong>{{ order.customer.first_name | default: "diver" }}</strong>, thanks for your order — everything you need is packed inside.
   </div>
 
   {%- comment -%} ---- Two-column: ship to + summary ---- {%- endcomment -%}
@@ -273,6 +309,19 @@
       <div class="total-box">
         <span class="label">Total</span>
         <span class="amount">{{ order.total_price | money }}</span>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ---- Repeat-customer discount ---- {%- endcomment -%}
+  <div class="discount">
+    <div class="icon">🦦</div>
+    <div class="body">
+      <div class="label">A thank-you from the otter</div>
+      <div class="copy">
+        Enjoy <strong>20% off</strong> your next order with code
+        <span class="code">OTTERLOVE20</span>
+        — minimum spend £10.
       </div>
     </div>
   </div>
