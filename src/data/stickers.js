@@ -1060,8 +1060,8 @@ export const STICKERS = {
     },
     {
       id: 'uk-12',
-      slug: 'sardina',
-      name: 'Sardina',
+      slug: 'sardinia',
+      name: 'Sardinia',
       region: 'UK/Europe',
       country: 'Italy',
       shopifyVariantId: '52451355001098',
@@ -1147,8 +1147,8 @@ export const STICKERS = {
     },
     {
       id: 'us-3',
-      slug: 'florida-key',
-      name: 'Florida Key',
+      slug: 'florida-keys',
+      name: 'Florida Keys',
       region: 'USA/Canada',
       country: 'USA',
       shopifyVariantId: '52451590537482',
