@@ -2,40 +2,21 @@
 ==============================================================================
   Otterseas Packing Slip — Shopify Order Printer template
 ==============================================================================
+  Lightly branded version of the standard slip:
+  - Wordmark + thin accent line at the top
+  - Brand-blue headings, otherwise neutral typography
+  - Clean order details, items table, total, ship-to
+  - Short thank-you line
+  - Brand tag in the footer
+
   How to use:
   1. In Shopify admin → Apps → Order Printer → Templates → New
   2. Paste the entire contents of this file into the template body
   3. Save and set as the default packing-slip template (optional)
 
-  Tuned for A4 portrait. Single page. Customer-facing copy lives at the
-  bottom of the file so it's easy to find and edit without touching layout.
-
-  Conditional sections:
-  - Sticker placement guide: only renders when the order contains Location
-    Stickers (matched by product.type == "Location Stickers" — adjust the
-    PRODUCT_TYPE_STICKER value below if your collection uses a different
-    name).
-  - Bundle teaser copy: switches depending on how many stickers + whether a
-    Surface Tank are in the order.
+  Tuned for A4. Single page in almost all cases.
 ==============================================================================
 {%- endcomment -%}
-
-{%- comment -%} ---- Detect order contents for conditional sections ---- {%- endcomment -%}
-{%- assign PRODUCT_TYPE_STICKER = "Location Stickers" -%}
-{%- assign SURFACE_TANK_PRODUCT_ID = 10374680805642 -%}
-
-{%- assign has_bottle = false -%}
-{%- assign has_stickers = false -%}
-{%- assign sticker_count = 0 -%}
-{%- for item in order.line_items -%}
-  {%- if item.product_id == SURFACE_TANK_PRODUCT_ID -%}
-    {%- assign has_bottle = true -%}
-  {%- endif -%}
-  {%- if item.product.type == PRODUCT_TYPE_STICKER -%}
-    {%- assign has_stickers = true -%}
-    {%- assign sticker_count = sticker_count | plus: item.quantity -%}
-  {%- endif -%}
-{%- endfor -%}
 
 <!DOCTYPE html>
 <html>
@@ -43,361 +24,265 @@
 <meta charset="utf-8">
 <title>Packing Slip · {{ order.name }}</title>
 <style>
-  @page { size: A4 portrait; margin: 12mm; }
+  @page { size: A4 portrait; margin: 14mm; }
   * { box-sizing: border-box; }
   body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #023859;
+    color: #1a1a1a;
     margin: 0;
     padding: 0;
-    font-size: 11pt;
-    line-height: 1.45;
-    background: #FAF7F1;
+    font-size: 10.5pt;
+    line-height: 1.5;
   }
-  .page { width: 100%; max-width: 186mm; margin: 0 auto; padding: 4mm 0; }
+  .page { width: 100%; max-width: 182mm; margin: 0 auto; }
 
   /* ---------- Header ---------- */
   .header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding-bottom: 8px;
-    margin-bottom: 0;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid #023859;
+    margin-bottom: 24px;
   }
   .wordmark {
-    font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 800;
-    font-size: 22pt;
+    font-size: 20pt;
     letter-spacing: 0.18em;
     color: #023859;
     text-transform: uppercase;
   }
-  .order-meta {
-    text-align: right;
-    font-size: 10pt;
-    color: #26658C;
-  }
-  .order-meta strong { color: #023859; font-weight: 700; }
-
-  .horizon {
-    height: 18px;
-    margin: 6px 0 18px;
-    background:
-      radial-gradient(ellipse 80% 18px at 50% 100%, #54ACBF22 0%, transparent 70%),
-      linear-gradient(90deg, transparent 0%, #54ACBF 50%, transparent 100%);
-    border-bottom: 1px solid #54ACBF;
-    opacity: 0.85;
-  }
-
-  /* ---------- Greeting (cursive Thanks) ---------- */
-  .greeting {
-    font-family: 'Caveat', 'Brush Script MT', cursive;
-    font-size: 26pt;
-    color: #FF6B9D;
-    line-height: 1;
-    margin: 4px 0 14px;
-  }
-  .greeting .small {
+  .wordmark .tag {
     display: block;
-    font-family: 'Helvetica Neue', sans-serif;
-    font-size: 9pt;
-    letter-spacing: 0.25em;
-    color: #26658C;
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
-
-  /* ---------- Dive log card ---------- */
-  .logbook {
-    border: 1.5px solid #023859;
-    border-radius: 6px;
-    background: white;
-    padding: 14px 18px 16px;
-    margin-bottom: 14px;
-  }
-  .logbook-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 8pt;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: #FF6B9D;
-    font-weight: 700;
-    margin-bottom: 10px;
-    border-bottom: 1px dashed #26658C55;
-    padding-bottom: 6px;
-  }
-  .log-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 4px;
-    font-size: 10.5pt;
-  }
-  .log-row .label {
-    width: 90px;
-    color: #26658C;
-    font-size: 8pt;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    padding-top: 2px;
+    font-size: 7pt;
+    letter-spacing: 0.32em;
+    color: #54ACBF;
+    margin-top: 2px;
     font-weight: 600;
   }
-  .log-row .value { flex: 1; color: #023859; font-weight: 500; }
+  .order-meta { text-align: right; font-size: 10pt; color: #555; }
+  .order-meta .label {
+    font-size: 7pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 600;
+  }
+  .order-meta .value { color: #023859; font-weight: 600; font-size: 11pt; }
+  .order-meta .row { margin-bottom: 4px; }
 
-  .cargo-list {
-    margin: 12px 0 0;
-    padding: 0;
-    list-style: none;
-    border-top: 1px dashed #26658C55;
-    padding-top: 8px;
+  /* ---------- Thanks line ---------- */
+  .thanks {
+    font-size: 12pt;
+    color: #023859;
+    margin-bottom: 22px;
+    font-weight: 500;
   }
-  .cargo-list li {
-    display: flex;
-    justify-content: space-between;
-    padding: 4px 0;
-    border-bottom: 1px dotted #26658C30;
-    font-size: 10.5pt;
-  }
-  .cargo-list li:last-child { border-bottom: none; }
-  .cargo-list .name { flex: 1; padding-right: 10px; }
-  .cargo-list .qty { color: #26658C; padding-right: 16px; }
-  .cargo-list .price { color: #023859; font-weight: 600; min-width: 60px; text-align: right; }
+  .thanks strong { font-weight: 700; }
 
-  .total-row {
+  /* ---------- Two-column meta (Ship to + Order details) ---------- */
+  .meta-grid {
     display: flex;
-    justify-content: space-between;
-    padding: 8px 0 0;
-    margin-top: 6px;
-    border-top: 1.5px solid #023859;
-    font-size: 11.5pt;
+    gap: 24px;
+    margin-bottom: 24px;
   }
-  .total-row .label {
-    color: #26658C;
+  .meta-block { flex: 1; }
+  .meta-block h3 {
     font-size: 8pt;
     letter-spacing: 0.22em;
     text-transform: uppercase;
+    color: #023859;
+    font-weight: 700;
+    margin: 0 0 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #023859;
+  }
+  .meta-block p { margin: 2px 0; font-size: 10.5pt; color: #1a1a1a; }
+
+  /* ---------- Items table ---------- */
+  .items-section h3 {
+    font-size: 8pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #023859;
+    font-weight: 700;
+    margin: 0 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #023859;
+  }
+  table.items {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+  }
+  table.items th {
+    text-align: left;
+    font-size: 8pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #888;
     font-weight: 600;
-    padding-top: 3px;
+    padding: 8px 4px;
+    border-bottom: 1px solid #ddd;
+  }
+  table.items th.qty { text-align: center; width: 60px; }
+  table.items th.price { text-align: right; width: 80px; }
+  table.items td {
+    padding: 10px 4px;
+    border-bottom: 1px dotted #ddd;
+    font-size: 10.5pt;
+    vertical-align: top;
+  }
+  table.items td.qty { text-align: center; color: #555; }
+  table.items td.price { text-align: right; font-weight: 600; }
+  table.items .variant {
+    display: block;
+    font-size: 9pt;
+    color: #777;
+    margin-top: 2px;
+  }
+
+  /* ---------- Total ---------- */
+  .total-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  .total-row .total-box {
+    min-width: 200px;
+    border-top: 2px solid #023859;
+    padding-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .total-row .label {
+    font-size: 9pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #023859;
+    font-weight: 700;
   }
   .total-row .amount {
-    color: #023859;
-    font-weight: 800;
     font-size: 14pt;
+    font-weight: 800;
+    color: #023859;
   }
 
-  /* ---------- Two-column bottom area ---------- */
-  .bottom-grid {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 14px;
-  }
-  .card {
-    flex: 1;
-    border: 1px solid #26658C44;
-    border-radius: 6px;
-    background: white;
-    padding: 12px 14px;
-  }
-  .card-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 8pt;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: #FF6B9D;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .card-body { font-size: 9.5pt; color: #26658C; line-height: 1.5; }
-
-  /* ---------- Sticker placement SVG ---------- */
-  .bottle-guide { display: flex; align-items: center; gap: 12px; }
-  .bottle-guide svg { width: 70px; height: 130px; flex-shrink: 0; }
-  .bottle-guide .text { font-size: 9pt; color: #26658C; }
-  .bottle-guide .text strong { color: #023859; }
-
-  /* ---------- Where to next ---------- */
-  .where-next { display: flex; gap: 12px; align-items: center; }
-  .where-next .qr {
-    width: 90px;
-    height: 90px;
-    flex-shrink: 0;
-    background: white;
-    border: 1px solid #26658C44;
-    border-radius: 4px;
-    padding: 4px;
-  }
-  .where-next .qr img { width: 100%; height: 100%; display: block; }
-  .where-next .copy { flex: 1; font-size: 9.5pt; color: #26658C; }
-  .where-next .copy strong { color: #023859; display: block; font-size: 10.5pt; margin-bottom: 4px; }
-  .where-next .copy .url { color: #FF6B9D; font-weight: 600; margin-top: 6px; display: block; }
-
-  /* ---------- Bundle teaser banner ---------- */
-  .bundle-teaser {
-    background: linear-gradient(90deg, #FF6B9D14, #54ACBF14);
-    border: 1px dashed #FF6B9D80;
-    border-radius: 6px;
-    padding: 10px 14px;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .bundle-teaser .emoji { font-size: 18pt; }
-  .bundle-teaser .text { flex: 1; font-size: 10pt; color: #023859; line-height: 1.4; }
-  .bundle-teaser .text strong { color: #FF6B9D; }
-
-  /* ---------- Footer note ---------- */
-  .footer-note {
+  /* ---------- Footer ---------- */
+  .footer {
+    margin-top: 36px;
+    padding-top: 14px;
+    border-top: 1px solid #ddd;
     text-align: center;
     font-size: 9pt;
-    color: #26658C;
-    border-top: 1px dashed #26658C55;
-    padding-top: 10px;
-    margin-top: 8px;
-    letter-spacing: 0.06em;
+    color: #666;
   }
-  .footer-note .brand { color: #023859; font-weight: 700; letter-spacing: 0.15em; }
+  .footer .row { margin-bottom: 4px; }
+  .footer .support a { color: #023859; font-weight: 600; text-decoration: none; }
+  .footer .brand {
+    margin-top: 10px;
+    font-size: 8pt;
+    letter-spacing: 0.32em;
+    color: #023859;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="page">
 
-  {%- comment -%} ----- Header: wordmark + order meta + horizon line ----- {%- endcomment -%}
+  {%- comment -%} ---- Header ---- {%- endcomment -%}
   <div class="header">
-    <div class="wordmark">Otterseas</div>
+    <div class="wordmark">
+      Otterseas
+      <span class="tag">Memories That Stick</span>
+    </div>
     <div class="order-meta">
-      <div><strong>Order {{ order.name }}</strong></div>
-      <div>{{ order.created_at | date: "%-d %B %Y" }}</div>
-    </div>
-  </div>
-  <div class="horizon"></div>
-
-  {%- comment -%} ----- Handwritten Thanks ----- {%- endcomment -%}
-  <div class="greeting">
-    Thanks, {{ order.customer.first_name | default: "diver" }}.
-    <span class="small">Your dive log entry is below ↓</span>
-  </div>
-
-  {%- comment -%} ----- Logbook-style order details ----- {%- endcomment -%}
-  <div class="logbook">
-    <div class="logbook-title">Dive Log · Cargo Manifest</div>
-
-    <div class="log-row">
-      <div class="label">Dive No.</div>
-      <div class="value">{{ order.name | remove: "#" }}</div>
-    </div>
-    <div class="log-row">
-      <div class="label">Logged</div>
-      <div class="value">{{ order.created_at | date: "%-d %B %Y" }}</div>
-    </div>
-    <div class="log-row">
-      <div class="label">Diver</div>
-      <div class="value">
-        {{ order.shipping_address.first_name }} {{ order.shipping_address.last_name }}
+      <div class="row">
+        <div class="label">Order</div>
+        <div class="value">{{ order.name }}</div>
+      </div>
+      <div class="row">
+        <div class="label">Date</div>
+        <div class="value">{{ order.created_at | date: "%-d %B %Y" }}</div>
       </div>
     </div>
-    <div class="log-row">
-      <div class="label">Surface</div>
-      <div class="value">
-        {{ order.shipping_address.address1 }}{% if order.shipping_address.address2 %}, {{ order.shipping_address.address2 }}{% endif %}<br>
-        {{ order.shipping_address.city }}{% if order.shipping_address.province %}, {{ order.shipping_address.province }}{% endif %} {{ order.shipping_address.zip }}<br>
-        {{ order.shipping_address.country }}
-      </div>
-    </div>
+  </div>
 
-    <ul class="cargo-list">
-      {%- for line in order.line_items -%}
-        <li>
-          <span class="name">
-            {{ line.title }}
-            {%- if line.variant_title and line.variant_title != "Default Title" %} · {{ line.variant_title }}{%- endif -%}
-          </span>
-          <span class="qty">× {{ line.quantity }}</span>
-          <span class="price">{{ line.line_price | money }}</span>
-        </li>
-      {%- endfor -%}
-    </ul>
+  {%- comment -%} ---- Thanks ---- {%- endcomment -%}
+  <div class="thanks">
+    Hi <strong>{{ order.customer.first_name | default: "diver" }}</strong>, thanks for your order — everything you need is packed inside.
+  </div>
+
+  {%- comment -%} ---- Two-column: ship to + summary ---- {%- endcomment -%}
+  <div class="meta-grid">
+    <div class="meta-block">
+      <h3>Ship to</h3>
+      <p><strong>{{ order.shipping_address.first_name }} {{ order.shipping_address.last_name }}</strong></p>
+      <p>{{ order.shipping_address.address1 }}</p>
+      {%- if order.shipping_address.address2 -%}
+        <p>{{ order.shipping_address.address2 }}</p>
+      {%- endif -%}
+      <p>
+        {{ order.shipping_address.city }}{% if order.shipping_address.province %}, {{ order.shipping_address.province }}{% endif %} {{ order.shipping_address.zip }}
+      </p>
+      <p>{{ order.shipping_address.country }}</p>
+    </div>
+    <div class="meta-block">
+      <h3>Order summary</h3>
+      <p><strong>Order:</strong> {{ order.name }}</p>
+      <p><strong>Date:</strong> {{ order.created_at | date: "%-d %B %Y" }}</p>
+      <p><strong>Items:</strong> {{ order.line_items | sum: "quantity" }}</p>
+      {%- if order.shipping_method -%}
+        <p><strong>Shipping:</strong> {{ order.shipping_method.title }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} ---- Items table ---- {%- endcomment -%}
+  <div class="items-section">
+    <h3>Items</h3>
+    <table class="items">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th class="qty">Qty</th>
+          <th class="price">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for line in order.line_items -%}
+          <tr>
+            <td>
+              {{ line.title }}
+              {%- if line.variant_title and line.variant_title != "Default Title" %}
+                <span class="variant">{{ line.variant_title }}</span>
+              {%- endif -%}
+            </td>
+            <td class="qty">× {{ line.quantity }}</td>
+            <td class="price">{{ line.line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
 
     <div class="total-row">
-      <div class="label">Depth (total)</div>
-      <div class="amount">{{ order.total_price | money }}</div>
+      <div class="total-box">
+        <span class="label">Total</span>
+        <span class="amount">{{ order.total_price | money }}</span>
+      </div>
     </div>
   </div>
 
-  {%- comment -%} ----- Bundle teaser — conditional copy ----- {%- endcomment -%}
-  {%- if has_bottle and sticker_count >= 8 -%}
-    <div class="bundle-teaser">
-      <div class="emoji">✅</div>
-      <div class="text">
-        <strong>Bundle locked in.</strong> Your first 8 stickers are on us. Keep stacking — every sticker beyond hits our best per-unit rate.
-      </div>
+  {%- comment -%} ---- Footer ---- {%- endcomment -%}
+  <div class="footer">
+    <div class="row">
+      Questions? <span class="support"><a href="mailto:support@otterseas.com">support@otterseas.com</a></span> · 30-day returns
     </div>
-  {%- elsif has_bottle and sticker_count > 0 -%}
-    <div class="bundle-teaser">
-      <div class="emoji">🎁</div>
-      <div class="text">
-        You have {{ sticker_count }} of your 8 <strong>free bundle stickers</strong>. Pick {{ 8 | minus: sticker_count }} more next time — included with your Surface Tank.
-      </div>
-    </div>
-  {%- elsif has_stickers and has_bottle == false -%}
-    <div class="bundle-teaser">
-      <div class="emoji">🎁</div>
-      <div class="text">
-        <strong>Add a Surface Tank</strong> next time and your first 8 stickers are free — a £16 saving on the bundle.
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ----- Two-column: sticker guide + QR ----- {%- endcomment -%}
-  <div class="bottom-grid">
-
-    {%- if has_stickers -%}
-      <div class="card">
-        <div class="card-title">Sticker Placement Guide</div>
-        <div class="bottle-guide">
-          <svg viewBox="0 0 70 130" xmlns="http://www.w3.org/2000/svg">
-            <!-- Surface Tank silhouette -->
-            <rect x="12" y="8" width="46" height="10" rx="2" fill="none" stroke="#023859" stroke-width="1.5"/>
-            <rect x="18" y="2" width="34" height="6" rx="1.5" fill="none" stroke="#023859" stroke-width="1.2"/>
-            <path d="M8 22 L8 118 Q8 124 14 124 L56 124 Q62 124 62 118 L62 22 Z" fill="none" stroke="#023859" stroke-width="1.5"/>
-            <rect x="8" y="120" width="54" height="4" fill="#54ACBF" opacity="0.4"/>
-            <!-- 8 numbered slots -->
-            {%- for i in (1..8) -%}
-              {%- assign row = i | minus: 1 | divided_by: 2 -%}
-              {%- assign col = i | minus: 1 | modulo: 2 -%}
-              {%- assign cx = col | times: 22 | plus: 18 -%}
-              {%- assign cy = row | times: 22 | plus: 32 -%}
-              <circle cx="{{ cx }}" cy="{{ cy }}" r="8" fill="none" stroke="#FF6B9D" stroke-width="1.2" stroke-dasharray="2,2"/>
-              <text x="{{ cx }}" y="{{ cy | plus: 3 }}" text-anchor="middle" font-family="Helvetica" font-size="7" font-weight="700" fill="#FF6B9D">{{ i }}</text>
-            {%- endfor -%}
-          </svg>
-          <div class="text">
-            Apply to a <strong>clean, dry</strong> bottle. Press firmly from centre out to avoid bubbles. <strong>Cure 24 hrs</strong> before submersion. Hand-wash only.
-          </div>
-        </div>
-      </div>
-    {%- endif -%}
-
-    <div class="card">
-      <div class="card-title">Where to next?</div>
-      <div class="where-next">
-        <div class="qr">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?data=https%3A%2F%2Fotterseas.com%2Fstickers&size=200x200&margin=2" alt="Scan to suggest a dive site">
-        </div>
-        <div class="copy">
-          <strong>Logged this trip? Plan the next.</strong>
-          Suggest your next dive site — we add new locations every month.
-          <span class="url">otterseas.com/stickers</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  {%- comment -%} ----- Footer ----- {%- endcomment -%}
-  <div class="footer-note">
-    Questions? <strong>support@otterseas.com</strong> · 30-day returns · <span class="brand">OTTERSEAS · MEMORIES THAT STICK</span>
+    <div class="brand">Otterseas · otterseas.com</div>
   </div>
 
 </div>

@@ -1,19 +1,15 @@
 <!--
-  Static preview of the Otterseas packing slip — same HTML/CSS as the
-  Liquid template, with example order data inlined so you can iterate on
-  layout without touching Shopify admin.
+  Static preview of the Otterseas packing slip. Same HTML/CSS as the
+  Liquid template, with example order data inlined so you can iterate
+  on layout without touching Shopify admin.
 
   How to preview:
-    - Open this file directly in a browser (double-click in Explorer, or
+    - Open this file directly in a browser (double-click in Explorer or
       drag onto Chrome/Edge/Safari)
-    - To see the print layout: File → Print → "Save as PDF" or use
+    - To see the print layout: File → Print → "Save as PDF" or use the
       browser print preview
 
-  To swap which scenario renders, change the data block in the inline
-  <script> at the top. Three sample scenarios are pre-built:
-    - "bundle"      : 1 Surface Tank + 9 stickers (bundle locked in)
-    - "bottle_partial" : 1 Surface Tank + 4 stickers (4 of 8 free used)
-    - "stickers_only"  : 6 stickers, no bottle (tease the bundle)
+  Two sample scenarios pre-built; toggle from the bar at the top.
 -->
 <!DOCTYPE html>
 <html>
@@ -21,15 +17,15 @@
 <meta charset="utf-8">
 <title>Packing Slip Preview</title>
 <style>
-  @page { size: A4 portrait; margin: 12mm; }
+  @page { size: A4 portrait; margin: 14mm; }
   * { box-sizing: border-box; }
   body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #023859;
+    color: #1a1a1a;
     margin: 0;
     padding: 0;
-    font-size: 11pt;
-    line-height: 1.45;
+    font-size: 10.5pt;
+    line-height: 1.5;
     background: #d6d3cc;
   }
   .scenario-switcher {
@@ -37,7 +33,7 @@
     color: white;
     padding: 14px 20px;
     text-align: center;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Helvetica Neue', sans-serif;
     font-size: 12px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -61,146 +57,152 @@
     width: 210mm;
     min-height: 297mm;
     margin: 20px auto;
-    padding: 12mm;
-    background: #FAF7F1;
+    padding: 14mm;
+    background: white;
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   }
-  .page { width: 100%; max-width: 186mm; margin: 0 auto; padding: 4mm 0; }
+  .page { width: 100%; max-width: 182mm; margin: 0 auto; }
 
   @media print {
-    body { background: #FAF7F1; }
+    body { background: white; }
     .scenario-switcher { display: none; }
     .sheet { box-shadow: none; margin: 0; padding: 0; min-height: auto; }
   }
 
   /* ---------- Header ---------- */
-  .header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 8px; }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid #023859;
+    margin-bottom: 24px;
+  }
   .wordmark {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800; font-size: 22pt; letter-spacing: 0.18em;
-    color: #023859; text-transform: uppercase;
+    font-weight: 800;
+    font-size: 20pt;
+    letter-spacing: 0.18em;
+    color: #023859;
+    text-transform: uppercase;
   }
-  .order-meta { text-align: right; font-size: 10pt; color: #26658C; }
-  .order-meta strong { color: #023859; font-weight: 700; }
-
-  .horizon {
-    height: 18px;
-    margin: 6px 0 18px;
-    background:
-      radial-gradient(ellipse 80% 18px at 50% 100%, #54ACBF22 0%, transparent 70%),
-      linear-gradient(90deg, transparent 0%, #54ACBF 50%, transparent 100%);
-    border-bottom: 1px solid #54ACBF;
-    opacity: 0.85;
-  }
-
-  .greeting {
-    font-family: 'Caveat', 'Brush Script MT', cursive;
-    font-size: 26pt; color: #FF6B9D; line-height: 1; margin: 4px 0 14px;
-  }
-  .greeting .small {
+  .wordmark .tag {
     display: block;
-    font-family: 'Helvetica Neue', sans-serif;
-    font-size: 9pt; letter-spacing: 0.25em; color: #26658C;
-    text-transform: uppercase; margin-top: 4px;
+    font-size: 7pt;
+    letter-spacing: 0.32em;
+    color: #54ACBF;
+    margin-top: 2px;
+    font-weight: 600;
   }
+  .order-meta { text-align: right; font-size: 10pt; color: #555; }
+  .order-meta .label {
+    font-size: 7pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 600;
+  }
+  .order-meta .value { color: #023859; font-weight: 600; font-size: 11pt; }
+  .order-meta .row { margin-bottom: 4px; }
 
-  .logbook {
-    border: 1.5px solid #023859; border-radius: 6px;
-    background: white; padding: 14px 18px 16px; margin-bottom: 14px;
+  .thanks {
+    font-size: 12pt;
+    color: #023859;
+    margin-bottom: 22px;
+    font-weight: 500;
   }
-  .logbook-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 8pt; letter-spacing: 0.3em; text-transform: uppercase;
-    color: #FF6B9D; font-weight: 700; margin-bottom: 10px;
-    border-bottom: 1px dashed #26658C55; padding-bottom: 6px;
-  }
-  .log-row { display: flex; gap: 8px; margin-bottom: 4px; font-size: 10.5pt; }
-  .log-row .label {
-    width: 90px; color: #26658C; font-size: 8pt;
-    letter-spacing: 0.18em; text-transform: uppercase;
-    padding-top: 2px; font-weight: 600;
-  }
-  .log-row .value { flex: 1; color: #023859; font-weight: 500; }
+  .thanks strong { font-weight: 700; }
 
-  .cargo-list {
-    margin: 12px 0 0; padding: 0; list-style: none;
-    border-top: 1px dashed #26658C55; padding-top: 8px;
+  .meta-grid { display: flex; gap: 24px; margin-bottom: 24px; }
+  .meta-block { flex: 1; }
+  .meta-block h3 {
+    font-size: 8pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #023859;
+    font-weight: 700;
+    margin: 0 0 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #023859;
   }
-  .cargo-list li {
-    display: flex; justify-content: space-between;
-    padding: 4px 0; border-bottom: 1px dotted #26658C30;
+  .meta-block p { margin: 2px 0; font-size: 10.5pt; color: #1a1a1a; }
+
+  .items-section h3 {
+    font-size: 8pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #023859;
+    font-weight: 700;
+    margin: 0 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #023859;
+  }
+  table.items { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  table.items th {
+    text-align: left;
+    font-size: 8pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 600;
+    padding: 8px 4px;
+    border-bottom: 1px solid #ddd;
+  }
+  table.items th.qty { text-align: center; width: 60px; }
+  table.items th.price { text-align: right; width: 80px; }
+  table.items td {
+    padding: 10px 4px;
+    border-bottom: 1px dotted #ddd;
     font-size: 10.5pt;
+    vertical-align: top;
   }
-  .cargo-list li:last-child { border-bottom: none; }
-  .cargo-list .name { flex: 1; padding-right: 10px; }
-  .cargo-list .qty { color: #26658C; padding-right: 16px; }
-  .cargo-list .price { color: #023859; font-weight: 600; min-width: 60px; text-align: right; }
+  table.items td.qty { text-align: center; color: #555; }
+  table.items td.price { text-align: right; font-weight: 600; }
+  table.items .variant { display: block; font-size: 9pt; color: #777; margin-top: 2px; }
 
-  .total-row {
-    display: flex; justify-content: space-between;
-    padding: 8px 0 0; margin-top: 6px;
-    border-top: 1.5px solid #023859; font-size: 11.5pt;
+  .total-row { display: flex; justify-content: flex-end; margin-top: 10px; }
+  .total-row .total-box {
+    min-width: 200px;
+    border-top: 2px solid #023859;
+    padding-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
   }
   .total-row .label {
-    color: #26658C; font-size: 8pt; letter-spacing: 0.22em;
-    text-transform: uppercase; font-weight: 600; padding-top: 3px;
+    font-size: 9pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #023859;
+    font-weight: 700;
   }
-  .total-row .amount { color: #023859; font-weight: 800; font-size: 14pt; }
+  .total-row .amount { font-size: 14pt; font-weight: 800; color: #023859; }
 
-  .bottom-grid { display: flex; gap: 12px; margin-bottom: 14px; }
-  .card {
-    flex: 1; border: 1px solid #26658C44; border-radius: 6px;
-    background: white; padding: 12px 14px;
+  .footer {
+    margin-top: 36px;
+    padding-top: 14px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    font-size: 9pt;
+    color: #666;
   }
-  .card-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 8pt; letter-spacing: 0.25em; text-transform: uppercase;
-    color: #FF6B9D; font-weight: 700; margin-bottom: 8px;
+  .footer .row { margin-bottom: 4px; }
+  .footer .support a { color: #023859; font-weight: 600; text-decoration: none; }
+  .footer .brand {
+    margin-top: 10px;
+    font-size: 8pt;
+    letter-spacing: 0.32em;
+    color: #023859;
+    font-weight: 700;
+    text-transform: uppercase;
   }
-
-  .bottle-guide { display: flex; align-items: center; gap: 12px; }
-  .bottle-guide svg { width: 70px; height: 130px; flex-shrink: 0; }
-  .bottle-guide .text { font-size: 9pt; color: #26658C; }
-  .bottle-guide .text strong { color: #023859; }
-
-  .where-next { display: flex; gap: 12px; align-items: center; }
-  .where-next .qr {
-    width: 90px; height: 90px; flex-shrink: 0;
-    background: white; border: 1px solid #26658C44;
-    border-radius: 4px; padding: 4px;
-  }
-  .where-next .qr img { width: 100%; height: 100%; display: block; }
-  .where-next .copy { flex: 1; font-size: 9.5pt; color: #26658C; }
-  .where-next .copy strong { color: #023859; display: block; font-size: 10.5pt; margin-bottom: 4px; }
-  .where-next .copy .url { color: #FF6B9D; font-weight: 600; margin-top: 6px; display: block; }
-
-  .bundle-teaser {
-    background: linear-gradient(90deg, #FF6B9D14, #54ACBF14);
-    border: 1px dashed #FF6B9D80; border-radius: 6px;
-    padding: 10px 14px; margin-bottom: 14px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .bundle-teaser .emoji { font-size: 18pt; }
-  .bundle-teaser .text { flex: 1; font-size: 10pt; color: #023859; line-height: 1.4; }
-  .bundle-teaser .text strong { color: #FF6B9D; }
-
-  .footer-note {
-    text-align: center; font-size: 9pt; color: #26658C;
-    border-top: 1px dashed #26658C55; padding-top: 10px;
-    margin-top: 8px; letter-spacing: 0.06em;
-  }
-  .footer-note .brand { color: #023859; font-weight: 700; letter-spacing: 0.15em; }
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="scenario-switcher">
   Scenario:
-  <button data-scenario="bundle">Bundle (bottle + 9 stickers)</button>
-  <button data-scenario="bottle_partial">Bottle + 4 stickers</button>
-  <button data-scenario="stickers_only">Stickers only (tease bundle)</button>
+  <button data-scenario="bottle_stickers">Bottle + 3 stickers</button>
+  <button data-scenario="stickers_only">Stickers only</button>
 </div>
 
 <div class="sheet">
@@ -208,12 +210,8 @@
 </div>
 
 <script>
-  // ===========================================================
-  //   Sample orders — three scenarios for visually validating the
-  //   conditional sections in the Liquid template.
-  // ===========================================================
   const SCENARIOS = {
-    bundle: {
+    bottle_stickers: {
       name: '#1042',
       created_at: '12 May 2026',
       customer: { first_name: 'Daniel' },
@@ -223,41 +221,17 @@
         city: 'Brighton', province: '', zip: 'BN1 3JT',
         country: 'United Kingdom',
       },
+      shipping_method: 'Royal Mail Tracked 48',
       line_items: [
-        { title: 'The Surface Tank', variant_title: 'Deep Ocean', quantity: 1, line_price: '£35.00', is_bottle: true },
-        { title: 'Komodo', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Raja Ampat', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Sardinia', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Maldives', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Palau', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Banda Sea', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Anilao', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Cocos Island', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Galápagos', variant_title: '', quantity: 1, line_price: '£1.75', is_sticker: true },
+        { title: 'The Surface Tank', variant_title: 'Deep Ocean', quantity: 1, line_price: '£35.00' },
+        { title: 'Komodo', variant_title: '', quantity: 1, line_price: '£2.00' },
+        { title: 'Raja Ampat', variant_title: '', quantity: 1, line_price: '£2.00' },
+        { title: 'Sardinia', variant_title: '', quantity: 1, line_price: '£2.00' },
       ],
-      total_price: '£36.75',
-    },
-    bottle_partial: {
-      name: '#1043',
-      created_at: '12 May 2026',
-      customer: { first_name: 'Sarah' },
-      shipping_address: {
-        first_name: 'Sarah', last_name: 'Chen',
-        address1: 'Apt 4B, 200 Pier St', address2: '',
-        city: 'San Francisco', province: 'CA', zip: '94107',
-        country: 'United States',
-      },
-      line_items: [
-        { title: 'The Surface Tank', variant_title: 'Arctic White', quantity: 1, line_price: '£35.00', is_bottle: true },
-        { title: 'Cozumel', variant_title: '', quantity: 1, line_price: '£0.00', is_sticker: true },
-        { title: 'Bahamas', variant_title: '', quantity: 1, line_price: '£0.00', is_sticker: true },
-        { title: 'Hawaii', variant_title: '', quantity: 1, line_price: '£0.00', is_sticker: true },
-        { title: 'Florida Keys', variant_title: '', quantity: 1, line_price: '£0.00', is_sticker: true },
-      ],
-      total_price: '£35.00',
+      total_price: '£41.00',
     },
     stickers_only: {
-      name: '#1044',
+      name: '#1043',
       created_at: '12 May 2026',
       customer: { first_name: 'Marcus' },
       shipping_address: {
@@ -266,143 +240,99 @@
         city: 'Stockholm', province: '', zip: '11340',
         country: 'Sweden',
       },
+      shipping_method: 'International Tracked',
       line_items: [
-        { title: 'Silfra', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Iceland · Westman Islands', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Norway · Saltstraumen', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Scapa Flow', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Cornwall', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
-        { title: 'Sardinia', variant_title: '', quantity: 1, line_price: '£2.00', is_sticker: true },
+        { title: 'Silfra', variant_title: '', quantity: 1, line_price: '£2.00' },
+        { title: 'Scapa Flow', variant_title: '', quantity: 1, line_price: '£2.00' },
+        { title: 'Cornwall', variant_title: '', quantity: 1, line_price: '£2.00' },
+        { title: 'Sardinia', variant_title: '', quantity: 1, line_price: '£2.00' },
       ],
-      total_price: '£12.00',
+      total_price: '£8.00',
     },
   };
 
   function renderSlip(scenarioKey) {
     const order = SCENARIOS[scenarioKey];
-    const has_bottle = order.line_items.some(l => l.is_bottle);
-    const has_stickers = order.line_items.some(l => l.is_sticker);
-    const sticker_count = order.line_items.filter(l => l.is_sticker).reduce((n, l) => n + l.quantity, 0);
-
-    let bundleHtml = '';
-    if (has_bottle && sticker_count >= 8) {
-      bundleHtml = `
-        <div class="bundle-teaser">
-          <div class="emoji">✅</div>
-          <div class="text"><strong>Bundle locked in.</strong> Your first 8 stickers are on us. Keep stacking — every sticker beyond hits our best per-unit rate.</div>
-        </div>`;
-    } else if (has_bottle && sticker_count > 0) {
-      bundleHtml = `
-        <div class="bundle-teaser">
-          <div class="emoji">🎁</div>
-          <div class="text">You have ${sticker_count} of your 8 <strong>free bundle stickers</strong>. Pick ${8 - sticker_count} more next time — included with your Surface Tank.</div>
-        </div>`;
-    } else if (has_stickers && !has_bottle) {
-      bundleHtml = `
-        <div class="bundle-teaser">
-          <div class="emoji">🎁</div>
-          <div class="text"><strong>Add a Surface Tank</strong> next time and your first 8 stickers are free — a £16 saving on the bundle.</div>
-        </div>`;
-    }
-
-    let stickerCardHtml = '';
-    if (has_stickers) {
-      const slots = [];
-      for (let i = 1; i <= 8; i++) {
-        const row = Math.floor((i - 1) / 2);
-        const col = (i - 1) % 2;
-        const cx = col * 22 + 18;
-        const cy = row * 22 + 32;
-        slots.push(`
-          <circle cx="${cx}" cy="${cy}" r="8" fill="none" stroke="#FF6B9D" stroke-width="1.2" stroke-dasharray="2,2"/>
-          <text x="${cx}" y="${cy + 3}" text-anchor="middle" font-family="Helvetica" font-size="7" font-weight="700" fill="#FF6B9D">${i}</text>
-        `);
-      }
-      stickerCardHtml = `
-        <div class="card">
-          <div class="card-title">Sticker Placement Guide</div>
-          <div class="bottle-guide">
-            <svg viewBox="0 0 70 130" xmlns="http://www.w3.org/2000/svg">
-              <rect x="12" y="8" width="46" height="10" rx="2" fill="none" stroke="#023859" stroke-width="1.5"/>
-              <rect x="18" y="2" width="34" height="6" rx="1.5" fill="none" stroke="#023859" stroke-width="1.2"/>
-              <path d="M8 22 L8 118 Q8 124 14 124 L56 124 Q62 124 62 118 L62 22 Z" fill="none" stroke="#023859" stroke-width="1.5"/>
-              <rect x="8" y="120" width="54" height="4" fill="#54ACBF" opacity="0.4"/>
-              ${slots.join('')}
-            </svg>
-            <div class="text">
-              Apply to a <strong>clean, dry</strong> bottle. Press firmly from centre out to avoid bubbles. <strong>Cure 24 hrs</strong> before submersion. Hand-wash only.
-            </div>
-          </div>
-        </div>`;
-    }
-
+    const totalItems = order.line_items.reduce((n, l) => n + l.quantity, 0);
     const cargo = order.line_items.map(l => `
-      <li>
-        <span class="name">${l.title}${l.variant_title ? ` · ${l.variant_title}` : ''}</span>
-        <span class="qty">× ${l.quantity}</span>
-        <span class="price">${l.line_price}</span>
-      </li>
+      <tr>
+        <td>
+          ${l.title}
+          ${l.variant_title ? `<span class="variant">${l.variant_title}</span>` : ''}
+        </td>
+        <td class="qty">× ${l.quantity}</td>
+        <td class="price">${l.line_price}</td>
+      </tr>
     `).join('');
 
-    const html = `
+    document.getElementById('slip').innerHTML = `
       <div class="header">
-        <div class="wordmark">Otterseas</div>
+        <div class="wordmark">
+          Otterseas
+          <span class="tag">Memories That Stick</span>
+        </div>
         <div class="order-meta">
-          <div><strong>Order ${order.name}</strong></div>
-          <div>${order.created_at}</div>
-        </div>
-      </div>
-      <div class="horizon"></div>
-
-      <div class="greeting">
-        Thanks, ${order.customer.first_name}.
-        <span class="small">Your dive log entry is below ↓</span>
-      </div>
-
-      <div class="logbook">
-        <div class="logbook-title">Dive Log · Cargo Manifest</div>
-        <div class="log-row"><div class="label">Dive No.</div><div class="value">${order.name.replace('#','')}</div></div>
-        <div class="log-row"><div class="label">Logged</div><div class="value">${order.created_at}</div></div>
-        <div class="log-row"><div class="label">Diver</div><div class="value">${order.shipping_address.first_name} ${order.shipping_address.last_name}</div></div>
-        <div class="log-row">
-          <div class="label">Surface</div>
-          <div class="value">
-            ${order.shipping_address.address1}${order.shipping_address.address2 ? ', ' + order.shipping_address.address2 : ''}<br>
-            ${order.shipping_address.city}${order.shipping_address.province ? ', ' + order.shipping_address.province : ''} ${order.shipping_address.zip}<br>
-            ${order.shipping_address.country}
+          <div class="row">
+            <div class="label">Order</div>
+            <div class="value">${order.name}</div>
+          </div>
+          <div class="row">
+            <div class="label">Date</div>
+            <div class="value">${order.created_at}</div>
           </div>
         </div>
-        <ul class="cargo-list">${cargo}</ul>
+      </div>
+
+      <div class="thanks">
+        Hi <strong>${order.customer.first_name}</strong>, thanks for your order — everything you need is packed inside.
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-block">
+          <h3>Ship to</h3>
+          <p><strong>${order.shipping_address.first_name} ${order.shipping_address.last_name}</strong></p>
+          <p>${order.shipping_address.address1}</p>
+          ${order.shipping_address.address2 ? `<p>${order.shipping_address.address2}</p>` : ''}
+          <p>${order.shipping_address.city}${order.shipping_address.province ? ', ' + order.shipping_address.province : ''} ${order.shipping_address.zip}</p>
+          <p>${order.shipping_address.country}</p>
+        </div>
+        <div class="meta-block">
+          <h3>Order summary</h3>
+          <p><strong>Order:</strong> ${order.name}</p>
+          <p><strong>Date:</strong> ${order.created_at}</p>
+          <p><strong>Items:</strong> ${totalItems}</p>
+          ${order.shipping_method ? `<p><strong>Shipping:</strong> ${order.shipping_method}</p>` : ''}
+        </div>
+      </div>
+
+      <div class="items-section">
+        <h3>Items</h3>
+        <table class="items">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th class="qty">Qty</th>
+              <th class="price">Price</th>
+            </tr>
+          </thead>
+          <tbody>${cargo}</tbody>
+        </table>
+
         <div class="total-row">
-          <div class="label">Depth (total)</div>
-          <div class="amount">${order.total_price}</div>
-        </div>
-      </div>
-
-      ${bundleHtml}
-
-      <div class="bottom-grid">
-        ${stickerCardHtml}
-        <div class="card">
-          <div class="card-title">Where to next?</div>
-          <div class="where-next">
-            <div class="qr">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?data=https%3A%2F%2Fotterseas.com%2Fstickers&size=200x200&margin=2" alt="Scan to suggest a dive site">
-            </div>
-            <div class="copy">
-              <strong>Logged this trip? Plan the next.</strong>
-              Suggest your next dive site — we add new locations every month.
-              <span class="url">otterseas.com/stickers</span>
-            </div>
+          <div class="total-box">
+            <span class="label">Total</span>
+            <span class="amount">${order.total_price}</span>
           </div>
         </div>
       </div>
 
-      <div class="footer-note">
-        Questions? <strong>support@otterseas.com</strong> · 30-day returns · <span class="brand">OTTERSEAS · MEMORIES THAT STICK</span>
+      <div class="footer">
+        <div class="row">
+          Questions? <span class="support"><a href="mailto:support@otterseas.com">support@otterseas.com</a></span> · 30-day returns
+        </div>
+        <div class="brand">Otterseas · otterseas.com</div>
       </div>
     `;
-    document.getElementById('slip').innerHTML = html;
 
     document.querySelectorAll('.scenario-switcher button').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.scenario === scenarioKey);
@@ -413,7 +343,7 @@
     btn.addEventListener('click', () => renderSlip(btn.dataset.scenario));
   });
 
-  renderSlip('bundle');
+  renderSlip('bottle_stickers');
 </script>
 
 </body>
