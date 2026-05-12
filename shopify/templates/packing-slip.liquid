@@ -2,12 +2,9 @@
 ==============================================================================
   Otterseas Packing Slip — Shopify Order Printer template
 ==============================================================================
-  Lightly branded version of the standard slip:
-  - Wordmark + thin accent line at the top
-  - Brand-blue headings, otherwise neutral typography
-  - Clean order details, items table, total, ship-to
-  - Short thank-you line
-  - Brand tag in the footer
+  Centred hero (logo + Thank you, {name} + tagline), then a clean order
+  block, items table with product thumbnails, total, OTTERLOVE20 banner,
+  footer.
 
   How to use:
   1. In Shopify admin → Apps → Order Printer → Templates → New
@@ -36,85 +33,55 @@
   }
   .page { width: 100%; max-width: 182mm; margin: 0 auto; }
 
-  /* ---------- Header ---------- */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 12px;
+  /* ---------- Hero (centred logo + thank you + tagline) ---------- */
+  .hero {
+    text-align: center;
+    padding: 4mm 0 8mm;
     border-bottom: 1.5px solid #023859;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
   }
-  .brand { display: flex; align-items: center; gap: 14px; }
-  .brand img {
-    width: 64px;
-    height: 64px;
+  .hero img.logo {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 12px;
     display: block;
     object-fit: contain;
-    flex-shrink: 0;
   }
-  .brand .tag {
-    font-size: 8pt;
-    letter-spacing: 0.28em;
+  .hero .thank-you {
+    font-size: 22pt;
+    font-weight: 700;
     color: #023859;
+    margin: 0 0 6px;
+    line-height: 1.1;
+  }
+  .hero .thank-you .otter { font-size: 18pt; vertical-align: -1px; margin-left: 4px; }
+  .hero .tagline {
+    font-size: 8pt;
+    letter-spacing: 0.32em;
+    color: #54ACBF;
     font-weight: 700;
     text-transform: uppercase;
-    line-height: 1.4;
-    max-width: 110px;
   }
-  .order-meta { text-align: right; font-size: 10pt; color: #555; }
-  .order-meta .label {
+
+  /* ---------- Order meta row ---------- */
+  .order-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 22px;
+    font-size: 10pt;
+  }
+  .order-meta .item .label {
     font-size: 7pt;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #888;
     font-weight: 600;
+    margin-right: 8px;
   }
-  .order-meta .value { color: #023859; font-weight: 600; font-size: 11pt; }
-  .order-meta .row { margin-bottom: 4px; }
-
-  /* ---------- Thanks line ---------- */
-  .thanks {
-    font-size: 12pt;
+  .order-meta .item .value {
     color: #023859;
-    margin-bottom: 22px;
-    font-weight: 500;
-  }
-  .thanks strong { font-weight: 700; }
-  .thanks .otter { font-size: 16pt; vertical-align: -2px; }
-
-  /* ---------- Repeat-customer discount banner ---------- */
-  .discount {
-    margin: 18px 0 26px;
-    padding: 14px 18px;
-    border: 1.5px dashed #54ACBF;
-    border-radius: 6px;
-    background: #54ACBF0D;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .discount .icon { font-size: 22pt; line-height: 1; }
-  .discount .body { flex: 1; }
-  .discount .label {
-    font-size: 8pt;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: #54ACBF;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-  .discount .copy { color: #023859; font-size: 10.5pt; }
-  .discount .code {
-    font-family: 'Courier New', monospace;
-    background: #023859;
-    color: white;
-    padding: 3px 10px;
-    border-radius: 3px;
     font-weight: 700;
     font-size: 11pt;
-    letter-spacing: 0.12em;
-    margin: 0 2px;
   }
 
   /* ---------- Two-column meta (Ship to + Order details) ---------- */
@@ -147,11 +114,7 @@
     padding-bottom: 4px;
     border-bottom: 1px solid #023859;
   }
-  table.items {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 16px;
-  }
+  table.items { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
   table.items th {
     text-align: left;
     font-size: 8pt;
@@ -162,22 +125,38 @@
     padding: 8px 4px;
     border-bottom: 1px solid #ddd;
   }
+  table.items th.thumb { width: 48px; }
   table.items th.qty { text-align: center; width: 60px; }
   table.items th.price { text-align: right; width: 80px; }
   table.items td {
     padding: 10px 4px;
     border-bottom: 1px dotted #ddd;
     font-size: 10.5pt;
-    vertical-align: top;
+    vertical-align: middle;
+  }
+  table.items td.thumb {
+    width: 48px;
+    padding: 6px 8px 6px 0;
+  }
+  table.items td.thumb .img-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    background: #f5f3ee;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  table.items td.thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   table.items td.qty { text-align: center; color: #555; }
   table.items td.price { text-align: right; font-weight: 600; }
-  table.items .variant {
-    display: block;
-    font-size: 9pt;
-    color: #777;
-    margin-top: 2px;
-  }
+  table.items .variant { display: block; font-size: 9pt; color: #777; margin-top: 2px; }
 
   /* ---------- Total ---------- */
   .total-row {
@@ -206,9 +185,43 @@
     color: #023859;
   }
 
+  /* ---------- Repeat-customer discount banner ---------- */
+  .discount {
+    margin: 24px 0 26px;
+    padding: 14px 18px;
+    border: 1.5px dashed #54ACBF;
+    border-radius: 6px;
+    background: #54ACBF0D;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .discount .icon { font-size: 22pt; line-height: 1; }
+  .discount .body { flex: 1; }
+  .discount .label {
+    font-size: 8pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #54ACBF;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .discount .copy { color: #023859; font-size: 10.5pt; }
+  .discount .code {
+    font-family: 'Courier New', monospace;
+    background: #023859;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 11pt;
+    letter-spacing: 0.12em;
+    margin: 0 2px;
+  }
+
   /* ---------- Footer ---------- */
   .footer {
-    margin-top: 36px;
+    margin-top: 30px;
     padding-top: 14px;
     border-top: 1px solid #ddd;
     text-align: center;
@@ -230,27 +243,23 @@
 <body>
 <div class="page">
 
-  {%- comment -%} ---- Header ---- {%- endcomment -%}
-  <div class="header">
-    <div class="brand">
-      <img src="https://otterseas.com/logo.png" alt="Otterseas">
-      <div class="tag">Made by a diver<br>for divers</div>
-    </div>
-    <div class="order-meta">
-      <div class="row">
-        <div class="label">Order</div>
-        <div class="value">{{ order.name }}</div>
-      </div>
-      <div class="row">
-        <div class="label">Date</div>
-        <div class="value">{{ order.created_at | date: "%-d %B %Y" }}</div>
-      </div>
-    </div>
+  {%- comment -%} ---- Hero: logo + thank you + tagline ---- {%- endcomment -%}
+  <div class="hero">
+    <img src="https://otterseas.com/logo.png" alt="Otterseas" class="logo">
+    <h1 class="thank-you">
+      Thank you, {{ order.customer.first_name | default: "diver" }}.<span class="otter">🦦</span>
+    </h1>
+    <div class="tagline">Made by a diver, for divers</div>
   </div>
 
-  {%- comment -%} ---- Thanks ---- {%- endcomment -%}
-  <div class="thanks">
-    <span class="otter">🦦</span> Hi <strong>{{ order.customer.first_name | default: "diver" }}</strong>, thanks for your order — everything you need is packed inside.
+  {%- comment -%} ---- Order meta row ---- {%- endcomment -%}
+  <div class="order-meta">
+    <div class="item">
+      <span class="label">Order</span><span class="value">{{ order.name }}</span>
+    </div>
+    <div class="item">
+      <span class="label">Date</span><span class="value">{{ order.created_at | date: "%-d %B %Y" }}</span>
+    </div>
   </div>
 
   {%- comment -%} ---- Two-column: ship to + summary ---- {%- endcomment -%}
@@ -278,12 +287,13 @@
     </div>
   </div>
 
-  {%- comment -%} ---- Items table ---- {%- endcomment -%}
+  {%- comment -%} ---- Items table with product thumbnails ---- {%- endcomment -%}
   <div class="items-section">
     <h3>Items</h3>
     <table class="items">
       <thead>
         <tr>
+          <th class="thumb"></th>
           <th>Description</th>
           <th class="qty">Qty</th>
           <th class="price">Price</th>
@@ -292,6 +302,13 @@
       <tbody>
         {%- for line in order.line_items -%}
           <tr>
+            <td class="thumb">
+              <div class="img-wrap">
+                {%- if line.image -%}
+                  <img src="{{ line.image | img_url: '200x' }}" alt="{{ line.title | escape }}">
+                {%- endif -%}
+              </div>
+            </td>
             <td>
               {{ line.title }}
               {%- if line.variant_title and line.variant_title != "Default Title" %}

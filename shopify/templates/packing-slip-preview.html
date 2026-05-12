@@ -3,13 +3,7 @@
   Liquid template, with example order data inlined so you can iterate
   on layout without touching Shopify admin.
 
-  How to preview:
-    - Open this file directly in a browser (double-click in Explorer or
-      drag onto Chrome/Edge/Safari)
-    - To see the print layout: File → Print → "Save as PDF" or use the
-      browser print preview
-
-  Two sample scenarios pre-built; toggle from the bar at the top.
+  Three scenarios pre-built — toggle from the bar at the top.
 -->
 <!DOCTYPE html>
 <html>
@@ -69,84 +63,55 @@
     .sheet { box-shadow: none; margin: 0; padding: 0; min-height: auto; }
   }
 
-  /* ---------- Header ---------- */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 12px;
+  /* ---------- Hero ---------- */
+  .hero {
+    text-align: center;
+    padding: 4mm 0 8mm;
     border-bottom: 1.5px solid #023859;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
   }
-  .brand { display: flex; align-items: center; gap: 14px; }
-  .brand img {
-    width: 64px;
-    height: 64px;
+  .hero img.logo {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 12px;
     display: block;
     object-fit: contain;
-    flex-shrink: 0;
   }
-  .brand .tag {
-    font-size: 8pt;
-    letter-spacing: 0.28em;
+  .hero .thank-you {
+    font-size: 22pt;
+    font-weight: 700;
     color: #023859;
+    margin: 0 0 6px;
+    line-height: 1.1;
+  }
+  .hero .thank-you .otter { font-size: 18pt; vertical-align: -1px; margin-left: 4px; }
+  .hero .tagline {
+    font-size: 8pt;
+    letter-spacing: 0.32em;
+    color: #54ACBF;
     font-weight: 700;
     text-transform: uppercase;
-    line-height: 1.4;
-    max-width: 110px;
   }
-  .order-meta { text-align: right; font-size: 10pt; color: #555; }
-  .order-meta .label {
+
+  /* ---------- Order meta ---------- */
+  .order-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 22px;
+    font-size: 10pt;
+  }
+  .order-meta .item .label {
     font-size: 7pt;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #888;
     font-weight: 600;
+    margin-right: 8px;
   }
-  .order-meta .value { color: #023859; font-weight: 600; font-size: 11pt; }
-  .order-meta .row { margin-bottom: 4px; }
-
-  .thanks {
-    font-size: 12pt;
+  .order-meta .item .value {
     color: #023859;
-    margin-bottom: 22px;
-    font-weight: 500;
-  }
-  .thanks strong { font-weight: 700; }
-  .thanks .otter { font-size: 16pt; vertical-align: -2px; }
-
-  /* ---------- Repeat-customer discount banner ---------- */
-  .discount {
-    margin: 18px 0 26px;
-    padding: 14px 18px;
-    border: 1.5px dashed #54ACBF;
-    border-radius: 6px;
-    background: #54ACBF0D;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .discount .icon { font-size: 22pt; line-height: 1; }
-  .discount .body { flex: 1; }
-  .discount .label {
-    font-size: 8pt;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: #54ACBF;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-  .discount .copy { color: #023859; font-size: 10.5pt; }
-  .discount .code {
-    font-family: 'Courier New', monospace;
-    background: #023859;
-    color: white;
-    padding: 3px 10px;
-    border-radius: 3px;
     font-weight: 700;
     font-size: 11pt;
-    letter-spacing: 0.12em;
-    margin: 0 2px;
   }
 
   .meta-grid { display: flex; gap: 24px; margin-bottom: 24px; }
@@ -184,13 +149,31 @@
     padding: 8px 4px;
     border-bottom: 1px solid #ddd;
   }
+  table.items th.thumb { width: 48px; }
   table.items th.qty { text-align: center; width: 60px; }
   table.items th.price { text-align: right; width: 80px; }
   table.items td {
     padding: 10px 4px;
     border-bottom: 1px dotted #ddd;
     font-size: 10.5pt;
-    vertical-align: top;
+    vertical-align: middle;
+  }
+  table.items td.thumb { width: 48px; padding: 6px 8px 6px 0; }
+  table.items td.thumb .img-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    background: #f5f3ee;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  table.items td.thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   table.items td.qty { text-align: center; color: #555; }
   table.items td.price { text-align: right; font-weight: 600; }
@@ -214,8 +197,41 @@
   }
   .total-row .amount { font-size: 14pt; font-weight: 800; color: #023859; }
 
+  .discount {
+    margin: 24px 0 26px;
+    padding: 14px 18px;
+    border: 1.5px dashed #54ACBF;
+    border-radius: 6px;
+    background: #54ACBF0D;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .discount .icon { font-size: 22pt; line-height: 1; }
+  .discount .body { flex: 1; }
+  .discount .label {
+    font-size: 8pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #54ACBF;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .discount .copy { color: #023859; font-size: 10.5pt; }
+  .discount .code {
+    font-family: 'Courier New', monospace;
+    background: #023859;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 11pt;
+    letter-spacing: 0.12em;
+    margin: 0 2px;
+  }
+
   .footer {
-    margin-top: 36px;
+    margin-top: 30px;
     padding-top: 14px;
     border-top: 1px solid #ddd;
     text-align: center;
@@ -238,6 +254,7 @@
 
 <div class="scenario-switcher">
   Scenario:
+  <button data-scenario="full">Bottle + Journal + 3 stickers</button>
   <button data-scenario="bottle_stickers">Bottle + 3 stickers</button>
   <button data-scenario="stickers_only">Stickers only</button>
 </div>
@@ -247,7 +264,39 @@
 </div>
 
 <script>
+  // Sample product image URLs (live Shopify CDN — same images used on the site).
+  const IMG = {
+    surface_tank: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=200',
+    dive_journal: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Journal_-_Image_only.jpg?v=1769573325&width=200',
+    komodo: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Komodo-sticker.png?v=1769333996&width=200',
+    raja_ampat: 'https://38a44d-4c.myshopify.com/cdn/shop/files/RajaAmpat-sticker.png?v=1769313395&width=200',
+    sardinia: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Sardina-sticker.png?v=1769313974&width=200',
+    silfra: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Silfra-sticker.png?v=1769313974&width=200',
+    scapa: 'https://38a44d-4c.myshopify.com/cdn/shop/files/ScapaFlow-sticker.png?v=1769313974&width=200',
+    cornwall: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Cornwall-sticker.png?v=1769313974&width=200',
+  };
+
   const SCENARIOS = {
+    full: {
+      name: '#1041',
+      created_at: '12 May 2026',
+      customer: { first_name: 'Daniel' },
+      shipping_address: {
+        first_name: 'Daniel', last_name: 'Lipinski',
+        address1: '14 Reef Lane', address2: '',
+        city: 'Brighton', province: '', zip: 'BN1 3JT',
+        country: 'United Kingdom',
+      },
+      shipping_method: 'Royal Mail Tracked 48',
+      line_items: [
+        { title: 'The Surface Tank', variant_title: 'Deep Ocean', quantity: 1, line_price: '£35.00', image: IMG.surface_tank },
+        { title: 'The Dive Journal', variant_title: '', quantity: 1, line_price: '£28.00', image: IMG.dive_journal },
+        { title: 'Komodo', variant_title: '', quantity: 1, line_price: '£2.00', image: IMG.komodo },
+        { title: 'Raja Ampat', variant_title: '', quantity: 1, line_price: '£2.00', image: IMG.raja_ampat },
+        { title: 'Sardinia', variant_title: '', quantity: 1, line_price: '£2.00', image: IMG.sardinia },
+      ],
+      total_price: '£69.00',
+    },
     bottle_stickers: {
       name: '#1042',
       created_at: '12 May 2026',
@@ -260,10 +309,10 @@
       },
       shipping_method: 'Royal Mail Tracked 48',
       line_items: [
-        { title: 'The Surface Tank', variant_title: 'Deep Ocean', quantity: 1, line_price: '£35.00' },
-        { title: 'Komodo', variant_title: '', quantity: 1, line_price: '£2.00' },
-        { title: 'Raja Ampat', variant_title: '', quantity: 1, line_price: '£2.00' },
-        { title: 'Sardinia', variant_title: '', quantity: 1, line_price: '£2.00' },
+        { title: 'The Surface Tank', variant_title: 'Deep Ocean', quantity: 1, line_price: '£35.00', image: IMG.surface_tank },
+        { title: 'Komodo', variant_title: '', quantity: 1, line_price: '£2.00', image: IMG.komodo },
+        { title: 'Raja Ampat', variant_title: '', quantity: 1, line_price: '£2.00', image: IMG.raja_ampat },
+        { title: 'Sardinia', variant_title: '', quantity: 1, line_price: '£2.00', image: IMG.sardinia },
       ],
       total_price: '£41.00',
     },
@@ -279,10 +328,10 @@
       },
       shipping_method: 'International Tracked',
       line_items: [
-        { title: 'Silfra', variant_title: '', quantity: 1, line_price: '£2.00' },
-        { title: 'Scapa Flow', variant_title: '', quantity: 1, line_price: '£2.00' },
-        { title: 'Cornwall', variant_title: '', quantity: 1, line_price: '£2.00' },
-        { title: 'Sardinia', variant_title: '', quantity: 1, line_price: '£2.00' },
+        { title: 'Silfra', variant_title: '', quantity: 1, line_price: '£2.00', image: IMG.silfra },
+        { title: 'Scapa Flow', variant_title: '', quantity: 1, line_price: '£2.00', image: IMG.scapa },
+        { title: 'Cornwall', variant_title: '', quantity: 1, line_price: '£2.00', image: IMG.cornwall },
+        { title: 'Sardinia', variant_title: '', quantity: 1, line_price: '£2.00', image: IMG.sardinia },
       ],
       total_price: '£8.00',
     },
@@ -293,6 +342,11 @@
     const totalItems = order.line_items.reduce((n, l) => n + l.quantity, 0);
     const cargo = order.line_items.map(l => `
       <tr>
+        <td class="thumb">
+          <div class="img-wrap">
+            ${l.image ? `<img src="${l.image}" alt="${l.title}">` : ''}
+          </div>
+        </td>
         <td>
           ${l.title}
           ${l.variant_title ? `<span class="variant">${l.variant_title}</span>` : ''}
@@ -303,25 +357,21 @@
     `).join('');
 
     document.getElementById('slip').innerHTML = `
-      <div class="header">
-        <div class="brand">
-          <img src="../../public/logo.png" alt="Otterseas">
-          <div class="tag">Made by a diver<br>for divers</div>
-        </div>
-        <div class="order-meta">
-          <div class="row">
-            <div class="label">Order</div>
-            <div class="value">${order.name}</div>
-          </div>
-          <div class="row">
-            <div class="label">Date</div>
-            <div class="value">${order.created_at}</div>
-          </div>
-        </div>
+      <div class="hero">
+        <img src="../../public/logo.png" alt="Otterseas" class="logo">
+        <h1 class="thank-you">
+          Thank you, ${order.customer.first_name}.<span class="otter">🦦</span>
+        </h1>
+        <div class="tagline">Made by a diver, for divers</div>
       </div>
 
-      <div class="thanks">
-        <span class="otter">🦦</span> Hi <strong>${order.customer.first_name}</strong>, thanks for your order — everything you need is packed inside.
+      <div class="order-meta">
+        <div class="item">
+          <span class="label">Order</span><span class="value">${order.name}</span>
+        </div>
+        <div class="item">
+          <span class="label">Date</span><span class="value">${order.created_at}</span>
+        </div>
       </div>
 
       <div class="meta-grid">
@@ -347,6 +397,7 @@
         <table class="items">
           <thead>
             <tr>
+              <th class="thumb"></th>
               <th>Description</th>
               <th class="qty">Qty</th>
               <th class="price">Price</th>
@@ -392,7 +443,7 @@
     btn.addEventListener('click', () => renderSlip(btn.dataset.scenario));
   });
 
-  renderSlip('bottle_stickers');
+  renderSlip('full');
 </script>
 
 </body>
