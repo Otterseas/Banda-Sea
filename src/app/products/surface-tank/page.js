@@ -381,7 +381,7 @@ function FAQItem({ question, answer }) {
 export default function SurfaceTankPage() {
   const router = useRouter();
   const product = getProductBySlug(SLUG);
-  const { addToCart, openDrawer } = useCart();
+  const { addToCart, openCart } = useCart();
   const { formatPrice } = useCurrency();
   const { addToRecentlyViewed } = useRecentlyViewed();
   const [selectedVariant, setSelectedVariant] = useState(0);
@@ -469,7 +469,7 @@ export default function SurfaceTankPage() {
       image: currentVariant.image,
       type: 'product',
     });
-    openDrawer();
+    openCart();
   };
 
   const handleAddGiftSet = () => {
@@ -483,7 +483,7 @@ export default function SurfaceTankPage() {
       image: currentVariant.image,
       type: 'product',
     });
-    openDrawer();
+    openCart();
   };
 
   return (
@@ -656,7 +656,20 @@ export default function SurfaceTankPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    handleAddToCart();
+                    // Skip the drawer auto-open — we're navigating to /stickers
+                    // anyway, where the customer will pick their free stickers.
+                    addToCart(
+                      {
+                        id: `${product.id}-${currentVariant.id}`,
+                        name: `${product.name} - ${currentVariant.name}`,
+                        price: product.price,
+                        originalPrice: product.originalPrice,
+                        shopifyVariantId: currentVariant.shopifyVariantId,
+                        image: currentVariant.image,
+                        type: 'product',
+                      },
+                      { openDrawer: false }
+                    );
                     router.push('/stickers');
                   }}
                   className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border transition-all hover:scale-[1.02] hover:shadow-md text-left"
@@ -958,7 +971,7 @@ export default function SurfaceTankPage() {
                             image: rp.image,
                             type: 'product',
                           });
-                          openDrawer();
+                          openCart();
                         }}
                         className="block w-full text-center text-[11px] font-semibold tracking-[0.15em] uppercase py-2.5 rounded-lg transition-colors border hover:bg-gray-50"
                         style={{ borderColor: COLORS.surfaceTeal, color: COLORS.surfaceTeal, backgroundColor: 'white' }}

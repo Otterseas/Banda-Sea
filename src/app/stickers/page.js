@@ -277,28 +277,30 @@ function CollectionTracker({
             let shadow = 'none';
 
             if (isFilled) {
-              // A filled bundle slot gets the pink "free" treatment so the
-              // customer can see at a glance which stickers are bundle-covered.
-              if (isBundleSlot) {
-                border = `2px solid ${COLORS.pink}`;
+              // Bundle-covered stickers get the deep-blue "free with bottle"
+              // treatment when a Surface Tank is in cart so the customer can
+              // visually separate the 8 included slots from any paid extras.
+              if (isBundleSlot && hasBottle) {
+                border = `2px solid ${COLORS.midDepth}`;
                 background = 'white';
-                shadow = `0 2px 8px ${COLORS.pink}35`;
+                shadow = `0 2px 8px ${COLORS.midDepth}35`;
               } else {
                 border = `1.5px solid ${COLORS.surfaceTeal}`;
                 background = 'white';
                 shadow = `0 2px 6px ${COLORS.surfaceTeal}25`;
               }
-            } else if (isBundleSlot) {
-              // Always-visible pink outline so the bundle slots advertise the
-              // deal whether or not a bottle is in cart. Solid line when active,
-              // dashed when the deal is dormant.
-              border = `2px ${hasBottle ? 'solid' : 'dashed'} ${COLORS.pink}`;
-              background = hasBottle ? `${COLORS.pink}18` : `${COLORS.pink}10`;
-              shadow = hasBottle ? `0 1px 4px ${COLORS.pink}25` : 'none';
+            } else if (isBundleSlot && hasBottle) {
+              // Bottle in cart: bundle slots get a clear blue outline so they
+              // read as "the 8 free ones" against the paid slots beyond.
+              border = `2px solid ${COLORS.midDepth}`;
+              background = `${COLORS.midDepth}10`;
+              shadow = `0 1px 4px ${COLORS.midDepth}20`;
             } else if (isThreshold) {
               border = `1.5px dashed ${thresholdReached ? COLORS.pink : `${COLORS.midDepth}55`}`;
               background = 'rgba(255, 255, 255, 0.4)';
             } else {
+              // Standard slot (also covers bundle slots when no bottle in
+              // cart — per user direction they should match the other boxes).
               border = `1px dashed ${COLORS.midDepth}30`;
               background = 'rgba(255, 255, 255, 0.4)';
             }
@@ -321,7 +323,7 @@ function CollectionTracker({
                     {isBundleSlot && hasBottle && (
                       <span
                         className="absolute top-0 right-0 text-[7px] md:text-[8px] font-bold tracking-wider uppercase px-1 rounded-bl"
-                        style={{ backgroundColor: COLORS.pink, color: 'white' }}
+                        style={{ backgroundColor: COLORS.midDepth, color: 'white' }}
                       >
                         Free
                       </span>
@@ -347,7 +349,7 @@ function CollectionTracker({
                 ) : (
                   <span
                     className="text-[9px] md:text-[10px] font-semibold tracking-tight"
-                    style={{ color: isBundleSlot ? COLORS.pink : `${COLORS.midDepth}80` }}
+                    style={{ color: isBundleSlot && hasBottle ? COLORS.midDepth : `${COLORS.midDepth}80` }}
                   >
                     {i + 1}
                   </span>
