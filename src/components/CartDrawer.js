@@ -484,9 +484,9 @@ export default function CartDrawer() {
                 </div>
               )}
 
-              {/* Location Sticker Pricing Tier Info — compact card. The tier breakpoints
-                  shift when a Surface Tank is in the cart: thresholds become 9 / 14 / 21
-                  (with the first 8 stickers covered by the bundle). */}
+              {/* Location Sticker Pricing Tier Info — compact card. Tier
+                  breakpoints sit at 9 / 14 / 21 regardless of bundle state;
+                  the only difference is that the bundle waives the first 8. */}
               {locationStickerCount > 0 && (
                 <div
                   className="mb-3 p-2.5 rounded-lg border"
@@ -501,17 +501,19 @@ export default function CartDrawer() {
                         ? (locationStickerCount < 8
                             ? `${8 - locationStickerCount} free stickers left to add`
                             : locationStickerCount < 14
-                              ? `Add ${14 - locationStickerCount} more · ${formatPrice(1.75)}/each!`
+                              ? `Add ${14 - locationStickerCount} more · ${formatPrice(1.0)}/each!`
                               : locationStickerCount < 21
-                                ? `Add ${21 - locationStickerCount} more · ${formatPrice(1.50)}/each!`
+                                ? `Add ${21 - locationStickerCount} more · ${formatPrice(0.75)}/each!`
                                 : '🎉 Best price unlocked!')
                         : (locationStickerCount < minOrder
                             ? `Add ${minOrder - locationStickerCount} more to checkout`
-                            : locationStickerCount < 10
-                              ? `Add ${10 - locationStickerCount} more · ${formatPrice(1.75)}/each!`
-                              : locationStickerCount < 15
-                                ? `Add ${15 - locationStickerCount} more · ${formatPrice(1.50)}/each!`
-                                : '🎉 Best price unlocked!')
+                            : locationStickerCount < 9
+                              ? `Add ${9 - locationStickerCount} more · ${formatPrice(1.5)}/each!`
+                              : locationStickerCount < 14
+                                ? `Add ${14 - locationStickerCount} more · ${formatPrice(1.0)}/each!`
+                                : locationStickerCount < 21
+                                  ? `Add ${21 - locationStickerCount} more · ${formatPrice(0.75)}/each!`
+                                  : '🎉 Best price unlocked!')
                       }
                     </span>
                     <span className="font-bold" style={{ color: LUNA.pink }}>
@@ -522,11 +524,9 @@ export default function CartDrawer() {
                     </span>
                   </div>
 
-                  {/* Progress Bar - 3 tiers. Breakpoints depend on bundle state:
-                      without bottle: 5 / 10 / 15
-                      with bottle:    9 / 14 / 21 */}
+                  {/* Progress Bar — three tier segments at 9 / 14 / 21 stickers. */}
                   {(() => {
-                    const [t1, t2, t3] = hasBottle ? [9, 14, 21] : [5, 10, 15];
+                    const [t1, t2, t3] = [9, 14, 21];
                     const seg2 = t2 - t1;
                     const seg3 = t3 - t2;
                     return (
@@ -563,13 +563,13 @@ export default function CartDrawer() {
 
                         <div className="flex justify-between text-[10px] font-semibold">
                           <span style={{ color: locationStickerCount >= t1 ? LUNA.deepWater : '#9CA3AF' }}>
-                            {t1} · {formatPrice(2.0)} {locationStickerCount >= t1 && '✓'}
+                            {t1} · {formatPrice(1.5)} {locationStickerCount >= t1 && '✓'}
                           </span>
                           <span style={{ color: locationStickerCount >= t2 ? LUNA.deepWater : '#9CA3AF' }}>
-                            {t2} · {formatPrice(1.75)} {locationStickerCount >= t2 && '✓'}
+                            {t2} · {formatPrice(1.0)} {locationStickerCount >= t2 && '✓'}
                           </span>
                           <span style={{ color: locationStickerCount >= t3 ? LUNA.deepWater : '#9CA3AF' }}>
-                            {t3} · {formatPrice(1.5)} {locationStickerCount >= t3 && '✓'}
+                            {t3} · {formatPrice(0.75)} {locationStickerCount >= t3 && '✓'}
                           </span>
                         </div>
                       </>

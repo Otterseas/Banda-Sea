@@ -133,21 +133,14 @@ function CollectionTracker({
   }
   const count = slots.length;
 
-  // Tier breakpoints. Without bottle: classic 5/10/15. With bottle: the
-  // first 8 stickers are bundle-free, so paid-tier breakpoints sit at
-  // 9/14/21 (matching the per-paid-sticker prices defined in
-  // src/utils/stickerPricing.js).
-  const TIERS = hasBottle
-    ? [
-        { at: 9, price: 2.0, label: '9+' },
-        { at: 14, price: 1.75, label: '14+' },
-        { at: 21, price: 1.5, label: '21+' },
-      ]
-    : [
-        { at: 5, price: 2.0, label: '5+' },
-        { at: 10, price: 1.75, label: '10+' },
-        { at: 15, price: 1.5, label: '15+' },
-      ];
+  // Tier breakpoints sit at 9 / 14 / 21 regardless of bundle state. With a
+  // bottle the first 8 stickers are bundle-free; without a bottle the first
+  // 8 cost £2.00 each. Tier prices match BUNDLE_TIERS in stickerPricing.js.
+  const TIERS = [
+    { at: 9, price: 1.5, label: '9+' },
+    { at: 14, price: 1.0, label: '14+' },
+    { at: 21, price: 0.75, label: '21+' },
+  ];
 
   // Always show enough slots to keep all three thresholds visible.
   // Round up to the next multiple of 10 once the cart goes past the

@@ -1,28 +1,28 @@
 // ===========================================
 // STICKER PRICING TIERS (Location Stickers)
 // ===========================================
+// Per-sticker target prices live here and drive both the cart UI and the
+// Shopify-side discount thresholds. Base price is £2.50 in Shopify; the
+// STICKER1 / STICKER9 / STICKER14 / STICKER21 automatic collection
+// discounts pull each tier down to the matching per-unit price below.
 export const STICKER_PRICING = {
   BASE_PRICE: 2.50,
   MIN_ORDER: 5,
   TIERS: [
-    { min: 1, max: 1, price: 2.50, tier: 'Single', discount: 0 },
-    { min: 2, max: 2, price: 2.25, tier: '2 Pack', discount: 10 },
-    { min: 3, max: 3, price: 2.15, tier: '3 Pack', discount: 14 },
-    { min: 4, max: 4, price: 2.00, tier: '4 Pack', discount: 20 },
-    { min: 5, max: 9, price: 2.00, tier: '5-9 Pack', discount: 20 },
-    { min: 10, max: 14, price: 1.75, tier: '10-14 Pack', discount: 30 },
-    { min: 15, max: Infinity, price: 1.50, tier: '15+ Pack', discount: 40 },
+    { min: 1, max: 8, price: 2.00, tier: '1-8 Pack', discount: 20 },
+    { min: 9, max: 13, price: 1.50, tier: '9-13 Pack', discount: 40 },
+    { min: 14, max: 20, price: 1.00, tier: '14-20 Pack', discount: 60 },
+    { min: 21, max: Infinity, price: 0.75, tier: '21+ Pack', discount: 70 },
   ],
   // Bundle tiers apply when the cart contains a Surface Tank. The first 8
   // stickers are included free with the bottle; remaining stickers slide
-  // through the same three per-unit prices (£2.00 / £1.75 / £1.50) shifted
-  // to start at the 9th sticker.
+  // through the same three per-paid-sticker prices used without a bottle.
   BUNDLE_FREE_COUNT: 8,
   BUNDLE_TIERS: [
     { min: 1, max: 8, price: 0.00, paidPrice: 0, tier: 'Bundle · Free', discount: 100 },
-    { min: 9, max: 13, price: 2.00, paidPrice: 2.00, tier: 'Bundle · 9-13', discount: 20 },
-    { min: 14, max: 20, price: 1.75, paidPrice: 1.75, tier: 'Bundle · 14-20', discount: 30 },
-    { min: 21, max: Infinity, price: 1.50, paidPrice: 1.50, tier: 'Bundle · 21+', discount: 40 },
+    { min: 9, max: 13, price: 1.50, paidPrice: 1.50, tier: 'Bundle · 9-13', discount: 40 },
+    { min: 14, max: 20, price: 1.00, paidPrice: 1.00, tier: 'Bundle · 14-20', discount: 60 },
+    { min: 21, max: Infinity, price: 0.75, paidPrice: 0.75, tier: 'Bundle · 21+', discount: 70 },
   ],
 };
 
@@ -88,28 +88,17 @@ export function calculateStickerTotal(quantity, hasBottle = false) {
 
 // ===========================================
 // GET DISCOUNT CODE FOR CHECKOUT
-// When a Surface Tank is in cart, an automatic Shopify "Buy X Get Y"
-// discount makes 8 stickers free. The percentage codes below apply on top
-// of that automatic discount to set the per-paid-sticker price.
-// Math verified: with 14 stickers + bottle, STICKER10 (30%) gives every
-// sticker line at £1.75; BXGY zeroes 8 of them; remaining 6 × £1.75 = £10.50.
+// The STICKER1/9/14/21 collection auto-discounts in Shopify apply purely
+// off quantity, so the cart-side code is mostly informational — these
+// names are returned for parity with Shopify dashboard reporting and so
+// the discount=CODE URL param resolves cleanly if those tier discounts
+// are ever exposed as merchant-shareable codes.
 // ===========================================
 export function getDiscountCode(stickerCount, hasBottle = false) {
   if (stickerCount <= 0) return null;
-
-  if (hasBottle) {
-    if (stickerCount >= 21) return 'STICKER15PLUS';
-    if (stickerCount >= 14) return 'STICKER10';
-    if (stickerCount >= 9) return 'STICKER5';
-    // 1-8 stickers + bottle: BXGY automatic handles it, no code needed.
-    return null;
-  }
-
-  if (stickerCount >= 15) return 'STICKER15PLUS';
-  if (stickerCount >= 10) return 'STICKER10';
-  if (stickerCount >= 5) return 'STICKER5';
-  if (stickerCount >= 4) return 'STICKER4';
-  if (stickerCount >= 3) return 'STICKER3';
-  if (stickerCount >= 2) return 'STICKER2';
+  if (stickerCount >= 21) return 'STICKER21';
+  if (stickerCount >= 14) return 'STICKER14';
+  if (stickerCount >= 9) return 'STICKER9';
+  if (stickerCount >= 1) return 'STICKER1';
   return null;
 }
