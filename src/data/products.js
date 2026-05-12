@@ -7,7 +7,9 @@ export const PRODUCTS = {
     slug: 'surface-tank',
     name: 'The Surface Tank',
     tagline: 'MEMORIES THAT STICK',
-    price: 40.00,
+    price: 35.00,
+    originalPrice: 40.00,
+    onSale: true,
     currency: 'GBP',
     description: {
       intro: "Capture yours with The Surface Tank - our premium water bottle that's more than just a vessel for hydration, its your reliable companion above the waves for all your underwater adventures.",
@@ -89,7 +91,7 @@ export const PRODUCTS = {
         {
           number: '02',
           title: 'Select Your Stickers',
-          description: 'Every location you dive has a matching sticker to add.'
+          description: 'Pick your first 8 free with the bottle, then build your map from 80+ dive sites.'
         },
         {
           number: '03',

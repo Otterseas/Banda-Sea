@@ -45,11 +45,12 @@ const RELATED_PRODUCTS = [
     name: 'The Surface Tank',
     href: '/products/surface-tank',
     image: '/images/products/The-surface-tank-sunset.jpg',
-    priceLabel: '£40',
+    priceLabel: '£35',
+    originalPriceLabel: '£40',
     quickAdd: {
       shopifyVariantId: '52453682807050',
       name: 'The Surface Tank - Deep Ocean',
-      price: 40.0,
+      price: 35.0,
     },
   },
   {
@@ -107,11 +108,22 @@ const GLOBE_LOCATIONS = [
 // =============== Collection tracker ===============
 // Shows the location stickers currently in the cart as a slot grid above the
 // region selector. 10 slots per row; empty slots are faded boxes that fill
-// up left-to-right as the user adds stickers. Tier markers below the grid
-// highlight as the user crosses 5 / 10 / 15.
-function CollectionTracker({ cartItems, pricePerItem, formatPrice, updateQuantity }) {
-  // Expand cart entries into per-unit slots so a cart with 3 of "Bali"
-  // shows three Bali thumbnails instead of one.
+// up left-to-right as the user adds stickers.
+//
+// The first 8 slots are always rendered in the "bundle" treatment (pink
+// outline) to advertise that they're included free with a Surface Tank.
+// Tier markers below the grid show 5/10/15 by default, or 9/14/21 with
+// matching paid-tier prices when a Surface Tank is in the cart.
+function CollectionTracker({
+  cartItems,
+  pricePerItem,
+  formatPrice,
+  updateQuantity,
+  hasBottle,
+  bundleFreeCount,
+  bundlePaidCount,
+  onAddBottle,
+}) {
   const slots = [];
   for (const item of Object.values(cartItems)) {
     if (item.type !== 'location-sticker') continue;
@@ -121,20 +133,31 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice, updateQuantit
   }
   const count = slots.length;
 
-  // Tier breakpoints from src/utils/stickerPricing.js — keep in sync.
-  const TIERS = [
-    { at: 5, price: 2.0 },
-    { at: 10, price: 1.75 },
-    { at: 15, price: 1.5 },
-  ];
+  // Tier breakpoints. Without bottle: classic 5/10/15. With bottle: the
+  // first 8 stickers are bundle-free, so paid-tier breakpoints sit at
+  // 9/14/21 (matching the per-paid-sticker prices defined in
+  // src/utils/stickerPricing.js).
+  const TIERS = hasBottle
+    ? [
+        { at: 9, price: 2.0, label: '9+' },
+        { at: 14, price: 1.75, label: '14+' },
+        { at: 21, price: 1.5, label: '21+' },
+      ]
+    : [
+        { at: 5, price: 2.0, label: '5+' },
+        { at: 10, price: 1.75, label: '10+' },
+        { at: 15, price: 1.5, label: '15+' },
+      ];
 
   // Always show enough slots to keep all three thresholds visible.
-  // Round up to the next multiple of 10 once the cart goes past 15.
+  // Round up to the next multiple of 10 once the cart goes past the
+  // highest visible threshold.
   const minSlots = 20;
   const totalSlotsShown = Math.max(minSlots, Math.ceil((count + 1) / 10) * 10);
-  const empty = Math.max(0, totalSlotsShown - count);
   const fullPrice = count * 2.5;
-  const currentTotal = count * pricePerItem;
+  const currentTotal = hasBottle
+    ? Math.max(0, count - 8) * pricePerItem
+    : count * pricePerItem;
   const savings = fullPrice - currentTotal;
 
   return (
@@ -169,10 +192,10 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice, updateQuantit
                 backgroundClip: 'text',
               }}
             >
-              {formatPrice(pricePerItem)}
+              {hasBottle && bundlePaidCount === 0 ? 'FREE' : formatPrice(pricePerItem)}
             </p>
             <p className="text-[10px] tracking-[0.18em] font-semibold uppercase mt-1" style={{ color: COLORS.midDepth }}>
-              per sticker
+              {hasBottle && bundlePaidCount === 0 ? 'with Surface Tank' : 'per sticker'}
               {savings > 0.01 && (
                 <span className="ml-2 text-green-600 normal-case tracking-normal">
                   · saving {formatPrice(savings)}
@@ -182,29 +205,93 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice, updateQuantit
           </div>
         </div>
 
-        {/* Slot grid — 10 per row, wraps. Filled slots get a hover X to remove. */}
+        {/* Surface Tank bundle promo banner — shown above the slot grid so
+            customers immediately see the offer when they land on this page.
+            Switches to a confirmation tone when a Surface Tank is in the cart. */}
+        <div
+          className="rounded-xl p-3 md:p-4 mb-4 flex items-center gap-3 flex-wrap"
+          style={{
+            background: hasBottle
+              ? `linear-gradient(135deg, ${COLORS.surfaceTeal}18 0%, ${COLORS.pink}18 100%)`
+              : `linear-gradient(135deg, ${COLORS.pink}12 0%, ${COLORS.surfaceTeal}12 100%)`,
+            border: `1px solid ${COLORS.pink}40`,
+          }}
+        >
+          <div className="text-2xl md:text-3xl">{hasBottle ? '✅' : '🎁'}</div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] tracking-[0.22em] font-bold uppercase" style={{ color: COLORS.pink }}>
+              {hasBottle ? 'Surface Tank Bundle Active' : 'Surface Tank Bundle Deal'}
+            </p>
+            <p className="text-sm md:text-base font-semibold leading-snug" style={{ color: COLORS.deepWater }}>
+              {hasBottle
+                ? (bundleFreeCount < 8
+                    ? `Pick ${8 - bundleFreeCount} more sticker${8 - bundleFreeCount === 1 ? '' : 's'} — free with your bottle.`
+                    : bundlePaidCount > 0
+                      ? `8 free stickers locked in. Extra stickers slide to a lower price as you add more.`
+                      : `8 free stickers locked in ✓ Add more at our best per-sticker rates.`)
+                : 'Add a Surface Tank and your first 8 stickers are free — then keep building at our best per-sticker prices.'}
+            </p>
+          </div>
+          {!hasBottle && onAddBottle && (
+            <button
+              type="button"
+              onClick={onAddBottle}
+              className="px-4 py-2 rounded-lg text-[11px] font-bold tracking-[0.14em] uppercase transition-all hover:scale-[1.03]"
+              style={{
+                background: `linear-gradient(135deg, ${COLORS.pink} 0%, ${COLORS.deepWater} 100%)`,
+                color: 'white',
+                boxShadow: `0 6px 16px ${COLORS.pink}40`,
+              }}
+            >
+              Add Surface Tank · £35
+            </button>
+          )}
+        </div>
+
+        {/* Slot grid — 10 per row, wraps. The first 8 cells are the bundle slots:
+            always styled in a pink/highlight palette so customers can see at a
+            glance which slots are covered by the Surface Tank bundle. */}
         <div className="grid grid-cols-10 gap-1.5 md:gap-2">
           {Array.from({ length: totalSlotsShown }, (_, i) => {
             const sticker = slots[i];
             const isFilled = !!sticker;
-            const isThreshold = i + 1 === 5 || i + 1 === 10 || i + 1 === 15;
-            const thresholdReached =
-              (i + 1 === 5 && count >= 5) ||
-              (i + 1 === 10 && count >= 10) ||
-              (i + 1 === 15 && count >= 15);
+            const isBundleSlot = i < 8;
+            const isThreshold = TIERS.some((t) => t.at === i + 1);
+            const thresholdReached = TIERS.some((t) => t.at === i + 1 && count >= t.at);
+
+            let border;
+            let background;
+            let shadow = 'none';
+
+            if (isFilled) {
+              // A filled bundle slot gets the pink/teal "free" treatment so the
+              // customer can see at a glance which stickers are bundle-covered.
+              if (isBundleSlot) {
+                border = `1.5px solid ${COLORS.pink}`;
+                background = 'white';
+                shadow = `0 2px 8px ${COLORS.pink}35`;
+              } else {
+                border = `1.5px solid ${COLORS.surfaceTeal}`;
+                background = 'white';
+                shadow = `0 2px 6px ${COLORS.surfaceTeal}25`;
+              }
+            } else if (isBundleSlot) {
+              border = `1.5px dashed ${COLORS.pink}${hasBottle ? 'AA' : '70'}`;
+              background = hasBottle ? `${COLORS.pink}10` : `${COLORS.pink}08`;
+            } else if (isThreshold) {
+              border = `1.5px dashed ${thresholdReached ? COLORS.pink : `${COLORS.midDepth}55`}`;
+              background = 'rgba(255, 255, 255, 0.4)';
+            } else {
+              border = `1px dashed ${COLORS.midDepth}30`;
+              background = 'rgba(255, 255, 255, 0.4)';
+            }
+
             return (
               <div
                 key={i}
                 className="aspect-square rounded-md md:rounded-lg overflow-hidden flex items-center justify-center transition-all relative group"
-                style={{
-                  backgroundColor: isFilled ? 'white' : 'rgba(255, 255, 255, 0.4)',
-                  border: isFilled
-                    ? `1.5px solid ${COLORS.surfaceTeal}`
-                    : isThreshold
-                    ? `1.5px dashed ${thresholdReached ? COLORS.pink : `${COLORS.midDepth}55`}`
-                    : `1px dashed ${COLORS.midDepth}30`,
-                  boxShadow: isFilled ? `0 2px 6px ${COLORS.surfaceTeal}25` : 'none',
-                }}
+                style={{ backgroundColor: background, border, boxShadow: shadow }}
+                title={isBundleSlot ? 'Free with Surface Tank bundle' : undefined}
               >
                 {isFilled && sticker.image ? (
                   <>
@@ -213,6 +300,15 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice, updateQuantit
                       alt={sticker.name}
                       className="w-full h-full object-contain p-0.5"
                     />
+                    {/* Free badge on bundle-slot filled stickers when bottle in cart */}
+                    {isBundleSlot && hasBottle && (
+                      <span
+                        className="absolute top-0 right-0 text-[7px] md:text-[8px] font-bold tracking-wider uppercase px-1 rounded-bl"
+                        style={{ backgroundColor: COLORS.pink, color: 'white' }}
+                      >
+                        Free
+                      </span>
+                    )}
                     {/* Remove button — appears on hover, removes one of this sticker. */}
                     <button
                       type="button"
@@ -234,7 +330,7 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice, updateQuantit
                 ) : (
                   <span
                     className="text-[9px] md:text-[10px] font-semibold tracking-tight"
-                    style={{ color: `${COLORS.midDepth}80` }}
+                    style={{ color: isBundleSlot ? COLORS.pink : `${COLORS.midDepth}80` }}
                   >
                     {i + 1}
                   </span>
@@ -244,9 +340,9 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice, updateQuantit
           })}
         </div>
 
-        {/* Tier markers — when reached, the box keeps its white fill and
-            visible text but gets a cyan->pink gradient border + soft glow.
-            Unreached tiers stay on a quiet white card with a faint border. */}
+        {/* Tier markers — show the paid-sticker tier ladder. With a Surface
+            Tank in cart these are 9/14/21 (first 8 are bundle-free).
+            Without bottle, they're the classic 5/10/15 volume tiers. */}
         <div className="grid grid-cols-3 gap-2 md:gap-3 mt-4">
           {TIERS.map((tier) => {
             const reached = count >= tier.at;
@@ -272,7 +368,7 @@ function CollectionTracker({ cartItems, pricePerItem, formatPrice, updateQuantit
                         <path d="M20 6L9 17l-5-5" />
                       </svg>
                     )}
-                    {tier.at}+
+                    {tier.label}
                   </p>
                   <p className="text-sm font-bold mt-0.5" style={{ color: COLORS.deepWater }}>
                     {formatPrice(tier.price)}
@@ -312,6 +408,9 @@ export default function StickersPage() {
     addToCart,
     openCart,
     updateQuantity,
+    hasBottle,
+    bundleFreeCount,
+    bundlePaidCount,
   } = useCart();
   const { formatPrice } = useCurrency();
 
@@ -434,7 +533,7 @@ export default function StickersPage() {
       id: '52453682807050',
       shopifyVariantId: '52453682807050',
       name: 'The Surface Tank - Deep Ocean',
-      price: 40.0,
+      price: 35.0,
       type: 'product',
       image: '/images/products/The-surface-tank-sunset.jpg',
     });
@@ -556,6 +655,10 @@ export default function StickersPage() {
         pricePerItem={pricePerItem}
         formatPrice={formatPrice}
         updateQuantity={updateQuantity}
+        hasBottle={hasBottle}
+        bundleFreeCount={bundleFreeCount}
+        bundlePaidCount={bundlePaidCount}
+        onAddBottle={handleAddSurfaceTank}
       />
 
       {/* ============ REGION SELECTOR — InteractiveSelector pattern ============
@@ -1259,8 +1362,13 @@ export default function StickersPage() {
                   <h3 className="font-semibold text-base leading-tight mb-1" style={{ color: COLORS.deepWater }}>
                     {rp.name}
                   </h3>
-                  <p className="text-sm font-medium mb-3" style={{ color: COLORS.surfaceTeal }}>
+                  <p className="text-sm font-medium mb-3 flex items-baseline gap-1.5" style={{ color: COLORS.surfaceTeal }}>
                     {rp.priceLabel}
+                    {rp.originalPriceLabel && (
+                      <span className="text-xs font-medium text-gray-400 line-through">
+                        {rp.originalPriceLabel}
+                      </span>
+                    )}
                   </p>
                   <div className="mt-auto flex flex-col gap-2">
                     <Link

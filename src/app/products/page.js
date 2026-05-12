@@ -30,10 +30,11 @@ const PRODUCT_ROWS = [
         name: 'The Surface Tank',
         tagline: 'Memories That Stick',
         description: 'Premium insulated water bottle designed for divers',
-        price: 40.0,
+        price: 35.0,
+        originalPrice: 40.0,
         image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=600',
         link: '/products/surface-tank',
-        badge: 'Best Seller',
+        badge: 'Sale · Save £5',
       },
       {
         id: 'dive-journal',
@@ -147,11 +148,16 @@ function ProductCard({ product, index, formatPrice }) {
           <p className="text-sm text-gray-500 leading-snug line-clamp-2 mb-4">{product.description}</p>
 
           <div className="mt-auto flex items-baseline justify-between gap-2">
-            <span className="text-lg font-bold" style={{ color: COLORS.deepWater }}>
+            <span className="text-lg font-bold flex items-baseline gap-1.5" style={{ color: COLORS.deepWater }}>
               {product.priceNote && (
                 <span className="text-xs text-gray-400 mr-1 font-medium">{product.priceNote}</span>
               )}
               {formatPrice(product.price)}
+              {product.originalPrice && product.originalPrice > product.price && (
+                <span className="text-xs font-medium text-gray-400 line-through">
+                  {formatPrice(product.originalPrice)}
+                </span>
+              )}
             </span>
             <span
               className="text-[11px] font-bold tracking-[0.15em] uppercase flex items-center gap-1.5 group-hover:gap-2.5 transition-all"

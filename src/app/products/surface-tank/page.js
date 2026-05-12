@@ -603,15 +603,54 @@ export default function SurfaceTankPage() {
             </div>
 
             {/* Price + stock */}
-            <div className="flex items-center gap-4 mb-5">
-              <span className="text-xl md:text-2xl font-bold" style={{ color: COLORS.deepWater }}>
+            <div className="flex items-center gap-4 mb-3 flex-wrap">
+              <span className="text-xl md:text-2xl font-bold flex items-baseline gap-2" style={{ color: COLORS.deepWater }}>
                 {formatPrice(product.price)}
+                {product.originalPrice && product.originalPrice > product.price && (
+                  <>
+                    <span className="text-base md:text-lg font-medium text-gray-400 line-through">
+                      {formatPrice(product.originalPrice)}
+                    </span>
+                    <span
+                      className="text-[10px] font-bold tracking-[0.18em] uppercase px-2 py-0.5 rounded-full"
+                      style={{ backgroundColor: COLORS.pink, color: 'white' }}
+                    >
+                      Save £{(product.originalPrice - product.price).toFixed(0)}
+                    </span>
+                  </>
+                )}
               </span>
               {!stock.loading && isLowStock && <StockBadge quantity={stock.quantity} />}
               {!stock.loading && isOutOfStock && (
                 <span className="text-red-500 text-sm font-medium">Out of Stock</span>
               )}
             </div>
+
+            {/* Bundle deal callout — sticker bundle promo. Surfaces the deal
+                right next to the buy button so the value prop is unmissable. */}
+            <Link
+              href="/stickers"
+              className="block mb-5 rounded-xl p-3 md:p-3.5 border transition-all hover:scale-[1.01] hover:shadow-md"
+              style={{
+                background: `linear-gradient(135deg, ${COLORS.pink}10 0%, ${COLORS.surfaceTeal}10 100%)`,
+                borderColor: `${COLORS.pink}55`,
+              }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="text-2xl">🎁</div>
+                <div className="flex-1">
+                  <p className="text-[10px] tracking-[0.22em] font-bold uppercase mb-0.5" style={{ color: COLORS.pink }}>
+                    Bundle Deal · Included
+                  </p>
+                  <p className="text-sm font-semibold leading-snug" style={{ color: COLORS.deepWater }}>
+                    Your first <span className="font-bold">8 location stickers free</span> — pick any from 80+ dive sites.
+                  </p>
+                </div>
+                <span className="text-[11px] font-bold tracking-[0.14em] uppercase whitespace-nowrap" style={{ color: COLORS.surfaceTeal }}>
+                  Browse →
+                </span>
+              </div>
+            </Link>
 
             {/* CTA */}
             <div className="mb-6">
@@ -727,7 +766,7 @@ export default function SurfaceTankPage() {
           transition={{ duration: 0.6, delay: 2.7, ease: 'easeOut' }}
           className="text-white/60 text-sm tracking-[0.25em] uppercase mb-5"
         >
-          Over 80 dive sites · One bottle
+          80+ dive sites · 8 stickers free with every bottle
         </motion.p>
 
         <motion.div

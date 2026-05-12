@@ -219,4 +219,91 @@ describe('STICKER_PRICING configuration', () => {
       expect(prices[i]).toBeLessThanOrEqual(prices[i - 1]);
     }
   });
+
+  test('exposes a BUNDLE_FREE_COUNT of 8', () => {
+    expect(STICKER_PRICING.BUNDLE_FREE_COUNT).toBe(8);
+  });
+
+  test('bundle tiers cover the four expected ranges', () => {
+    const ranges = STICKER_PRICING.BUNDLE_TIERS.map((t) => [t.min, t.max]);
+    expect(ranges).toEqual([
+      [1, 8],
+      [9, 13],
+      [14, 20],
+      [21, Infinity],
+    ]);
+  });
+});
+
+// ===========================================
+// BUNDLE (SURFACE TANK + STICKERS) TESTS
+// ===========================================
+describe('calculateStickerTotal with Surface Tank bundle', () => {
+  test('first 8 stickers are free when a bottle is in cart', () => {
+    [1, 4, 8].forEach((qty) => {
+      const result = calculateStickerTotal(qty, true);
+      expect(result.total).toBe(0);
+      expect(result.freeCount).toBe(qty);
+      expect(result.paidCount).toBe(0);
+      expect(result.savings).toBe(qty * 2.5);
+    });
+  });
+
+  test('9-13 stickers price the extras at £2.00 each', () => {
+    const r9 = calculateStickerTotal(9, true);
+    expect(r9.paidCount).toBe(1);
+    expect(r9.total).toBe(2.0);
+
+    const r13 = calculateStickerTotal(13, true);
+    expect(r13.paidCount).toBe(5);
+    expect(r13.total).toBe(10.0);
+  });
+
+  test('14-20 stickers price the extras at £1.75 each', () => {
+    const r14 = calculateStickerTotal(14, true);
+    expect(r14.paidCount).toBe(6);
+    expect(r14.total).toBeCloseTo(10.5, 5);
+
+    const r20 = calculateStickerTotal(20, true);
+    expect(r20.paidCount).toBe(12);
+    expect(r20.total).toBeCloseTo(21.0, 5);
+  });
+
+  test('21+ stickers price the extras at £1.50 each', () => {
+    const r21 = calculateStickerTotal(21, true);
+    expect(r21.paidCount).toBe(13);
+    expect(r21.total).toBeCloseTo(19.5, 5);
+  });
+
+  test('without a bottle behaves like the legacy tier table', () => {
+    const r10 = calculateStickerTotal(10, false);
+    expect(r10.total).toBe(17.5);
+    expect(r10.freeCount).toBe(0);
+  });
+});
+
+describe('getDiscountCode with Surface Tank bundle', () => {
+  test('returns null when 1-8 stickers + bottle (BXGY automatic covers it)', () => {
+    [1, 4, 8].forEach((qty) => {
+      expect(getDiscountCode(qty, true)).toBeNull();
+    });
+  });
+
+  test('returns STICKER5 (20%) for 9-13 stickers + bottle', () => {
+    [9, 11, 13].forEach((qty) => {
+      expect(getDiscountCode(qty, true)).toBe('STICKER5');
+    });
+  });
+
+  test('returns STICKER10 (30%) for 14-20 stickers + bottle', () => {
+    [14, 17, 20].forEach((qty) => {
+      expect(getDiscountCode(qty, true)).toBe('STICKER10');
+    });
+  });
+
+  test('returns STICKER15PLUS (40%) for 21+ stickers + bottle', () => {
+    [21, 25, 100].forEach((qty) => {
+      expect(getDiscountCode(qty, true)).toBe('STICKER15PLUS');
+    });
+  });
 });

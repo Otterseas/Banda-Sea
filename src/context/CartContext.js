@@ -8,6 +8,22 @@ import {
   getDiscountCode,
 } from '@/utils/stickerPricing';
 
+// Shopify variant IDs that count as "Surface Tank in cart" for the bundle
+// deal. Includes both colour variants so either qualifies.
+const SURFACE_TANK_VARIANT_IDS = new Set([
+  '52453682807050', // Deep Ocean
+  '52453682839818', // Arctic White
+]);
+
+function isSurfaceTankItem(item) {
+  if (!item || item.type !== 'product') return false;
+  if (SURFACE_TANK_VARIANT_IDS.has(String(item.shopifyVariantId))) return true;
+  if (SURFACE_TANK_VARIANT_IDS.has(String(item.id))) return true;
+  // The product page adds items with id like "surface-tank-blue" — catch that too.
+  if (typeof item.id === 'string' && item.id.startsWith('surface-tank-')) return true;
+  return false;
+}
+
 // ===========================================
 // CART CONTEXT
 // ===========================================
@@ -63,13 +79,13 @@ export function CartProvider({ children }) {
     setCartItems(prev => {
       const currentQty = prev[id]?.quantity || 0;
       const newQty = currentQty + delta;
-      
+
       if (newQty <= 0) {
         const newCart = { ...prev };
         delete newCart[id];
         return newCart;
       }
-      
+
       return {
         ...prev,
         [id]: {
@@ -91,38 +107,44 @@ export function CartProvider({ children }) {
 
   // Calculate totals
   const cartArray = Object.values(cartItems);
-  
+
   // Separate stickers from products
   const locationStickers = cartArray.filter(item => item.type === 'location-sticker');
   const funStickers = cartArray.filter(item => item.type === 'fun-sticker');
   const products = cartArray.filter(item => item.type === 'product');
-  
-  // Location sticker calculations (tiered pricing)
+
+  // Is the bundle active? A Surface Tank in cart unlocks "first 8 stickers free"
+  // and shifts the sliding-scale pricing to the 9th sticker onwards.
+  const hasBottle = products.some(isSurfaceTankItem);
+
+  // Location sticker calculations (tiered pricing, bundle-aware)
   const locationStickerCount = locationStickers.reduce((sum, item) => sum + item.quantity, 0);
-  const locationStickerCalc = calculateStickerTotal(locationStickerCount);
-  
+  const locationStickerCalc = calculateStickerTotal(locationStickerCount, hasBottle);
+
   // Fun stickers (flat price, no tiered discount)
   const funStickerTotal = funStickers.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const funStickerCount = funStickers.reduce((sum, item) => sum + item.quantity, 0);
-  
+
   // Products total
   const productTotal = products.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const productCount = products.reduce((sum, item) => sum + item.quantity, 0);
-  
+
   // Grand totals
   const totalItems = locationStickerCount + funStickerCount + productCount;
   const totalPrice = locationStickerCalc.total + funStickerTotal + productTotal;
-  
-  // Can checkout?
+
+  // Can checkout? With a Surface Tank in cart the 5-sticker minimum is
+  // waived (bottle alone, or bottle + any 1-8 free stickers, can ship).
   const hasLocationStickers = locationStickerCount > 0;
-  const stickersCanCheckout = !hasLocationStickers || locationStickerCount >= STICKER_PRICING.MIN_ORDER;
+  const stickersCanCheckout =
+    !hasLocationStickers || hasBottle || locationStickerCount >= STICKER_PRICING.MIN_ORDER;
   const canCheckout = totalItems > 0 && stickersCanCheckout;
 
   const value = {
     // Cart state
     cartItems,
     isDrawerOpen,
-    
+
     // Actions
     addToCart,
     removeFromCart,
@@ -130,7 +152,13 @@ export function CartProvider({ children }) {
     clearCart,
     openCart,
     closeDrawer,
-    
+
+    // Bundle deal
+    hasBottle,
+    bundleFreeCount: locationStickerCalc.freeCount,
+    bundlePaidCount: locationStickerCalc.paidCount,
+    bundlePaidPrice: locationStickerCalc.paidPrice,
+
     // Location sticker specific
     locationStickerCount,
     locationStickerTotal: locationStickerCalc.total,
@@ -138,30 +166,30 @@ export function CartProvider({ children }) {
     locationStickerSavings: locationStickerCalc.savings,
     locationStickerTier: locationStickerCalc.tier,
     locationStickerDiscount: locationStickerCalc.discount,
-    
+
     // Fun stickers
     funStickerCount,
     funStickerTotal,
-    
+
     // Products
     productCount,
     productTotal,
-    
+
     // Totals
     totalItems,
     totalPrice,
     savings: locationStickerCalc.savings,
-    
+
     // Checkout
     canCheckout,
     minOrder: STICKER_PRICING.MIN_ORDER,
-    
+
     // Legacy compatibility (for existing components)
     pricePerItem: locationStickerCalc.pricePerItem,
     pricingTier: { tier: locationStickerCalc.tier, discount: locationStickerCalc.discount },
-    
+
     // Get discount code for checkout
-    getDiscountCode: () => getDiscountCode(locationStickerCount),
+    getDiscountCode: () => getDiscountCode(locationStickerCount, hasBottle),
   };
 
   return (

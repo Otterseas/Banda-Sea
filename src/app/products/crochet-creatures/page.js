@@ -401,11 +401,12 @@ const RELATED_PRODUCTS = [
     name: 'The Surface Tank',
     href: '/products/surface-tank',
     image: '/images/products/The-surface-tank-sunset.jpg',
-    priceLabel: '£40',
+    priceLabel: '£35',
+    originalPriceLabel: '£40',
     quickAdd: {
       shopifyVariantId: '52453682807050',
       name: 'The Surface Tank - Deep Ocean',
-      price: 40.0,
+      price: 35.0,
     },
   },
   {

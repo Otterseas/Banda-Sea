@@ -78,13 +78,14 @@ const UPSELL_CATALOG = {
     price: 28.00,
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Dive_Journal_-_Image_only.jpg?v=1769573325&width=200',
   },
-  // Surface Tank (Large - £40)
+  // Surface Tank (Large - £35 on sale, was £40)
   surfaceTank: {
     id: '52453682807050',
     shopifyVariantId: '52453682807050',
     name: 'Surface Tank',
     type: 'product',
-    price: 40.00,
+    price: 35.00,
+    originalPrice: 40.00,
     image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Water_bottles_and_stickers.png?v=1769395822&width=200',
   },
 };
@@ -189,6 +190,11 @@ export default function CartDrawer() {
     updateQuantity,
     removeFromCart,
     addToCart,
+    // Bundle
+    hasBottle,
+    bundleFreeCount,
+    bundlePaidCount,
+    bundlePaidPrice,
     // Location stickers
     locationStickerCount,
     locationStickerTotal,
@@ -285,8 +291,13 @@ export default function CartDrawer() {
           {item.region && (
             <p className="text-xs" style={{ color: LUNA.midDepth }}>{item.region}</p>
           )}
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-gray-500 flex items-baseline gap-1">
             {formatPrice(item.price || 0)} each
+            {item.originalPrice && item.originalPrice > (item.price || 0) && (
+              <span className="text-[10px] line-through text-gray-400">
+                {formatPrice(item.originalPrice)}
+              </span>
+            )}
           </p>
         </div>
 
@@ -444,7 +455,38 @@ export default function CartDrawer() {
                 borderTop: `1px solid ${LUNA.border}`
               }}
             >
-              {/* Location Sticker Pricing Tier Info — compact card */}
+              {/* Bundle deal banner — shown whenever a Surface Tank is in cart, even before stickers are added,
+                  so the customer understands the bundle benefit. */}
+              {hasBottle && (
+                <div
+                  className="mb-3 p-2.5 rounded-lg border"
+                  style={{
+                    background: `linear-gradient(135deg, ${LUNA.pink}12 0%, ${LUNA.surfaceTeal}12 100%)`,
+                    borderColor: `${LUNA.pink}55`,
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">🎁</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] font-bold tracking-[0.12em] uppercase" style={{ color: LUNA.pink }}>
+                        Surface Tank Bundle
+                      </p>
+                      <p className="text-[11px] font-medium leading-snug" style={{ color: LUNA.deepWater }}>
+                        {bundleFreeCount === 0
+                          ? 'Pick any 8 location stickers — included free.'
+                          : bundleFreeCount < 8
+                            ? `${bundleFreeCount} of 8 free stickers picked · ${8 - bundleFreeCount} to go`
+                            : `All 8 free stickers picked ✓ ${bundlePaidCount > 0 ? `· ${bundlePaidCount} extra @ ${formatPrice(bundlePaidPrice)}` : ''}`
+                        }
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Location Sticker Pricing Tier Info — compact card. The tier breakpoints
+                  shift when a Surface Tank is in the cart: thresholds become 9 / 14 / 21
+                  (with the first 8 stickers covered by the bundle). */}
               {locationStickerCount > 0 && (
                 <div
                   className="mb-3 p-2.5 rounded-lg border"
@@ -455,62 +497,84 @@ export default function CartDrawer() {
                 >
                   <div className="flex justify-between text-[11px] mb-1.5">
                     <span className="font-medium" style={{ color: LUNA.midDepth }}>
-                      {locationStickerCount < minOrder
-                        ? `Add ${minOrder - locationStickerCount} more to checkout`
-                        : locationStickerCount < 10
-                          ? `Add ${10 - locationStickerCount} more · ${formatPrice(1.75)}/each!`
-                          : locationStickerCount < 15
-                            ? `Add ${15 - locationStickerCount} more · ${formatPrice(1.50)}/each!`
-                            : '🎉 Best price unlocked!'
+                      {hasBottle
+                        ? (locationStickerCount < 8
+                            ? `${8 - locationStickerCount} free stickers left to add`
+                            : locationStickerCount < 14
+                              ? `Add ${14 - locationStickerCount} more · ${formatPrice(1.75)}/each!`
+                              : locationStickerCount < 21
+                                ? `Add ${21 - locationStickerCount} more · ${formatPrice(1.50)}/each!`
+                                : '🎉 Best price unlocked!')
+                        : (locationStickerCount < minOrder
+                            ? `Add ${minOrder - locationStickerCount} more to checkout`
+                            : locationStickerCount < 10
+                              ? `Add ${10 - locationStickerCount} more · ${formatPrice(1.75)}/each!`
+                              : locationStickerCount < 15
+                                ? `Add ${15 - locationStickerCount} more · ${formatPrice(1.50)}/each!`
+                                : '🎉 Best price unlocked!')
                       }
                     </span>
                     <span className="font-bold" style={{ color: LUNA.pink }}>
-                      {formatPrice(locationStickerPricePerItem)}/each
+                      {hasBottle && bundlePaidCount === 0
+                        ? 'FREE'
+                        : `${formatPrice(locationStickerPricePerItem)}/each`
+                      }
                     </span>
                   </div>
 
-                  {/* Progress Bar - 3 tiers: 5, 10, 15+ */}
-                  <div className="flex gap-1 mb-1">
-                    <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
-                      <div
-                        className="h-full rounded-full transition-all duration-500"
-                        style={{
-                          width: `${Math.min(100, (locationStickerCount / 5) * 100)}%`,
-                          backgroundColor: LUNA.midDepth
-                        }}
-                      />
-                    </div>
-                    <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
-                      <div
-                        className="h-full rounded-full transition-all duration-500"
-                        style={{
-                          width: `${Math.min(100, Math.max(0, (locationStickerCount - 5) / 5) * 100)}%`,
-                          backgroundColor: LUNA.surfaceTeal
-                        }}
-                      />
-                    </div>
-                    <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
-                      <div
-                        className="h-full rounded-full transition-all duration-500"
-                        style={{
-                          width: `${Math.min(100, Math.max(0, (locationStickerCount - 10) / 5) * 100)}%`,
-                          backgroundColor: LUNA.pink
-                        }}
-                      />
-                    </div>
-                  </div>
+                  {/* Progress Bar - 3 tiers. Breakpoints depend on bundle state:
+                      without bottle: 5 / 10 / 15
+                      with bottle:    9 / 14 / 21 */}
+                  {(() => {
+                    const [t1, t2, t3] = hasBottle ? [9, 14, 21] : [5, 10, 15];
+                    const seg2 = t2 - t1;
+                    const seg3 = t3 - t2;
+                    return (
+                      <>
+                        <div className="flex gap-1 mb-1">
+                          <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
+                            <div
+                              className="h-full rounded-full transition-all duration-500"
+                              style={{
+                                width: `${Math.min(100, (locationStickerCount / t1) * 100)}%`,
+                                backgroundColor: LUNA.midDepth,
+                              }}
+                            />
+                          </div>
+                          <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
+                            <div
+                              className="h-full rounded-full transition-all duration-500"
+                              style={{
+                                width: `${Math.min(100, Math.max(0, (locationStickerCount - t1) / seg2) * 100)}%`,
+                                backgroundColor: LUNA.surfaceTeal,
+                              }}
+                            />
+                          </div>
+                          <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: LUNA.border }}>
+                            <div
+                              className="h-full rounded-full transition-all duration-500"
+                              style={{
+                                width: `${Math.min(100, Math.max(0, (locationStickerCount - t2) / seg3) * 100)}%`,
+                                backgroundColor: LUNA.pink,
+                              }}
+                            />
+                          </div>
+                        </div>
 
-                  <div className="flex justify-between text-[10px] font-semibold">
-                    <span style={{ color: locationStickerCount >= 5 ? LUNA.deepWater : '#9CA3AF' }}>
-                      5 · {formatPrice(2.0)} {locationStickerCount >= 5 && '✓'}
-                    </span>
-                    <span style={{ color: locationStickerCount >= 10 ? LUNA.deepWater : '#9CA3AF' }}>
-                      10 · {formatPrice(1.75)} {locationStickerCount >= 10 && '✓'}
-                    </span>
-                    <span style={{ color: locationStickerCount >= 15 ? LUNA.deepWater : '#9CA3AF' }}>
-                      15 · {formatPrice(1.5)} {locationStickerCount >= 15 && '✓'}
-                    </span>
-                  </div>
+                        <div className="flex justify-between text-[10px] font-semibold">
+                          <span style={{ color: locationStickerCount >= t1 ? LUNA.deepWater : '#9CA3AF' }}>
+                            {t1} · {formatPrice(2.0)} {locationStickerCount >= t1 && '✓'}
+                          </span>
+                          <span style={{ color: locationStickerCount >= t2 ? LUNA.deepWater : '#9CA3AF' }}>
+                            {t2} · {formatPrice(1.75)} {locationStickerCount >= t2 && '✓'}
+                          </span>
+                          <span style={{ color: locationStickerCount >= t3 ? LUNA.deepWater : '#9CA3AF' }}>
+                            {t3} · {formatPrice(1.5)} {locationStickerCount >= t3 && '✓'}
+                          </span>
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
               )}
 
@@ -522,7 +586,24 @@ export default function CartDrawer() {
                     <span style={{ color: LUNA.deepWater }}>{formatPrice(productTotal)}</span>
                   </div>
                 )}
-                {locationStickerCount > 0 && (
+                {locationStickerCount > 0 && hasBottle ? (
+                  <>
+                    {bundleFreeCount > 0 && (
+                      <div className="flex justify-between text-xs">
+                        <span className="text-gray-500">Bundle stickers ({bundleFreeCount} × free)</span>
+                        <span style={{ color: '#10B981' }}>{formatPrice(0)}</span>
+                      </div>
+                    )}
+                    {bundlePaidCount > 0 && (
+                      <div className="flex justify-between text-xs">
+                        <span className="text-gray-500">
+                          Stickers ({bundlePaidCount} × {formatPrice(bundlePaidPrice)})
+                        </span>
+                        <span style={{ color: LUNA.deepWater }}>{formatPrice(locationStickerTotal)}</span>
+                      </div>
+                    )}
+                  </>
+                ) : locationStickerCount > 0 && (
                   <div className="flex justify-between text-xs">
                     <span className="text-gray-500">
                       Stickers ({locationStickerCount} × {formatPrice(locationStickerPricePerItem)})
@@ -538,7 +619,9 @@ export default function CartDrawer() {
                 )}
                 {locationStickerSavings > 0 && (
                   <div className="flex justify-between text-xs font-semibold">
-                    <span style={{ color: '#10B981' }}>Volume Savings ({locationStickerDiscount}% off)</span>
+                    <span style={{ color: '#10B981' }}>
+                      {hasBottle ? 'Bundle Savings' : `Volume Savings (${locationStickerDiscount}% off)`}
+                    </span>
                     <span style={{ color: '#10B981' }}>-{formatPrice(locationStickerSavings)}</span>
                   </div>
                 )}
