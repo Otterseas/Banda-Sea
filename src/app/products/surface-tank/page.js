@@ -725,6 +725,56 @@ export default function SurfaceTankPage() {
               />
             ))}
           </div>
+
+          {/* ============ REVIEW QUOTE — Judge.me verified review ============
+                Single-review banner pulled from the Judge.me data on the
+                Surface Tank product. Centred quote with star rating, title,
+                body, and a verified-buyer badge underneath. */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-2xl mx-auto mt-10 md:mt-14 text-center px-4"
+          >
+            <div className="flex justify-center gap-0.5 mb-3" aria-label="5 out of 5 stars">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill={COLORS.pink}>
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              ))}
+            </div>
+            <h3
+              className="text-lg md:text-xl font-bold mb-2"
+              style={{ color: COLORS.deepWater }}
+            >
+              &ldquo;Stays cold!&rdquo;
+            </h3>
+            <p
+              className="text-sm md:text-base italic leading-relaxed mb-4"
+              style={{ color: COLORS.midDepth }}
+            >
+              Not only does the bottle design look amazing and is so unique, it
+              stayed cold while out at a track meet all day!
+            </p>
+            <div className="flex items-center justify-center gap-2 flex-wrap text-xs">
+              <span className="font-semibold" style={{ color: COLORS.deepWater }}>
+                — Josie Webber
+              </span>
+              <span
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-bold tracking-wider uppercase text-[10px]"
+                style={{
+                  backgroundColor: `${COLORS.surfaceTeal}1A`,
+                  color: COLORS.surfaceTeal,
+                }}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+                Verified Buyer
+              </span>
+            </div>
+          </motion.div>
         </div>
       </section>
 
