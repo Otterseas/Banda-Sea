@@ -2145,6 +2145,938 @@ const ROATAN = {
   ],
 };
 
+// ===========================================
+// BATCH 6 — LATIN AMERICA
+// ===========================================
+
+const GALAPAGOS = {
+  intro:
+    "The Galápagos dives unlike anywhere else because of its currents. Cold, nutrient-rich water wells up around the archipelago and supports an improbable mix of tropical and cold-water species — you can see hammerhead schools, marine iguanas grazing algae underwater and penguins on the same trip. Central island sites are reachable on day trips from Santa Cruz and San Cristóbal, but the diving the islands are famous for is at Darwin and Wolf in the far north, which is liveaboard territory only.",
+  quickFacts: {
+    bestTime: 'June to November for whale sharks; December to May is warmer and calmer',
+    difficulty: 'Advanced — cold thermoclines, strong current and surge',
+    waterTemp: '18–26°C, colder in the cool season — a 5–7mm suit',
+    visibility: '10–25m, plankton-dependent',
+  },
+  topSites: [
+    { name: 'Darwin', note: 'The famous hammerhead and whale shark site' },
+    { name: 'Wolf', note: 'Shark-heavy walls and pinnacles' },
+    { name: 'Gordon Rocks', note: 'Day-trip site from Santa Cruz with hammerheads' },
+    { name: 'Cabo Marshall', note: 'Manta rays along the Isabela coast' },
+  ],
+  marineLife: [
+    'Scalloped hammerhead schools',
+    'Whale sharks in the cool season',
+    'Galápagos sea lions and fur seals',
+    'Marine iguanas feeding underwater',
+    'Galápagos and silky sharks',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive the Galápagos?',
+      answer:
+        'It splits into two seasons. June to November is the cool, nutrient-rich season when currents bring plankton, water drops to around 18 to 22°C and whale sharks — mostly large adult females — visit Darwin. Seas are rougher and visibility patchier. December to May is warmer at 23 to 26°C with calmer crossings and better visibility, still with plenty of hammerheads. Neither is wrong; pick according to whether whale sharks or comfort matter more.',
+    },
+    {
+      question: 'Do I need a liveaboard for the Galápagos?',
+      answer:
+        'For Darwin and Wolf, yes — they lie far to the north of the main group and are only reachable by liveaboard, on itineraries that must be booked well in advance because permits are limited. The central islands have good diving accessible on day trips from Santa Cruz and San Cristóbal, including Gordon Rocks, and that is a cheaper way to visit. But the shark aggregations the Galápagos is famous for are at the northern islands.',
+    },
+  ],
+};
+
+const DARWIN_WOLF = {
+  intro:
+    "Darwin and Wolf are two remote volcanic islands in the far north of the Galápagos, and they hold the greatest shark biomass recorded anywhere on the planet. Diving here means hanging onto rock in surging current while schools of scalloped hammerheads pass overhead in their hundreds, with whale sharks cruising through in the cool season. They lie roughly fourteen hours' sailing from the central islands, so access is by liveaboard only, and conditions are demanding enough that operators set firm experience requirements.",
+  quickFacts: {
+    bestTime: 'June to November for whale sharks; hammerheads year-round',
+    difficulty: 'Advanced to expert — surge, strong current, open ocean',
+    waterTemp: '18–26°C with sharp thermoclines',
+    visibility: '10–25m',
+  },
+  topSites: [
+    { name: 'Darwin', note: 'The main shark site; the natural arch collapsed in 2021' },
+    { name: 'Wolf — Landslide', note: 'Hammerhead schools along the wall' },
+    { name: 'Wolf — Shark Bay', note: 'Reliable shark traffic in the current' },
+  ],
+  marineLife: [
+    'Scalloped hammerheads in large schools',
+    'Whale sharks, June to November',
+    'Galápagos and silky sharks',
+    'Bottlenose dolphins',
+    'Big tuna and jack schools',
+  ],
+  faqs: [
+    {
+      question: 'Can you still dive Darwin’s Arch?',
+      answer:
+        'The dive site is still run, but the arch itself is gone — the natural rock bridge collapsed in May 2021, leaving two pillars standing on the platform. What made the site extraordinary was always the underwater topography and the currents that funnel sharks past it, and that is unchanged. Liveaboards continue to dive Darwin as the centrepiece of northern Galápagos itineraries; only the famous surface photograph is no longer possible.',
+    },
+    {
+      question: 'How experienced do I need to be for Darwin and Wolf?',
+      answer:
+        'Genuinely experienced. Operators typically require Advanced Open Water with 50 to 100 logged dives, and want recent cold-water and current experience. Dives involve negative entries into moving water, holding position on rock in surge while sharks pass, and drifting off into blue water for pickup. Thermoclines can drop the temperature sharply mid-dive. This is not a place to gain current experience; it is a place to arrive already having it.',
+    },
+  ],
+};
+
+const COCOS_ISLAND = {
+  intro:
+    "Cocos Island lies some 550 kilometres off the Pacific coast of Costa Rica, a green uninhabited peak in open ocean, and reaching it means 30 to 36 hours at sea each way. Divers make that crossing for scalloped hammerheads, which school here in numbers that rank among the best on earth, and for the whitetip reef sharks that hunt across the reef in packs after dark at Manuelita. A UNESCO World Heritage Site and national park, it is liveaboard-only and firmly for experienced divers.",
+  quickFacts: {
+    bestTime: 'June to November for the biggest hammerhead schools; December to May is calmer',
+    difficulty: 'Advanced — current, surge and limited visibility at times',
+    waterTemp: '24–28°C, with thermoclines dropping to around 20°C',
+    visibility: '10–30m',
+  },
+  topSites: [
+    { name: 'Bajo Alcyone', note: 'Seamount famous for hammerhead schools' },
+    { name: 'Manuelita', note: 'Night dive with hunting whitetip reef sharks' },
+    { name: 'Dirty Rock', note: 'Pinnacle with sharks and big schooling fish' },
+  ],
+  marineLife: [
+    'Scalloped hammerhead schools',
+    'Whitetip reef sharks hunting at night',
+    'Silvertip and Galápagos sharks',
+    'Mobula and marble rays',
+    'Occasional tiger sharks and whale sharks',
+  ],
+  faqs: [
+    {
+      question: 'How do you get to Cocos Island?',
+      answer:
+        'By liveaboard from Puntarenas on the Costa Rican mainland, with a crossing of roughly 30 to 36 hours in each direction. Trips typically run 8 to 10 days to make the journey worthwhile, and the island is a national park with no accommodation ashore — landings are restricted and diving is from tenders. Because the crossing is long and open ocean, seasickness is a real consideration for anyone who suffers from it.',
+    },
+    {
+      question: 'When are hammerhead numbers best at Cocos?',
+      answer:
+        'The rainy season, roughly June to November, brings the nutrient-rich water that draws the biggest hammerhead aggregations, and it is the period most experienced Cocos divers target. The trade-off is rougher crossings, more rain and sometimes reduced visibility. December to May offers calmer seas and clearer water with hammerheads still present in good numbers, just less consistently in the huge schools the island is known for.',
+    },
+  ],
+};
+
+const MALPELO = {
+  intro:
+    "Malpelo is a bare rock rising from the Pacific some 500 kilometres off Colombia, surrounded by one of the largest no-fishing zones in the eastern tropical Pacific. It is a shark site above all else: enormous schools of scalloped hammerheads, walls of silky sharks, and — unusually — the smalltooth sand tiger, a deep-water shark rarely seen anywhere else by divers. Access is liveaboard-only with limited permits, the crossing takes well over a day, and conditions are demanding enough that it is considered an expert destination.",
+  quickFacts: {
+    bestTime: 'January to May for calmer seas; June to November for the biggest aggregations',
+    difficulty: 'Expert — strong current, surge, deep sites and cold thermoclines',
+    waterTemp: '20–28°C with pronounced thermoclines',
+    visibility: '10–30m',
+  },
+  topSites: [
+    { name: 'The Altar of the Virgin', note: 'Classic wall with hammerhead traffic' },
+    { name: 'La Nevera', note: 'Cold upwelling site — hammerheads and silkies' },
+    { name: 'Sahara', note: 'Deeper site where sand tiger sharks are sometimes seen' },
+  ],
+  marineLife: [
+    'Scalloped hammerhead schools',
+    'Silky shark aggregations',
+    'Smalltooth sand tiger sharks',
+    'Whale sharks, occasionally',
+    'Big tuna and jack schools',
+  ],
+  faqs: [
+    {
+      question: 'How do you dive Malpelo?',
+      answer:
+        'Only by liveaboard, on trips that usually depart from Buenaventura in Colombia or occasionally from Panama, with a crossing of well over 30 hours. Malpelo is a protected sanctuary with strictly limited diver permits, so boats and dates are few and book out a long way ahead. There is nothing on the island but a small Colombian military post, and landings are not part of the trip — this is diving from tenders in open ocean.',
+    },
+    {
+      question: 'What experience does Malpelo require?',
+      answer:
+        'More than most destinations. Sites are exposed pinnacles and walls with strong, shifting currents and significant surge, and the sharks are often deep, which means dives run close to recreational limits with sharp cold thermoclines. Operators generally want well over 100 logged dives, nitrox certification and solid current experience. Many divers arriving here have already done Cocos or the Galápagos; it is not a first big-animal trip.',
+    },
+  ],
+};
+
+const SOCORRO = {
+  intro:
+    "Socorro and the surrounding Revillagigedo islands sit roughly 390 kilometres south of Cabo San Lucas, and they are best known for giant oceanic manta rays that actively seek out divers — animals with wingspans over five metres that hover above a group, apparently enjoying the bubbles. Humpback whales pass through in winter and are often heard throughout a dive. Dolphins, hammerheads and silvertip sharks fill in around them. The archipelago is a Mexican national park and UNESCO site, reached only by liveaboard on a 24-hour crossing.",
+  quickFacts: {
+    bestTime: 'November to May — boats do not run in the summer hurricane season',
+    difficulty: 'Advanced — blue-water sites with current and surge',
+    waterTemp: '21–27°C',
+    visibility: '20–30m',
+  },
+  topSites: [
+    { name: 'The Boiler, San Benedicto', note: 'The classic giant manta site' },
+    { name: 'Roca Partida', note: 'Tiny pinnacle stacked with sharks' },
+    { name: 'Cabo Pearce, Socorro', note: 'Ridge with mantas and dolphins' },
+  ],
+  marineLife: [
+    'Giant oceanic manta rays',
+    'Humpback whales in winter',
+    'Bottlenose dolphins',
+    'Silvertip, silky and hammerhead sharks',
+    'Whale sharks, occasionally',
+  ],
+  faqs: [
+    {
+      question: 'When is the Socorro diving season?',
+      answer:
+        'Liveaboards run roughly from November to May and stop entirely for the summer hurricane season. Within that window, January to March is peak for humpback whales, which are frequently audible underwater and sometimes seen. Water is coolest around February at about 21 to 23°C, warming towards the end of the season. Giant mantas are present across the whole season, which is what most divers come for.',
+    },
+    {
+      question: 'Why are the mantas at Socorro so interactive?',
+      answer:
+        'Nobody knows for certain, but the giant oceanic mantas here have a long-documented habit of approaching divers and holding position overhead, apparently attracted to exhaled bubbles. Encounters can last a whole dive. The etiquette matters: do not chase, do not swim above them and never touch — their skin carries a protective mucus layer. Stay still, keep your bubbles going and let the animal decide how close it wants to be.',
+    },
+  ],
+};
+
+const ROCA_PARTIDA = {
+  intro:
+    "Roca Partida is barely an island at all — a white-streaked rock about the size of a house, sticking out of open Pacific hundreds of kilometres from anywhere, in the Revillagigedo archipelago. Underwater it drops as a sheer pinnacle into deep blue, and because it is the only structure for miles, everything gathers there. Ledges on the walls hold whitetip reef sharks stacked like logs, while tuna, silvertips and hammerheads patrol the blue. It is dived as part of Socorro liveaboard itineraries and is regularly the highlight of the trip.",
+  quickFacts: {
+    bestTime: 'November to May, on Socorro liveaboard itineraries',
+    difficulty: 'Advanced — exposed pinnacle, current, no shelter',
+    waterTemp: '21–27°C',
+    visibility: '20–30m',
+  },
+  topSites: [
+    { name: 'The shark ledges', note: 'Whitetip reef sharks stacked in wall alcoves' },
+    { name: 'The northern point', note: 'Where current hits and pelagics gather' },
+    { name: 'The blue', note: 'Hang off the wall for tuna, silvertips and hammerheads' },
+  ],
+  marineLife: [
+    'Whitetip reef sharks in stacked ledges',
+    'Silvertip and Galápagos sharks',
+    'Yellowfin tuna in large schools',
+    'Giant manta rays passing through',
+    'Whale sharks, occasionally',
+  ],
+  faqs: [
+    {
+      question: 'What is diving Roca Partida like?',
+      answer:
+        'Vertical and exposed. The rock drops as a sheer pinnacle, so you dive along a wall with open ocean on one side and nothing beneath you, working around the rock according to where the current is running. The signature sight is the ledges, where whitetip reef sharks pile in together to rest. Because there is no reef or shallow shelf, buoyancy control and depth awareness matter — it is easy to drift deeper than intended alongside a featureless wall.',
+    },
+    {
+      question: 'How do you get to Roca Partida?',
+      answer:
+        'It is part of the Revillagigedo archipelago and is dived exclusively on Socorro liveaboard itineraries departing from Cabo San Lucas, roughly a 24-hour crossing to the island group and further to reach Roca Partida itself. Boats typically spend a day or two there within a week-long trip. The season runs November to May; the archipelago is a national park and UNESCO site, so park fees and permits apply on top of the trip cost.',
+    },
+  ],
+};
+
+const BAJA_CALIFORNIA = {
+  intro:
+    "Baja California separates the Pacific from the Sea of Cortez, the body of water Jacques Cousteau reportedly called the world's aquarium. It is a big-animal coastline: sea lion colonies where juveniles play with divers, whale sharks feeding in the shallows of La Paz Bay in winter, mobula rays massing in spring, and grey whales calving in the Pacific lagoons. Water clarity peaks in autumn, when the Sea of Cortez is warmest. Diving ranges from very easy sea lion snorkels to serious offshore trips.",
+  quickFacts: {
+    bestTime: 'August to November for the warmest, clearest water; whale sharks October to April',
+    difficulty: 'Beginner to advanced depending on site',
+    waterTemp: '18–29°C — a 5mm outside late summer',
+    visibility: '10–30m, best in autumn',
+  },
+  topSites: [
+    { name: 'Los Islotes', note: 'Sea lion colony near La Paz' },
+    { name: 'La Paz Bay', note: 'Whale shark snorkelling in winter' },
+    { name: 'Cabo Pulmo', note: 'Recovered marine park with huge jack schools' },
+    { name: 'Gordo Banks', note: 'Offshore seamount with hammerheads' },
+  ],
+  marineLife: [
+    'California sea lions',
+    'Whale sharks in the bay, seasonally',
+    'Mobula ray aggregations in spring',
+    'Schooling jacks at Cabo Pulmo',
+    'Grey and humpback whales offshore in winter',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive Baja California?',
+      answer:
+        'August to November gives the warmest water — up to about 29°C in the Sea of Cortez — and the best visibility of the year. Whale shark season in La Paz Bay runs roughly October to April, and it is snorkel-based in shallow, often murky water. Mobula rays aggregate in spring. Winter is cooler at around 18 to 21°C with more wind, but brings whale migration along the Pacific side, so the right season depends entirely on the animal you want to see.',
+    },
+    {
+      question: 'Can you still cage dive with great whites at Guadalupe Island?',
+      answer:
+        'Not currently. Guadalupe Island was for years the premier great white cage diving destination, prized for exceptional visibility, but Mexican authorities suspended the activity there from early 2023 on conservation grounds and it has not reopened as a normal commercial operation. Anyone selling a Guadalupe trip should be questioned closely. Divers wanting great whites now generally look to South Australia or South Africa instead.',
+    },
+  ],
+};
+
+const LA_PAZ = {
+  intro:
+    "La Paz sits on the Sea of Cortez side of Baja and is the easiest base for its best-known encounters. Los Islotes, a rocky islet an hour by boat, holds a California sea lion colony where the juveniles are relentlessly playful with snorkellers and divers. Between autumn and spring, juvenile whale sharks feed in the shallow, plankton-rich water of the bay itself, and encounters there are snorkel-only and tightly regulated. Add the Salvatierra wreck and reefs full of schooling fish, and it is a varied, accessible destination.",
+  quickFacts: {
+    bestTime: 'October to November for diving; whale sharks October to April',
+    difficulty: 'Beginner to intermediate',
+    waterTemp: '20–29°C',
+    visibility: '10–25m; low in the whale shark shallows',
+  },
+  topSites: [
+    { name: 'Los Islotes', note: 'Sea lion colony — closed seasonally for pupping' },
+    { name: 'La Paz Bay shallows', note: 'Whale shark snorkelling, permit-controlled' },
+    { name: 'Salvatierra wreck', note: 'Ferry wreck at around 18m' },
+    { name: 'El Bajo seamount', note: 'Offshore site with schooling fish and rays' },
+  ],
+  marineLife: [
+    'California sea lions',
+    'Whale sharks in the bay',
+    'Mobula rays in spring',
+    'Schooling jacks and snapper',
+    'Green turtles',
+  ],
+  faqs: [
+    {
+      question: 'When can you swim with whale sharks in La Paz?',
+      answer:
+        'Roughly October to April, when juvenile whale sharks feed in the shallow plankton-rich water of La Paz Bay. Encounters are snorkel-only, run under a permit system with limited boats, designated zones, capped group sizes and a guide in the water enforcing distance. Expect murky green water rather than blue — that plankton is precisely why the sharks are there. Touching is prohibited, and boats must keep to strict speed limits within the zone.',
+    },
+    {
+      question: 'Is Los Islotes open all year?',
+      answer:
+        'No. The sea lion colony closes to in-water visitors during the pupping and breeding season, generally over the summer months, when bulls are territorial and the animals need to be left alone. Exact dates are set by Mexican authorities and shift year to year, so check before booking if sea lions are your main reason for visiting. Outside the closure the colony is one of the most enjoyable and reliable animal encounters in Mexico.',
+    },
+  ],
+};
+
+const COSTA_RICA = {
+  intro:
+    "Costa Rica's mainland diving on the Pacific coast is not about clear blue water — visibility is often moderate and the water can be surprisingly cool where upwelling hits. What it delivers instead is big animals close to shore. The Bat Islands off Guanacaste hold one of the more reliable bull shark sites in the Americas, and the Catalina Islands see manta rays through the cooler months. It also works as a warm-up or an alternative to the long offshore crossing to Cocos Island.",
+  quickFacts: {
+    bestTime: 'Bull sharks June to November; mantas December to April',
+    difficulty: 'Intermediate to advanced — surge, current and cool thermoclines',
+    waterTemp: '24–29°C at the surface, dropping sharply at thermoclines',
+    visibility: '10–25m, variable',
+  },
+  topSites: [
+    { name: 'Bat Islands (Islas Murciélagos)', note: 'Bull sharks at Big Scare' },
+    { name: 'Catalina Islands', note: 'Manta rays in the cooler months' },
+    { name: 'Caño Island', note: 'Reef and pelagic diving off the Osa Peninsula' },
+  ],
+  marineLife: [
+    'Bull sharks at the Bat Islands',
+    'Manta rays and mobulas',
+    'White-tip reef sharks',
+    'Large schools of jacks and snapper',
+    'Turtles and eagle rays',
+  ],
+  faqs: [
+    {
+      question: 'When can you dive with bull sharks in Costa Rica?',
+      answer:
+        'The Bat Islands site known as Big Scare is most productive during the rainy season, roughly June to November, when bull sharks gather in numbers. It is a deeper dive with surge and current and no bait is used, so encounters are natural but not guaranteed. Operators run it as a long day trip from the Guanacaste coast and generally require Advanced Open Water with good experience given the conditions.',
+    },
+    {
+      question: 'Is Costa Rica good for diving compared with Cocos Island?',
+      answer:
+        'They are different propositions. Cocos, 550 kilometres offshore, is a world-class shark destination reachable only on a long liveaboard trip. Mainland Costa Rica offers accessible day-boat diving with genuine big-animal chances — bull sharks and mantas — but with moderate visibility and cooler thermoclines than the tropical average. If your expectation is Caribbean-style clarity you will be disappointed; if you want animals close to shore, it delivers.',
+    },
+  ],
+};
+
+const CENOTES = {
+  intro:
+    "The cenotes of Mexico's Yucatán Peninsula are flooded limestone sinkholes that open into some of the longest underwater cave systems on earth. The water is rainwater filtered through rock, so it is astonishingly clear — often over 50 metres of visibility — and light beams pour through the openings into rooms hung with stalactites. Most cenote diving sold to visitors is cavern diving, which stays inside the daylight zone on a guided line and is open to certified divers. Going beyond that is full cave diving and needs specific training.",
+  quickFacts: {
+    bestTime: 'Year-round — conditions barely change',
+    difficulty: 'Cavern diving suits certified divers; cave diving needs full training',
+    waterTemp: '24–25°C year-round',
+    visibility: '30–100m',
+  },
+  topSites: [
+    { name: 'Dos Ojos', note: 'The classic cavern route, bright and accessible' },
+    { name: 'Angelita', note: 'Deep cenote with a hydrogen sulphide cloud at around 30m' },
+    { name: 'The Pit', note: 'Deep shaft with dramatic light beams — advanced' },
+    { name: 'Car Wash (Aktun Ha)', note: 'Shallow and easy, good for a first cenote' },
+  ],
+  marineLife: [
+    'Very little — this is geology, not marine life',
+    'Small freshwater fish near the openings',
+    'Occasional turtles in the open sections',
+    'Haloclines where fresh water meets salt',
+  ],
+  faqs: [
+    {
+      question: 'What is the difference between cavern and cave diving in the cenotes?',
+      answer:
+        'Cavern diving stays within the daylight zone, always in sight of the exit, following a permanent guideline with a qualified cenote guide — an Open Water or Advanced certified diver can do it. Cave diving goes beyond natural light into the system proper, and requires full cave certification, redundant gas and lights, and proper training. Almost every cenote tour sold to visitors is a cavern dive. Do not let anyone talk you past that line without the training.',
+    },
+    {
+      question: 'What is the cloud in Angelita cenote?',
+      answer:
+        'A layer of hydrogen sulphide sitting at roughly 30 metres where fresh water meets denser salt water below, formed by decomposing organic matter. It looks exactly like a river of cloud with dead trees emerging from it, and dropping through the layer is genuinely disorientating — visibility falls away and the water below is dark. It is a deep dive in an overhead-adjacent environment and is normally restricted to Advanced divers with good buoyancy and gas planning.',
+    },
+  ],
+};
+
+// ===========================================
+// BATCH 7 — USA & CANADA
+// ===========================================
+
+const FLORIDA_KEYS = {
+  intro:
+    "The Florida Keys hold the only living coral barrier reef in the continental United States, and they have been protecting it for a long time — John Pennekamp Coral Reef State Park, established off Key Largo in 1963, was the first undersea park in the country. The diving is warm, shallow and forgiving, with a well-developed artificial reef programme that has put several large ships on the bottom, including the USS Spiegel Grove and the Vandenberg off Key West. It is one of the easiest places in the US to dive and to learn.",
+  quickFacts: {
+    bestTime: 'April to June and September to November',
+    difficulty: 'Beginner friendly; the deeper wrecks are advanced',
+    waterTemp: '22–30°C',
+    visibility: '10–25m',
+  },
+  topSites: [
+    { name: 'USS Spiegel Grove', note: 'Huge landing ship wreck off Key Largo' },
+    { name: 'USNS Vandenberg', note: 'Missile tracking ship scuttled off Key West' },
+    { name: 'Molasses Reef', note: 'Shallow, busy coral reef, great for beginners' },
+    { name: 'Christ of the Abyss', note: 'Submerged statue in shallow water at Pennekamp' },
+  ],
+  marineLife: [
+    'Goliath grouper, especially on the wrecks',
+    'Nurse sharks and southern stingrays',
+    'Turtles and eagle rays',
+    'Tarpon and barracuda',
+    'Reef fish across the shallow patch reefs',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive the Florida Keys?',
+      answer:
+        'Late spring and autumn — roughly April to June and September to November — offer the best balance of warm water, calm seas and good visibility. Summer is hottest with the warmest water but falls inside hurricane season, which runs June to November. Winter brings cold fronts that can churn the water and knock visibility down for a few days at a time, though the reefs remain diveable and the crowds are far thinner.',
+    },
+    {
+      question: 'Are the Florida Keys good for beginners?',
+      answer:
+        'Very. Much of the reef sits in 5 to 15 metres of warm water with mild current, and there is a dense concentration of dive shops running daily trips from Key Largo down to Key West. Snorkellers and newly certified divers are well catered for at sites like Molasses Reef. The big wrecks are a different matter — the Spiegel Grove and Vandenberg are deep with current, and are properly Advanced-level dives.',
+    },
+  ],
+};
+
+const HAWAII = {
+  intro:
+    "Hawaii's signature dive is the Kona manta ray night dive on the Big Island, and it is unlike anything else in diving: lights are set on the seabed to attract plankton, and reef mantas arrive to feed, barrel-rolling within centimetres of divers kneeling in a circle below. Kona is also one of the few places running blackwater dives, drifting at night over water thousands of metres deep to see bizarre pelagic larvae rising from the depths. Elsewhere, Maui's Molokini crater and Oahu's wrecks offer clear, warm, straightforward diving.",
+  quickFacts: {
+    bestTime: 'Year-round; humpback whales December to April',
+    difficulty: 'Beginner to advanced; the manta night dive is easy and shallow',
+    waterTemp: '23–28°C',
+    visibility: '20–30m',
+  },
+  topSites: [
+    { name: 'Kona manta night dive', note: 'Reliable, shallow, and unlike any other dive' },
+    { name: 'Kona blackwater dive', note: 'Night drift over deep ocean for pelagic larvae' },
+    { name: 'Molokini Crater, Maui', note: 'Submerged crater rim with clear water' },
+    { name: 'Oahu wrecks', note: 'YO-257 and Sea Tiger, both accessible' },
+  ],
+  marineLife: [
+    'Reef manta rays at Kona',
+    'Humpback whales in winter, often heard underwater',
+    'Green turtles',
+    'Whitetip reef sharks',
+    'Endemic Hawaiian reef fish',
+  ],
+  faqs: [
+    {
+      question: 'How reliable is the Kona manta ray night dive?',
+      answer:
+        'It is among the most consistent animal encounters in diving, with high success rates over a long period, though not guaranteed — these are wild reef mantas and some nights they simply do not come. The format is well established: divers kneel on sand at around 10 metres in a circle around lights that draw plankton, and the mantas feed above. It is shallow, calm and suitable for newly certified divers, and snorkellers watch from the surface.',
+    },
+    {
+      question: 'What is blackwater diving?',
+      answer:
+        'A night dive conducted offshore over very deep water, tethered to a line hung beneath a drifting boat with lights attached. You float in open ocean with thousands of metres beneath you, watching the nightly vertical migration — larval fish, octopus, jellyfish and other tiny pelagic animals rising from the depths. Kona is one of the best-known places to do it. It requires good buoyancy and comfort in open water with no reference, so it is not a beginner dive.',
+    },
+  ],
+};
+
+const CALIFORNIA = {
+  intro:
+    "California diving means kelp. Giant kelp grows in dense underwater forests along the coast and around the Channel Islands, rising from the rocky bottom to the surface and filtering the light into shafts — it is one of the most atmospheric environments in diving. The residents are just as good: bright orange garibaldi, harbour seals, and California sea lions that treat divers as entertainment. Monterey and the Channel Islands are the two hubs. The water is cold, so a drysuit or a serious wetsuit is the price of admission.",
+  quickFacts: {
+    bestTime: 'September to November for the warmest water and clearest visibility',
+    difficulty: 'Intermediate — cold, surge and kelp navigation',
+    waterTemp: '10–20°C — drysuit or 7mm',
+    visibility: '5–25m, best in autumn',
+  },
+  topSites: [
+    { name: 'Channel Islands', note: 'Anacapa and Santa Cruz — the best kelp forests' },
+    { name: 'Point Lobos, Monterey', note: 'Protected reserve, permit required' },
+    { name: 'Monterey Breakwater', note: 'Easy shore dive with sea lions' },
+    { name: 'Farnsworth Bank, Catalina', note: 'Advanced site with purple hydrocoral' },
+  ],
+  marineLife: [
+    'Giant kelp forest',
+    'Garibaldi, the state marine fish',
+    'California sea lions and harbour seals',
+    'Horn sharks and bat rays',
+    'Nudibranchs and octopus',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive in California?',
+      answer:
+        'Autumn — roughly September to November — is the sweet spot, when the water is at its warmest, plankton blooms have died back and visibility is at its best. Spring brings heavy plankton and murkier conditions, though the marine life is very active. Water ranges from about 10°C in the north in winter to around 20°C in southern California in late summer, so this is drysuit or thick-wetsuit diving whatever the month.',
+    },
+    {
+      question: 'Is diving in a kelp forest difficult?',
+      answer:
+        'It takes a short adjustment rather than special training. Kelp is easy to move through if you go slowly and deliberately; entanglement problems come from thrashing. The standard advice is to swim through gaps rather than fight the stipes, keep gear streamlined, and if you do get caught, stop and calmly break the kelp — it snaps easily. Surface swims through thick kelp are best done on your back, kicking gently.',
+    },
+  ],
+};
+
+const BRITISH_COLUMBIA = {
+  intro:
+    "British Columbia offers some of the best cold-water diving in the world — a claim often attributed to Jacques Cousteau, who reportedly ranked it second only to the Red Sea. The draw is a mix of extraordinary invertebrate life and large, charismatic animals: giant Pacific octopus, the largest octopus species anywhere; wolf eels that peer out of crevices with almost human faces; and steller sea lions that show up in winter to harass divers in the best possible way. Counter-intuitively, winter is the season, when plankton dies back and visibility opens up dramatically.",
+  quickFacts: {
+    bestTime: 'October to April — winter gives the clearest water',
+    difficulty: 'Advanced — cold, current and low light',
+    waterTemp: '7–12°C — drysuit essential',
+    visibility: '10–30m in winter, far less in summer',
+  },
+  topSites: [
+    { name: 'Hornby Island', note: 'Steller sea lions in winter' },
+    { name: 'Browning Pass', note: 'Walls smothered in invertebrate colour' },
+    { name: 'HMCS Saskatchewan', note: 'Artificial reef wreck near Nanaimo' },
+    { name: 'Quadra Island', note: 'Current-swept reefs with cloud sponge' },
+  ],
+  marineLife: [
+    'Giant Pacific octopus',
+    'Wolf eels',
+    'Steller sea lions in winter',
+    'Cloud sponge and dense invertebrate walls',
+    'Rockfish and lingcod',
+  ],
+  faqs: [
+    {
+      question: 'Why is winter the best time to dive British Columbia?',
+      answer:
+        'Because the plankton disappears. Through the summer, long days and nutrient-rich water drive blooms that can cut visibility to a few metres. Once the light drops in autumn the plankton dies back and the water clears dramatically, with 20 to 30 metres common in mid-winter. The water is cold year-round at 7 to 12°C, so summer offers little temperature advantage anyway — which is why local divers treat October to April as the real season.',
+    },
+    {
+      question: 'What do I need to dive British Columbia?',
+      answer:
+        'A drysuit and the training to use it, plus proper thermal protection including dry gloves for most divers. Beyond exposure, the region is genuinely current-driven — many of the best sites are dived only at slack water — and dives are often dark and deep enough to warrant good lighting. Operators expect solid cold-water experience. If your diving has been warm and tropical, plan a couple of easier local dives before tackling the signature sites.',
+    },
+  ],
+};
+
+const NORTH_CAROLINA = {
+  intro:
+    "The waters off North Carolina are known as the Graveyard of the Atlantic, and the name is earned — shifting shoals, storms and two world wars have put hundreds of ships on the bottom. The Gulf Stream runs close in, bringing warm, clear blue water over wrecks that would otherwise be typical cold Atlantic diving. The signature sight is sand tiger sharks, which congregate on the wrecks in large numbers through the warmer months, hanging almost motionless above the wreckage. The U-352, a German U-boat sunk in 1942, is the best-known dive.",
+  quickFacts: {
+    bestTime: 'June to September, when the Gulf Stream is closest',
+    difficulty: 'Advanced — offshore, deep and current-swept',
+    waterTemp: '21–28°C in summer offshore',
+    visibility: '15–30m',
+  },
+  topSites: [
+    { name: 'U-352', note: 'German U-boat sunk in 1942, around 34m' },
+    { name: 'Papoose', note: 'Tanker wreck known for sand tiger sharks' },
+    { name: 'Aeolus', note: 'Artificial reef wreck with heavy shark traffic' },
+    { name: 'Caribsea', note: 'Broken wreck often thick with sand tigers' },
+  ],
+  marineLife: [
+    'Sand tiger sharks in large numbers',
+    'Barracuda and amberjack',
+    'Sea turtles',
+    'Goliath grouper on some wrecks',
+    'Baitfish clouds over the wreckage',
+  ],
+  faqs: [
+    {
+      question: 'When can you see sand tiger sharks in North Carolina?',
+      answer:
+        'They gather on the wrecks in numbers through the warmer months, broadly from late spring into autumn, with summer the most reliable period. Despite their appearance — a mouth full of visible ragged teeth — sand tigers are placid towards divers and will hold position while you watch from a few metres away. On wrecks like the Papoose and Caribsea it is common to see dozens on one dive, drifting slowly over the structure.',
+    },
+    {
+      question: 'How difficult is wreck diving in North Carolina?',
+      answer:
+        'It is proper offshore diving. Sites sit well out to sea, so boat rides are long and conditions can be rough, and most wrecks lie between 25 and 40 metres with current running over them. Divers descend and ascend on the anchor line, and nitrox is standard. Operators generally require Advanced Open Water with real experience, and many divers here hold deco or technical certifications for the deeper sites.',
+    },
+  ],
+};
+
+const MAINE = {
+  intro:
+    "Diving in Maine is cold, green and genuinely rewarding for anyone who likes temperate marine life. The rocky coast drops into granite ledges and boulder fields covered in anemones, sea stars and kelp, with lobsters wedged into every crevice and harbour seals often curious enough to follow divers. Visibility is modest compared with warm-water destinations, and the water rarely climbs far into double figures, so this is drysuit territory. The community is small, which means uncrowded sites and a strong local knowledge network.",
+  quickFacts: {
+    bestTime: 'July to September',
+    difficulty: 'Intermediate — cold water, surge and modest visibility',
+    waterTemp: '4–15°C — drysuit strongly recommended',
+    visibility: '3–15m',
+  },
+  topSites: [
+    { name: 'Casco Bay', note: 'Island ledges and boulder terrain near Portland' },
+    { name: 'Bar Harbor area', note: 'Granite drop-offs with rich invertebrate life' },
+    { name: 'Kittery and the southern coast', note: 'Easier shore access sites' },
+  ],
+  marineLife: [
+    'American lobster',
+    'Harbour seals',
+    'Northern sea stars and anemones',
+    'Kelp beds',
+    'Cunner, sculpin and flounder',
+  ],
+  faqs: [
+    {
+      question: 'When can you dive in Maine?',
+      answer:
+        'July to September is the practical season, when the water reaches its warmest — still only about 12 to 15°C at the surface, and colder below the thermocline. Visibility tends to improve later in the summer as spring plankton clears. Diving continues into the colder months for drysuit divers, and winter can offer surprisingly clear water, but sea conditions and air temperature make it a committed pursuit rather than a casual one.',
+    },
+    {
+      question: 'What is diving in Maine actually like?',
+      answer:
+        'Temperate rather than tropical, and best approached on those terms. Expect granite ledges, kelp, and rock walls covered in anemones and sea stars, with lobsters and crabs everywhere and a good chance of curious harbour seals. Visibility is typically a few metres to fifteen. Divers who enjoy hunting for invertebrate life and don’t mind the cold rate it highly; anyone expecting Caribbean clarity and coral will not enjoy it.',
+    },
+  ],
+};
+
+const THE_GREAT_LAKES = {
+  intro:
+    "The Great Lakes hold what are probably the best-preserved shipwrecks on earth. Cold fresh water means no shipworm and very little corrosion, so vessels lost a century or more ago still stand with masts up, rigging in place and paint on the hull — wrecks that would be unrecognisable rubble in salt water. Thunder Bay in Lake Huron and Fathom Five at Tobermory in Ontario are the best-known destinations, with wrecks ranging from shallow enough to snorkel to deep technical dives. Visibility is often excellent, and the water is very cold.",
+  quickFacts: {
+    bestTime: 'July to September',
+    difficulty: 'Beginner to technical, depending on the wreck',
+    waterTemp: '4–20°C — cold below the thermocline, drysuit advised',
+    visibility: '10–30m and sometimes more',
+  },
+  topSites: [
+    { name: 'Fathom Five, Tobermory', note: 'Sweepstakes and Arabia — shallow to deep' },
+    { name: 'Thunder Bay, Lake Huron', note: 'Marine sanctuary with around 100 wrecks' },
+    { name: 'Isle Royale, Lake Superior', note: 'Remote, deep and exceptionally preserved' },
+  ],
+  marineLife: [
+    'Very little — these dives are about the wrecks',
+    'Freshwater fish around the structure',
+    'Invasive zebra and quagga mussels on most hulls',
+  ],
+  faqs: [
+    {
+      question: 'Why are Great Lakes shipwrecks so well preserved?',
+      answer:
+        'Cold fresh water. Salt water corrodes steel quickly and hosts shipworm, which destroys timber within decades. The Great Lakes have neither, and the deeper water stays close to 4°C year-round, so wooden schooners lost in the 1800s still stand intact with masts, deck fittings and even paint. It makes the region internationally significant for maritime archaeology, and it is why divers travel there specifically for wrecks rather than marine life.',
+    },
+    {
+      question: 'Do I need technical training to dive the Great Lakes?',
+      answer:
+        'Not necessarily. Tobermory in particular has wrecks in very shallow water — the Sweepstakes sits in only a few metres and can be seen by snorkellers — and plenty of sites fall within recreational limits. That said, many of the most impressive wrecks are deep and cold, well into technical range, and require decompression training, redundant gas and appropriate thermal protection. There is a good progression available for divers wanting to work up.',
+    },
+  ],
+};
+
+// ===========================================
+// BATCH 8 — REMAINING SOUTH EAST ASIA & EXPEDITIONS
+// ===========================================
+
+const ANILAO = {
+  intro:
+    "Anilao, a couple of hours south of Manila, is the Philippines' macro capital and a magnet for underwater photographers. The sloping black-sand and rubble sites hold an extraordinary density of small, strange animals — nudibranchs above all, with Anilao regarded as one of the richest places in the world to find them. It is also a major centre for blackwater diving, drifting at night over deep water to photograph pelagic larvae. The diving itself is easy, shallow and current-light; the challenge is spotting things the size of a grain of rice.",
+  quickFacts: {
+    bestTime: 'November to May, with peak critter activity from December to March',
+    difficulty: 'Easy — shallow and calm, but demands good buoyancy',
+    waterTemp: '25–29°C',
+    visibility: '10–25m',
+  },
+  topSites: [
+    { name: 'Secret Bay', note: 'Muck site for rare octopus and frogfish' },
+    { name: 'Basura', note: 'Classic critter site — the name means rubbish' },
+    { name: "Kirby's Rock", note: 'Wall and slope with better coral' },
+    { name: 'Blackwater dives', note: 'Night drifts over deep water for pelagic larvae' },
+  ],
+  marineLife: [
+    'Nudibranchs in exceptional variety',
+    'Frogfish, including hairy frogfish',
+    'Blue-ringed octopus and flamboyant cuttlefish',
+    'Ghost pipefish and seahorses',
+    'Pelagic larvae on blackwater dives',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive Anilao?',
+      answer:
+        'November to May is the dry season and the main window, with December to March generally regarded as the peak for nudibranchs and rare critters. The June to October period brings the south-west monsoon with more rain and rougher crossings, though diving continues. Water stays warm at 25 to 29°C year-round. Since most of the appeal is small animals in shallow water, sea conditions matter more than temperature.',
+    },
+    {
+      question: 'Do I need to be a photographer to enjoy Anilao?',
+      answer:
+        'It helps, but no. Anilao rewards slow, patient diving — hovering over sand while a guide points out an animal you would never have found alone. Divers who enjoy that hunting style love it whether or not they carry a camera. If you want reef scenery, coral walls and big fish, you will find Anilao underwhelming; the coral is decent in places but the destination exists for its critters.',
+    },
+  ],
+};
+
+const BANDA_SEA = {
+  intro:
+    "The Banda Sea, in eastern Indonesia, is a liveaboard-only crossing dived during two short windows each year when the seas allow. It is remote, deep-ocean diving around volcanic islands with steep walls and startlingly clear water. Two things define it: hammerhead sharks, which school here in the autumn window, and the sea snakes of Gunung Api, where thousands of banded sea kraits swarm over the reef in numbers that unsettle most divers on first sight. The Banda Islands themselves were the world's only source of nutmeg, and the history ashore is as remarkable as the diving.",
+  quickFacts: {
+    bestTime: 'Two crossing windows — roughly March to April and September to November',
+    difficulty: 'Advanced — remote, deep walls and current',
+    waterTemp: '26–29°C',
+    visibility: '20–40m',
+  },
+  topSites: [
+    { name: 'Gunung Api', note: 'Sea krait aggregation over volcanic slopes' },
+    { name: 'Manuk', note: 'Remote volcanic island, sea snakes and pelagics' },
+    { name: 'Banda Neira', note: 'Walls and lava flows beneath the old spice port' },
+    { name: 'Koon', note: 'Big-fish site often included on the crossing' },
+  ],
+  marineLife: [
+    'Scalloped hammerheads in the autumn window',
+    'Thousands of banded sea kraits',
+    'Steep walls with pristine hard coral',
+    'Schooling fusiliers and barracuda',
+    'Mandarinfish in the shallows at Banda Neira',
+  ],
+  faqs: [
+    {
+      question: 'When can you dive the Banda Sea?',
+      answer:
+        'The Banda Sea is dived on liveaboard crossings that run in two short windows, broadly March to April and September to November, when conditions between Indonesia’s monsoons allow the passage. The autumn window is the one associated with schooling hammerheads. Because these are repositioning crossings between other regions, the itineraries are limited and sell out early — this is not a destination you can book at short notice.',
+    },
+    {
+      question: 'Are the sea snakes at Gunung Api dangerous?',
+      answer:
+        'Banded sea kraits are highly venomous but extremely placid towards divers, and there is no history of incidents on these dives despite the numbers involved — they are often described as more curious than threatening, sometimes investigating a diver’s mask or arm. They need to surface to breathe, so they move constantly past you. The advice is simply to stay calm, keep your hands still and let them pass rather than pushing them away.',
+    },
+  ],
+};
+
+const ALOR = {
+  intro:
+    "Alor, east of Flores in eastern Indonesia, is remote enough that dive numbers stay low and the reefs show it. The strait between the islands funnels cold, nutrient-rich water through fast currents, producing vividly healthy coral, strong drift dives and a macro list that rivals better-known muck destinations. Water in the cooler months can drop into the low twenties, which surprises divers expecting typical Indonesian warmth. It is often combined with Komodo or the Banda Sea on longer liveaboard itineraries.",
+  quickFacts: {
+    bestTime: 'April to November',
+    difficulty: 'Advanced — strong and sometimes unpredictable current',
+    waterTemp: '22–29°C — cooler in the upwelling months',
+    visibility: '15–30m',
+  },
+  topSites: [
+    { name: 'Kal’s Dream', note: 'Exposed seamount with serious current and big fish' },
+    { name: 'Clown Valley', note: 'Vast anemone field packed with anemonefish' },
+    { name: 'Mucky Mosque', note: 'Black-sand muck diving with rare critters' },
+  ],
+  marineLife: [
+    'Rhinopias and rare scorpionfish',
+    'Dense anemone fields',
+    'Schooling fusiliers and trevally',
+    'Mandarinfish at dusk',
+    'Nudibranchs and unusual macro',
+  ],
+  faqs: [
+    {
+      question: 'How difficult is diving in Alor?',
+      answer:
+        'It can be genuinely challenging. The straits generate strong, shifting currents including downcurrents at exposed sites such as Kal’s Dream, and conditions change quickly with the tide. Operators expect Advanced Open Water with real current experience, and dives are timed carefully around slack water. There are gentler muck and reef sites for easier days, but the signature dives are for divers who are comfortable in moving water.',
+    },
+    {
+      question: 'How cold is the water in Alor?',
+      answer:
+        'Cooler than most of Indonesia. Upwelling through the straits can pull temperatures down to around 22 to 24°C, particularly between roughly July and September, and thermoclines can be abrupt. A 5mm wetsuit is sensible, and many divers add a hooded vest for the cooler months. It is the same mechanism that makes the diving so productive — the cold water carries the nutrients that feed the reef.',
+    },
+  ],
+};
+
+const AMBON = {
+  intro:
+    "Ambon, in Indonesia's Maluku islands, is a muck diving destination with one particular claim to fame: the psychedelic frogfish, a bizarre swirl-patterned species described in 2009 and found essentially nowhere else. Ambon Bay's sheltered black-sand slopes hold a critter list to rival Lembeh — rhinopias, harlequin shrimp, every kind of frogfish — in easy, shallow, current-free conditions. The city itself is a working port rather than a resort town, and some sites are dived beneath jetties and moored boats, which does nothing to reduce the quality of the marine life.",
+  quickFacts: {
+    bestTime: 'October to April',
+    difficulty: 'Easy — shallow and calm, ideal for photography',
+    waterTemp: '27–29°C',
+    visibility: '5–20m — muck diving conditions',
+  },
+  topSites: [
+    { name: 'Laha 1, 2 & 3', note: 'The classic Ambon Bay muck sites' },
+    { name: 'Twilight Zone', note: 'Rubble slope with rare frogfish' },
+    { name: 'Air Manis', note: 'Reef site for a change from the muck' },
+  ],
+  marineLife: [
+    'Psychedelic frogfish, effectively endemic',
+    'Rhinopias and Ambon scorpionfish',
+    'Harlequin shrimp',
+    'Blue-ringed octopus and mimic octopus',
+    'Vast nudibranch variety',
+  ],
+  faqs: [
+    {
+      question: 'Can you see the psychedelic frogfish in Ambon?',
+      answer:
+        'Ambon is the place to try — the species was described in 2009 from here and is known from very few other locations. That said, sightings are not dependable: it is a secretive fish that wedges itself into crevices, and local guides track known individuals rather than finding them at will. Some weeks it is showing, others not at all. Go for Ambon’s overall critter density and treat the psychedelic frogfish as a bonus rather than the reason to book.',
+    },
+    {
+      question: 'How does Ambon compare with Lembeh?',
+      answer:
+        'They are close cousins. Both are black-sand muck destinations with shallow, calm, easy diving and world-class critter density, and both are aimed squarely at photographers. Lembeh has more infrastructure, more resorts and slightly better-known sites; Ambon is quieter, has the psychedelic frogfish, and is often combined with a liveaboard through the Banda Sea. Divers doing a dedicated critter trip through eastern Indonesia frequently visit both.',
+    },
+  ],
+};
+
+const DAUIN = {
+  intro:
+    "Dauin, on the south-east coast of Negros near Dumaguete, is the Philippines' most convenient muck diving base. A string of black-sand sites runs along the shore, most of them a five-minute boat ride from the resorts, holding frogfish, seahorses, mimic octopus and a nudibranch list that keeps photographers busy for a week. What makes Dauin especially attractive is what sits next door: Apo Island, one of the country's great reef and turtle dives, is a short crossing away, so a trip can combine muck and reef without moving base.",
+  quickFacts: {
+    bestTime: 'November to May',
+    difficulty: 'Easy — shallow, calm and close to shore',
+    waterTemp: '26–29°C',
+    visibility: '10–20m',
+  },
+  topSites: [
+    { name: 'Dauin Marine Sanctuary', note: 'Classic black-sand critter diving' },
+    { name: 'Car Wreck', note: 'Sunken vehicles acting as a critter magnet' },
+    { name: 'Masaplod Norte', note: 'Sanctuary site with seahorses' },
+    { name: 'Apo Island', note: 'Short crossing for coral and turtles' },
+  ],
+  marineLife: [
+    'Frogfish of several species',
+    'Mimic and wonderpus octopus',
+    'Seahorses and pipefish',
+    'Mandarinfish at dusk',
+    'Extensive nudibranch variety',
+  ],
+  faqs: [
+    {
+      question: 'Is Dauin good for muck diving beginners?',
+      answer:
+        'It is one of the easiest places to start. Sites are shallow, close to shore, almost always calm and reached in a few minutes by banca boat, so there is very little to manage beyond buoyancy — which matters, since hovering over silt without stirring it is the core skill. Guides here are highly experienced at spotting, and being able to do three or four relaxed dives a day makes it a productive place to learn the discipline.',
+    },
+    {
+      question: 'Can you dive Apo Island from Dauin?',
+      answer:
+        'Yes, and it is the main reason to base yourself here. Apo Island lies a boat crossing of roughly 30 to 45 minutes from the Dauin coast, and most resorts run trips several times a week. That gives you the best of both: black-sand critter diving on your doorstep and one of the Philippines’ finest hard-coral and turtle sites within easy reach. Marine sanctuary fees apply for Apo.',
+    },
+  ],
+};
+
+const KOH_LANTA = {
+  intro:
+    "Koh Lanta works mainly as the access point for Hin Daeng and Hin Muang — Red Rock and Purple Rock — two submerged pinnacles in the open Andaman Sea that rank among Thailand's best dives. Hin Muang takes its name from the purple soft coral covering its walls, and it drops past 60 metres, making it the deepest dive in Thai waters. Both attract manta rays and, occasionally, whale sharks. They are exposed, current-swept and a long boat ride offshore, so this is a step up from the sheltered diving elsewhere in Thailand.",
+  quickFacts: {
+    bestTime: 'Roughly November to April, following the Andaman season',
+    difficulty: 'Advanced — deep, exposed pinnacles with current',
+    waterTemp: '27–30°C',
+    visibility: '15–30m',
+  },
+  topSites: [
+    { name: 'Hin Daeng', note: 'Red soft coral pinnacle with manta and whale shark chances' },
+    { name: 'Hin Muang', note: 'Purple-walled wall dropping past 60m' },
+    { name: 'Koh Haa', note: 'Sheltered lagoon, caverns, good for all levels' },
+  ],
+  marineLife: [
+    'Manta rays at the pinnacles',
+    'Whale sharks, occasionally',
+    'Purple and red soft coral',
+    'Leopard sharks on the sand',
+    'Schooling barracuda and trevally',
+  ],
+  faqs: [
+    {
+      question: 'When can you dive Hin Daeng and Hin Muang?',
+      answer:
+        'The Andaman season runs roughly November to April, when the seas are calm enough for the long offshore crossing — outside that the south-west monsoon usually makes the trip impractical and many operators stop running it. February to April is often quoted as the best period for manta and whale shark encounters. Trips are long days from Koh Lanta, so check that your operator visits both pinnacles rather than only one.',
+    },
+    {
+      question: 'Are Hin Daeng and Hin Muang suitable for beginners?',
+      answer:
+        'Not really. Both are exposed offshore pinnacles with no shallow shelter, current that can run hard and walls that drop well beyond recreational limits — Hin Muang is the deepest dive site in Thailand. Operators generally require Advanced Open Water and recent experience. Koh Haa, closer to Lanta, is the better option for newer divers, with sheltered lagoons and easy caverns, and it is genuinely lovely diving in its own right.',
+    },
+  ],
+};
+
+const KOH_PHI_PHI = {
+  intro:
+    "Koh Phi Phi is better known for its beaches than its diving, but the limestone islands sit on good sites and it makes an easy, sociable base. Bida Nok and Bida Nai — two small limestone islets just south — offer walls, soft coral and leopard sharks resting on the sand, and blacktip reef sharks patrol the shallows. The King Cruiser, a passenger ferry that struck a reef and sank in 1997, lies at around 30 metres nearby and has become a well-colonised wreck. The diving is warm, clear and mostly straightforward.",
+  quickFacts: {
+    bestTime: 'November to April',
+    difficulty: 'Beginner to intermediate; the wreck is deeper',
+    waterTemp: '28–30°C',
+    visibility: '10–25m',
+  },
+  topSites: [
+    { name: 'Bida Nok & Bida Nai', note: 'Limestone walls, leopard sharks and soft coral' },
+    { name: 'King Cruiser wreck', note: 'Ferry sunk in 1997, around 30m' },
+    { name: 'Shark Point', note: 'Pinnacle with leopard sharks and soft coral' },
+  ],
+  marineLife: [
+    'Leopard (zebra) sharks on the sand',
+    'Blacktip reef sharks in the shallows',
+    'Seahorses and ghost pipefish',
+    'Schooling snapper and fusiliers',
+    'Soft coral on the pinnacles',
+  ],
+  faqs: [
+    {
+      question: 'Is Koh Phi Phi good for diving?',
+      answer:
+        'It is solid rather than spectacular, and it suits divers who want easy warm-water diving alongside a lively base. Bida Nok, Bida Nai and Shark Point offer good limestone topography, soft coral and reliable leopard shark sightings, and the King Cruiser adds a wreck. Sites are busy in high season with a lot of boat traffic. For Thailand’s best diving you would head to the Similans or Hin Daeng, both of which are reachable on longer trips.',
+    },
+    {
+      question: 'Can you dive the King Cruiser wreck?',
+      answer:
+        'Yes. The King Cruiser was a passenger ferry that struck Anemone Reef and sank in 1997, and she now sits at around 30 metres, thoroughly colonised by soft coral and schooling fish. Structural collapse over the years means penetration is not advisable and most operators keep divers outside the hull. Current can run across the site, so Advanced Open Water is the usual requirement and it is generally dived at slack water.',
+    },
+  ],
+};
+
+const LEYTE = {
+  intro:
+    "Southern Leyte is one of the quieter corners of Philippine diving, centred on Sogod Bay — a deep, sheltered inlet where whale sharks arrive to feed through the winter and spring months. Unlike the controversial provisioned encounters elsewhere in the country, sightings here are generally of free-ranging animals. Beyond the whale sharks, the bay holds excellent wall diving at Napantao, healthy coral and good macro, all with very few other divers around. It is a destination for people who want the marine life without the crowds.",
+  quickFacts: {
+    bestTime: 'November to May, with whale sharks typically from around December',
+    difficulty: 'Easy to intermediate',
+    waterTemp: '27–29°C',
+    visibility: '15–30m',
+  },
+  topSites: [
+    { name: 'Pintuyan', note: 'Whale shark encounters in Sogod Bay' },
+    { name: 'Napantao', note: 'Marine sanctuary wall with healthy coral' },
+    { name: 'Limasawa Island', note: 'Walls and drop-offs across the bay' },
+  ],
+  marineLife: [
+    'Whale sharks in season',
+    'Healthy hard coral on the sanctuary walls',
+    'Turtles and reef fish',
+    'Nudibranchs and frogfish',
+    'Occasional thresher sharks',
+  ],
+  faqs: [
+    {
+      question: 'When can you see whale sharks in Southern Leyte?',
+      answer:
+        'The season in Sogod Bay generally runs from around November or December through to May, peaking in the early months of the year. The animals arrive to feed on plankton in the deep bay, and encounters are usually snorkel-based with a guide. Sightings vary considerably year to year — this is a natural aggregation rather than a fed one, so nothing is guaranteed, and the trade-off for that authenticity is less predictability.',
+    },
+    {
+      question: 'How does Leyte compare with Oslob for whale sharks?',
+      answer:
+        'They are very different, and the distinction matters ethically. At Oslob on Cebu, whale sharks are hand-fed daily to keep them in one place, which guarantees sightings but has drawn sustained criticism from marine scientists over impacts on the animals’ behaviour and health. In Sogod Bay the sharks are wild and free-ranging, so encounters depend on genuinely finding them. Divers who care about the welfare question generally choose Leyte.',
+    },
+  ],
+};
+
+const SOUTH_AFRICA = {
+  intro:
+    "South Africa offers some of the most demanding and most rewarding shark diving in the world. The Sardine Run along the Wild Coast each winter is the headline — vast shoals of sardines pushed north by cold currents, hunted by common dolphins, sharks, gannets and Bryde's whales in bait balls that form and vanish within minutes. On the KwaZulu-Natal coast, Protea Banks and Aliwal Shoal offer year-round shark diving, with tiger sharks in the warmer months and sand tigers gathering in winter. Conditions are frequently rough, and launches are made through the surf.",
+  quickFacts: {
+    bestTime: 'Sardine Run roughly May to July; tiger sharks in the warmer months',
+    difficulty: 'Advanced — surf launches, current, swell and open-ocean conditions',
+    waterTemp: '14–26°C depending on coast and season',
+    visibility: '5–30m, highly variable',
+  },
+  topSites: [
+    { name: 'Sardine Run, Wild Coast', note: 'Bait balls with dolphins, sharks and gannets' },
+    { name: 'Protea Banks', note: 'Deep reef with tiger, bull and hammerhead sharks' },
+    { name: 'Aliwal Shoal', note: 'Sand tiger sharks and baited tiger shark dives' },
+    { name: 'False Bay & Gansbaai', note: 'Great white cage diving, though numbers have changed' },
+  ],
+  marineLife: [
+    'Tiger, bull and hammerhead sharks',
+    'Sand tiger (ragged-tooth) sharks in winter',
+    'Common dolphins in the Sardine Run',
+    'Bryde’s whales and Cape gannets',
+    'Humpback whales on migration',
+  ],
+  faqs: [
+    {
+      question: 'When is the Sardine Run in South Africa?',
+      answer:
+        'Broadly May to July, as cold water pushes north along the Wild Coast and enormous sardine shoals move with it. It is not a scheduled event: the timing, location and intensity vary year to year, and some seasons disappoint entirely. Trips are run as multi-day charters where you spend long hours on a boat searching for activity, then enter quickly when a bait ball forms. Most in-water time is snorkelling rather than scuba, since the action is fast and shallow.',
+    },
+    {
+      question: 'Can you still see great white sharks in South Africa?',
+      answer:
+        'Yes, but the picture has changed. Great white numbers at the traditional Gansbaai and False Bay cage diving sites dropped sharply from around 2017, widely linked to a pair of orcas that have been preying on white sharks and appear to have driven them from the area. Sightings have become far less predictable and some operators have shifted focus to other species. Anyone booking specifically for great whites should ask operators directly about recent sighting rates.',
+    },
+  ],
+};
+
 // Slug → guide.
 // Where a destination has two sticker designs (raja-ampat-01 / -02) the guide
 // is attached to ONE slug only. Publishing the same 700-word guide on both
@@ -2214,6 +3146,40 @@ export const DIVE_GUIDES = {
   'cayman-islands': CAYMAN_ISLANDS,
   cozumel: COZUMEL,
   roatan: ROATAN,
+
+  // Batch 6 — Latin America
+  // Two Galápagos designs share a destination — guide on one slug only.
+  'galapagos-01': GALAPAGOS,
+  'darwin-wolf': DARWIN_WOLF,
+  'cocos-island': COCOS_ISLAND,
+  malpelo: MALPELO,
+  socorro: SOCORRO,
+  'roca-partida': ROCA_PARTIDA,
+  'baja-california': BAJA_CALIFORNIA,
+  'la-paz': LA_PAZ,
+  'costa-rica': COSTA_RICA,
+  cenotes: CENOTES,
+
+  // Batch 7 — USA & Canada
+  'florida-keys': FLORIDA_KEYS,
+  hawaii: HAWAII,
+  california: CALIFORNIA,
+  'british-columbia': BRITISH_COLUMBIA,
+  'north-carolina': NORTH_CAROLINA,
+  maine: MAINE,
+  'the-great-lakes': THE_GREAT_LAKES,
+
+  // Batch 8 — remaining South East Asia & Expeditions
+  anilao: ANILAO,
+  'banda-sea': BANDA_SEA,
+  alor: ALOR,
+  ambon: AMBON,
+  // Two Dauin designs share a destination — guide on one slug only.
+  'dauin-01': DAUIN,
+  'koh-lanta': KOH_LANTA,
+  'koh-phi-phi': KOH_PHI_PHI,
+  leyte: LEYTE,
+  'south-africa': SOUTH_AFRICA,
 };
 
 export const getDiveGuide = (slug) => DIVE_GUIDES[slug] || null;

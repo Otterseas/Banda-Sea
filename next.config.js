@@ -17,6 +17,11 @@ const nextConfig = {
         destination: '/stickers/roatan',
         permanent: true,
       },
+      {
+        source: '/stickers/layte',
+        destination: '/stickers/leyte',
+        permanent: true,
+      },
     ];
   },
 }

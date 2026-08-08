@@ -126,12 +126,7 @@ export const STICKERS = {
       region: 'Expeditions',
       country: 'South Africa',
       shopifyVariantId: '52451592372490',
-      image: '/stickers/placeholder.png',
-      story: {
-        headline: 'Coming Soon',
-        content: 'Story content coming soon...',
-        designRationale: 'Design rationale coming soon...'
-      }
+      image: '/stickers/placeholder.png'
     }
   ],
 
@@ -227,12 +222,7 @@ export const STICKERS = {
       region: 'Indian Ocean',
       country: 'Seychelles',
       shopifyVariantId: '52451592274186',
-      image: '/stickers/placeholder.png',
-      story: {
-        headline: 'Coming Soon',
-        content: 'Story content coming soon...',
-        designRationale: 'Design rationale coming soon...'
-      }
+      image: '/stickers/placeholder.png'
     },
     {
       id: 'io-8',
@@ -740,16 +730,11 @@ export const STICKERS = {
       region: 'South East Asia',
       country: 'Indonesia',
       shopifyVariantId: '52451183558922',
-      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Komodo-sticker.png?v=1769333996&width=713',
-      story: {
-        headline: 'Coming Soon',
-        content: 'Story content coming soon...',
-        designRationale: 'Design rationale coming soon...'
-      }
+      image: 'https://38a44d-4c.myshopify.com/cdn/shop/files/Komodo-sticker.png?v=1769333996&width=713'
     },
     {
       id: 'sea-14',
-      slug: 'layte',
+      slug: 'leyte',
       name: 'Leyte',
       region: 'South East Asia',
       country: 'Philippines',

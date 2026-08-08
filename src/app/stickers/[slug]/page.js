@@ -327,30 +327,35 @@ export default function StickerPage() {
 
           {/* Story Content - Scrollable */}
           <div className="flex-1 overflow-y-auto px-6 md:px-8 pb-8">
-            {/* Story Headline */}
-            <h2
-              className="text-2xl md:text-3xl font-light mb-6 italic"
-              style={{ color: LUNA.highlight }}
-            >
-              {sticker.name}: {sticker.story?.headline || 'The Story'}
-            </h2>
+            {/* Story — omitted entirely where a sticker has no story yet,
+                rather than shipping "coming soon" placeholder text. */}
+            {sticker.story?.content && (
+              <>
+                <h2
+                  className="text-2xl md:text-3xl font-light mb-6 italic"
+                  style={{ color: LUNA.highlight }}
+                >
+                  {sticker.name}: {sticker.story.headline || 'The Story'}
+                </h2>
+                <p className="text-white/85 text-sm leading-relaxed mb-10">
+                  {sticker.story.content}
+                </p>
+              </>
+            )}
 
-            {/* Story Content */}
-            <p className="text-white/85 text-sm leading-relaxed mb-10">
-              {sticker.story?.content || 'Story content coming soon...'}
-            </p>
-
-            {/* Why We Chose This Sticker Design */}
-            <h2
-              className="text-xl md:text-2xl font-light mb-4"
-              style={{ color: LUNA.highlight }}
-            >
-              Why We Chose This Sticker Design
-            </h2>
-
-            <p className="text-white/85 text-sm leading-relaxed">
-              {sticker.story?.designRationale || 'Design rationale coming soon...'}
-            </p>
+            {sticker.story?.designRationale && (
+              <>
+                <h2
+                  className="text-xl md:text-2xl font-light mb-4"
+                  style={{ color: LUNA.highlight }}
+                >
+                  Why We Chose This Sticker Design
+                </h2>
+                <p className="text-white/85 text-sm leading-relaxed">
+                  {sticker.story.designRationale}
+                </p>
+              </>
+            )}
 
             {/* Destination guide — only rendered for slugs that have one */}
             <DiveGuideSection guide={getDiveGuide(params.slug)} name={sticker.name} />
