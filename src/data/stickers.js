@@ -153,7 +153,7 @@ export const STICKERS = {
     {
       id: 'io-2',
       slug: 'maldives-01',
-      name: 'Maldives 01',
+      name: 'Maldives',
       region: 'Indian Ocean',
       country: 'Maldives',
       shopifyVariantId: '52451592175882',
@@ -167,7 +167,7 @@ export const STICKERS = {
     {
       id: 'io-3',
       slug: 'maldives-02',
-      name: 'Maldives 02',
+      name: 'Maldives',
       region: 'Indian Ocean',
       country: 'Maldives',
       shopifyVariantId: '52451592241418',
@@ -666,7 +666,7 @@ export const STICKERS = {
     {
       id: 'sea-8',
       slug: 'dauin-01',
-      name: 'Dauin 01',
+      name: 'Dauin',
       region: 'South East Asia',
       country: 'Philippines',
       shopifyVariantId: '52451144040714',
@@ -680,7 +680,7 @@ export const STICKERS = {
     {
       id: 'sea-9',
       slug: 'dauin-02',
-      name: 'Dauin 02',
+      name: 'Dauin',
       region: 'South East Asia',
       country: 'Philippines',
       shopifyVariantId: '52451144270090',
@@ -750,7 +750,7 @@ export const STICKERS = {
     {
       id: 'sea-14',
       slug: 'layte',
-      name: 'Layte',
+      name: 'Leyte',
       region: 'South East Asia',
       country: 'Philippines',
       shopifyVariantId: '52451194831114',
@@ -778,7 +778,7 @@ export const STICKERS = {
     {
       id: 'sea-16',
       slug: 'malapasqua',
-      name: 'Malapasqua',
+      name: 'Malapascua',
       region: 'South East Asia',
       country: 'Philippines',
       shopifyVariantId: '52451215769866',
@@ -820,7 +820,7 @@ export const STICKERS = {
     {
       id: 'sea-19',
       slug: 'raja-ampat-01',
-      name: 'Raja Ampat 01',
+      name: 'Raja Ampat',
       region: 'South East Asia',
       country: 'Indonesia',
       shopifyVariantId: '52451323674890',
@@ -834,7 +834,7 @@ export const STICKERS = {
     {
       id: 'sea-20',
       slug: 'raja-ampat-02',
-      name: 'Raja Ampat 02',
+      name: 'Raja Ampat',
       region: 'South East Asia',
       country: 'Indonesia',
       shopifyVariantId: '52451718136074',

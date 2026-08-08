@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { getStickerBySlug, BASE_PRICE, STICKERS, REGIONS } from '@/data/stickers';
+import { getDiveGuide } from '@/data/diveGuides';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import Header from '@/components/Header';
@@ -20,6 +21,96 @@ const LUNA = {
   deepWater: '#023859',
   abyss: '#011C40',
 };
+
+// ===========================================
+// DESTINATION GUIDE
+// ===========================================
+// Renders the practical dive-travel content for destinations that have a
+// guide in src/data/diveGuides.js. Slugs without one render nothing, so the
+// content can be rolled out in batches without touching this component.
+function DiveGuideSection({ guide, name }) {
+  if (!guide) return null;
+
+  const factRows = [
+    ['Best time to dive', guide.quickFacts.bestTime],
+    ['Difficulty', guide.quickFacts.difficulty],
+    ['Water temperature', guide.quickFacts.waterTemp],
+    ['Visibility', guide.quickFacts.visibility],
+  ];
+
+  return (
+    <div className="mt-12 pt-10 border-t" style={{ borderColor: `${LUNA.highlight}25` }}>
+      <h2 className="text-xl md:text-2xl font-light mb-4" style={{ color: LUNA.highlight }}>
+        Diving {name}
+      </h2>
+      <p className="text-white/85 text-sm leading-relaxed mb-8">{guide.intro}</p>
+
+      {/* Quick facts */}
+      <div
+        className="rounded-2xl p-5 mb-8"
+        style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: `1px solid ${LUNA.highlight}20` }}
+      >
+        <dl className="space-y-3">
+          {factRows.map(([label, value]) => (
+            <div key={label} className="flex flex-col sm:flex-row sm:gap-4">
+              <dt
+                className="text-[11px] uppercase tracking-wider font-semibold sm:w-44 flex-shrink-0 mb-0.5 sm:mb-0"
+                style={{ color: LUNA.highlight }}
+              >
+                {label}
+              </dt>
+              <dd className="text-white/85 text-sm leading-relaxed">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      {/* Top dive sites */}
+      <h3 className="text-lg font-light mb-3" style={{ color: LUNA.highlight }}>
+        Top dive sites
+      </h3>
+      <ul className="mb-8 space-y-2">
+        {guide.topSites.map((site) => (
+          <li key={site.name} className="text-white/85 text-sm leading-relaxed flex gap-2">
+            <span style={{ color: LUNA.surfaceTeal }}>•</span>
+            <span>
+              <strong className="font-semibold text-white">{site.name}</strong> — {site.note}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      {/* Marine life */}
+      <h3 className="text-lg font-light mb-3" style={{ color: LUNA.highlight }}>
+        What you&rsquo;ll see
+      </h3>
+      <div className="flex flex-wrap gap-2 mb-10">
+        {guide.marineLife.map((animal) => (
+          <span
+            key={animal}
+            className="text-xs px-3 py-1.5 rounded-full text-white/85"
+            style={{ backgroundColor: 'rgba(255,255,255,0.07)', border: `1px solid ${LUNA.highlight}25` }}
+          >
+            {animal}
+          </span>
+        ))}
+      </div>
+
+      {/* FAQs — mirrored into FAQPage structured data in layout.js */}
+      <h3 className="text-lg font-light mb-4" style={{ color: LUNA.highlight }}>
+        Frequently asked questions
+      </h3>
+      <div className="space-y-5">
+        {guide.faqs.map((faq) => (
+          <div key={faq.question}>
+            <h4 className="text-white font-semibold text-sm mb-1.5">{faq.question}</h4>
+            <p className="text-white/80 text-sm leading-relaxed">{faq.answer}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function StickerPage() {
   const params = useParams();
@@ -260,6 +351,9 @@ export default function StickerPage() {
             <p className="text-white/85 text-sm leading-relaxed">
               {sticker.story?.designRationale || 'Design rationale coming soon...'}
             </p>
+
+            {/* Destination guide — only rendered for slugs that have one */}
+            <DiveGuideSection guide={getDiveGuide(params.slug)} name={sticker.name} />
           </div>
         </div>
       </main>

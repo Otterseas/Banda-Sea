@@ -1,4 +1,5 @@
 import { getStickerBySlug } from '@/data/stickers';
+import { getDiveGuide } from '@/data/diveGuides';
 
 // Generate dynamic metadata for each sticker page
 export async function generateMetadata({ params }) {
@@ -12,10 +13,19 @@ export async function generateMetadata({ params }) {
   }
 
   // Create SEO-optimized title and description
-  // Root layout template appends "| Otterseas" — don't add it here.
-  const title = `${sticker.name} Dive Sticker – ${sticker.story?.headline || sticker.region}`;
+  const guide = getDiveGuide(params.slug);
 
-  const description = sticker.story?.content
+  // Root layout template appends "| Otterseas" — don't add it here.
+  // Destinations with a full dive guide lead on search intent ("best time to
+  // dive X") rather than on the sticker, since that's what divers actually
+  // search for and the page genuinely answers it.
+  const title = guide
+    ? `Diving ${sticker.name} – Best Time, Conditions & Top Dive Sites`
+    : `${sticker.name} Dive Sticker – ${sticker.story?.headline || sticker.region}`;
+
+  const description = guide
+    ? `When to dive ${sticker.name}, what conditions to expect, the top dive sites and what you'll see underwater — plus the collectible ${sticker.name} sticker for your logbook or bottle.`
+    : sticker.story?.content
     ? `Add the ${sticker.name} dive sticker to your collection. ${sticker.story.content.slice(0, 140)}...`
     : `Collectible ${sticker.name} dive sticker from ${sticker.region}. Premium waterproof sticker perfect for dive journals, laptops, and gear bags.`;
 
@@ -24,6 +34,11 @@ export async function generateMetadata({ params }) {
     description,
     alternates: { canonical: `/stickers/${params.slug}` },
     keywords: [
+      // Dive-travel intent keywords — only meaningful where a guide answers them
+      guide ? `diving ${sticker.name}` : null,
+      guide ? `best time to dive ${sticker.name}` : null,
+      guide ? `${sticker.name} dive sites` : null,
+      guide ? `${sticker.name} scuba diving guide` : null,
       // Location-specific keywords
       `${sticker.name} dive sticker`,
       `${sticker.name} scuba diving`,
@@ -82,6 +97,7 @@ export default function StickerLayout({ children, params }) {
   const sticker = getStickerBySlug(params.slug);
   if (!sticker) return children;
 
+  const guide = getDiveGuide(params.slug);
   const url = `https://www.otterseas.com/stickers/${sticker.slug}`;
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -112,6 +128,19 @@ export default function StickerLayout({ children, params }) {
       },
     ],
   };
+
+  // Destinations with a dive guide also publish their FAQs as FAQPage data —
+  // this is what Google shows as rich results and what AI assistants quote.
+  if (guide?.faqs?.length) {
+    jsonLd['@graph'].push({
+      '@type': 'FAQPage',
+      mainEntity: guide.faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+      })),
+    });
+  }
 
   return (
     <>
