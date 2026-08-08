@@ -88,11 +88,19 @@ export async function GET(request) {
       if (node) {
         // Extract numeric ID from global ID
         const numericId = node.id.split('/').pop();
+        // Made-to-order variants ("continue selling when out of stock", e.g.
+        // the embroidered hats) report 0 on hand yet stay purchasable:
+        // availableForSale true + currentlyNotInStock true. Treat those as
+        // in stock with unknown quantity so product pages don't flip to
+        // "Notify Me" or show a low-stock badge for items that never hold
+        // inventory. A variant is only out of stock when Shopify says it
+        // can't be sold at all.
+        const backorder = node.availableForSale && (node.quantityAvailable ?? 0) <= 0;
         stockData[numericId] = {
           id: numericId,
           available: node.availableForSale,
-          quantity: node.quantityAvailable ?? null,
-          outOfStock: node.currentlyNotInStock,
+          quantity: backorder ? null : (node.quantityAvailable ?? null),
+          outOfStock: !node.availableForSale,
         };
       }
     });
