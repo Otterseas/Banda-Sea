@@ -14,6 +14,7 @@ import { getReviewsByProduct } from '@/data/reviews';
 import FishyButton from '@/components/FishyButton';
 import WhisperText from '@/components/WhisperText';
 import TestimonialColumns from '@/components/TestimonialColumns';
+import ReviewStrip from '@/components/ReviewStrip';
 
 const COLORS = {
   highlight: '#A7EBF2',
@@ -502,10 +503,15 @@ export default function DiveJournalPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 mb-5">
+            <div className="flex items-center gap-4 mb-3">
               <span className="text-xl md:text-2xl font-bold" style={{ color: COLORS.deepWater }}>
                 {formatPrice(currentBundle.price)}
               </span>
+            </div>
+
+            {/* Social proof at the moment of decision */}
+            <div className="mb-4">
+              <ReviewStrip label="Rated 5.0 by divers on Etsy" />
             </div>
 
             <div className="mb-6">

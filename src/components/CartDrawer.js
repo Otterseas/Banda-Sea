@@ -769,6 +769,19 @@ export default function CartDrawer() {
                 }
               </button>
 
+              {/* Below-minimum helper — don't leave the customer staring at a
+                  disabled button; send them straight to the sticker picker. */}
+              {!canCheckout && locationStickerCount > 0 && locationStickerCount < minOrder && (
+                <Link
+                  href="/stickers"
+                  onClick={closeDrawer}
+                  className="block text-center text-[11px] font-semibold mt-1.5 hover:underline"
+                  style={{ color: LUNA.surfaceTeal }}
+                >
+                  Minimum order is {minOrder} location stickers — browse the collection →
+                </Link>
+              )}
+
               {/* Discount Code Info */}
               {canCheckout && getDiscountCode() && (
                 <p className="text-center text-[11px] mt-1.5" style={{ color: LUNA.midDepth }}>

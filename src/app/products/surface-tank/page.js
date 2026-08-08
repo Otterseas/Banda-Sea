@@ -8,6 +8,7 @@ import { getProductBySlug } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
+import ReviewStrip from '@/components/ReviewStrip';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TrustBadges from '@/components/TrustBadges';
@@ -626,6 +627,11 @@ export default function SurfaceTankPage() {
               {!stock.loading && isOutOfStock && (
                 <span className="text-red-500 text-sm font-medium">Out of Stock</span>
               )}
+            </div>
+
+            {/* Social proof at the moment of decision */}
+            <div className="mb-4">
+              <ReviewStrip label="5.0 from verified buyers on Etsy & Judge.me" />
             </div>
 
             {/* CTA + bundle-deal pill on one row. The pill adds the Surface

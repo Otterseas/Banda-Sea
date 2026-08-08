@@ -258,10 +258,13 @@ export default function HomePage() {
   const [blogPosts, setBlogPosts] = useState([]);
   const [isBlogLoading, setIsBlogLoading] = useState(true);
 
-  // Skip loading on subsequent visits (session storage)
+  // Skip the loading screen if the visitor has seen it in the last 7 days.
+  // It's a nice brand moment once, but a conversion tax on every visit —
+  // localStorage with a timestamp instead of per-session.
   useEffect(() => {
-    const hasVisited = sessionStorage.getItem('otterseas-visited');
-    if (hasVisited) {
+    const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+    const lastSeen = Number(localStorage.getItem('otterseas-loader-seen') || 0);
+    if (Date.now() - lastSeen < SEVEN_DAYS) {
       setIsLoading(false);
     }
   }, []);
@@ -285,7 +288,7 @@ export default function HomePage() {
   }, []);
 
   const handleLoadingComplete = () => {
-    sessionStorage.setItem('otterseas-visited', 'true');
+    localStorage.setItem('otterseas-loader-seen', String(Date.now()));
     setIsLoading(false);
   };
 

@@ -9,6 +9,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CLOTHING, CLOTHING_QUALITY_STATEMENT } from '@/data/clothing';
 import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
+import ReviewStrip from '@/components/ReviewStrip';
 import RecentlyViewed from '@/components/RecentlyViewed';
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 import WhisperText from '@/components/WhisperText';
@@ -327,9 +328,14 @@ function ClothingModal({ item, isOpen, onClose, formatPrice, selectedVariantId, 
                 {item.title}
               </h3>
               <p className="text-sm text-gray-500 italic mb-3">{item.subtitle}</p>
-              <p className="text-2xl font-bold mb-4" style={{ color: COLORS.deepWater }}>
+              <p className="text-2xl font-bold mb-2" style={{ color: COLORS.deepWater }}>
                 {formatPrice(item.price)}
               </p>
+
+              {/* Social proof at the moment of decision */}
+              <div className="mb-4">
+                <ReviewStrip label="Rated 5.0 by divers on Etsy" />
+              </div>
 
               {/* Colour picker */}
               <div className="mb-5">

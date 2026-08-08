@@ -14,8 +14,13 @@ export const SITE_URL = 'https://www.otterseas.com';
 // ===========================================
 // SHOPIFY STORE URLS
 // ===========================================
-// Development store - change to production when ready
-export const SHOPIFY_STORE_URL = 'https://38a44d-4c.myshopify.com';
+// Where checkout (and the Shopify blog) live. Once shop.otterseas.com is
+// connected in Shopify admin (Settings → Domains) and set as the store's
+// primary domain, set NEXT_PUBLIC_SHOPIFY_PUBLIC_URL=https://shop.otterseas.com
+// in Vercel and redeploy — no code change needed. Until then, the myshopify
+// fallback keeps checkout working.
+export const SHOPIFY_STORE_URL =
+  process.env.NEXT_PUBLIC_SHOPIFY_PUBLIC_URL || 'https://38a44d-4c.myshopify.com';
 
 // Checkout URL (used by CartDrawer)
 export const SHOPIFY_CHECKOUT_URL = `${SHOPIFY_STORE_URL}/cart/`;
