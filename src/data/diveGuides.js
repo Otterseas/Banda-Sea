@@ -599,6 +599,639 @@ const CORON = {
   ],
 };
 
+// ===========================================
+// BATCH 2 — UK & EUROPE
+// ===========================================
+
+const CORNWALL = {
+  intro:
+    "Cornwall is where a lot of British divers fall in love with cold water. The south coast reefs around the Manacles are carpeted in jewel anemones in colours that look tropical until the 12°C water reminds you otherwise, and the county's wreck list runs to hundreds of ships lost on the Lizard and the Runnel Stone. The headline animal is the basking shark — the world's second largest fish, which arrives to feed on plankton blooms through late spring and summer, and is usually met on a snorkel trip rather than on scuba, since it feeds at the surface. Blue sharks draw a second season of offshore trips later in the summer. Grey seals are resident year-round. It is genuinely good diving that happens to need a drysuit and a thermos.",
+  quickFacts: {
+    bestTime: 'June to October, when visibility and water temperature peak',
+    difficulty: 'Intermediate — cold water, tides, and boat diving',
+    waterTemp: '8–17°C — drysuit, or a 7mm semi-dry in late summer',
+    visibility: '5–15m, best on a settled neap tide',
+  },
+  topSites: [
+    { name: 'The Manacles', note: 'Reef pinnacles smothered in jewel anemones, plus wrecks' },
+    { name: 'Porthkerris', note: 'Excellent shore dive straight off the beach' },
+    { name: 'Silver Steps, Falmouth', note: 'Easy shore entry, good for skills and night dives' },
+    { name: 'Runnel Stone', note: 'Exposed pinnacle with big shoals — slack water only' },
+    { name: 'Offshore shark trips', note: 'Basking sharks early summer, blue sharks later' },
+  ],
+  marineLife: [
+    'Basking sharks (surface, seasonal)',
+    'Blue sharks on offshore trips',
+    'Grey seals',
+    'Jewel anemones and dead man’s fingers',
+    'Cuckoo wrasse, conger eels and spider crabs',
+  ],
+  faqs: [
+    {
+      question: 'When can you see basking sharks in Cornwall?',
+      answer:
+        'Basking sharks typically appear off the Cornish coast from around May into August, following plankton blooms, with sightings concentrated in warm settled spells. They feed at the surface with their mouths open, so encounters are almost always by snorkel from a boat rather than on scuba — bubbles tend to push them away. UK law protects them from disturbance, so reputable operators keep their distance, drop snorkellers ahead of the animal rather than chasing it, and will call off an encounter if the shark shows signs of being bothered.',
+    },
+    {
+      question: 'How cold is diving in Cornwall and what should I wear?',
+      answer:
+        'Water ranges from roughly 8°C in early spring to 16–17°C at the end of summer, which is the warmest UK sea you will find. Most local divers wear a drysuit year-round. In August and September a good 7mm semi-dry with hood and gloves is workable for shorter dives, but if you are doing several dives a day or any decompression stops you will be far more comfortable dry. Hoods and gloves are not optional at any time of year.',
+    },
+    {
+      question: 'What is the best time of year to dive Cornwall?',
+      answer:
+        'June to October is the window most divers target. Visibility improves once the spring plankton bloom settles, water temperature peaks in late August and September, and the summer weather gives more days when exposed sites like the Runnel Stone are actually diveable. Time your trip around neap tides where you can — slack water is longer and visibility is generally better than on big spring tides. Winter diving happens, but is mostly sheltered shore sites for the committed.',
+    },
+  ],
+};
+
+const PLYMOUTH = {
+  intro:
+    "Plymouth is the practical heart of UK diving — a working city with a huge natural harbour, a dive shop on most corners, and more wrecks within an hour's boat ride than most divers get through in years. Plymouth Sound became the UK's first National Marine Park in 2019. The two signature dives are the James Eagan Layne, an American Liberty ship torpedoed in 1945 and now sitting broken and swimmable in Whitsand Bay, and HMS Scylla, a Royal Navy frigate deliberately scuttled in 2004 to create an artificial reef and now thoroughly colonised. Add straightforward shore dives at Bovisand for training and skills, and it becomes obvious why so many British divers learn here.",
+  quickFacts: {
+    bestTime: 'May to October',
+    difficulty: 'Beginner to intermediate — sheltered shore sites plus boat wrecks',
+    waterTemp: '8–17°C — drysuit for most of the year',
+    visibility: '3–12m, very dependent on wind and tide',
+  },
+  topSites: [
+    { name: 'James Eagan Layne', note: 'WWII Liberty ship, broken open and easy to swim' },
+    { name: 'HMS Scylla', note: 'Frigate scuttled in 2004 as an artificial reef' },
+    { name: 'Bovisand', note: 'Sheltered shore dive, the classic training site' },
+    { name: 'Glen Strathallan', note: 'Shallow wreck inside the breakwater' },
+    { name: 'Hand Deeps', note: 'Offshore pinnacle for experienced divers' },
+  ],
+  marineLife: [
+    'Conger eels and ballan wrasse in the wrecks',
+    'Cuttlefish in spring',
+    'Pollack and bib shoals',
+    'Dead man’s fingers and plumose anemones',
+    'Spider crabs and lobster',
+  ],
+  faqs: [
+    {
+      question: 'What are the best wreck dives in Plymouth?',
+      answer:
+        'The James Eagan Layne is the classic — a US Liberty ship torpedoed in 1945 and beached in Whitsand Bay, now lying at around 22 to 25 metres. Decades of collapse have opened her up, so she is unusually easy and well-lit to swim through compared with an intact hull. HMS Scylla, a Leander-class frigate scuttled nearby in 2004 as an artificial reef, is the other must-dive and is now completely covered in growth. Both sit at recreational depths and are run regularly by hard boats out of Plymouth.',
+    },
+    {
+      question: 'Is Plymouth good for new divers?',
+      answer:
+        'It is one of the best places in the UK to build experience. Sheltered shore sites like Bovisand give you easy entries, shallow depths and enough to look at for skills practice and night dives, and the city has a dense concentration of clubs, schools and hard boats competing for business. The main wrecks sit within Advanced Open Water depths. The genuine challenge is not depth but conditions: cold water, a drysuit and reduced visibility all demand more task loading than a warm-water holiday dive.',
+    },
+    {
+      question: 'How is visibility in Plymouth Sound?',
+      answer:
+        'Honestly, variable — anywhere from three metres after a blow to a very respectable twelve on a good day. Wind direction and tide state matter more than season: a settled spell with an offshore breeze on a neap tide transforms the place. The spring plankton bloom knocks visibility down through April and May before things clear again. Offshore sites like Hand Deeps generally offer better water than sites inside the Sound, which take runoff from the rivers after heavy rain.',
+    },
+  ],
+};
+
+const SCAPA_FLOW = {
+  intro:
+    "Scapa Flow in Orkney is a pilgrimage. On 21 June 1919, believing the armistice talks had collapsed, Rear Admiral von Reuter ordered the interned German High Seas Fleet scuttled where it lay — 74 warships opened their seacocks in a single afternoon. Most were salvaged in the decades that followed, but seven major vessels remain: three König-class battleships and four light cruisers, lying in 12 to 45 metres of cold, dark Orkney water. Diving them is like moving along the flank of a building — the battleships are so large that a single dive shows you a fraction of one. Add the shallow blockships in Burra Sound for a drift among sunlit wreckage, and it is arguably the finest wreck diving in Europe.",
+  quickFacts: {
+    bestTime: 'May to September',
+    difficulty: 'Advanced — depth, cold and low light; nitrox is standard',
+    waterTemp: '6–14°C — drysuit essential',
+    visibility: '5–15m, and darker the deeper you go',
+  },
+  topSites: [
+    { name: 'SMS Karlsruhe', note: 'The shallowest cruiser — the usual first wreck' },
+    { name: 'SMS Dresden & SMS Cöln', note: 'Light cruisers lying on their sides' },
+    { name: 'SMS Markgraf', note: 'Battleship at 45m — the deepest and most atmospheric' },
+    { name: 'SMS Kronprinz Wilhelm', note: 'Battleship with huge exposed armour belt' },
+    { name: 'Burra Sound blockships', note: 'Shallow, bright drift dives over broken wreckage' },
+  ],
+  marineLife: [
+    'Plumose anemones carpeting the hulls',
+    'Dead man’s fingers',
+    'Ballan wrasse and pollack',
+    'Nudibranchs on the wreckage',
+    'Seals around the shallower sites',
+  ],
+  faqs: [
+    {
+      question: 'What experience do I need to dive Scapa Flow?',
+      answer:
+        'More than a typical UK reef trip. The cruisers sit around 25 to 35 metres and the battleships closer to 45, in cold water with limited natural light, so operators generally expect a solid drysuit diver with Advanced Open Water as a minimum and often ask for deep and nitrox qualifications. Nitrox is effectively standard here because it buys meaningful bottom time at those depths. Many divers do the battleships as staged decompression dives. If you are newly qualified, the blockships in Burra Sound are shallow and spectacular in their own right.',
+    },
+    {
+      question: 'Which wrecks are left in Scapa Flow?',
+      answer:
+        'Seven major German warships from the 1919 scuttling remain: the battleships SMS König, SMS Kronprinz Wilhelm and SMS Markgraf, and the light cruisers SMS Karlsruhe, SMS Dresden, SMS Brummer and SMS Cöln. Most of the other 45 or so ships that sank were commercially salvaged between the wars. Alongside them lie the blockships deliberately sunk to seal the eastern approaches. HMS Royal Oak, torpedoed in 1939 with the loss of 835 lives, is a designated war grave and diving on her is prohibited.',
+    },
+    {
+      question: 'When is the best time to dive Scapa Flow?',
+      answer:
+        'May to September, and within that many divers favour May and June for the longest daylight — at that latitude the summer evenings barely get dark, which matters when you are diving wrecks that swallow light. Water hovers between 6 and 14°C across the season. Orkney weather is the real variable: trips are usually liveaboard or shore-based out of Stromness, and a windy week can restrict which side of the Flow is diveable. Book well ahead, as the good boats fill a year out.',
+    },
+  ],
+};
+
+const FARNE_ISLANDS = {
+  intro:
+    "The Farne Islands off the Northumberland coast are the best seal dive in Britain, and possibly the most purely fun diving the UK offers. Several thousand grey seals live on the islands, and the juveniles are relentlessly curious — they will hang upside down in front of your mask, tug at fins, and follow divers around the kelp gullies for an entire dive. This is not a distant wildlife encounter; it is closer to being investigated by a labrador. The underwater terrain is good too, with kelp forests, gullies and a scattering of wrecks, and the islands are a National Trust reserve with enormous seabird colonies above water. Boats run from Seahouses, and dives are typically shallow enough that bottom time is limited by cold rather than by depth.",
+  quickFacts: {
+    bestTime: 'June to October',
+    difficulty: 'Easy to intermediate — shallow, but cold with some tidal movement',
+    waterTemp: '8–15°C — drysuit strongly recommended',
+    visibility: '5–15m',
+  },
+  topSites: [
+    { name: 'Knivestone', note: 'Exposed reef with the liveliest seal encounters' },
+    { name: 'Longstone End', note: 'Kelp gullies and reliable seal traffic' },
+    { name: 'Crumstone', note: 'Boulder terrain, good for wide-angle photography' },
+    { name: 'Somali wreck', note: 'WWII steamer bombed in 1941, for a change of pace' },
+    { name: 'Big Harcar', note: 'Shallow gullies, ideal in bright conditions' },
+  ],
+  marineLife: [
+    'Grey seals, in numbers and very curious',
+    'Kelp forest and dense soft coral',
+    'Ballan wrasse and pollack',
+    'Nudibranchs and edible crabs',
+    'Lumpsuckers in spring',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive with seals at the Farne Islands?',
+      answer:
+        'June to October gives the best combination of settled seas, workable visibility and warm-ish water. Seals are resident year-round, so encounters are not really seasonal, but the juveniles that do most of the interacting are boldest later in the summer. Pupping season runs from around October into December, when boats keep further from the haul-out beaches to avoid disturbance. Diving in the depths of winter is possible but the North Sea is genuinely cold and the weather window narrow.',
+    },
+    {
+      question: 'Is it safe to dive with grey seals?',
+      answer:
+        'Broadly yes, and encounters are among the highlights of UK diving, but treat them as large wild predators rather than pets. Juveniles mouth and tug at fins, which is play rather than aggression, though a nip through a drysuit fin is not unheard of. The guidance is simple: let them approach you, stay still and horizontal, do not chase or grab, and keep your hands close to your body. Adult bulls are much larger and less playful — give them space, particularly around the breeding season.',
+    },
+    {
+      question: 'How deep is the diving at the Farnes?',
+      answer:
+        'Shallow, which is part of what makes it so relaxed. Most sites sit between 10 and 25 metres, and the best seal action tends to happen in the top 10 metres among the kelp where the light is good. That means long, easy no-decompression dives — the limiting factor is almost always cold rather than air or depth. It also makes the Farnes very approachable for divers with modest experience, provided they are comfortable diving dry in a bit of surface chop.',
+    },
+  ],
+};
+
+const ST_ABBS = {
+  intro:
+    "St Abbs, on the Berwickshire coast, is where people who claim UK diving is murky get proved wrong. The voluntary marine reserve established here in 1984 protects a stretch of coastline where cold, clean North Sea water regularly delivers ten to twenty metres of visibility over rock architecture that genuinely deserves the word dramatic. Cathedral Rock is the signature — a natural double arch swimmable at around 15 metres, walls covered in dead man's fingers. The reserve's protection shows in the fish: big ballan wrasse that do not flee, and the wolf-fish that St Abbs is quietly famous for, sitting in crevices looking thoroughly unimpressed. Shore diving from the harbour is easy and boats run from Eyemouth.",
+  quickFacts: {
+    bestTime: 'May to September',
+    difficulty: 'Easy to intermediate — good shore access, some swell exposure',
+    waterTemp: '7–14°C — drysuit',
+    visibility: '10–20m, excellent by UK standards',
+  },
+  topSites: [
+    { name: 'Cathedral Rock', note: 'The famous twin natural arch — the classic dive' },
+    { name: 'Anemone Gullies', note: 'Shallow rock gullies packed with anemones' },
+    { name: 'Big Green Carr', note: 'Boat site with walls and reliable wrasse' },
+    { name: 'Glanmire', note: 'Broken steamer wreck at around 30m' },
+    { name: 'St Abbs harbour', note: 'Sheltered shore entry, ideal for a check dive' },
+  ],
+  marineLife: [
+    'Wolf-fish in the deeper crevices',
+    'Ballan wrasse, unbothered by divers',
+    'Dead man’s fingers carpeting the walls',
+    'Nudibranchs and sea slugs',
+    'Grey seals passing through',
+  ],
+  faqs: [
+    {
+      question: 'Why is visibility so good at St Abbs?',
+      answer:
+        'A combination of cold, clean North Sea water, a rocky rather than silty seabed, and relatively little freshwater runoff along this stretch of coast. There is nothing to put into suspension, so once any swell has settled the water clears quickly and ten to twenty metres is normal — occasionally more. The trade-off is exposure: this coastline takes weather straight off the North Sea, so a strong northerly or easterly will shut sites down and stir things up for a day or two afterwards.',
+    },
+    {
+      question: 'Can you shore dive at St Abbs?',
+      answer:
+        'Yes, and it is one of the main attractions. Entries from St Abbs harbour and the nearby coves give straightforward access to sheltered gullies rich in anemones and wrasse, making it a favourite for club weekends and skills practice. Boat trips out of Eyemouth open up the bigger sites like Cathedral Rock and the offshore reefs. Check current guidance on harbour access and parking before travelling, as arrangements for divers have changed over the years.',
+    },
+    {
+      question: 'What is the best time of year to dive St Abbs?',
+      answer:
+        'May to September, with midsummer offering long daylight and the calmest conditions. Visibility typically improves as the spring plankton bloom clears through late May and June. Water temperature runs from around 7°C early in the season to a peak of about 14°C in late August, so this is drysuit diving whenever you visit. Because the site is so weather-dependent, flexible dates beat fixed ones — keep an eye on wind direction rather than the calendar.',
+    },
+  ],
+};
+
+const LUNDY = {
+  intro:
+    "Lundy is a granite island in the Bristol Channel with an outsized place in British marine conservation history: it became the UK's first statutory Marine Nature Reserve in 1986, gained a no-take zone in 2003, and was designated the country's first Marine Conservation Zone in 2010. Decades of protection produced exactly what protection is supposed to produce — larger fish, recovering lobster and a reef in noticeably better condition than the mainland. For most divers, though, the draw is the grey seals, which are as playful here as at the Farnes. The catch is the Bristol Channel's enormous tidal range, which makes slack-water timing non-negotiable and puts the island firmly in the hands of skippers who know the water.",
+  quickFacts: {
+    bestTime: 'June to September',
+    difficulty: 'Intermediate — strong tides demand slack-water timing',
+    waterTemp: '10–17°C — drysuit or a good semi-dry',
+    visibility: '5–15m, best on neaps',
+  },
+  topSites: [
+    { name: 'Knoll Pins', note: 'Pinnacles covered in jewel anemones — the signature dive' },
+    { name: 'Gannets Rock', note: 'Seal encounters in the shallows' },
+    { name: 'Iona II', note: 'Victorian paddle steamer wreck, protected' },
+    { name: 'The Rattles', note: 'Gullies and boulder terrain on the east side' },
+    { name: 'Landing Bay', note: 'Sheltered and shallow, good for a second dive' },
+  ],
+  marineLife: [
+    'Grey seals, curious and interactive',
+    'Jewel anemones in dense colour',
+    'Large ballan wrasse and pollack',
+    'Crawfish and lobster, recovered under protection',
+    'Sunset cup coral, a Lundy speciality',
+  ],
+  faqs: [
+    {
+      question: 'How do I dive Lundy?',
+      answer:
+        'By boat, from the north Devon coast — hard boats run out of Ilfracombe and Bideford, and the crossing takes a couple of hours depending on conditions. Some groups make a day of it with two dives; others book multi-day charters. There is limited accommodation on the island itself through the Landmark Trust, but no dive centre, so almost everyone dives from a visiting boat. Because the crossing is exposed and the tides are serious, trips are heavily weather-dependent and cancellations are normal.',
+    },
+    {
+      question: 'Why are the tides at Lundy so important?',
+      answer:
+        'The Bristol Channel has one of the largest tidal ranges in the world, and Lundy sits right in the flow. Currents around the island can run hard enough to make diving impossible outside slack water, and they change fast. In practice this means dive times are dictated by the tide tables rather than by convenience, sites are chosen according to the state of the tide, and neap tides give a longer, more forgiving window than springs. It is the single biggest reason to dive Lundy with a skipper who knows it well.',
+    },
+    {
+      question: 'What makes Lundy special for marine life?',
+      answer:
+        'Sustained protection. As the UK\'s first Marine Nature Reserve and later its first Marine Conservation Zone, with a no-take zone in place since 2003, Lundy has had far longer to recover than almost anywhere else in British waters — and the difference is visible in the size of the wrasse, the density of the jewel anemones and the presence of crawfish and lobster that would have been fished out elsewhere. It also hosts sunset cup coral, a rare species with very few UK sites.',
+    },
+  ],
+};
+
+const MALTA = {
+  intro:
+    "Malta has built one of Europe's most efficient diving destinations out of clear water, walkable shore entries and a deliberate policy of scuttling ships. Visibility of thirty metres or more is routine, the water is warm enough for a 5mm through the summer, and the wreck list is remarkable for a country this small — the tanker Um El Faroud, the patrol boat P29 and the tugboat Rozi all sit within recreational depths, most of them reachable from the shore at Cirkewwa. Around the wrecks are caverns, arches and reef walls in the limestone. It suits almost everyone: a beginner can shore dive Cirkewwa comfortably, while technical divers have deeper wrecks and cave systems to work through, and everything is a short drive apart.",
+  quickFacts: {
+    bestTime: 'May to October, though Malta dives year-round',
+    difficulty: 'Beginner to technical — sites for every level',
+    waterTemp: '15°C in winter to 27°C in late summer',
+    visibility: '20–40m',
+  },
+  topSites: [
+    { name: 'Um El Faroud', note: 'Large tanker scuttled in 1998, around 25–36m' },
+    { name: 'Cirkewwa', note: 'Shore-dive hub — arch, reef and the Rozi tug' },
+    { name: 'P29 patrol boat', note: 'Intact and photogenic at about 35m' },
+    { name: 'HMS Maori', note: 'Shallow WWII destroyer wreck in Valletta' },
+    { name: 'Ghar Lapsi', note: 'Easy shore dive through caverns and swim-throughs' },
+  ],
+  marineLife: [
+    'Barracuda and amberjack around the wrecks',
+    'Groupers in the caverns',
+    'Octopus and moray eels',
+    'Nudibranchs on the wreck structure',
+    'Seasonal tuna passing offshore',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive Malta?',
+      answer:
+        'May to October is the main season, when the sea is warmest and calmest — late summer, around August into early October, is the pick if you want water in the mid-twenties and long days. Malta dives all year, and winter offers excellent visibility with almost no crowds, though the water drops to around 15°C and you will want a 7mm or a drysuit. Winter storms and northerly winds can close exposed sites, but the island is small enough that operators simply move to the sheltered side.',
+    },
+    {
+      question: 'Can you shore dive in Malta?',
+      answer:
+        'Extensively, and it is one of the island\'s biggest advantages. Cirkewwa in the north is the best-known shore-diving site in the Mediterranean, with easy entry steps giving access to an arch, a reef wall and the Rozi tugboat without ever boarding a boat. Ghar Lapsi, Wied iz-Zurrieq and several other sites work the same way. It keeps costs down, removes boat schedules from your day, and means you can dive when you like — hire kit, drive, park and walk in.',
+    },
+    {
+      question: 'What are the best wrecks to dive in Malta?',
+      answer:
+        'The Um El Faroud is the standout — a large tanker scuttled in 1998 off Wied iz-Zurrieq, sitting at roughly 25 to 36 metres and substantial enough to warrant several dives. The P29 patrol boat and the Rozi tugboat are both intact, shallow enough for Advanced divers and highly photogenic. HMS Maori in Valletta harbour is very shallow and suits newer divers. Many were scuttled deliberately as artificial reefs, so they are clean, structurally sound and far safer than wrecks that went down by accident.',
+    },
+  ],
+};
+
+const GOZO = {
+  intro:
+    "Gozo is Malta's quieter sister island, and for many divers it is the better half. The diving is defined by limestone — vertical walls, tunnels, caverns and the famous Blue Hole at Dwejra, a natural rock pool that connects to the open sea through an arch at around eight metres. Swimming out of that arch into blue water dropping away beneath you is one of the Mediterranean's genuinely great dive moments. Nearby, the collapsed remains of the Azure Window, which fell into the sea in a storm in March 2017, now form a boulder field that has become a dive site in its own right. Visibility is regularly thirty metres or more, and almost everything is a shore dive reached down a track and a set of steps.",
+  quickFacts: {
+    bestTime: 'May to October, diveable year-round',
+    difficulty: 'Intermediate — shore entries can be awkward; some sites advanced',
+    waterTemp: '15°C in winter to 27°C in late summer',
+    visibility: '25–40m',
+  },
+  topSites: [
+    { name: 'Blue Hole & the Arch', note: 'Gozo\'s signature dive at Dwejra' },
+    { name: 'Azure Window remains', note: 'The collapsed arch, now a boulder field' },
+    { name: 'The Chimney', note: 'Vertical crack you ascend through in the rock' },
+    { name: 'Inland Sea tunnel', note: 'An 80m tunnel opening onto a sheer wall' },
+    { name: 'Xlendi Cave', note: 'Shallow cavern, good for less experienced divers' },
+  ],
+  marineLife: [
+    'Groupers and dentex along the walls',
+    'Octopus and moray eels',
+    'Barracuda in summer',
+    'Nudibranchs in the caverns',
+    'Cardinalfish shoaling in the tunnels',
+  ],
+  faqs: [
+    {
+      question: 'Is the Blue Hole in Gozo difficult to dive?',
+      answer:
+        'The diving itself is straightforward, but the logistics are not. The Blue Hole sits at the bottom of a rough limestone shore at Dwejra, and you carry your kit down uneven rock to reach it — the walk out afterwards is what people remember. Once in, you drop into a natural pool and swim out through an arch at around eight metres onto a wall dropping well past recreational limits. Swell can make the entry genuinely hazardous, so operators call it off when conditions are wrong. Depth discipline matters, as the wall invites you deeper.',
+    },
+    {
+      question: 'Can you still dive the Azure Window?',
+      answer:
+        'Not as it was — the arch collapsed into the sea during a storm in March 2017. What remains is arguably still worth diving: enormous limestone blocks scattered across the seabed forming a dramatic boulder field and swim-throughs, at depths that suit recreational divers. It is combined with the Blue Hole on most Dwejra dives. If you saw photographs of the Window before it fell and expected to swim beneath it, adjust expectations, but do not skip the site.',
+    },
+    {
+      question: 'Should I dive Gozo or Malta?',
+      answer:
+        'Ideally both, since the ferry between them takes about 25 minutes. Malta has the better wrecks — Um El Faroud, P29 and Rozi — plus more infrastructure and easier shore access. Gozo has the more dramatic topography: walls, tunnels, caverns and the Blue Hole, with fewer divers on the sites and generally slightly better visibility. Divers who prioritise wrecks base themselves on Malta; those who prefer rock architecture and a quieter trip stay on Gozo.',
+    },
+  ],
+};
+
+const ICELAND = {
+  intro:
+    "Silfra is the reason divers come to Iceland, and it is unlike anywhere else on earth. The fissure sits inside Þingvellir National Park, in the rift valley where the North American and Eurasian plates are pulling apart, and it is filled with glacial meltwater from Langjökull that has spent decades filtering through porous lava rock. The result is water so pure that visibility is routinely quoted at over a hundred metres — you can see the far end of a flooded canyon as clearly as you would in air. It is also 2 to 4°C, every day of the year, which is why every operator requires drysuit certification and logged dry dives. Iceland's other secret is Strýtan in the north, a geothermal chimney venting hot water on a site found almost nowhere else in the world.",
+  quickFacts: {
+    bestTime: 'Year-round — the water temperature never changes',
+    difficulty: 'Intermediate — drysuit certification is mandatory, not optional',
+    waterTemp: '2–4°C all year',
+    visibility: 'Over 100m at Silfra, the clearest in the world',
+  },
+  topSites: [
+    { name: 'Silfra Big Crack', note: 'The narrow section between the rift walls' },
+    { name: 'Silfra Cathedral', note: 'Long, deep canyon with staggering visibility' },
+    { name: 'Silfra Lagoon', note: 'Shallow finish over bright blue-green algae' },
+    { name: 'Strýtan', note: 'Geothermal chimney rising from the seabed, north Iceland' },
+    { name: 'Bjarnagjá', note: 'Quieter lava fissure on the Reykjanes peninsula' },
+  ],
+  marineLife: [
+    'Almost none — Silfra is about geology and clarity',
+    '“Troll hair” algae in vivid green',
+    'Arctic char, occasionally',
+    'Marine life around Strýtan in the north',
+  ],
+  faqs: [
+    {
+      question: 'Do I need drysuit certification to dive Silfra?',
+      answer:
+        'Yes, and operators enforce it strictly. Because the water sits at 2 to 4°C year-round, every Silfra dive operator requires a recognised drysuit specialty certification plus a minimum number of logged drysuit dives — commonly ten — within a recent period, and they will ask to see your logbook. Divers who turn up without it are turned away or offered snorkelling instead. If you want to dive Silfra, complete your drysuit training at home before you travel; you cannot do it on the day.',
+    },
+    {
+      question: 'How cold is Silfra really, and can I handle it?',
+      answer:
+        'It is 2 to 4°C, which is cold enough that your exposed lips and cheeks go numb within minutes even in a properly fitted drysuit with thick undersuit, hood and dry gloves. Dives are deliberately short, typically around 30 to 40 minutes, and operators run two shorter dives rather than one long one. Most reasonably experienced drysuit divers cope fine — the shock is manageable and the visibility is so extraordinary that people forget the cold. If you dive dry regularly in the UK or northern Europe, you are well prepared.',
+    },
+    {
+      question: 'Can you really touch two tectonic plates at Silfra?',
+      answer:
+        'This is the marketing line, and it needs a small caveat. Silfra is a fissure within the rift valley where the North American and Eurasian plates are separating, and in the narrowest section you can touch rock on both sides at once — which is where the photograph comes from. Strictly speaking the plate boundary is a wide zone rather than a single crack, so you are touching two walls of the same rift rather than the plates themselves. It remains a genuinely extraordinary place to dive; just enjoy it for the geology and the water.',
+    },
+  ],
+};
+
+const NORWAY = {
+  intro:
+    "Norway offers two completely different underwater experiences depending on when you go. In winter, the herring migration draws orcas and humpback whales into the fjords around Skjervøy and Tromsø, and snorkellers get into the water alongside feeding whales in the blue twilight of the Arctic day — an encounter with very few equals anywhere. In summer, the same coastline offers cold, clear water over kelp forests, wolf-fish and a long list of wrecks, with Gulen near Bergen acting as a hub for technical divers. Saltstraumen near Bodø adds the world's strongest tidal current, dived at slack water when the maelstrom briefly pauses. It is demanding, expensive and, for cold-water divers, close to the top of the list.",
+  quickFacts: {
+    bestTime: 'November to January for whales; May to September for diving',
+    difficulty: 'Advanced — cold, remote, and current-affected',
+    waterTemp: '4–15°C — drysuit essential year-round',
+    visibility: '10–30m, often excellent in cold months',
+  },
+  topSites: [
+    { name: 'Skjervøy & Tromsø fjords', note: 'Orca and humpback snorkelling in winter' },
+    { name: 'Saltstraumen', note: 'The world\'s strongest tidal current — slack water only' },
+    { name: 'Gulen', note: 'Wreck and technical diving hub near Bergen' },
+    { name: 'Lofoten walls', note: 'Steep drop-offs with dense soft coral' },
+    { name: 'Frankenwald wreck', note: 'Large intact wreck for experienced divers' },
+  ],
+  marineLife: [
+    'Orcas and humpback whales, in winter',
+    'Wolf-fish in the rocky reefs',
+    'Kelp forests and dense soft coral',
+    'King crab in the far north',
+    'Cod, coalfish and lumpsuckers',
+  ],
+  faqs: [
+    {
+      question: 'Can you scuba dive with orcas in Norway?',
+      answer:
+        'No — whale encounters in Norway are snorkel-only, and that is both regulation and good practice. Norwegian rules restrict in-water interaction with whales, and operators run these trips as snorkelling from a boat rather than scuba. In practical terms it works better anyway: the whales are feeding near the surface on herring, bubbles from scuba tend to push them away, and a snorkeller can move quickly and quietly into position. Expect short, cold, repeated entries rather than a single long dive.',
+    },
+    {
+      question: 'When is the whale season in northern Norway?',
+      answer:
+        'Roughly November through January, tied to the herring that draw the whales into the fjords — most operators run trips from Skjervøy, Tromsø and the surrounding area during that window. Be aware of the light: at that latitude in December there is no true sunrise, and you are working in a few hours of blue polar twilight each day. The herring shift their wintering grounds over the years, so the exact hotspot moves; check where operators are actually running before booking flights.',
+    },
+    {
+      question: 'What is diving Saltstraumen like?',
+      answer:
+        'Saltstraumen is the strongest tidal current in the world, with enormous volumes of water forced through a narrow strait four times a day, generating whirlpools visible from the bridge above. You dive it only at slack water, in a window that can be as short as twenty minutes, with a guide who knows exactly when to get in and out. The reward is a reef fed by that constant nutrient flow — dense anemones, huge cod and wolf-fish. It is not a site for divers new to cold water or current.',
+    },
+  ],
+};
+
+const CROATIA = {
+  intro:
+    "Croatia's diving is Adriatic in character: clear, blue, and heavy on history. The signature dive is the Baron Gautsch, an Austro-Hungarian passenger steamer that struck a mine off Rovinj in August 1914 and went down with heavy loss of life — she sits between roughly 28 and 40 metres, remarkably intact, and is protected such that you dive her with a licensed guide. Beyond her, the coastline offers a long list of wrecks, limestone caves and walls scattered across more than a thousand islands, with the Kornati archipelago and the island of Vis particularly well regarded. Visibility of twenty to thirty metres is normal in summer, water reaches the mid-twenties, and the topside sailing-holiday scenery does no harm at all.",
+  quickFacts: {
+    bestTime: 'May to October',
+    difficulty: 'Intermediate — several signature wrecks sit below 30m',
+    waterTemp: '14°C in spring to 25°C in late summer',
+    visibility: '20–30m',
+  },
+  topSites: [
+    { name: 'Baron Gautsch', note: 'WWI passenger steamer off Rovinj — guided dives only' },
+    { name: 'Vis island wrecks', note: 'B-17 bomber and several WWII ships' },
+    { name: 'Kornati National Park', note: 'Walls and drop-offs in protected water' },
+    { name: 'Premuda “Cathedral”', note: 'Cavern system with dramatic light shafts' },
+    { name: 'Coriolanus', note: 'British minesweeper lost in 1945' },
+  ],
+  marineLife: [
+    'Groupers and dentex along the walls',
+    'Conger eels and moray in the wrecks',
+    'Octopus and scorpionfish',
+    'Lobster in the cavern systems',
+    'Red gorgonians on the deeper drop-offs',
+  ],
+  faqs: [
+    {
+      question: 'Do I need a permit to dive in Croatia?',
+      answer:
+        'Foreign divers generally need to dive through a licensed Croatian dive centre, and there has historically been a diving card or permit requirement administered locally — arrangements have changed over the years, so confirm current rules with your operator before travelling. Certain protected wrecks, including the Baron Gautsch, may only be dived with an authorised guide, and some are inside marine protected areas with additional restrictions and fees. In practice, booking through an established centre handles all of this for you.',
+    },
+    {
+      question: 'What is the best wreck dive in Croatia?',
+      answer:
+        'The Baron Gautsch, without much argument. An Austro-Hungarian passenger ship that struck a mine in August 1914 with significant loss of life, she lies off Rovinj in roughly 28 to 40 metres and is unusually intact for her age, with recognisable decks and superstructure. Because she is both a war grave and a protected monument, dives are guided and penetration is restricted. Her depth puts her firmly in Advanced territory, and many divers use nitrox to get worthwhile bottom time.',
+    },
+    {
+      question: 'When is the best time to dive Croatia?',
+      answer:
+        'May to October, with the sweet spot in late summer. Water climbs to around 25°C at the surface by August and September — though expect a sharp thermocline below about 20 metres, where it can drop into the high teens, so a 5mm plus a hood is sensible even in high summer. Visibility is consistently good across the season. July and August bring the Adriatic tourist peak, so late May, June and September offer the same diving with fewer people and lower prices.',
+    },
+  ],
+};
+
+const CYPRUS = {
+  intro:
+    "Cyprus is, for most visiting divers, one wreck: the Zenobia. A Swedish-built roll-on roll-off ferry, she developed a ballast fault on her maiden voyage and capsized off Larnaca in June 1980, taking around a hundred articulated lorries down with her. She now lies on her port side in 16 to 42 metres of clear, warm Mediterranean water, and she is enormous — nearly 180 metres of ship, with the lorries still chained in rows on her cargo decks. Very few wrecks combine that scale, that clarity and that accessibility, which is why she appears on almost every list of the world's best wreck dives. The rest of Cyprus offers pleasant reef and cavern diving, but the Zenobia is the reason people book flights.",
+  quickFacts: {
+    bestTime: 'April to November; diveable year-round',
+    difficulty: 'Intermediate for the outside; technical for deep penetration',
+    waterTemp: '16°C in winter to 28°C in late summer',
+    visibility: '20–40m',
+  },
+  topSites: [
+    { name: 'Zenobia', note: 'The main event — 16 to 42m, lorries still aboard' },
+    { name: 'Amphorae Caves, Paphos', note: 'Shallow caverns with ancient amphorae' },
+    { name: 'Green Bay, Protaras', note: 'Very shallow, ideal for training and night dives' },
+    { name: 'Cyclops cave', note: 'Cavern diving along the eastern coast' },
+    { name: 'HMS Cricket', note: 'Gunboat wreck for more experienced divers' },
+  ],
+  marineLife: [
+    'Enormous resident groupers on the Zenobia',
+    'Barracuda and amberjack schools',
+    'Moray eels in the wreck structure',
+    'Turtles, occasionally',
+    'Nudibranchs and tube worms on the hull',
+  ],
+  faqs: [
+    {
+      question: 'What certification do I need to dive the Zenobia?',
+      answer:
+        'The wreck starts at around 16 metres at the shallowest point of the hull, so an Open Water diver can dive parts of the exterior with a guide. Advanced Open Water opens up much more, since the most impressive sections — the cargo decks with the lorries, and the lower structure — sit between 25 and 42 metres. Any real penetration into the interior is overhead-environment diving and needs wreck training, appropriate gas and a guide who knows the routes. Many divers use nitrox to extend bottom time.',
+    },
+    {
+      question: 'Why is the Zenobia considered one of the world\'s best wreck dives?',
+      answer:
+        'Scale, clarity and cargo. She is nearly 180 metres long, lying on her side in warm water with 20 to 40 metres of visibility, which means you can actually appreciate her size rather than groping along a hull in the gloom. The cargo is what makes her unique: around a hundred articulated lorries still chained to the decks, some with their loads intact, giving the wreck an eerie, frozen-in-1980 quality. She is also close to shore off Larnaca, so access is easy and dives are run daily.',
+    },
+    {
+      question: 'When is the best time to dive Cyprus?',
+      answer:
+        'April to November covers the comfortable season, with water climbing from around 18°C in spring to 28°C by late summer and visibility consistently excellent. Diving continues through winter, when the sea drops to about 16°C and you would want a 7mm, but the water is often at its clearest and the sites are empty. Because the Zenobia sits in a sheltered position off Larnaca, trips run in most conditions, making Cyprus one of the more weather-reliable European destinations.',
+    },
+  ],
+};
+
+const SARDINIA = {
+  intro:
+    "Sardinia's nickname among divers comes from Corallium rubrum — the deep red Mediterranean coral that was harvested from these waters for centuries and traded like a precious metal, giving Alghero its reputation as a coral town. Today the coral is protected and regulated, and the diving that surrounds it is some of the best in the western Mediterranean. Nereo Cave at Capo Caccia is the headline: one of the largest underwater caves in the Mediterranean, a complex of tunnels and chambers big enough to feel genuinely cathedral-like. Elsewhere the island offers marine protected areas at Tavolara and Capo Carbonara where grouper populations have visibly recovered, granite topography, and a scattering of wrecks. The water is clear, the season is long, and it is far less crowded than the Italian mainland.",
+  quickFacts: {
+    bestTime: 'May to October',
+    difficulty: 'Intermediate — cave and cavern sites need proper training',
+    waterTemp: '14°C in spring to 26°C in late summer',
+    visibility: '20–30m',
+  },
+  topSites: [
+    { name: 'Nereo Cave, Capo Caccia', note: 'Among the largest underwater caves in the Med' },
+    { name: 'Tavolara', note: 'Marine protected area with big groupers and walls' },
+    { name: 'Capo Carbonara', note: 'Protected reserve off Villasimius' },
+    { name: 'Angelika wreck', note: 'Accessible wreck on the north-west coast' },
+    { name: 'Secca del Papa', note: 'Pinnacle dive with gorgonians and pelagics' },
+  ],
+  marineLife: [
+    'Red coral on the deeper walls and cave roofs',
+    'Dusky groupers, recovered in the reserves',
+    'Red gorgonian fans',
+    'Barracuda and amberjack',
+    'Octopus, moray and scorpionfish',
+  ],
+  faqs: [
+    {
+      question: 'Can you see red coral diving in Sardinia?',
+      answer:
+        'Yes, and it is one of the island\'s signatures — Corallium rubrum grows on shaded overhangs, cave roofs and deeper walls, and Nereo Cave at Capo Caccia is particularly known for it. Bear in mind that it is a slow-growing, heavily regulated species: harvesting is tightly controlled and taking it as a diver is prohibited. The best displays tend to sit below 30 metres or in shaded cavern sections where light is limited, so a torch makes an enormous difference to seeing the colour properly.',
+    },
+    {
+      question: 'Do I need cave training to dive Nereo Cave?',
+      answer:
+        'For the classic guided route, generally no — the main passage is large, has natural light at both ends and is dived as a cavern by recreational divers with a local guide who knows it. That said, it is still an overhead environment, and comfort with buoyancy, a torch and staying tight to your guide are essential. The deeper and more complex sections of the system are genuine cave diving and require proper cave training. Book with an Alghero operator that runs the site regularly rather than treating it as a casual dive.',
+    },
+    {
+      question: 'When is the best time to dive Sardinia?',
+      answer:
+        'May to October, with June, September and early October offering the best balance — warm water, good visibility and far fewer tourists than the Italian August peak. Surface temperatures reach around 26°C in late summer, though a thermocline below 25 or 30 metres can drop things sharply, so a 5mm with a hood is a sensible minimum for deeper cave and wall dives. Winter diving is possible with the right exposure protection but many operators run reduced schedules.',
+    },
+  ],
+};
+
+const CANARY_ISLANDS = {
+  intro:
+    "The Canaries are Europe's year-round dive destination — water that never drops below about 18°C, visibility in the twenties and thirties, and volcanic terrain of arches, lava tubes and black sand that looks like nowhere else in Europe. The islands are also the last global stronghold of the angel shark, a critically endangered flat-bodied shark that has disappeared from most of its former range but is still reliably found here, half-buried in sandy bays through the winter months. Lanzarote adds the Museo Atlántico, Europe's first underwater sculpture museum, where Jason deCaires Taylor's cast figures stand in ranks at around thirteen metres. El Hierro's Mar de las Calmas reserve has the clearest water in the archipelago. It is easy, accessible diving with a genuine conservation story attached.",
+  quickFacts: {
+    bestTime: 'Year-round; angel sharks are most reliable November to March',
+    difficulty: 'Beginner to intermediate',
+    waterTemp: '18–24°C — a 5mm is comfortable year-round',
+    visibility: '20–30m',
+  },
+  topSites: [
+    { name: 'Museo Atlántico, Lanzarote', note: 'Underwater sculpture museum at around 13m' },
+    { name: 'Mar de las Calmas, El Hierro', note: 'The clearest water in the Canaries' },
+    { name: 'Radazul & Tabaiba, Tenerife', note: 'Easy shore dives, good for angel sharks' },
+    { name: 'El Cabrón, Gran Canaria', note: 'Marine reserve with arches and gullies' },
+    { name: 'Playa Chica, Lanzarote', note: 'Shore entry onto a wall dropping past 40m' },
+  ],
+  marineLife: [
+    'Angel sharks, seasonally and reliably',
+    'Rays and stingrays on the sand',
+    'Barracuda and roncadores schooling',
+    'Octopus, moray and cuttlefish',
+    'Occasional whale sharks and pilot whales offshore',
+  ],
+  faqs: [
+    {
+      question: 'When can I see angel sharks in the Canary Islands?',
+      answer:
+        'The Canaries are the last reliable stronghold in the world for the critically endangered angel shark, and the best months are generally November through March, when they move into shallow sandy bays. They lie half-buried and motionless, so sightings depend on a guide who knows where to look rather than on luck. Shore dives on Tenerife, Lanzarote and Gran Canaria all produce encounters. Do not touch or crowd them — this is one of the few remaining populations, and disturbance in shallow breeding habitat is a genuine conservation concern.',
+    },
+    {
+      question: 'Can you dive the Canary Islands all year?',
+      answer:
+        'Yes, and that is the archipelago\'s biggest selling point for European divers. Water temperature ranges only from about 18°C in late winter to 24°C at the end of summer, so a 5mm works year-round and there is no closed season. Winter brings slightly bigger Atlantic swell, which can shut exposed sites for a day or two, but the islands are shaped so there is almost always a sheltered coast. Winter is also angel shark season, so the cooler months are arguably the more interesting time to visit.',
+    },
+    {
+      question: 'What is the Museo Atlántico?',
+      answer:
+        'Europe\'s first underwater sculpture museum, installed off Playa Blanca in Lanzarote and opened in 2016. It holds around three hundred cast concrete figures by the artist Jason deCaires Taylor, arranged in tableaux — a group walking towards a wall, a raft of figures, a boat — sitting at roughly twelve to fourteen metres on sand. The pieces double as an artificial reef and have been colonised by marine life. It is a shallow, easy dive suitable for newer divers, and it photographs like nothing else in European water.',
+    },
+  ],
+};
+
+const THE_AZORES = {
+  intro:
+    "The Azores sit in the middle of the Atlantic, and they dive like it. This is blue-water, big-animal territory: seamounts rising from deep ocean, baited shark dives with blues and makos, and the mobula ray aggregations at Princess Alice Bank, a submerged seamount some 45 nautical miles offshore where hundreds of devil rays gather in mid-summer. Getting there means several hours on a boat each way and then a descent into open blue water with no reference — magnificent, and not the place to discover you are uneasy without a bottom in sight. Closer in, the volcanic islands offer arches, wrecks and dramatic terrain, and the surface intervals come with sperm whales and dolphins. For divers who have done reefs and want ocean, it is one of the most exciting destinations in Europe.",
+  quickFacts: {
+    bestTime: 'July to October — mobulas peak mid-summer',
+    difficulty: 'Advanced — offshore, blue water, current and long crossings',
+    waterTemp: '17–24°C',
+    visibility: '20–30m and often more offshore',
+  },
+  topSites: [
+    { name: 'Princess Alice Bank', note: 'Offshore seamount, mobula rays in summer' },
+    { name: 'Ambrósio, Santa Maria', note: 'Reliable devil ray aggregation site' },
+    { name: 'Blue shark dives', note: 'Baited blue-water dives with blues and makos' },
+    { name: 'Formigas islets', note: 'Remote reef with big pelagic traffic' },
+    { name: 'Dori wreck, Faial', note: 'US Liberty ship, accessible and intact' },
+  ],
+  marineLife: [
+    'Mobula (devil) rays in large aggregations',
+    'Blue sharks and shortfin mako',
+    'Dusky groupers on the seamounts',
+    'Barracuda, amberjack and tuna',
+    'Sperm whales and dolphins at the surface',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive the Azores?',
+      answer:
+        'July to October, and quite narrowly so. The mid-Atlantic weather makes offshore trips to seamounts like Princess Alice Bank impossible for much of the year, and the mobula ray aggregations peak in mid-summer, roughly July into September. Water reaches its warmest at around 23 to 24°C in late summer. Outside this window many operators reduce or stop offshore trips entirely, and while coastal diving continues, the pelagic encounters that justify the trip are seasonal.',
+    },
+    {
+      question: 'How experienced do I need to be to dive Princess Alice Bank?',
+      answer:
+        'Considerably. The site is a seamount roughly 45 nautical miles offshore, meaning a boat crossing of two to three hours each way in Atlantic swell, followed by a descent in open blue water where the seamount top sits at around 35 metres and there is no visual reference on the way down. Current is common. Operators typically require Advanced Open Water with meaningful experience, good buoyancy without a reference, and confidence deploying an SMB. Seasickness on the crossing catches out more divers than the diving does.',
+    },
+    {
+      question: 'Are the shark dives in the Azores baited?',
+      answer:
+        'Yes. Blue shark and mako encounters in the Azores are run as baited blue-water dives, typically with a chum line drawing the sharks in while divers stay in a group at shallow depth beneath the boat. Reputable operators use it to attract rather than feed, brief thoroughly, and cap group sizes. If baited encounters sit uncomfortably with you ethically, it is worth knowing in advance, because there is no realistic way to encounter these species here otherwise — they are open-ocean animals that do not gather at a reef.',
+    },
+  ],
+};
+
 // Slug → guide.
 // Where a destination has two sticker designs (raja-ampat-01 / -02) the guide
 // is attached to ONE slug only. Publishing the same 700-word guide on both
@@ -615,10 +1248,27 @@ export const DIVE_GUIDES = {
   lembeh: LEMBEH,
   bunaken: BUNAKEN,
   tubbataha: TUBBATAHA,
-  malapasqua: MALAPASCUA,
+  malapascua: MALAPASCUA,
   moalboal: MOALBOAL,
   'apo-island': APO_ISLAND,
   coron: CORON,
+
+  // Batch 2 — UK & Europe
+  cornwall: CORNWALL,
+  plymouth: PLYMOUTH,
+  'scapa-flow': SCAPA_FLOW,
+  'farne-islands': FARNE_ISLANDS,
+  'st-abbs': ST_ABBS,
+  lundy: LUNDY,
+  malta: MALTA,
+  gozo: GOZO,
+  iceland: ICELAND,
+  norway: NORWAY,
+  croatia: CROATIA,
+  cyprus: CYPRUS,
+  sardinia: SARDINIA,
+  'canary-islands': CANARY_ISLANDS,
+  'the-azores': THE_AZORES,
 };
 
 export const getDiveGuide = (slug) => DIVE_GUIDES[slug] || null;

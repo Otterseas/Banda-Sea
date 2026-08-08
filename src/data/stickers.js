@@ -777,7 +777,7 @@ export const STICKERS = {
     },
     {
       id: 'sea-16',
-      slug: 'malapasqua',
+      slug: 'malapascua',
       name: 'Malapascua',
       region: 'South East Asia',
       country: 'Philippines',
