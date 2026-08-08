@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import RecentlyViewed from '@/components/RecentlyViewed';
+import { LEGAL, hasTraderIdentity, hasEuResponsiblePerson, traderSummary } from '@/config/legal';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -26,8 +27,56 @@ const POLICY_TABS = [
   { id: 'privacy', label: 'Privacy Policy' },
   { id: 'returns', label: 'Returns & Refunds' },
   { id: 'shipping', label: 'Shipping' },
+  { id: 'compliance', label: 'Compliance' },
   { id: 'faq', label: 'FAQs' },
 ];
+
+// ===========================================
+// COMPLIANCE SECTIONS
+// ===========================================
+// Built at render time from src/config/legal.js so that sections making a
+// factual legal claim (trader registration, EU Responsible Person) only
+// appear once the underlying details actually exist.
+function buildComplianceSections() {
+  const sections = [];
+
+  sections.push({
+    heading: 'Who You Are Buying From',
+    content: hasTraderIdentity()
+      ? `${traderSummary()}\n\nYou can contact us at any time at ${LEGAL.email}. We aim to respond within 24-48 hours.`
+      : `Otterseas is a UK-based business. You can contact us at any time at ${LEGAL.email}. We aim to respond within 24-48 hours.`,
+  });
+
+  if (hasEuResponsiblePerson()) {
+    const rp = LEGAL.euResponsiblePerson;
+    sections.push({
+      heading: 'EU Product Safety (GPSR) — Responsible Person',
+      content: `Under the EU General Product Safety Regulation ((EU) 2023/988), products sold to consumers in the European Union and Northern Ireland must have an economic operator established in the EU acting as the Responsible Person.\n\nOur EU Responsible Person is:\n${rp.name}${rp.address.length ? '\n' + rp.address.join('\n') : ''}${rp.email ? '\n' + rp.email : ''}\n\nIf you have a safety concern about any product you have bought from us, please contact them or us directly at ${LEGAL.email}.`,
+    });
+  }
+
+  sections.push({
+    heading: 'Product Safety & Manufacturer Information',
+    content: `Product-specific safety information, materials and manufacturer details are shown on each product page. Our stickers are printed on vinyl and are not toys; our crochet creatures are handmade and are decorative items, not children's toys, as they may contain small parts.\n\nIf you believe a product you have received is unsafe, stop using it and contact us immediately at ${LEGAL.email} so we can investigate and, where necessary, arrange a recall or refund.`,
+  });
+
+  sections.push({
+    heading: 'Your Right to Cancel (EU & UK)',
+    content: `If you are a consumer in the UK or EU, you have the right to cancel your order within 14 days of receiving it, without giving a reason. You then have a further 14 days to return the goods, and we will refund you within 14 days of receiving them back.\n\nTo cancel, simply email ${LEGAL.email} with your order number and a clear statement that you wish to cancel. You do not have to use a special form, but you may use the model cancellation form set out in the Consumer Rights Directive if you prefer.\n\nFull details, including who pays return postage, are in our Returns & Refunds policy.`,
+  });
+
+  sections.push({
+    heading: 'Complaints & Dispute Resolution',
+    content: `If something has gone wrong, please contact us first at ${LEGAL.email} — we would much rather fix it directly, and most issues are resolved within a couple of days.\n\nPlease note that the European Commission's Online Dispute Resolution (ODR) platform was discontinued on 20 July 2025, so there is no longer an EU ODR link to submit complaints through. Consumers in the EU can still contact their national consumer protection body or an approved alternative dispute resolution provider in their own country.`,
+  });
+
+  sections.push({
+    heading: 'Accessibility',
+    content: `We want everyone to be able to use this site, including divers using screen readers, keyboard navigation or magnification. We aim to follow the Web Content Accessibility Guidelines (WCAG) 2.1 at level AA as a design standard.\n\nIf you hit a barrier anywhere on the site — something you cannot read, reach or operate — please tell us at ${LEGAL.email} and describe what happened. We treat accessibility problems as bugs and will fix them.`,
+  });
+
+  return sections;
+}
 
 // ===========================================
 // POLICY CONTENT
@@ -189,6 +238,11 @@ const POLICY_CONTENT = {
       },
     ],
   },
+  compliance: {
+    title: 'Compliance & Legal Information',
+    lastUpdated: 'August 2026',
+    sections: buildComplianceSections(),
+  },
   faq: {
     title: 'Frequently Asked Questions',
     lastUpdated: 'February 2026',
@@ -252,6 +306,27 @@ export default function PoliciesPage() {
   const [activeTab, setActiveTab] = useState('terms');
   const content = POLICY_CONTENT[activeTab];
 
+  // Deep links like /policies#compliance (used by the footer) must open the
+  // matching tab — otherwise every legal link lands on Terms. Also respond to
+  // hash changes so in-page links work without a reload.
+  useEffect(() => {
+    const applyHash = () => {
+      const id = window.location.hash.replace('#', '');
+      if (id && POLICY_CONTENT[id]) setActiveTab(id);
+    };
+    applyHash();
+    window.addEventListener('hashchange', applyHash);
+    return () => window.removeEventListener('hashchange', applyHash);
+  }, []);
+
+  // Keep the URL in step with the visible tab so the page can be linked/shared.
+  const selectTab = (id) => {
+    setActiveTab(id);
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', `#${id}`);
+    }
+  };
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F8FAFB' }}>
       {/* Header */}
@@ -288,7 +363,7 @@ export default function PoliciesPage() {
             {POLICY_TABS.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => selectTab(tab.id)}
                 className="px-4 py-2 rounded-full text-sm font-medium transition-all"
                 style={{
                   backgroundColor: activeTab === tab.id ? LUNA.deepWater : 'white',

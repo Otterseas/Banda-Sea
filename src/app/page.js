@@ -11,6 +11,7 @@ import TestimonialColumns from '@/components/TestimonialColumns';
 import RecentlyViewed from '@/components/RecentlyViewed';
 import { REVIEWS } from '@/data/reviews';
 import { SOCIAL_LINKS, SHOPIFY_BLOG_URL } from '@/config/urls';
+import { LEGAL, hasTraderIdentity, traderSummary } from '@/config/legal';
 
 // ===========================================
 // LUNA COLOR PALETTE
@@ -758,12 +759,23 @@ export default function HomePage() {
                 <Link href="/policies" className="text-white/50 hover:text-white text-sm transition-colors">
                   Policies
                 </Link>
+                <Link href="/policies#compliance" className="text-white/50 hover:text-white text-sm transition-colors">
+                  Compliance
+                </Link>
               </nav>
 
               <p className="text-white/40 text-sm">
                 © 2026 Otterseas
               </p>
             </div>
+
+            {/* Trader identity — renders once src/config/legal.js is filled in */}
+            {hasTraderIdentity() && (
+              <p className="text-white/30 text-xs text-center mt-6 leading-relaxed">
+                {traderSummary()}
+                {LEGAL.email && <> · {LEGAL.email}</>}
+              </p>
+            )}
           </div>
         </footer>
       </div>

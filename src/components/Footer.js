@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { SOCIAL_LINKS } from '@/config/urls';
+import { LEGAL, hasTraderIdentity, traderSummary } from '@/config/legal';
 
 // Luna Color Palette
 const LUNA = {
@@ -32,7 +33,21 @@ const LEGAL_LINKS = [
   { href: '/policies', label: 'Policies' },
   { href: '/policies#privacy', label: 'Privacy' },
   { href: '/policies#terms', label: 'Terms' },
+  { href: '/policies#compliance', label: 'Compliance' },
 ];
+
+// Trader identification — EU Consumer Rights Directive / UK Companies Act
+// want this permanently accessible. Renders nothing until src/config/legal.js
+// is filled in, so we never publish a placeholder company number.
+function TraderIdentity() {
+  if (!hasTraderIdentity()) return null;
+  return (
+    <p className="text-white/30 text-xs text-center md:text-left leading-relaxed">
+      {traderSummary()}
+      {LEGAL.email && <> · <a href={`mailto:${LEGAL.email}`} className="hover:text-white/60 transition-colors">{LEGAL.email}</a></>}
+    </p>
+  );
+}
 
 /**
  * Shared Footer Component
@@ -96,6 +111,10 @@ export default function Footer({ compact = false }) {
                 E
               </a>
             </div>
+          </div>
+
+          <div className="mt-4">
+            <TraderIdentity />
           </div>
         </div>
       </footer>
@@ -180,6 +199,9 @@ export default function Footer({ compact = false }) {
               </a>
             </div>
           </div>
+
+          {/* Trader identity — hidden until legal.js is populated */}
+          <TraderIdentity />
         </div>
       </div>
     </footer>
