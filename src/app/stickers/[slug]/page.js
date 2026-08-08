@@ -214,17 +214,24 @@ export default function StickerPage() {
       {/* ==================== MAIN CONTENT ==================== */}
       <main className="flex-1 flex flex-col md:flex-row pt-14">
         
-        {/* ===== LEFT PANEL - White ===== */}
-        <div className="w-full md:w-1/2 bg-white flex flex-col p-8 md:p-12">
-          
+        {/* ===== LEFT PANEL - White =====
+            Pinned on md+ so the sticker and buy button stay in view while the
+            guide scrolls past on the right. `self-start` is what makes sticky
+            work here — without it the flex row stretches this column to the
+            full page height, which is what left the big empty gap below the
+            sticker once the dive guides made the right column long. */}
+        <div className="w-full md:w-1/2 bg-white flex flex-col p-8 md:p-12 md:sticky md:top-14 md:self-start md:h-[calc(100vh-3.5rem)] md:overflow-y-auto">
+
           {/* Sticker Image */}
-          <div className="flex-1 flex items-center justify-center mb-8">
-            <div className="w-full max-w-sm">
+          <div className="flex-1 flex items-center justify-center mb-8 min-h-0">
+            <div className="w-full max-w-sm max-h-full flex items-center justify-center">
               {sticker.image ? (
-                <motion.img 
+                <motion.img
                   src={sticker.image}
                   alt={sticker.name}
-                  className="w-full h-auto object-contain drop-shadow-2xl"
+                  /* max-h-full lets the sticker scale down inside the pinned
+                     panel on short screens instead of forcing it to scroll */
+                  className="w-full h-auto max-h-full object-contain drop-shadow-2xl"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4 }}
@@ -325,8 +332,9 @@ export default function StickerPage() {
             </Link>
           </div>
 
-          {/* Story Content - Scrollable */}
-          <div className="flex-1 overflow-y-auto px-6 md:px-8 pb-8">
+          {/* Story content — flows with the page rather than scrolling in its
+              own box, so the reader ends up at the region nav below. */}
+          <div className="px-6 md:px-8 pb-12">
             {/* Story — omitted entirely where a sticker has no story yet,
                 rather than shipping "coming soon" placeholder text. */}
             {sticker.story?.content && (
