@@ -12,6 +12,11 @@ const nextConfig = {
         destination: '/stickers/malapascua',
         permanent: true,
       },
+      {
+        source: '/stickers/roatn',
+        destination: '/stickers/roatan',
+        permanent: true,
+      },
     ];
   },
 }

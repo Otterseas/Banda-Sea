@@ -104,7 +104,7 @@ export const STICKERS = {
     },
     {
       id: 'cb-7',
-      slug: 'roatn',
+      slug: 'roatan',
       name: 'Roatán',
       region: 'Caribbean',
       country: 'Honduras',

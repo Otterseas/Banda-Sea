@@ -1232,6 +1232,919 @@ const THE_AZORES = {
   ],
 };
 
+// ===========================================
+// BATCH 3 — INDIAN OCEAN & RED SEA
+// ===========================================
+// From here on the guides are deliberately shorter. These pages exist to help
+// divers find the shop, not to plan a trip from — so they cover the facts
+// people actually search for and stop, which also keeps them easy to keep
+// accurate.
+
+const RED_SEA = {
+  intro:
+    "The Egyptian Red Sea is the most accessible world-class diving in reach of Europe: a four to five hour flight, warm clear water, and reefs that stay diveable all year. Hurghada, Sharm el-Sheikh and Marsa Alam each anchor a different stretch of coast, and between them sit Ras Mohammed National Park, a long list of wrecks and some of the healthiest hard coral in the region. It suits everyone from first-time divers on a house reef to liveaboard veterans heading offshore.",
+  quickFacts: {
+    bestTime: 'Year-round; March to May and September to November are the sweet spots',
+    difficulty: 'Beginner to advanced, depending on the site',
+    waterTemp: '21°C in winter to 29°C in late summer',
+    visibility: '20–30m and often more',
+  },
+  topSites: [
+    { name: 'Ras Mohammed', note: 'Shark and Yolanda Reef — the classic Sinai drift' },
+    { name: 'Elphinstone', note: 'Offshore reef with steep walls and oceanic whitetips' },
+    { name: 'Abu Nuhas', note: 'Reef that has claimed several dive-able wrecks' },
+  ],
+  marineLife: [
+    'Hard coral in exceptional condition',
+    'Napoleon wrasse and giant moray',
+    'Grey reef and oceanic whitetip sharks',
+    'Anthias clouds over the reef tops',
+    'Turtles and dolphins',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive the Red Sea?',
+      answer:
+        'It dives all year, which is a large part of its appeal. Spring and autumn — roughly March to May and September to November — give the best balance of warm water, calm seas and comfortable air temperatures. High summer is very hot topside and the water reaches around 29°C. Winter drops to about 21°C, when most divers want a 5mm or 7mm, but visibility is often excellent and the reefs are far quieter.',
+    },
+    {
+      question: 'Is the Red Sea suitable for beginners?',
+      answer:
+        'Very much so. Warm water, good visibility and sheltered house reefs make it one of the most popular places in the world to learn or to dive soon after certifying. Resorts along the Hurghada and Marsa Alam coasts run shallow reef dives straight off the shore or a short boat ride away. The more demanding sites — offshore reefs like Elphinstone and the northern wrecks — involve current and depth, so they are usually reserved for Advanced divers.',
+    },
+  ],
+};
+
+const THISTLEGORM = {
+  intro:
+    "The SS Thistlegorm is one of the most famous wreck dives in the world. A British armed merchant ship, she was carrying supplies for the Allied campaign in North Africa when German bombers found her at anchor in the Gulf of Suez on 6 October 1941. She sank with her cargo aboard, and that cargo is why divers still travel to see her: motorcycles, Bedford trucks, rifles, aircraft parts and two steam locomotives blown clear of the hull. She lies at 16 to 32 metres and is usually dived from a liveaboard or a long day trip out of Sharm el-Sheikh.",
+  quickFacts: {
+    bestTime: 'Year-round, with calmest conditions in spring and autumn',
+    difficulty: 'Advanced — depth and current, often dived as two dives',
+    waterTemp: '21–29°C',
+    visibility: '15–30m, variable with current',
+  },
+  topSites: [
+    { name: 'Holds 2 and 3', note: 'The motorcycles, trucks and cargo — the reason to come' },
+    { name: 'The locomotives', note: 'Blown clear of the wreck and lying on the seabed' },
+    { name: 'The stern', note: 'Anti-aircraft gun and the bomb damage that sank her' },
+  ],
+  marineLife: [
+    'Batfish shoaling around the masts',
+    'Giant moray in the structure',
+    'Trevally and barracuda in the current',
+    'Soft coral colonising the wreckage',
+    'Crocodilefish and scorpionfish',
+  ],
+  faqs: [
+    {
+      question: 'What experience do I need to dive the Thistlegorm?',
+      answer:
+        'Advanced Open Water is the usual minimum. The wreck sits between roughly 16 and 32 metres, and the current across the site can be strong enough that divers descend and ascend on a line. Most operators run her as two dives — one around the exterior and one in the holds — and nitrox is popular for the extra bottom time. Moving through the holds is overhead diving, so a torch and a guide who knows the route matter.',
+    },
+    {
+      question: 'How do I get to the Thistlegorm?',
+      answer:
+        'She lies at Sha‘ab Ali in the Gulf of Suez, well offshore, so there is no shore access. Most divers reach her by liveaboard on a northern Red Sea itinerary, which has the advantage of diving her early before the day boats arrive. Long day trips also run from Sharm el-Sheikh and, less commonly, Hurghada, but expect several hours on a boat each way. Liveaboards also allow a dawn or dusk dive, when the site is at its quietest.',
+    },
+  ],
+};
+
+const BROTHERS_ISLAND = {
+  intro:
+    "The Brothers are two small islands sitting alone in the open Red Sea, some 60 kilometres offshore, and they are among Egypt's most sought-after dives. Big Brother carries a lighthouse above water and two wrecks below — the Numidia and the Aida — draped down its steep walls. The attraction is sharks: grey reef, thresher and hammerhead, plus oceanic whitetips that patrol close to the surface in the cooler months. Because the islands are exposed, remote and current-swept, they are liveaboard-only and firmly for experienced divers.",
+  quickFacts: {
+    bestTime: 'Roughly March to December; oceanic whitetips peak in autumn and winter',
+    difficulty: 'Advanced — strong current, deep walls, no shelter',
+    waterTemp: '22–29°C',
+    visibility: '20–40m',
+  },
+  topSites: [
+    { name: 'Numidia wreck', note: 'Cargo ship spilling down the wall from 10m to well past 80m' },
+    { name: 'Aida wreck', note: 'Steep, deep wreck on the north-west side' },
+    { name: 'Little Brother walls', note: 'Gorgonian-covered drop-offs with shark traffic' },
+  ],
+  marineLife: [
+    'Oceanic whitetip sharks',
+    'Thresher and hammerhead sharks',
+    'Grey reef sharks along the walls',
+    'Large gorgonian fans',
+    'Napoleon wrasse and tuna',
+  ],
+  faqs: [
+    {
+      question: 'How do you dive the Brothers Islands?',
+      answer:
+        'By liveaboard only. The islands lie roughly 60 kilometres off the Egyptian coast with no land facilities beyond a lighthouse, so day boats cannot reach them. Trips typically run from Hurghada, Marsa Alam or Port Ghalib as part of a southern or offshore itinerary that also takes in Daedalus and Elphinstone. Access is controlled as a marine park and can be restricted at times, so check current arrangements when booking.',
+    },
+    {
+      question: 'When can you see oceanic whitetip sharks at the Brothers?',
+      answer:
+        'Oceanic whitetips are most reliably encountered in the cooler months, broadly from autumn into winter, when they patrol close to the reef and often just below the surface. They are bold, curious animals that approach divers directly, which is thrilling and requires calm, disciplined behaviour — stay in a group, keep vertical in the water and do not swim away. Grey reef sharks and thresher are present more consistently across the season.',
+    },
+  ],
+};
+
+const MARSA_ALAM = {
+  intro:
+    "Marsa Alam anchors the southern Egyptian Red Sea, and it trades Sharm's nightlife for quieter reefs and better big-animal odds. Dugongs graze the seagrass beds at Marsa Mubarak and Abu Dabbab, spinner dolphins rest in the lagoon at Samadai, and Elphinstone Reef sits a short boat ride offshore with its steep walls and reputation for oceanic whitetips. Much of the coast is diveable from shore, which keeps it flexible and affordable, and it is also the usual departure point for liveaboards heading further south.",
+  quickFacts: {
+    bestTime: 'March to December; oceanic whitetips are most likely in autumn',
+    difficulty: 'Beginner on the bays, advanced at Elphinstone',
+    waterTemp: '22–29°C',
+    visibility: '20–30m',
+  },
+  topSites: [
+    { name: 'Elphinstone Reef', note: 'Offshore walls, current, and oceanic whitetips' },
+    { name: 'Marsa Mubarak', note: 'Seagrass bay with a good chance of dugong' },
+    { name: 'Abu Dabbab', note: 'Shallow shore dive known for turtles and dugong' },
+    { name: 'Samadai Reef', note: 'Spinner dolphin resting lagoon — access is regulated' },
+  ],
+  marineLife: [
+    'Dugongs in the seagrass bays',
+    'Green turtles in numbers',
+    'Spinner dolphins at Samadai',
+    'Oceanic whitetip sharks at Elphinstone',
+    'Guitar sharks and crocodilefish on the sand',
+  ],
+  faqs: [
+    {
+      question: 'Where can I see dugongs in Marsa Alam?',
+      answer:
+        'Marsa Mubarak and Abu Dabbab are the two best-known bays, both shallow seagrass beds where dugongs come to feed and where snorkellers and divers regularly encounter them. Sightings are never guaranteed — these are wild animals ranging over a large area. Keep your distance and stay out of the animal’s path if you find one; crowding feeding dugongs disturbs them and, in busy periods, is the main reason they move away from a bay entirely.',
+    },
+    {
+      question: 'Is Elphinstone Reef suitable for all divers?',
+      answer:
+        'No — it is an exposed offshore reef with walls dropping well past recreational limits and current that can run hard along both sides, so operators generally require Advanced Open Water and recent experience. The plateaux at either end sit around 20 to 30 metres and are where most of the action happens. Newer divers are far better served by the sheltered bays along the coast, which offer turtles, dugong and easy shore entries with none of the exposure.',
+    },
+  ],
+};
+
+const MALDIVES = {
+  intro:
+    "The Maldives is a chain of coral atolls where the diving is defined by water movement. Currents pour through the channels between islands, and divers hook in or drift while sharks, eagle rays and schooling fish hold station in the flow. Cleaning stations on submerged reefs draw reef mantas, and South Ari Atoll holds one of the few year-round whale shark populations in the world. Trips run either from a resort, diving a handful of nearby atolls, or by liveaboard, which covers far more ground.",
+  quickFacts: {
+    bestTime: 'December to April for visibility; May to November for manta activity',
+    difficulty: 'Intermediate — channel diving means current',
+    waterTemp: '27–30°C',
+    visibility: '15–30m, best in the drier months',
+  },
+  topSites: [
+    { name: 'South Ari Atoll', note: 'Year-round whale shark territory' },
+    { name: 'Hanifaru Bay, Baa Atoll', note: 'Seasonal manta feeding — snorkel only' },
+    { name: 'Channel (kandu) dives', note: 'Hook in and watch sharks hold in the current' },
+    { name: 'Thilas and giris', note: 'Submerged pinnacles with cleaning stations' },
+  ],
+  marineLife: [
+    'Reef manta rays at cleaning stations',
+    'Whale sharks, especially South Ari',
+    'Grey reef and whitetip sharks',
+    'Eagle rays and napoleon wrasse',
+    'Huge schools of fusiliers and snapper',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive the Maldives?',
+      answer:
+        'It splits by monsoon. The north-east monsoon from roughly December to April brings calmer seas and the clearest water, which is the classic season. The south-west monsoon from around May to November pushes more plankton through the atolls — visibility drops, but that plankton is exactly what draws manta rays and whale sharks, so it is the better window for big animals. Water stays at 27 to 30°C year-round either way.',
+    },
+    {
+      question: 'Do I need experience to dive the Maldives?',
+      answer:
+        'Some, yes. The signature dives are channel dives where current is the whole point, and divers commonly use reef hooks to hold position while sharks pass. Most operators want Advanced Open Water or equivalent experience for those sites. That said, plenty of resorts have sheltered house reefs and gentle thilas suitable for newer divers, so it works as a destination at either level — just be clear about your experience so you are placed on appropriate sites.',
+    },
+  ],
+};
+
+const SEYCHELLES = {
+  intro:
+    "The Seychelles looks unlike most Indian Ocean diving because of its geology: the inner islands are granite rather than coral, so dives run over huge rounded boulders, canyons and swim-throughs rather than reef flats. Mahé, Praslin and La Digue give easy access to this terrain, while the remote outer atolls are liveaboard territory. Whale sharks pass through in the second half of the year, and the granite topography holds good numbers of reef fish, rays and turtles. Like much of the region, the coral has been hit hard by bleaching, and recovery varies site to site.",
+  quickFacts: {
+    bestTime: 'April to May and October to November, between the monsoons',
+    difficulty: 'Beginner to intermediate',
+    waterTemp: '26–30°C',
+    visibility: '10–30m, seasonally variable',
+  },
+  topSites: [
+    { name: 'Shark Bank, Mahé', note: 'Granite pinnacle with rays and big schools' },
+    { name: 'Ennerdale wreck', note: 'Large tanker wreck north of Mahé' },
+    { name: "Ave Maria Rocks", note: 'Boulder terrain off Praslin with reef sharks' },
+    { name: 'Aldabra and outer atolls', note: 'Remote, liveaboard-only, pristine' },
+  ],
+  marineLife: [
+    'Whale sharks, seasonally',
+    'Hawksbill and green turtles',
+    'Eagle rays and stingrays',
+    'Nurse sharks under the boulders',
+    'Big schools of snapper and fusilier',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive the Seychelles?',
+      answer:
+        'The changeover months between the two monsoons — roughly April to May and October to November — give the calmest seas and the best visibility. The north-west monsoon from December to March brings warmer water but more rain and choppier conditions, while the south-east monsoon from June to September is windier with reduced visibility on exposed sites. Whale shark sightings are most commonly reported around the second half of the year.',
+    },
+    {
+      question: 'What makes Seychelles diving different?',
+      answer:
+        'The granite. Most tropical diving happens over coral, but the inner Seychelles islands are the exposed tops of an ancient continental fragment, so the underwater landscape is enormous smooth boulders stacked into arches, canyons and swim-throughs. It gives dives a scale and structure that coral reefs rarely have, and the crevices between boulders hold nurse sharks, rays and lobster. The outer atolls are true coral islands and dive completely differently.',
+    },
+  ],
+};
+
+const MOZAMBIQUE = {
+  intro:
+    "Mozambique's diving centres on Tofo, on the Inhambane coast, and it is one of the most reliable places in the world to encounter both manta rays and whale sharks. Reef mantas visit cleaning stations at Manta Reef and Giants Castle, whale sharks cruise the shallows off the beach, and humpback whales pass through on migration in the southern winter. It is not polished, resort-style diving: boats are launched by RIB straight through the surf, sites are exposed and conditions can be demanding. What it offers instead is genuine big-animal diving with very few other divers around.",
+  quickFacts: {
+    bestTime: 'October to March for warmer water; humpbacks June to October',
+    difficulty: 'Intermediate to advanced — surf launches, swell and current',
+    waterTemp: '22–29°C',
+    visibility: '10–25m, plankton-dependent',
+  },
+  topSites: [
+    { name: 'Manta Reef', note: 'Reef manta cleaning station — the signature dive' },
+    { name: 'Giants Castle', note: 'Deeper reef with manta traffic' },
+    { name: "Tofo shallows", note: 'Whale shark territory, often snorkelled' },
+    { name: 'Bazaruto Archipelago', note: 'Further north, remote reefs and dugong' },
+  ],
+  marineLife: [
+    'Reef manta rays at cleaning stations',
+    'Whale sharks in the shallows',
+    'Humpback whales on migration',
+    'Potato bass and kingfish',
+    'Devil rays and turtles',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive Tofo, Mozambique?',
+      answer:
+        'October to March is the warmer, wetter season with water in the high twenties and the best all-round conditions for manta and whale shark encounters. June to October is cooler and drier, and it is when humpback whales pass through on migration — you often hear them underwater. Manta rays are present year-round at the cleaning stations. Plankton drives the big animals here, so the clearest water is not necessarily the most productive.',
+    },
+    {
+      question: 'Is diving in Mozambique difficult?',
+      answer:
+        'It can be. Boats are launched by RIB directly through the surf from the beach, which is exhilarating and takes some getting used to, and the reefs sit offshore where swell and current are common. Several signature sites sit around 20 to 30 metres. Operators generally want Advanced Open Water or solid experience for the deeper reefs. Whale shark encounters are usually snorkel-based in the shallows, so those are open to everyone.',
+    },
+  ],
+};
+
+// ===========================================
+// BATCH 4 — PACIFIC & OCEANIA
+// ===========================================
+
+const PALAU = {
+  intro:
+    "Palau, in the western Pacific, built its reputation on current-driven wall diving and sharks. At Blue Corner — routinely voted among the world's best dives — you hook into the reef edge and watch grey reef sharks, jacks and barracuda hold station in the flow. German Channel has a manta cleaning station, Ulong Channel is a fast, beautiful drift, and the islands are scattered with WWII wrecks and caves. Palau also created the world's first shark sanctuary in 2009, and the shark numbers show it.",
+  quickFacts: {
+    bestTime: 'Year-round; November to April is drier',
+    difficulty: 'Advanced — reef hooks and strong current are standard',
+    waterTemp: '28–30°C',
+    visibility: '20–40m',
+  },
+  topSites: [
+    { name: 'Blue Corner', note: 'Hook in on the reef edge and watch the sharks' },
+    { name: 'German Channel', note: 'Manta cleaning station on a sandy channel' },
+    { name: 'Ulong Channel', note: 'Long, fast drift through a coral-lined cut' },
+    { name: 'Blue Holes', note: 'Cathedral-like chambers opening onto the wall' },
+  ],
+  marineLife: [
+    'Grey reef and whitetip sharks in numbers',
+    'Reef manta rays at German Channel',
+    'Napoleon wrasse and bumphead parrotfish',
+    'Schooling jacks and barracuda',
+    'Turtles and eagle rays',
+  ],
+  faqs: [
+    {
+      question: 'Do I need a reef hook to dive Palau?',
+      answer:
+        'For the signature sites, yes — a reef hook is standard equipment here and most operators supply or sell them. At Blue Corner and similar sites you hook into dead reef or rock at the edge of the drop-off, inflate slightly, and hang in the current watching the action rather than finning against it. It is a specific skill: hooking safely without damaging live coral, and unhooking cleanly to drift off. Your guide will brief it, but practise the concept before you go.',
+    },
+    {
+      question: 'How experienced should I be to dive Palau?',
+      answer:
+        'Reasonably. The best sites are current-driven walls and channels where conditions can change quickly, and operators typically ask for Advanced Open Water with recent experience. Good buoyancy, comfort with negative entries and confidence in moving water all matter more than a specific card. Palau does have gentler sites — the inner lagoon, wrecks and shallow reefs — so less experienced divers can build up, but the trip is best enjoyed with current diving already under your belt.',
+    },
+  ],
+};
+
+const CHUUK_LAGOON = {
+  intro:
+    "Chuuk Lagoon — long known as Truk — holds the largest concentration of shipwrecks on earth. In February 1944, a two-day US carrier assault codenamed Operation Hailstone caught the Japanese fleet at anchor and sank around fifty ships and hundreds of aircraft. They lie in warm, sheltered water from 10 metres to well past 60, holds still packed with trucks, aircraft parts, munitions and personal effects, and coral now growing over everything. Many of the wrecks contain human remains and are treated as war graves, which shapes how they are dived.",
+  quickFacts: {
+    bestTime: 'Year-round; December to April tends to be calmest',
+    difficulty: 'Advanced to technical — depth, penetration, and nitrox or trimix',
+    waterTemp: '28–30°C',
+    visibility: '10–30m',
+  },
+  topSites: [
+    { name: 'Fujikawa Maru', note: 'The classic — aircraft fuselages in the holds' },
+    { name: 'Shinkoku Maru', note: 'Beautifully coral-encrusted tanker' },
+    { name: 'San Francisco Maru', note: 'Deep wreck with tanks on deck — technical' },
+    { name: 'Nippo Maru', note: 'Cargo including a tank and artillery' },
+  ],
+  marineLife: [
+    'Hard and soft coral covering the wrecks',
+    'Reef sharks patrolling the lagoon',
+    'Anemonefish colonising the structure',
+    'Batfish and snapper schools',
+    'Nudibranchs across the wreckage',
+  ],
+  faqs: [
+    {
+      question: 'What qualifications do I need for Chuuk Lagoon?',
+      answer:
+        'It depends how deep you want to go. Several wrecks have decks and superstructure within recreational range, so an Advanced Open Water diver can enjoy a good portion of the lagoon, ideally with nitrox and wreck training. The deeper wrecks, including San Francisco Maru at around 50 to 60 metres, are firmly technical dives requiring decompression training and mixed gas. Serious penetration into holds and engine rooms needs proper wreck certification regardless of depth.',
+    },
+    {
+      question: 'Are the Chuuk wrecks war graves?',
+      answer:
+        'Yes. Thousands of Japanese sailors died in the attack, and human remains are still present on several wrecks. They are treated with the respect that implies: do not touch, move or photograph remains, do not remove artefacts, and follow your guide’s briefing on which areas are off limits. Local authorities and operators take this seriously. Diving Chuuk is a genuinely moving experience partly because that history is so tangible and so unsanitised.',
+    },
+  ],
+};
+
+const GREAT_BARRIER_REEF = {
+  intro:
+    "The Great Barrier Reef stretches some 2,300 kilometres along the Queensland coast and remains the largest reef system in the world. Day boats and liveaboards run from Cairns and Port Douglas to the outer reef, where visibility is far better than the inshore sites, and the Ribbon Reefs to the north hold the best-known dives — including the Cod Hole, with its enormous resident potato cod. Dwarf minke whales appear on the northern reefs in mid-winter. The reef has suffered repeated mass bleaching events since 2016, and condition now varies a great deal between sites.",
+  quickFacts: {
+    bestTime: 'June to October — dry season, best visibility',
+    difficulty: 'Beginner to intermediate',
+    waterTemp: '22–29°C',
+    visibility: '15–30m on the outer reef',
+  },
+  topSites: [
+    { name: 'Cod Hole, Ribbon Reefs', note: 'Resident potato cod, encountered up close' },
+    { name: 'Osprey Reef', note: 'Coral Sea seamount with sharks and steep walls' },
+    { name: 'SS Yongala', note: 'Outstanding wreck further south, off Townsville' },
+    { name: 'Agincourt Reefs', note: 'Outer-reef coral gardens from Port Douglas' },
+  ],
+  marineLife: [
+    'Potato cod and Maori wrasse',
+    'Dwarf minke whales in mid-winter',
+    'Reef sharks and turtles',
+    'Giant clams and coral gardens',
+    'Huge diversity of reef fish',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive the Great Barrier Reef?',
+      answer:
+        'June to October, the Queensland dry season, gives the clearest water and the most settled weather. It also coincides with dwarf minke whale season on the Ribbon Reefs, which peaks around June and July. The wet season from November to May brings warmer water but more rain, run-off and reduced visibility, and it is also stinger season — box jellyfish and Irukandji are present in coastal waters, so operators provide full-body stinger suits.',
+    },
+    {
+      question: 'Has bleaching damaged the Great Barrier Reef?',
+      answer:
+        'Yes, significantly. The reef has been hit by repeated mass bleaching events since 2016, driven by marine heatwaves, and coral cover has declined sharply in some regions while other areas have partially recovered. The honest picture is that condition varies enormously between sites: outer-reef and Coral Sea locations generally look far better than inshore reefs. It is still an extraordinary place to dive, but it is not the uniformly pristine reef older documentaries show.',
+    },
+  ],
+};
+
+const NINGALOO_REEF = {
+  intro:
+    "Ningaloo, on the remote coast of Western Australia, is the country's largest fringing reef — and unusually, it comes right up to the shore, so you can snorkel onto coral straight off the beach. Its global reputation rests on whale sharks, which aggregate here from around March following the coral spawning, and on a well-regulated in-water tourism industry built around them. Humpback whale swims run later in the year, manta rays are resident, and the reef itself is in far better condition than much of Australia's east coast.",
+  quickFacts: {
+    bestTime: 'Whale sharks March to July or August; humpbacks August to October',
+    difficulty: 'Beginner friendly; whale shark and whale swims are snorkel-based',
+    waterTemp: '21–29°C',
+    visibility: '10–20m inside the reef, better outside',
+  },
+  topSites: [
+    { name: 'Whale shark charters', note: 'Spotter-plane guided snorkelling outside the reef' },
+    { name: 'Navy Pier, Exmouth', note: 'Outstanding structure dive, access is restricted' },
+    { name: 'Lighthouse Bay', note: 'Manta rays and reef diving off Exmouth' },
+    { name: 'Coral Bay', note: 'Shallow shore snorkelling straight onto the reef' },
+  ],
+  marineLife: [
+    'Whale sharks in season',
+    'Humpback whales, later in the year',
+    'Manta rays year-round',
+    'Reef sharks and turtles',
+    'Healthy fringing coral',
+  ],
+  faqs: [
+    {
+      question: 'When is whale shark season at Ningaloo?',
+      answer:
+        'Whale sharks typically arrive from around March and stay into July or August, following the mass coral spawning that boosts plankton along the reef. Charters use spotter aircraft to locate animals outside the reef, then drop snorkellers ahead of them. Success rates are high in peak season and many operators offer a return trip if you do not find one. Encounters are snorkel-only — scuba is not permitted with whale sharks here.',
+    },
+    {
+      question: 'Can you dive Ningaloo from the shore?',
+      answer:
+        'You can snorkel from shore very easily — the fringing reef sits close in at Coral Bay and along the Cape Range coast, making it one of the most accessible reefs anywhere. Scuba diving is mostly boat-based, running to sites outside the reef and around the Muiron Islands. The standout dive, Navy Pier at Exmouth, is on Defence land with restricted access, so it must be booked through the licensed operator rather than dived independently.',
+    },
+  ],
+};
+
+const FIJI = {
+  intro:
+    "Fiji calls itself the soft coral capital of the world, and the claim holds up. Strong currents run between the islands, feeding dense curtains of soft coral in pinks, purples and oranges that cover the walls and bommies — the Great White Wall in the Somosomo Strait is the best-known example. Beqa Lagoon offers something quite different: a baited shark dive where bull sharks, and sometimes tiger sharks, come in close. Add warm water, easy logistics and famously friendly hosts, and it is one of the Pacific's most approachable destinations.",
+  quickFacts: {
+    bestTime: 'April to October, the drier season',
+    difficulty: 'Intermediate — soft coral sites need current to look their best',
+    waterTemp: '25–29°C',
+    visibility: '15–30m',
+  },
+  topSites: [
+    { name: 'Great White Wall, Rainbow Reef', note: 'Soft coral wall in the Somosomo Strait' },
+    { name: 'Beqa Lagoon shark dive', note: 'Baited dive with bull and occasionally tiger sharks' },
+    { name: 'Bligh Water', note: 'Offshore bommies with dense soft coral' },
+    { name: 'Nigali Passage', note: 'Drift through a channel lined with grey reef sharks' },
+  ],
+  marineLife: [
+    'Soft coral in exceptional density',
+    'Bull sharks at Beqa',
+    'Grey reef and whitetip sharks',
+    'Schooling barracuda and jacks',
+    'Anemonefish and reef fish throughout',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive Fiji?',
+      answer:
+        'April to October is the drier, cooler season with the most settled conditions and the lowest cyclone risk. Water sits around 25 to 27°C then, rising to 29°C in the wetter months from November to April. Soft coral looks its best when current is running, so tides matter as much as season — plan channel dives around them. Visibility is generally good year-round, though the wetter months bring more run-off near the larger islands.',
+    },
+    {
+      question: 'Is the Beqa Lagoon shark dive safe?',
+      answer:
+        'It is a baited feed, run by experienced operators with a long safety record, and divers kneel behind a low coral wall while feeders bring in bull sharks — sometimes eight species across a dive, occasionally including tiger sharks. Briefings are thorough and rules are strict: stay in position, keep your hands in, do not reach out. Baited dives are debated in the diving world, so it is worth knowing the format in advance and deciding whether it appeals.',
+    },
+  ],
+};
+
+const FRENCH_POLYNESIA = {
+  intro:
+    "French Polynesia's diving happens in the passes — the channels cutting through atoll rims where ocean water floods in and out with the tide, carrying sharks with it. Fakarava's south pass is the most famous, holding hundreds of grey reef sharks in a single wall of animals, and the numbers swell further during the grouper spawning in mid-winter. Rangiroa's Tiputa Pass adds dolphins that surf the incoming current. Water is warm and clear, the terrain is straightforward, and the current does most of the work — but it demands respect.",
+  quickFacts: {
+    bestTime: 'April to October, the drier season',
+    difficulty: 'Advanced — pass diving with strong tidal current',
+    waterTemp: '26–29°C',
+    visibility: '30–40m',
+  },
+  topSites: [
+    { name: 'Fakarava South Pass', note: 'The wall of sharks — hundreds of grey reefs' },
+    { name: 'Tiputa Pass, Rangiroa', note: 'Dolphins, sharks and a fast incoming drift' },
+    { name: 'Fakarava North Pass', note: 'Wider, gentler pass with plenty of shark traffic' },
+    { name: 'Tikehau', note: 'Quieter atoll with manta cleaning stations' },
+  ],
+  marineLife: [
+    'Grey reef sharks in extraordinary numbers',
+    'Bottlenose dolphins at Tiputa',
+    'Manta rays at Tikehau',
+    'Napoleon wrasse and marbled grouper',
+    'Schooling barracuda and jacks',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive Fakarava?',
+      answer:
+        'April to October is the drier season with the most comfortable conditions. The stand-out event is the marbled grouper spawning aggregation around June and July, which draws enormous numbers of sharks into the south pass and is one of the great wildlife spectacles in diving — it is also the busiest time, so book well ahead. Outside that, the shark wall is present year-round; pass dives are timed to the incoming tide whatever the month.',
+    },
+    {
+      question: 'How difficult is pass diving in the Tuamotus?',
+      answer:
+        'Demanding but manageable with the right experience. Dives are timed for the incoming tide, when clear ocean water floods the pass, and the current can move fast enough that the dive is essentially a long drift with little finning. You need to be comfortable with negative entries, staying close to a group in moving water, and deploying an SMB for pickup. Operators generally require Advanced Open Water and recent current experience.',
+    },
+  ],
+};
+
+const SOLOMON_ISLANDS = {
+  intro:
+    "The Solomon Islands combine dense coral reefs with some of the most accessible WWII wreckage in the Pacific. The waters off Guadalcanal — Iron Bottom Sound — earned their name from the sheer number of ships lost there in 1942 and 1943, and two of them, the Bonegi wrecks, are shallow enough to reach from the beach. Elsewhere the country offers barrier reefs, lagoons, caves and fighter aircraft sitting upright on the seabed. Diver numbers are low, infrastructure is limited, and that combination is precisely the appeal.",
+  quickFacts: {
+    bestTime: 'April to November',
+    difficulty: 'Intermediate — remote, with limited facilities',
+    waterTemp: '27–30°C',
+    visibility: '15–30m',
+  },
+  topSites: [
+    { name: 'Bonegi I & II', note: 'WWII transports reachable from the shore' },
+    { name: 'Iron Bottom Sound', note: 'Wrecks and aircraft from the Guadalcanal campaign' },
+    { name: 'Marovo Lagoon', note: 'Vast lagoon system with healthy reef' },
+    { name: 'Leru Cut, Russell Islands', note: 'Narrow chasm with dramatic light shafts' },
+  ],
+  marineLife: [
+    'Healthy hard and soft coral',
+    'Reef sharks and barracuda',
+    'Macro life on the wrecks',
+    'Turtles and eagle rays',
+    'Bumphead parrotfish',
+  ],
+  faqs: [
+    {
+      question: 'What is diving in the Solomon Islands like?',
+      answer:
+        'Varied and very quiet. You can dive a WWII transport from the beach in the morning and a pristine barrier reef in the afternoon, usually without seeing another dive group. Coral condition is generally excellent, and the mix of wreckage, reef, caves and lagoon gives real variety. The trade-off is infrastructure — flights are limited, some areas have few operators, and liveaboards cover the more remote regions better than land-based resorts do.',
+    },
+    {
+      question: 'Can you dive the WWII wrecks from shore?',
+      answer:
+        'Some of them, which is unusual. The Bonegi wrecks on Guadalcanal — two Japanese transports beached during the 1942 campaign — lie close enough to the shore that you can walk in and swim out to them, with sections in very shallow water. Other wrecks and downed aircraft across Iron Bottom Sound sit far deeper, well into technical range, and are usually left to specialist teams. Many of these sites are war graves and are treated accordingly.',
+    },
+  ],
+};
+
+const TONGA = {
+  intro:
+    "Tonga is one of a small number of places in the world where you can legally swim with humpback whales. Each southern winter, humpbacks migrate from Antarctic feeding grounds to the warm, sheltered waters around Vava‘u and Ha‘apai to breed and calve, and licensed operators run in-water encounters under a permit system. The scuba diving is a genuine bonus rather than the headline — clear water, caves, arches and swim-throughs including the famous Mariner’s Cave, which you enter by ducking under a rock ledge and surfacing inside.",
+  quickFacts: {
+    bestTime: 'Humpback season roughly July to October',
+    difficulty: 'Easy diving; whale swims are snorkel-based and can be tiring',
+    waterTemp: '22–28°C',
+    visibility: '20–30m',
+  },
+  topSites: [
+    { name: 'Vava‘u whale swims', note: 'Permitted in-water humpback encounters' },
+    { name: 'Mariner’s Cave', note: 'Underwater entrance to an air-filled chamber' },
+    { name: "Swallows Cave", note: 'Large cavern with light shafts and baitfish' },
+    { name: 'Ha‘apai reefs', note: 'Quiet, undived coral away from the main group' },
+  ],
+  marineLife: [
+    'Humpback whales, seasonally',
+    'Hard coral and reef fish',
+    'Turtles',
+    'Baitfish shoals in the caverns',
+    'Reef sharks, occasionally',
+  ],
+  faqs: [
+    {
+      question: 'When can you swim with humpback whales in Tonga?',
+      answer:
+        'The season runs roughly from July to October, when humpbacks arrive from Antarctic waters to breed and calve in the sheltered island groups around Vava‘u and Ha‘apai. August and September are generally considered the peak, with plenty of mothers and calves. Swims are snorkel-only and operate under a licensing system limiting operator numbers, group sizes and time in the water — book with a permitted operator well in advance, as spaces are limited.',
+    },
+    {
+      question: 'Is the scuba diving in Tonga worth it?',
+      answer:
+        'It is good rather than world-beating, and most people come primarily for the whales. What Tonga does well is topography: caves, arches, tunnels and swim-throughs in clear water, with Mariner’s Cave and Swallows Cave the highlights. Coral and reef fish are healthy but not on the scale of Fiji or French Polynesia. If you are travelling for the whale season, the diving is a very worthwhile addition on non-swim days.',
+    },
+  ],
+};
+
+const JAPAN = {
+  intro:
+    "Japan spans a huge latitude range, so its diving is genuinely varied. The subtropical Kerama Islands off Okinawa give clear, warm water and healthy coral, with humpback whales passing in late winter. Yonaguni, at the far western end of the country, is known for a controversial submerged rock formation and for schooling hammerheads in the cold months. On the other extreme, Hokkaido offers drift-ice diving in February and March, where divers enter beneath pack ice to look for the tiny sea angels that drift among it.",
+  quickFacts: {
+    bestTime: 'Varies by region — Okinawa year-round, Hokkaido ice diving in February and March',
+    difficulty: 'Beginner to advanced depending on region',
+    waterTemp: '14–29°C depending on latitude and season',
+    visibility: '15–30m',
+  },
+  topSites: [
+    { name: 'Kerama Islands, Okinawa', note: 'Clear subtropical water and healthy coral' },
+    { name: 'Yonaguni Monument', note: 'Submerged rock formation; hammerheads in winter' },
+    { name: 'Izu Peninsula', note: 'Accessible diving close to Tokyo' },
+    { name: 'Shiretoko, Hokkaido', note: 'Drift-ice diving in late winter' },
+  ],
+  marineLife: [
+    'Hammerhead sharks at Yonaguni in winter',
+    'Humpback whales around the Keramas in late winter',
+    'Sea angels under Hokkaido drift ice',
+    'Manta rays around Ishigaki',
+    'Rich temperate macro life on Honshu',
+  ],
+  faqs: [
+    {
+      question: 'Where is the best diving in Japan?',
+      answer:
+        'It depends what you want. Okinawa and the Kerama Islands offer the classic warm-water diving — clear, coral-rich and accessible year-round. Ishigaki is known for manta cleaning stations. Yonaguni draws divers for its submerged rock formation and winter hammerheads. For something completely different, Hokkaido runs drift-ice diving in February and March. The Izu Peninsula near Tokyo is the most convenient option for a short trip.',
+    },
+    {
+      question: 'What is the Yonaguni Monument?',
+      answer:
+        'A large submerged sandstone formation off Yonaguni Island with flat terraces, straight edges and step-like features. Some argue it is a man-made structure from a lost civilisation; most geologists consider it a natural formation shaped by fracturing along bedding planes, which is the mainstream view. Either way it is a striking dive. It is exposed, current-swept and usually dived in the winter months, which is also when hammerheads school in the area.',
+    },
+  ],
+};
+
+const NEW_ZEALAND = {
+  intro:
+    "New Zealand's best-known diving is the Poor Knights Islands off the Northland coast, a marine reserve where a subtropical current meets temperate water and produces an unusual mix of species. The islands are volcanic, so the diving is all arches, caves and sheer walls — Rikoriko Cave is among the largest sea caves in the world. Further south, Fiordland offers a genuine oddity: a freshwater layer stained dark by tannins sits on top of the seawater, cutting the light so much that deep-water species like black coral grow within recreational depths.",
+  quickFacts: {
+    bestTime: 'February to May, when the water is warmest and clearest',
+    difficulty: 'Intermediate — cool water and some exposure',
+    waterTemp: '14–23°C — a thick wetsuit or drysuit',
+    visibility: '15–30m at the Poor Knights',
+  },
+  topSites: [
+    { name: 'Poor Knights Islands', note: 'Marine reserve with arches, caves and walls' },
+    { name: 'Rikoriko Cave', note: 'One of the largest sea caves in the world' },
+    { name: 'Milford Sound', note: 'Black coral in shallow water under the tannin layer' },
+    { name: 'HMNZS Canterbury', note: 'Frigate scuttled as an artificial reef' },
+  ],
+  marineLife: [
+    'Black coral in Fiordland shallows',
+    'Stingrays in summer at the Poor Knights',
+    'Kingfish and snapper schools',
+    'Moray eels in the caves',
+    'Nudibranchs and temperate sponge gardens',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive the Poor Knights?',
+      answer:
+        'February to May, at the end of the southern summer, when water temperature peaks at around 20 to 23°C and visibility is at its best. The subtropical current bringing warm water down the coast is strongest then, and it is also when large numbers of stingrays gather in the archways. Winter diving is possible with a drysuit and often delivers surprisingly clear water, but boat trips are more weather-dependent.',
+    },
+    {
+      question: 'Why is Fiordland diving unusual?',
+      answer:
+        'Heavy rainfall creates a layer of fresh water several metres deep sitting on top of the seawater, stained dark brown by tannins leached from the forest. That layer blocks much of the light, so species that would normally live in deep water — most famously black coral — grow at depths recreational divers can reach. It is a genuinely strange experience: you drop through dim, tea-coloured fresh water into clear, dark seawater below.',
+    },
+  ],
+};
+
+const SOUTH_AUSTRALIA = {
+  intro:
+    "South Australia offers cold-water diving with three unusual draws. The Neptune Islands, off Port Lincoln, are the only place in Australia licensed for great white shark cage diving, run from surface cages in open ocean. At Whyalla, the giant Australian cuttlefish gathers each winter in the only known mass breeding aggregation of its kind, thousands of animals crowded into a stretch of shallow rocky shore. And along the Fleurieu and Yorke peninsulas, jetty dives hold leafy sea dragons — a species found nowhere else in the world.",
+  quickFacts: {
+    bestTime: 'Cuttlefish May to August; great whites year-round, larger sharks in winter',
+    difficulty: 'Intermediate — cold water; cage diving needs no certification',
+    waterTemp: '12–21°C — drysuit or thick wetsuit',
+    visibility: '5–20m',
+  },
+  topSites: [
+    { name: 'Neptune Islands', note: 'Great white cage diving from Port Lincoln' },
+    { name: 'Whyalla', note: 'Giant Australian cuttlefish aggregation in winter' },
+    { name: 'Rapid Bay jetty', note: 'The classic leafy sea dragon dive' },
+    { name: 'Edithburgh jetty', note: 'Outstanding macro life under the pilings' },
+  ],
+  marineLife: [
+    'Great white sharks at the Neptunes',
+    'Giant Australian cuttlefish in winter',
+    'Leafy sea dragons on the jetties',
+    'Australian sea lions',
+    'Rich temperate macro under the piers',
+  ],
+  faqs: [
+    {
+      question: 'Do I need to be a diver for great white cage diving?',
+      answer:
+        'No. The standard surface cage at the Neptune Islands hangs off the boat and uses a hookah air supply, so you breathe easily at the surface with no certification and no prior experience — you simply climb in. Some operators have offered a deeper ocean-floor cage that does require certification. Trips run from Port Lincoln and involve a long boat journey, so factor in sea conditions. Sightings are seasonal in character, with larger females more common in the cooler months.',
+    },
+    {
+      question: 'What is the Whyalla cuttlefish aggregation?',
+      answer:
+        'Each winter, from roughly May to August, giant Australian cuttlefish gather in the shallows near Whyalla in northern Spencer Gulf to breed — the only known mass aggregation of its kind anywhere. Thousands of animals crowd a short stretch of rocky coast in just a few metres of water, males flashing colour to compete for females. It is shallow enough to snorkel and accessible from shore, though the water is cold, so a good wetsuit or drysuit is essential.',
+    },
+  ],
+};
+
+// ===========================================
+// BATCH 5 — CARIBBEAN
+// ===========================================
+
+const BAHAMAS = {
+  intro:
+    "The Bahamas is one of the world's great shark destinations. Tiger Beach, off Grand Bahama, offers close encounters with tiger sharks on a shallow sand bank, and Caribbean reef sharks are abundant across the islands. Beyond sharks, the archipelago is riddled with blue holes, walls drop sharply into deep ocean, and the water is warm and clear for most of the year. Most shark diving here is baited, run by long-established operators, and dives are typically shallow enough for generous bottom times.",
+  quickFacts: {
+    bestTime: 'November to May; tiger sharks most reliable in the cooler months',
+    difficulty: 'Intermediate — mostly easy diving, but baited shark protocols apply',
+    waterTemp: '24–29°C',
+    visibility: '20–30m and often more',
+  },
+  topSites: [
+    { name: 'Tiger Beach', note: 'Shallow sand flat with tiger and lemon sharks' },
+    { name: 'Blue holes', note: 'Vertical shafts and caverns — training required for cave sections' },
+    { name: 'Andros wall', note: 'Steep drop-off along the barrier reef' },
+    { name: 'Reef shark dives', note: 'Baited Caribbean reef shark encounters' },
+  ],
+  marineLife: [
+    'Tiger sharks at Tiger Beach',
+    'Lemon and Caribbean reef sharks',
+    'Great hammerheads in winter',
+    'Nurse sharks and stingrays',
+    'Groupers and Nassau grouper on the reef',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive the Bahamas?',
+      answer:
+        'November to May gives the most settled weather and sits outside the Atlantic hurricane season, which runs from June to November. Water is warm all year, ranging from about 24°C in winter to 29°C in late summer, so seasonality is mostly about wind and storms. Shark diving has its own rhythm: tiger sharks at Tiger Beach and great hammerheads at Bimini are both most reliable in the cooler winter months.',
+    },
+    {
+      question: 'Are the shark dives in the Bahamas baited?',
+      answer:
+        'Yes, almost all of them. Tiger Beach and the reef shark dives use bait to draw sharks in, with divers kneeling on sand in shallow water while feeders manage the animals. Operators here have decades of experience and strict protocols — stay in position, keep close to the group, do not reach out. Baited diving is debated within the diving community, so it is worth deciding in advance whether that format is one you want to take part in.',
+    },
+  ],
+};
+
+const BIMINI = {
+  intro:
+    "Bimini is a small Bahamian island close to the Florida coast, and it has become the most reliable place in the world to dive with great hammerheads. Each winter these large, solitary sharks arrive on the shallow sand flats, where baited dives put divers eye to eye with animals that can exceed four metres — in bright, clear water only a few metres deep. Bull sharks and stingrays share the site. Outside hammerhead season Bimini is quiet, with pleasant reefs and the curious Bimini Road rock formation.",
+  quickFacts: {
+    bestTime: 'Great hammerheads roughly December to March',
+    difficulty: 'Intermediate — shallow, but demands calm baited-dive discipline',
+    waterTemp: '22–28°C',
+    visibility: '20–30m',
+  },
+  topSites: [
+    { name: 'Hammerhead flats', note: 'Shallow sand site for great hammerhead encounters' },
+    { name: 'Bull shark dives', note: 'Often on the same sites through winter' },
+    { name: 'Bimini Road', note: 'Submerged rock formation, shallow and easy' },
+    { name: 'Victories wreck', note: 'Small wreck for a change of pace' },
+  ],
+  marineLife: [
+    'Great hammerhead sharks in winter',
+    'Bull sharks',
+    'Nurse sharks and stingrays',
+    'Eagle rays',
+    'Reef fish on the shallow patch reefs',
+  ],
+  faqs: [
+    {
+      question: 'When can you dive with great hammerheads at Bimini?',
+      answer:
+        'The season runs roughly from December to March, with January and February usually the most consistent. The sharks arrive on the shallow sand flats where operators run baited dives in only five to ten metres of water, so bottom times are long and the light is excellent for photography. Outside those months sightings drop off sharply, so if hammerheads are your reason for going, the timing is not flexible.',
+    },
+    {
+      question: 'Is diving with great hammerheads dangerous?',
+      answer:
+        'Great hammerheads are large predators and the dives are baited, so the format matters — but the encounters have an excellent safety record with experienced operators. Divers kneel on the sand in a line while a feeder controls the bait well away from the group. The rules are simple and non-negotiable: stay low and still, keep your hands in, do not swim towards the shark. The sharks are typically cautious rather than aggressive.',
+    },
+  ],
+};
+
+const BELIZE = {
+  intro:
+    "Belize sits on the Mesoamerican Barrier Reef, the largest reef system in the northern hemisphere, and it is best known for the Great Blue Hole — a near-perfect circular sinkhole visible from the air, which collapsed from a dry cave system when sea levels rose. As a dive it is a deep, dark descent to see enormous stalactites at around 40 metres, with little marine life; people go for the geology and the story. The surrounding atolls do the everyday work: Lighthouse Reef, Turneffe and Half Moon Caye offer walls, coral and healthy fish.",
+  quickFacts: {
+    bestTime: 'November to May, the dry season',
+    difficulty: 'Blue Hole is advanced and deep; surrounding reefs suit all levels',
+    waterTemp: '26–29°C',
+    visibility: '20–30m',
+  },
+  topSites: [
+    { name: 'Great Blue Hole', note: 'Deep dive to stalactites — geology, not marine life' },
+    { name: 'Half Moon Caye Wall', note: 'Superb wall dive on Lighthouse Reef' },
+    { name: 'Turneffe Atoll', note: 'Varied reef, walls and channels' },
+    { name: 'Hol Chan Marine Reserve', note: 'Shallow, busy with fish, great for newer divers' },
+  ],
+  marineLife: [
+    'Whale sharks near Gladden Spit in spring',
+    'Caribbean reef sharks and nurse sharks',
+    'Eagle rays and turtles',
+    'Groupers and large snapper',
+    'Healthy hard coral on the atolls',
+  ],
+  faqs: [
+    {
+      question: 'Is the Great Blue Hole worth diving?',
+      answer:
+        'Honestly, it depends on your expectations. The dive is a descent to around 40 metres along a sheer wall to see huge stalactites left from when the cave was dry, in dark water with very little marine life. As a piece of geology and a bucket-list tick it is remarkable; as a dive on its own terms, many divers find the surrounding atoll reefs more rewarding. Most trips combine it with two dives on Lighthouse Reef, which is the right way to do it.',
+    },
+    {
+      question: 'When can you see whale sharks in Belize?',
+      answer:
+        'Whale sharks visit Gladden Spit off Placencia in spring, broadly from March to June, drawn by spawning aggregations of snapper around the full moons. Encounters are managed under a permit system with limited operators and defined seasons. Sightings are genuinely seasonal and weather-dependent rather than guaranteed, so treat it as a chance rather than a certainty when planning.',
+    },
+  ],
+};
+
+const BONAIRE = {
+  intro:
+    "Bonaire is the shore diving capital of the Caribbean, and the setup is unusually simple: rent a pickup truck, load it with tanks, and drive the coast road looking for the painted yellow stones that mark each site. There are more than sixty of them. The island's marine park has been protected since 1979, with a permanent mooring system and a long-standing ban on anchoring and spearfishing, so the reef is in notably good condition. It sits outside the main hurricane belt, so it dives well all year.",
+  quickFacts: {
+    bestTime: 'Year-round — Bonaire sits outside the main hurricane belt',
+    difficulty: 'Beginner friendly — easy shore entries and gentle reefs',
+    waterTemp: '26–29°C',
+    visibility: '20–30m',
+  },
+  topSites: [
+    { name: '1000 Steps', note: 'Well-known shore dive with a memorable staircase' },
+    { name: 'Salt Pier', note: 'Pilings covered in coral and schooling fish' },
+    { name: 'Hilma Hooker', note: 'Accessible wreck lying on its side around 30m' },
+    { name: 'Klein Bonaire', note: 'Uninhabited islet with the healthiest reef' },
+  ],
+  marineLife: [
+    'Healthy hard coral and sponges',
+    'Turtles across most sites',
+    'Tarpon and barracuda on night dives',
+    'Frogfish and seahorses for macro hunters',
+    'Large parrotfish and angelfish',
+  ],
+  faqs: [
+    {
+      question: 'Why is Bonaire so good for shore diving?',
+      answer:
+        'Geography and policy together. The reef runs parallel to the coast and starts close in, so a short swim from the shore puts you on a healthy drop-off, and the leeward side is sheltered enough that entries are calm most days. The island marks each site with a painted yellow stone by the roadside, and dive operators rent trucks with tank racks. Combined with marine park protection since 1979, it makes independent, self-guided diving genuinely easy.',
+    },
+    {
+      question: 'When is the best time to dive Bonaire?',
+      answer:
+        'Any time. Bonaire lies far enough south to sit outside the main Atlantic hurricane belt, so it dives reliably all year, with water between about 26 and 29°C. The leeward coast where most sites are is naturally sheltered. Occasional winter swells can stir up the northern sites for a day or two. There is a marine park fee, payable annually, which every diver must buy before getting in the water.',
+    },
+  ],
+};
+
+const CAYMAN_ISLANDS = {
+  intro:
+    "The Cayman Islands built their reputation on walls and clarity. Little Cayman's Bloody Bay Wall is the standout — a drop-off that starts in around six metres of water and falls away thousands of metres into the blue, so sheer that you finish a dive hovering over the edge of an abyss. Grand Cayman adds Stingray City, a shallow sandbar where southern stingrays gather and which works as well for snorkellers as divers, and the USS Kittiwake, a purpose-scuttled submarine rescue vessel. Visibility routinely exceeds thirty metres.",
+  quickFacts: {
+    bestTime: 'Year-round; May to September is calmest',
+    difficulty: 'Beginner to intermediate',
+    waterTemp: '26–29°C',
+    visibility: '30m and often more',
+  },
+  topSites: [
+    { name: 'Bloody Bay Wall', note: 'Little Cayman — one of the great wall dives' },
+    { name: 'Stingray City', note: 'Shallow sandbar with southern stingrays' },
+    { name: 'USS Kittiwake', note: 'Scuttled in 2011, upright and easy to explore' },
+    { name: 'Devil’s Grotto', note: 'Caverns and silversides off Grand Cayman' },
+  ],
+  marineLife: [
+    'Southern stingrays at Stingray City',
+    'Turtles and eagle rays',
+    'Silverside shoals in the caverns in summer',
+    'Grouper and snapper on the walls',
+    'Healthy sponge and coral growth',
+  ],
+  faqs: [
+    {
+      question: 'What makes Bloody Bay Wall special?',
+      answer:
+        'It starts unusually shallow. Most Caribbean walls begin at 20 metres or deeper; Bloody Bay Wall on Little Cayman starts at around six metres and then drops thousands of metres straight down. That means you can hover over the lip in bright sunlight with an effectively bottomless blue beneath you, which is spectacular and slightly unnerving. The wall is covered in sponges and gorgonians, and the shallow start makes for long, safe dives with easy safety stops.',
+    },
+    {
+      question: 'Can beginners dive in the Cayman Islands?',
+      answer:
+        'Yes, and it is one of the easier Caribbean destinations to learn in. Water is warm and calm, visibility is exceptional, and there are plenty of shallow reef and wreck sites. Stingray City sits in about four metres of water and works for snorkellers as well as divers. The walls demand good buoyancy and depth awareness, since the bottom drops away completely, so newer divers should dive them with a guide and a close eye on their computer.',
+    },
+  ],
+};
+
+const COZUMEL = {
+  intro:
+    "Cozumel is a drift diving island. Currents run steadily along the west coast, and the standard dive here is to roll in, stop swimming and let the reef slide past — Palancar, Santa Rosa and Columbia are all long, sculpted coral formations riddled with swim-throughs and tunnels. The water is warm, visibility is routinely thirty metres or more, and the island is part of the Mesoamerican Reef. Punta Sur, with its Devil's Throat swim-through, is the advanced dive everyone talks about. It also hosts the splendid toadfish, found nowhere else in the world.",
+  quickFacts: {
+    bestTime: 'Year-round; nortes bring windier conditions November to March',
+    difficulty: 'Intermediate — drift diving, though generally gentle',
+    waterTemp: '25–29°C',
+    visibility: '30m and often more',
+  },
+  topSites: [
+    { name: 'Palancar Reef', note: 'Long coral formations with swim-throughs' },
+    { name: 'Santa Rosa Wall', note: 'Fast drift along a dramatic drop-off' },
+    { name: 'Punta Sur / Devil’s Throat', note: 'Advanced swim-through system' },
+    { name: 'Columbia Deep', note: 'Big coral pinnacles and turtles' },
+  ],
+  marineLife: [
+    'Splendid toadfish, endemic to Cozumel',
+    'Turtles and eagle rays',
+    'Nurse sharks under the ledges',
+    'Groupers and large angelfish',
+    'Healthy sponges and coral heads',
+  ],
+  faqs: [
+    {
+      question: 'Is Cozumel good for beginners if everything is drift diving?',
+      answer:
+        'Generally yes. The current is usually steady and predictable rather than violent, and drifting is a relaxed way to dive once briefed — you simply stay with the group and let the reef pass. Operators use live boat pickups, so there is no swimming back to a mooring. Newer divers do need to be comfortable with a negative entry, staying close to a guide and keeping neutral buoyancy. On stronger days, sites are chosen to match the group.',
+    },
+    {
+      question: 'When is the best time to dive Cozumel?',
+      answer:
+        'It dives all year, with water between about 25 and 29°C. The calmest, clearest conditions tend to run from around April to September. From November to March, cold fronts known locally as nortes bring wind that can close the exposed southern sites for a day or two at a time, though the sheltered reefs usually stay diveable. Hurricane season runs June to November, so travel insurance is worth having.',
+    },
+  ],
+};
+
+const ROATAN = {
+  intro:
+    "Roatán, the largest of the Honduran Bay Islands, sits on the Mesoamerican Barrier Reef and offers a rare combination: genuinely good wall and reef diving at some of the lowest prices in the Caribbean. The reef runs close to shore around most of the island, so boat rides are short and many resorts have a house reef. Walls, canyons and swim-throughs make up the terrain, along with a couple of accessible wrecks. It is also one of the cheapest places in the world to complete dive training, which keeps the island busy with divers building experience.",
+  quickFacts: {
+    bestTime: 'March to September; rain peaks late in the year',
+    difficulty: 'Beginner to intermediate',
+    waterTemp: '26–30°C',
+    visibility: '20–30m',
+  },
+  topSites: [
+    { name: 'Mary’s Place', note: 'Dramatic volcanic fissure — access can be limited' },
+    { name: 'El Aguila wreck', note: 'Cargo ship broken into sections at around 30m' },
+    { name: 'West End Wall', note: 'Classic wall diving close to shore' },
+    { name: 'Cordelia Banks', note: 'Protected site with exceptional staghorn coral' },
+  ],
+  marineLife: [
+    'Turtles and eagle rays',
+    'Nurse sharks and occasional reef sharks',
+    'Seahorses on the shallow reef',
+    'Groupers and schooling snapper',
+    'Healthy staghorn coral at Cordelia Banks',
+  ],
+  faqs: [
+    {
+      question: 'When is the best time to dive Roatán?',
+      answer:
+        'March to September gives the driest weather and the calmest seas, with water at a warm 28 to 30°C in late summer. October through January brings the heaviest rain, which can reduce visibility near shore, though the island still dives year-round. Hurricane season runs June to November. Water temperature never really drops below about 26°C, so exposure protection is a light wetsuit whenever you go.',
+    },
+    {
+      question: 'Is Roatán a good place to learn to dive?',
+      answer:
+        'It is one of the best value places in the world for it. Warm, clear, calm water and a reef close to shore make for easy training conditions, and the concentration of dive schools on the island — along with neighbouring Utila — keeps prices low and instructor experience high. As always, choose on reputation and group size rather than the cheapest quote, and check that the school is busy enough to be running courses regularly.',
+    },
+  ],
+};
+
 // Slug → guide.
 // Where a destination has two sticker designs (raja-ampat-01 / -02) the guide
 // is attached to ONE slug only. Publishing the same 700-word guide on both
@@ -1269,6 +2182,38 @@ export const DIVE_GUIDES = {
   sardinia: SARDINIA,
   'canary-islands': CANARY_ISLANDS,
   'the-azores': THE_AZORES,
+
+  // Batch 3 — Indian Ocean & Red Sea
+  'red-sea': RED_SEA,
+  thistlegorm: THISTLEGORM,
+  'brothers-island': BROTHERS_ISLAND,
+  'marsa-alam': MARSA_ALAM,
+  // Two Maldives designs share a destination — guide on one slug only.
+  'maldives-01': MALDIVES,
+  seychelles: SEYCHELLES,
+  mozambique: MOZAMBIQUE,
+
+  // Batch 4 — Pacific & Oceania
+  palau: PALAU,
+  'chuuk-lagoon': CHUUK_LAGOON,
+  'great-barrier-reef': GREAT_BARRIER_REEF,
+  'ningaloo-reef': NINGALOO_REEF,
+  fiji: FIJI,
+  'french-polynesia': FRENCH_POLYNESIA,
+  'solomon-islands': SOLOMON_ISLANDS,
+  tonga: TONGA,
+  japan: JAPAN,
+  'new-zealand': NEW_ZEALAND,
+  'south-australia': SOUTH_AUSTRALIA,
+
+  // Batch 5 — Caribbean
+  bahamas: BAHAMAS,
+  bimini: BIMINI,
+  belize: BELIZE,
+  bonaire: BONAIRE,
+  'cayman-islands': CAYMAN_ISLANDS,
+  cozumel: COZUMEL,
+  roatan: ROATAN,
 };
 
 export const getDiveGuide = (slug) => DIVE_GUIDES[slug] || null;
