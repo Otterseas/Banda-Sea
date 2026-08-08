@@ -9,7 +9,6 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CLOTHING, CLOTHING_QUALITY_STATEMENT } from '@/data/clothing';
 import { NotifyMeButton, StockBadge } from '@/components/NotifyMe';
-import ReviewStrip from '@/components/ReviewStrip';
 import RecentlyViewed from '@/components/RecentlyViewed';
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 import WhisperText from '@/components/WhisperText';
@@ -107,6 +106,9 @@ function ColourSwatches({ item, selectedId, onSelect, size = 'sm' }) {
 function ClothingCard({ item, formatPrice, onPreview, index, selectedVariantId, onSelectVariant }) {
   const { addToCart, openCart } = useCart();
   const variant = item.variants.find((v) => v.id === selectedVariantId) || item.variants[0];
+  // Until the shopper picks a colour, lead with the hero photography (the
+  // product's first Shopify image) — livelier than the flat colour mockups.
+  const cardImage = selectedVariantId ? variant.image : item.images[0];
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
@@ -132,11 +134,11 @@ function ClothingCard({ item, formatPrice, onPreview, index, selectedVariantId, 
       className="bg-white rounded-2xl overflow-hidden cursor-pointer flex flex-col border transition-shadow hover:shadow-md"
       style={{ borderColor: '#E6EEF2' }}
     >
-      {/* Image — swaps with the selected colour */}
+      {/* Image — hero shot by default, swaps to the mockup once a colour is picked */}
       <div className="aspect-square overflow-hidden relative" style={{ backgroundColor: COLORS.cream }}>
         <img
-          src={variant.image}
-          alt={`${item.title} in ${variant.name}`}
+          src={cardImage}
+          alt={selectedVariantId ? `${item.title} in ${variant.name}` : item.title}
           className="w-full h-full object-cover transition-opacity duration-300"
         />
       </div>
@@ -328,14 +330,9 @@ function ClothingModal({ item, isOpen, onClose, formatPrice, selectedVariantId, 
                 {item.title}
               </h3>
               <p className="text-sm text-gray-500 italic mb-3">{item.subtitle}</p>
-              <p className="text-2xl font-bold mb-2" style={{ color: COLORS.deepWater }}>
+              <p className="text-2xl font-bold mb-4" style={{ color: COLORS.deepWater }}>
                 {formatPrice(item.price)}
               </p>
-
-              {/* Social proof at the moment of decision */}
-              <div className="mb-4">
-                <ReviewStrip label="Rated 5.0 by divers on Etsy" />
-              </div>
 
               {/* Colour picker */}
               <div className="mb-5">
@@ -550,7 +547,7 @@ export default function ClothingPage() {
                 item={item}
                 formatPrice={formatPrice}
                 index={i}
-                selectedVariantId={selectedVariants[item.id] || item.variants[0].id}
+                selectedVariantId={selectedVariants[item.id]}
                 onSelectVariant={selectVariant}
                 onPreview={() => setPreviewId(item.id)}
               />

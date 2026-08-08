@@ -75,6 +75,51 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function StickerLayout({ children }) {
-  return children;
+// Per-sticker structured data: Product (name, image, £2.50, in stock) and
+// a breadcrumb trail. Rendered server-side so crawlers and AI assistants
+// get it without executing the page's client JS.
+export default function StickerLayout({ children, params }) {
+  const sticker = getStickerBySlug(params.slug);
+  if (!sticker) return children;
+
+  const url = `https://www.otterseas.com/stickers/${sticker.slug}`;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Product',
+        name: `${sticker.name} Dive Sticker`,
+        description: sticker.story?.content
+          ? sticker.story.content.slice(0, 300)
+          : `Waterproof ${sticker.name} dive site sticker from the ${sticker.region} collection.`,
+        image: sticker.image,
+        brand: { '@type': 'Brand', name: 'Otterseas' },
+        offers: {
+          '@type': 'Offer',
+          price: '2.50',
+          priceCurrency: 'GBP',
+          availability: 'https://schema.org/InStock',
+          url,
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.otterseas.com' },
+          { '@type': 'ListItem', position: 2, name: 'Dive Site Stickers', item: 'https://www.otterseas.com/stickers' },
+          { '@type': 'ListItem', position: 3, name: `${sticker.name} (${sticker.region})`, item: url },
+        ],
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {children}
+    </>
+  );
 }
