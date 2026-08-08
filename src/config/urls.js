@@ -8,7 +8,8 @@
 // MAIN SITE URL
 // ===========================================
 // Change this when going live
-export const SITE_URL = 'https://otterseas.com';
+// www is the canonical host — the apex domain 307-redirects to it.
+export const SITE_URL = 'https://www.otterseas.com';
 
 // ===========================================
 // SHOPIFY STORE URLS

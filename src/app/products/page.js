@@ -107,7 +107,7 @@ const PRODUCT_ROWS = [
         description: 'Embroidered marine life beanies & caps — mola mola, orca and one sideways crab',
         price: 18.5,
         priceNote: 'from',
-        image: 'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/product_photography_1f192ae8-aeab-6b40-9af0-d027b3a692df_0_0.png?v=1786177616&width=600',
+        image: '/images/products/Mola-mola-embroidered-beanie-hero.png',
         link: '/products/clothing',
         badge: 'New',
       },

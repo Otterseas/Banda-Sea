@@ -6,13 +6,14 @@ export async function generateMetadata({ params }) {
 
   if (!sticker) {
     return {
-      title: 'Sticker Not Found | Otterseas',
+      title: 'Sticker Not Found',
       description: 'The requested sticker could not be found.',
     };
   }
 
   // Create SEO-optimized title and description
-  const title = `${sticker.name} Dive Sticker – ${sticker.story?.headline || sticker.region} | Otterseas`;
+  // Root layout template appends "| Otterseas" — don't add it here.
+  const title = `${sticker.name} Dive Sticker – ${sticker.story?.headline || sticker.region}`;
 
   const description = sticker.story?.content
     ? `Add the ${sticker.name} dive sticker to your collection. ${sticker.story.content.slice(0, 140)}...`
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
+    alternates: { canonical: `/stickers/${params.slug}` },
     keywords: [
       // Location-specific keywords
       `${sticker.name} dive sticker`,

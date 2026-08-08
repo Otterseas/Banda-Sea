@@ -226,7 +226,9 @@ function LoadingScreen({ onComplete }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       >
-        <h1
+        {/* Not an h1 — the page's real h1 is the hero headline; two h1s
+            confuse crawlers and this one only exists during the loader. */}
+        <p
           className="text-2xl md:text-3xl font-extrabold tracking-tight"
           style={{
             background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, #FF6B9D 50%, ${LUNA.deepWater} 100%)`,
@@ -236,7 +238,7 @@ function LoadingScreen({ onComplete }) {
           }}
         >
           Otterseas
-        </h1>
+        </p>
         <p
           className="text-xs md:text-sm tracking-[0.28em] uppercase mt-2 font-semibold"
           style={{ color: LUNA.midDepth }}
@@ -391,15 +393,15 @@ export default function HomePage() {
                 <div className="flex gap-3 md:gap-4 flex-shrink-0">
                   {[
                     {
-                      src: 'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/product_photography_1f192ae8-aeab-6b40-9af0-d027b3a692df_0_0.png?v=1786177616&width=400',
+                      src: '/images/products/Mola-mola-embroidered-beanie-hero.png',
                       alt: 'Mola Mola embroidered beanie for divers',
                     },
                     {
-                      src: 'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/product_photography_1f192fd3-bf0b-6d10-a3fd-80f871d8a62f_0_0.png?v=1786177317&width=400',
+                      src: '/images/products/Orca-sailboat-embroidered-cap-hero.png',
                       alt: 'Orca and sailboat embroidered two-tone cap',
                     },
                     {
-                      src: 'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/gpt-image-2_reduce_logo_and_text_on_hat_by_15_percent-0.jpg?v=1786177127&width=400',
+                      src: '/images/products/Side-quests-crab-beanie-hero.jpg',
                       alt: 'Doing Side Quests crab embroidered beanie',
                     },
                   ].map((img, i) => (

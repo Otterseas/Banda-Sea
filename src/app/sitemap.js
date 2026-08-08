@@ -1,7 +1,7 @@
 import { getAllStickers } from '@/data/stickers';
 
 export default function sitemap() {
-  const baseUrl = 'https://otterseas.com';
+  const baseUrl = 'https://www.otterseas.com';
 
   // Get all sticker slugs for dynamic pages
   const stickers = getAllStickers();

@@ -1,6 +1,6 @@
 import { CLOTHING } from '@/data/clothing';
 
-const title = 'Ocean Clothing – Embroidered Beanies & Caps for Divers | Otterseas';
+const title = 'Ocean Clothing – Embroidered Beanies & Caps for Divers';
 const description =
   'Embroidered marine life beanies and caps for scuba divers, sailors and ocean lovers. Mola mola, orca and crab designs, stitched to order. From £18.50.';
 
@@ -49,14 +49,14 @@ function ClothingJsonLd() {
         '@type': 'Product',
         name: item.title,
         description: item.description,
-        image: item.images[0],
+        image: `https://www.otterseas.com${item.images[0]}`,
         brand: { '@type': 'Brand', name: 'Otterseas' },
         offers: {
           '@type': 'Offer',
           price: item.price.toFixed(2),
           priceCurrency: 'GBP',
           availability: 'https://schema.org/InStock',
-          url: 'https://otterseas.com/products/clothing',
+          url: 'https://www.otterseas.com/products/clothing',
         },
       },
     })),

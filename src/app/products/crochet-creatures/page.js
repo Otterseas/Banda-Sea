@@ -771,7 +771,7 @@ function InfiniteScrollGallery({ images }) {
             >
               <img
                 src={src}
-                alt=""
+                alt="Handmade crochet marine creature by Otterseas"
                 className="w-full h-full object-cover"
                 loading="lazy"
                 draggable={false}

@@ -27,8 +27,8 @@ export const CLOTHING = [
     ],
     // Shared shots shown for every colour (hero + stitching close-up)
     images: [
-      'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/product_photography_1f192ae8-aeab-6b40-9af0-d027b3a692df_0_0.png?v=1786177616&width=823',
-      'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/Mola_mola_stitching.jpg?v=1786177615&width=823',
+      '/images/products/Mola-mola-embroidered-beanie-hero.png',
+      '/images/products/Mola-mola-beanie-stitching-close-up.jpg',
     ],
     variants: [
       {
@@ -99,8 +99,8 @@ export const CLOTHING = [
       'Made to order — processed within 5 working days',
     ],
     images: [
-      'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/product_photography_1f192fd3-bf0b-6d10-a3fd-80f871d8a62f_0_0.png?v=1786177317&width=823',
-      'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/Orca_stitching.png?v=1786177316&width=823',
+      '/images/products/Orca-sailboat-embroidered-cap-hero.png',
+      '/images/products/Orca-cap-stitching-close-up.png',
     ],
     variants: [
       {
@@ -171,8 +171,8 @@ export const CLOTHING = [
       'Made to order — processed within 5 working days',
     ],
     images: [
-      'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/gpt-image-2_reduce_logo_and_text_on_hat_by_15_percent-0.jpg?v=1786177127&width=823',
-      'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/close_up_stitching.png?v=1786177128&width=823',
+      '/images/products/Side-quests-crab-beanie-hero.jpg',
+      '/images/products/Crab-beanie-stitching-close-up.png',
     ],
     variants: [
       {
