@@ -27,6 +27,7 @@ const NAV_LINKS = [
   { href: '/products/surface-tank', label: 'Surface Tank' },
   { href: '/stickers', label: 'Stickers' },
   { href: '/products/fun-stickers', label: 'Fun Stickers' },
+  { href: '/products/clothing', label: 'Clothing' },
   { href: '/products/crochet-creatures', label: 'Crochet' },
 ];
 

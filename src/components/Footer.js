@@ -20,6 +20,7 @@ const FOOTER_NAV = [
   { href: '/products/surface-tank', label: 'Surface Tank' },
   { href: '/stickers', label: 'Location Stickers' },
   { href: '/products/fun-stickers', label: 'Fun Stickers' },
+  { href: '/products/clothing', label: 'Clothing' },
   { href: '/products/crochet-creatures', label: 'Crochet Creatures' },
   { href: '/products', label: 'All Products' },
   { href: '/about', label: 'About' },

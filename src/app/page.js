@@ -332,9 +332,90 @@ export default function HomePage() {
         </section>
 
         {/* Hero — Product Selector (padded white container) */}
-        <section className="w-full bg-white pb-12 md:pb-16 px-4 md:px-8">
+        <section className="w-full bg-white pb-8 md:pb-10 px-4 md:px-8">
           <div className="max-w-7xl mx-auto">
             <HomeProductSelector />
+          </div>
+        </section>
+
+        {/* ===========================================
+            NEW IN — CLOTHING BANNER
+            =========================================== */}
+        <section className="w-full bg-white pb-12 md:pb-16 px-4 md:px-8">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Link
+                href="/products/clothing"
+                className="group flex flex-col sm:flex-row items-center gap-6 sm:gap-8 rounded-3xl overflow-hidden border transition-shadow hover:shadow-lg p-6 sm:p-8"
+                style={{ backgroundColor: '#FAF7F1', borderColor: '#E6EEF2' }}
+              >
+                {/* Text side */}
+                <div className="flex-1 text-center sm:text-left">
+                  <span
+                    className="inline-block text-[10px] font-bold tracking-[0.22em] uppercase px-3 py-1 rounded-full mb-3"
+                    style={{ backgroundColor: '#FF6B9D', color: 'white' }}
+                  >
+                    New In
+                  </span>
+                  <h2
+                    className="text-2xl md:text-4xl font-extrabold leading-tight mb-2"
+                    style={{
+                      background: `linear-gradient(135deg, ${LUNA.surfaceTeal} 0%, #FF6B9D 50%, ${LUNA.deepWater} 100%)`,
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                  >
+                    Wear the ocean.
+                  </h2>
+                  <p className="text-sm md:text-base mb-4" style={{ color: LUNA.midDepth }}>
+                    Embroidered beanies &amp; caps — mola mola, orca, and one very sideways crab. From £18.50.
+                  </p>
+                  <span
+                    className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.15em] uppercase px-6 py-3 rounded-xl transition-all group-hover:gap-3"
+                    style={{ backgroundColor: LUNA.deepWater, color: 'white' }}
+                  >
+                    Shop Clothing
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </div>
+
+                {/* Image side — the three hats */}
+                <div className="flex gap-3 md:gap-4 flex-shrink-0">
+                  {[
+                    {
+                      src: 'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/product_photography_1f192ae8-aeab-6b40-9af0-d027b3a692df_0_0.png?v=1786177616&width=400',
+                      alt: 'Mola Mola embroidered beanie for divers',
+                    },
+                    {
+                      src: 'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/product_photography_1f192fd3-bf0b-6d10-a3fd-80f871d8a62f_0_0.png?v=1786177317&width=400',
+                      alt: 'Orca and sailboat embroidered two-tone cap',
+                    },
+                    {
+                      src: 'https://cdn.shopify.com/s/files/1/0825/9108/8906/files/gpt-image-2_reduce_logo_and_text_on_hat_by_15_percent-0.jpg?v=1786177127&width=400',
+                      alt: 'Doing Side Quests crab embroidered beanie',
+                    },
+                  ].map((img, i) => (
+                    <div
+                      key={i}
+                      className={`w-24 h-24 md:w-36 md:h-36 rounded-2xl overflow-hidden bg-white transition-transform duration-500 group-hover:scale-105 ${
+                        i === 2 ? 'hidden md:block' : ''
+                      }`}
+                      style={{ transitionDelay: `${i * 60}ms` }}
+                    >
+                      <img src={img.src} alt={img.alt} className="w-full h-full object-cover" loading="lazy" />
+                    </div>
+                  ))}
+                </div>
+              </Link>
+            </motion.div>
           </div>
         </section>
 
@@ -662,6 +743,9 @@ export default function HomePage() {
                 </Link>
                 <Link href="/products/fun-stickers" className="text-white/50 hover:text-white text-sm transition-colors">
                   Fun Stickers
+                </Link>
+                <Link href="/products/clothing" className="text-white/50 hover:text-white text-sm transition-colors">
+                  Clothing
                 </Link>
                 <Link href="/products/crochet-creatures" className="text-white/50 hover:text-white text-sm transition-colors">
                   Crochet Creatures
